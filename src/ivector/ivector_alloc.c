@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.1 2004-04-04 11:13:54 ron_lima Exp $
+ $Id: ivector_alloc.c,v 1.2 2004-06-04 09:51:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,7 +32,8 @@
 #include "ivector.h"
 
 int
-ivector_alloc (ivector_t ** vector, compare_t comp, size_t datalen)
+ivector_alloc (ivector_t ** vector, compare_t comp, deallocator_t dealloc, 
+               size_t datalen)
 {
     /* Sanity tests */
     if (! datalen)
@@ -51,6 +52,7 @@ ivector_alloc (ivector_t ** vector, compare_t comp, size_t datalen)
     (*vector)->size_    = 0x0;
     (*vector)->datalen_ = datalen;
     (*vector)->comp_    = comp;
+    (*vector)->dealloc_ = dealloc;
     (*vector)->data_    = (void *) NULL;
 
     return 0x0;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_free.c,v 1.1 2004-04-04 11:13:54 ron_lima Exp $
+ $Id: ivector_free.c,v 1.2 2004-06-04 09:51:01 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +33,18 @@
 void
 ivector_free (ivector_t * vector)
 {
+    /* Checks if the deallocator is a valid one */
+    if (vector->dealloc_)
+        {
+            void * item; /* Item of the vector list */
+            /* Deallocates each vector element */
+            for (item=vector->data_; 
+                 (item - vector->data_)<vector->size_;
+                 (char *)item += vector->datalen_)
+                {
+                    vector->dealloc_ (item);
+                }
+        }
     /* Just frees whatever was allocated */
     free (vector->data_);
     free (vector);
