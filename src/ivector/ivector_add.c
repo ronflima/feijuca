@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.1 2004-04-04 11:13:54 ron_lima Exp $
+ $Id: ivector_add.c,v 1.2 2004-04-04 11:39:17 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -41,9 +41,11 @@ ivector_add (ivector_t * vector, const void * data)
             errno = ENOMEM;
             return -1;
         }
+    vector->data_ = v;
     /* Moves v to the newly created entry */
     v = (void *)((char *) v + vector->size_ * vector->datalen_);
     /* Copies data into the new element */
     memcpy (v, data, vector->datalen_);
+    vector->size_++;
     return 0x0;
 }
