@@ -25,34 +25,32 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+ $Id: list_get.c,v 1.2 2004-02-29 22:16:59 ron_lima Exp $
 */
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
 
 int 
 list_get (LIST * list, void **data, int whence)
 {
-  *data = (void *) 0x0;
+  if (! list->curr_)
+    {
+      return EOF;
+    }
+  * data = list->curr_->data_;
   switch (whence)
     {
     case CURR:
-      if (list->curr_)
-        *data = list->curr_->data_;
+      /* Do nothing. Used only for parameter checking */
       break;
     case NEXT:
-      if (list->curr_)
-        {   
-          *data = list->curr_->data_;
-          list->curr_ = list->curr_->next_;
-        }
+      return list_move (list, whence);
       break;
     default:
       errno = EINVAL;
       return -1;
     }
-  if (! list->curr_)
-    return EOF;
   return 0;
 }
