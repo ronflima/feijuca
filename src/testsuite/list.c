@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.12 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: list.c,v 1.13 2005-01-31 09:55:52 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.12 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.13 2005-01-31 09:55:52 ron_lima Exp $";
 
 /*
  * Local macros
@@ -130,8 +130,8 @@ load_list (list_t * list, size_t elements)
         }
       /* Builds the item data */
       *item = i + 1;
-      /* Inserts the item in the list */
-      rc = list_insert (list, item, POS_NONE);
+      /* Inserts the item into the list */
+      rc = list_insert (list, item, POS_TAIL);
       if (rc)
         {
           ERROR (TEST, "list_insert", rc);
