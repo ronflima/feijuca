@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.14 2004-10-10 23:28:42 ron_lima Exp $
+   $Id: gacommon.h,v 1.15 2004-10-13 00:32:19 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -56,10 +56,9 @@
 
 /* Error codes: Errors that are returned from G.A. Library
    routines. */
-/* Error value for invalid argument */
-#define EGAINVAL 2500
-/* Error value for problem at memory operations */
-#define EGANOMEM 2501
+#define EGAINVAL 2500 /* Invalid argument */
+#define EGANOMEM 2501 /* No memory */
+#define EGABADC  2502 /* Bad current position */
 
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_
