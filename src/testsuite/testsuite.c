@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.10 2005-01-26 22:42:04 ron_lima Exp $
+ $Id: testsuite.c,v 1.11 2005-01-26 23:01:21 ron_lima Exp $
 */
 
 /*
@@ -37,17 +37,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include "gacommon.h"
 #include "gatests.h"
 
 /*
  * Local functions prototypes
  */
-static int cmdline_parse (cmdline_t *, const int, const char **);
-static int cmdline_value_getint (int *, cmdline_t *, const char *);
+static int cmdline_parse __P((cmdline_t *, const int, const char **));
+static int cmdline_value_getint __P((int *, cmdline_t *, const char *));
+static int cmdline_parameter_provided __P((const cmdline_t *, const char *));
+static void help __P((void));
+
 /*
  * Exported functions definitions
  */
-
 int
 main (int argc, char **argv)
 {
@@ -55,6 +58,7 @@ main (int argc, char **argv)
   size_t maxelements;           /* Maximum number of elements to load */
   cmdline_t cmdline;            /* Command line parsed arguments */
   int rc;                       /* General return code */
+  char do_test;                 /* Flag to avoid test execution */
   test_t tests[] =        /* Vector containing all tests to be done */
   {
     {"LIST", test_list},
@@ -67,9 +71,10 @@ main (int argc, char **argv)
 
   /* Initializations */
   maxelements = MAX_ELEMENTS;
+  do_test = '\x1';
 
   /* Prints a small friendly message */
-  printf ("G.A. Library Test Suite\n(c) 2004 - Ronaldo Faria Lima\n");
+  printf ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
   printf ("This software is licensed under the Gnu Public License\n\n");
 
   /* Parses the command line */
@@ -78,11 +83,19 @@ main (int argc, char **argv)
       printf ("Error parsing command line: %d\n", rc);
       return -1;
     }
+  /* Checks if help was asked */
+  if (cmdline_parameter_provided (&cmdline, "h"))
+    {
+      /* Show a small help screen */
+      help ();
+      do_test = '\x0';
+    }
+
   /* Get the maximum number of elements  */
   cmdline_value_getint (&maxelements, &cmdline, "m");
 
   /* Performs all tests at once */
-  for (i = 0x0; i < sizeof (tests) / sizeof (test_t); ++i)
+  for (i = 0x0; (i < (sizeof (tests) / sizeof (test_t))) && do_test; ++i)
     {
       int rc;			/* Error handling */
       char *result;		/* Test result */
@@ -110,15 +123,15 @@ main (int argc, char **argv)
     {
       free (cmdline.items);
     }
-  return 0;
+  return 0x0;
 }
 
 /*
  * Local functions definitions
  */
 /* Parses the command line and returns a structure of parsed stuff */
-static int cmdline_parse (cmdline_t * cmdline, const int argc, 
-                          const char **argv)
+static int 
+cmdline_parse (cmdline_t * cmdline, const int argc, const char **argv)
 {
   register int i;               /* Iterator for the command line parsing */
 
@@ -156,7 +169,7 @@ static int cmdline_parse (cmdline_t * cmdline, const int argc,
 
           /* Check if there is an argument for the parameter */
           cmdline->items[j].value = (char *) NULL;
-          if (*argv [++i] != '-')
+          if (argv[++i] && *argv [i] != '-')
             {
               cmdline->items[j].value = (char *)argv[i];
             }
@@ -167,7 +180,8 @@ static int cmdline_parse (cmdline_t * cmdline, const int argc,
 
 /* Gets and int value from the command line parameter. If nothing
    could be found. the value remains untouched. */
-static int cmdline_value_getint (int *value, cmdline_t *cmdline, const char *parm)
+static int 
+cmdline_value_getint (int *value, cmdline_t *cmdline, const char *parm)
 {
   register size_t i;            /* Iterator for the list */
 
@@ -177,7 +191,8 @@ static int cmdline_value_getint (int *value, cmdline_t *cmdline, const char *par
       if (cmdline->items[i].option[0] == *parm)
         {
           int newvalue;
-          /* We have found the parameter. Lets check if the parameter has a value */
+          /* We have found the parameter. Lets check if the parameter
+             has a value */
           if (! cmdline->items[i].value)
             {
               return EOF;
@@ -195,4 +210,29 @@ static int cmdline_value_getint (int *value, cmdline_t *cmdline, const char *par
         }
     }
   return EOF;
+}
+
+/* Checks if a parameter was really provided */
+static int 
+cmdline_parameter_provided (const cmdline_t * cmdline, const char *param)
+{
+  register size_t i;            /* Iterator for the list of parameters */
+
+  for (i=0x0u; i<cmdline->size; ++i)
+    {
+      if (cmdline->items[i].option[0] == *param)
+        {
+          return 0x1;
+        }
+    }
+  return 0x0;
+}
+
+/* Shows a small help screen */
+static void
+help (void)
+{
+  printf ("Usage:\n"\
+          "\t-m n: Number of elements to use on each test\n" \
+          "\t-h  : This help screen\n\n"); 
 }
