@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_alloc.c,v 1.4 2004-03-26 11:14:01 ron_lima Exp $
+ $Id: dlist_alloc.c,v 1.5 2004-06-09 00:55:20 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 int
-dlist_alloc (dlist_t ** list, deallocator_t dealloc)
+dlist_alloc (dlist_t ** list, deallocator_t * dealloc)
 {
     /* The deallocator must be always provided */
     if (! dealloc)

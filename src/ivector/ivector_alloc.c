@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.2 2004-06-04 09:51:01 ron_lima Exp $
+ $Id: ivector_alloc.c,v 1.3 2004-06-09 00:55:20 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "ivector.h"
 
 int
-ivector_alloc (ivector_t ** vector, compare_t comp, deallocator_t dealloc, 
+ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc, 
                size_t datalen)
 {
     /* Sanity tests */

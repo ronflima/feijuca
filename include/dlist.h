@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.7 2004-05-25 11:08:52 ron_lima Exp $
+ $Id: dlist.h,v 1.8 2004-06-09 00:55:20 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -57,14 +57,14 @@ typedef struct dlist_t
     dlist_element_t * curr_;
     dlist_element_t * head_;
     dlist_element_t * tail_;
-    deallocator_t     deallocator_;
+    deallocator_t   * deallocator_;
 } dlist_t;
 
 /* 
  * Prototypes 
  */
 extern int
-(dlist_alloc) (dlist_t ** list, deallocator_t dealloc);
+(dlist_alloc) (dlist_t ** list, deallocator_t * dealloc);
 
 extern int
 (dlist_free) (dlist_t ** list);

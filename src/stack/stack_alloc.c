@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_alloc.c,v 1.1 2004-04-30 09:53:57 ron_lima Exp $
+ $Id: stack_alloc.c,v 1.2 2004-06-09 00:55:21 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 int
-stack_alloc (stack_t ** stack, deallocator_t dealloc)
+stack_alloc (stack_t ** stack, deallocator_t * dealloc)
 {
     return list_alloc ((list_t **) stack, dealloc);
 }

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.3 2004-05-02 23:55:00 ron_lima Exp $
+ $Id: stack.h,v 1.4 2004-06-09 00:55:20 ron_lima Exp $
 */
  
 #ifndef STACK_H
@@ -46,7 +46,7 @@ typedef list_t stack_t;
  * Prototypes 
  */
 extern int
-(stack_alloc) (stack_t ** stack, deallocator_t dealloc);
+(stack_alloc) (stack_t ** stack, deallocator_t * dealloc);
 extern int
 (stack_free) (stack_t ** stack);
 extern int
