@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.4 2004-10-20 10:40:00 ron_lima Exp $
+ $Id: gatests.h,v 1.5 2005-01-08 23:25:56 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -36,8 +36,17 @@
 /*
  * Macros
  */
-#define MAX_TESTS    1
-#define MAX_ELEMENTS 10000U
+/* Constants */
+#define MAX_TESTS    1          /* Maximum number of tests */
+#define MAX_ELEMENTS 10000U     /* Maximum number of elements  */
+
+/* Errors */
+#define EFAILED      50001u     /* Test failed */
+#define ENOTIMP      50002u     /* Test not implemented yet :"> */
+
+/* Error reporting and handling */
+#define ERROR(test, function, status) printf ("\t[%-7s] error %d - %s "\
+"@ %s:%d\n", test, status, function, __FILE__, __LINE__);
 /*
  * Datatypes
  */
@@ -49,17 +58,12 @@ typedef struct
 } test_t;
 
 /*
- * External storage
- */
-
-/*
  * Prototypes
  */
-extern int
-  (test_list) (void);
-extern int
-  (test_dlist) (void);
-extern int
-  (test_stack) (void);
-
+int (test_list   ) (void);
+int (test_dlist  ) (void);
+int (test_stack  ) (void);
+int (test_clist  ) (void);
+int (test_queue  ) (void);
+int (test_ivector) (void);
 #endif				/* GATESTS_H */

@@ -25,85 +25,159 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.3 2004-10-20 10:38:30 ron_lima Exp $
+ $Id: stack.c,v 1.4 2005-01-08 23:25:56 ron_lima Exp $
 */
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include "gatests.h"
 #include "stack.h"
 
 /*
+ * Local macros
+ */
+#define TEST "STACK"
+
+/*
  * Local prototypes
  */
+static int
+test_stack_push (stack_t * stack, size_t nitems);
+static int
+test_stack_pop (stack_t * stack, size_t nitems);
 
+/*
+ * Exported function definitions
+ */
 int
 test_stack (void)
 {
   stack_t *stack;		/* Descriptor for stacks */
   int rc;			/* General return code for errors */
-  int errors;			/* Counter for errors */
-  register int i;		/* General iterator */
+  int test_status;              /* Status of the test */
 
   /* Initializations */
-  errors = 0x0;
-
+  test_status = 0x0;
+  
   /* Allocates memory for the stack - use the free function as deallocator */
   rc = stack_alloc (&stack, free);
   if (rc)
   {
-    ++errors;
-    printf ("STACK TEST: Could not allocate the stack\n");
-    return errors;
+    ERROR (TEST, "stack_alloc", rc);
+    return EFAILED;
   }
 
-  /* Pushes stuff to the stack */
-  for (i = 0; i < MAX_ELEMENTS; ++i)
+  /*
+   * Test the stack normal operations
+   */
+  /* Push stuff to the stack */
+  rc = test_stack_push (stack, MAX_ELEMENTS);
+  if (! rc)
   {
-    int *data;			/* Data to push into the stack */
+    /* Pop stuff from the stack */
+    rc = test_stack_pop  (stack, MAX_ELEMENTS);
+    if (rc)
+    {
+      /* Pop test has failed */
+      ERROR (TEST, "Stack POP operation", rc);
+      test_status = EFAILED;
+    }
+  }
+  else
+  {
+    /* The push into the stack has failed */
+    ERROR (TEST, "Stack push operation", rc);
+    test_status = EFAILED;
+  }
+  
+  /* Frees the entire stack */
+  rc = stack_free (&stack);
+  if (rc)
+  {
+    ERROR (TEST, "stack_free", rc);
+    test_status = EFAILED;
+  }
+  
+  return test_status;
+}
 
-    data = (int *)malloc (sizeof (int));
+/*
+ * Local function definitions
+ */
+
+/* Loads data into the stack */
+static int
+test_stack_push (stack_t * stack, size_t nitems)
+{
+  register int i; /* General iterator */
+  
+  /* Pushes stuff to the stack */
+  for (i = 0; i < nitems; ++i)
+  {
+    int * data;			/* Data to push into the stack */
+    int rc;                     /* General error handling variable */
+
+    data = (int *) malloc (sizeof (int));
 
     if (data)
     {
       /* Puts some value inside the data pointer */
       *data = i;
+      
       /* Pushes the data into the stack */
       rc = stack_push (stack, data);
       if (rc)
       {
-    ++errors;
+        ERROR (TEST, "stack_push", rc);
+        return rc;
       }
     }
   }
+  
+  return 0x0;
+}
 
+/* Pops data from the stack */
+static int
+test_stack_pop (stack_t * stack, size_t nitems)
+{
+  register int i;               /* General iterator */
+  unsigned char loop;           /* Loop control variable */
+  
+  /* Initializations */
+  i    = 0x0;
+  loop = '\x1';
+  
   /* Gets all the pushed data from the stack */
-  i = 0x0;
-  while (1)
+  while (loop)
   {
-    int *data;
+    int *data;                  /* Buffer to hold the created data */
+    int rc;                     /* General error handling variable */
     /* pops data from the stack */
-    rc = stack_pop (stack, &data);
-    if (!rc)
+    rc = stack_pop (stack, (void *)&data);
+    switch (rc)
     {
-      ++i;
-    }
-    else
-    {
-      break;
+        case 0x0:               /* Normal operation  */
+          ++i;
+          break;
+          
+        case EOF:               /* End of file - no more items to get */
+          loop = '\x0';
+          break;
+
+        default:                /* Error situation  */
+          ERROR (TEST, "stack_pop", rc);
+          loop = '\x0';
+          break;
     }
   }
-  if (i != MAX_ELEMENTS)
+  /* Check if everything was pushed from the stack */
+  if (i != nitems)
   {
     /* Not everything was pushed from the stack */
-    ++errors;
+    printf ("[%s] Number of elements mismatch: %d != %s\n", TEST, i, nitems);
+    return EFAILED;
   }
-  /* Frees the entire stack */
-  rc = stack_free (&stack);
-  if (rc)
-  {
-    ++errors;
-  }
-  return errors;
+  
+  return 0x0;
 }

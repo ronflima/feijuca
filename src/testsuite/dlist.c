@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.3 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: dlist.c,v 1.4 2005-01-08 23:25:56 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,57 +35,75 @@
 #include "dlist.h"
 
 /*
+ * Local macros
+ */
+#define TEST "DLIST"
+
+/*
  * Local prototypes
  */
 static int
-  load_list (dlist_t * list, size_t elements);
+load_list (dlist_t * list, size_t elements);
 static int
-  check_contents (dlist_t * list, size_t elements);
+check_contents (dlist_t * list, size_t elements);
 static int
-  check_deletion (dlist_t * list, size_t elements);
+check_deletion (dlist_t * list, size_t elements);
 
 int
 test_dlist (void)
 {
   dlist_t *list;		/* List descriptor */
-  int *item;			/* Item to load into the list */
   int rc;			/* Error handling variable */
-  unsigned int errors;		/* Errors found so far */
-  register int i;		/* General purpose iterator */
+  int test_status;              /* Test status variable */
 
   /* Initializations */
-  errors = 0x0U;
+  test_status = 0x0;
+  
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
-  errno = 0;
   rc = dlist_alloc (&list, free);
-  if (errno)
+  if (rc)
   {
-    printf ("[LIST TEST] Error allocating list\n");
-    ++errors;
-    list = (dlist_t *) NULL;
+    ERROR (TEST, "dlist_alloc", rc);
+    test_status = EFAILED;
   }
-  if (!rc)
+  else
   {
     /* Performs the load test */
-    errors += load_list (list, MAX_ELEMENTS);
-    /* Performs the navigation test */
-    errors += check_contents (list, MAX_ELEMENTS);
-    /* Performs the deletion test */
-    errors += check_deletion (list, MAX_ELEMENTS);
-  }
-  /* Frees the list only if it was already allocated */
-  if (list)
-  {
-    errno = 0;
-    rc = list_free (&list);
-    if (errno)
+    rc = load_list (list, MAX_ELEMENTS);
+    if (! rc)
     {
-      printf ("[LIST TEST] Could not free the list\n");
-      ++errors;
+      /* Performs the navigation test */
+      rc = check_contents (list, MAX_ELEMENTS);
+      if (rc)
+      {
+        ERROR (TEST, "check_contents", rc);
+        test_status = EFAILED;
+      }
+      /* Performs the deletion test */
+      rc = check_deletion (list, MAX_ELEMENTS);
+      if (rc)
+      {
+        ERROR (TEST, "check_deletion", rc);
+        test_status = EFAILED;
+      }
+    }
+    else
+    {
+      ERROR (TEST, "dload_list", rc);
+      test_status = EFAILED;
+    }
+
+    /* Frees the list only if it was already allocated */
+    rc = dlist_free (&list);
+    if (rc)
+    {
+      ERROR (TEST, "dlist_free", rc);
+      test_status = EFAILED;
     }
   }
-  return errors;
+  
+  return test_status;
 }
 
 /*
@@ -94,39 +112,33 @@ test_dlist (void)
 static int
 load_list (dlist_t * list, size_t elements)
 {
-  int errors;			/* Errors counter */
   register int i;		/* General purpose iterator */
-
-  /* Initializations */
-  errors = 0x0;
 
   /* Loads the list */
   for (i = 0x0; (i < elements); ++i)
   {
     int *item;			/* Item to insert */
+    int rc;                     /* General purpose error handling variable */
 
     /* Allocates memory for a single item */
     item = (int *)malloc (sizeof (int));
     if (!item)
     {
-      printf ("[LIST TEST] Could not allocate memory" \
-          " for an item\n");
-      ++errors;
-      break;
+      ERROR (TEST, "malloc", 0);
+      return ENOMEM;
     }
     /* Builds the item data */
     *item = i + 1;
+    
     /* Inserts the item in the list */
-    errno = 0;
-    dlist_insert (list, item, NEXT);
-    if (errno)
+    rc = dlist_insert (list, item, NEXT);
+    if (rc)
     {
-      printf ("[LIST TEST] Error inserting into " \
-          "the list\n");
-      ++errors;
+      ERROR (TEST, "dlist_insert", rc);
+      return EFAILED;
     }
   }
-  return errors;
+  return 0x0;
 }
 
 /*
@@ -135,37 +147,28 @@ load_list (dlist_t * list, size_t elements)
 static int
 check_contents (dlist_t * list, size_t elements)
 {
-  int errors;			/* Error counter */
   int *item;			/* Item to grab from the list */
   int rc;			/* General error checking variable */
   register int i;		/* General iterator */
 
-  /* Initializations */
-  errors = 0x0;
-  rc = 0x0;
-
   /* Gets the data from the list, iterating it and checking the contents */
-  errno = 0;
-  dlist_move (list, HEAD);
-  if (errno)
+  rc = dlist_move (list, HEAD);
+  if (rc)
   {
-    printf ("[LIST TEST] Error moving the list\n");
-    ++errors;
-    rc = -1;
+    ERROR (TEST, "dlist_move", rc);
+    return EFAILED;
   }
   i = 0x0;
-  while (!rc)
+  while (! rc)
   {
     /* Gets the current item of the list and goes to the next */
-    errno = 0;
     rc = dlist_get (list, (void **)&item, NEXT);
-    if (errno)
+    if (rc > 0x0)
     {
-      printf ("[LIST TEST] Could not get the list " \
-          "item\n");
-      ++errors;
+      ERROR (TEST, "dlist_get", rc);
+      return EFAILED;
     }
-    if (rc)
+    if (rc < 0x0)
     {
       /* EOF */
       break;
@@ -174,16 +177,16 @@ check_contents (dlist_t * list, size_t elements)
     {
       printf ("[LIST TEST] Data mismatch: i=%d, item=%d\n",
           i, *item);
-      ++errors;
+      return EFAILED;
     }
     ++i;
   }
   if (i != elements)
   {
     printf ("[LIST TEST] Number of elements mismatch\n");
-    ++errors;
+    return EFAILED;
   }
-  return errors;
+  return 0x0;
 }
 
 /*
@@ -192,39 +195,66 @@ check_contents (dlist_t * list, size_t elements)
 static int
 check_deletion (dlist_t * list, size_t elements)
 {
-  int errors;			/* Error counter */
   int deleted;			/* Number of elements deleted */
   int *item;			/* Item deleted from the list */
+  int rc;                       /* General error handling variable */
   register int i;		/* A simple iterator */
 
   /* Initializations */
-  errors = 0x0;
   deleted = 0x0;
   i = 0x0;
 
   /* Deletes the head of the list */
-  dlist_move (list, HEAD);
-  dlist_del (list, (void **)&item, CURR);
+  rc = dlist_move (list, HEAD);
+  if (rc)
+  {
+    ERROR (TEST, "dlist_move", rc);
+    return EFAILED;
+  }
+  rc = dlist_del (list, (void **)&item, CURR);
+  if (rc)
+  {
+    ERROR (TEST, "dlist_del", rc);
+    return EFAILED;
+  }
   ++deleted;
   /* Moves to somewhere in the middle of the list */
   for (i = 0; i < elements / 2; ++i)
   {
-    dlist_move (list, NEXT);
+    rc = dlist_move (list, NEXT);
+    if (rc)
+    {
+      ERROR (TEST, "dlist_move", rc);
+      return EFAILED;      
+    }
   }
   /* Deletes an item at somewhere in the middle of the list */
-  dlist_del (list, (void **)&item, NEXT);
+  rc = dlist_del (list, (void **)&item, NEXT);
+  if (rc)
+  {
+    ERROR (TEST, "dlist_del", rc);
+    return EFAILED;      
+  }
   ++deleted;
   /* Deletes the tail of the list */
-  dlist_move (list, TAIL);
-  if (dlist_del (list, (void **)NULL, CURR))
+  rc = dlist_move (list, TAIL);
+  if (rc)
   {
-    ++errors;
+    ERROR (TEST, "dlist_move", rc);
+    return EFAILED;      
+  }  
+  rc = dlist_del (list, (void **)NULL, CURR);
+  if (rc)
+  {
+    ERROR (TEST, "dlist_del", rc);
+    return EFAILED;      
   }
+  ++deleted;
   /* Check for inconsistencies */
   if (elements - deleted != descriptor_size (list))
   {
-    printf ("[LIST TEST] Number of elements mismatch for deletion\n");
-    ++errors;
+    ERROR (TEST, "Number of elements mismatch for deletion", 0);
+    return EFAILED;
   }
-  return errors;
+  return 0x0;
 }
