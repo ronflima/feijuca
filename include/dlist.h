@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.12 2004-10-13 10:51:04 ron_lima Exp $
+ $Id: dlist.h,v 1.13 2004-10-20 10:38:29 ron_lima Exp $
 */
 
 #ifndef DLIST_H
@@ -42,30 +42,30 @@ GABEGINDECLS
 /* Abstraction for a single list element */
 typedef struct dlist_element_t_
 {
-  void *                    data_;
-  struct dlist_element_t_ * next_;
-  struct dlist_element_t_ * prev_;
+  void *data_;
+  struct dlist_element_t_ *next_;
+  struct dlist_element_t_ *prev_;
 } dlist_element_t;
 
 /* Abstraction for the list descriptor */
 typedef struct dlist_t
 {
-  size_t            size_;
-  dlist_element_t * curr_;
-  dlist_element_t * head_;
-  dlist_element_t * tail_;
-  deallocator_t *   deallocator_;
+  size_t size_;
+  dlist_element_t *curr_;
+  dlist_element_t *head_;
+  dlist_element_t *tail_;
+  deallocator_t *deallocator_;
 } dlist_t;
 
 /*
  * Prototypes
  */
-int (dlist_alloc) __P((dlist_t **, deallocator_t *));
-int (dlist_free) __P((dlist_t **));
-int (dlist_get) __P((dlist_t *, void **, position_t));
-int (dlist_insert) __P((dlist_t *, const void *, position_t));
-int (dlist_move) __P((dlist_t *, position_t));
-int (dlist_del) __P((dlist_t *, void **, position_t));
+int (dlist_alloc) __P ((dlist_t **, deallocator_t *));
+int (dlist_free) __P ((dlist_t **));
+int (dlist_get) __P ((dlist_t *, void **, position_t));
+int (dlist_insert) __P ((dlist_t *, const void *, position_t));
+int (dlist_move) __P ((dlist_t *, position_t));
+int (dlist_del) __P ((dlist_t *, void **, position_t));
 
 GAENDDECLS
 

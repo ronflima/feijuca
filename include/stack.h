@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.6 2004-10-07 08:44:50 ron_lima Exp $
+ $Id: stack.h,v 1.7 2004-10-20 10:38:29 ron_lima Exp $
 */
 
 #ifndef STACK_H
@@ -44,10 +44,10 @@ typedef list_t stack_t;
 /*
  * Prototypes
  */
-int (stack_alloc) __P((stack_t **, deallocator_t *));
-int (stack_free) __P((stack_t **));
-int (stack_pop) __P((stack_t *, void **));
-int (stack_push) __P((stack_t *, const void *));
+int (stack_alloc) __P ((stack_t **, deallocator_t *));
+int (stack_free) __P ((stack_t **));
+int (stack_pop) __P ((stack_t *, void **));
+int (stack_push) __P ((stack_t *, const void *));
 
 GAENDDECLS
 

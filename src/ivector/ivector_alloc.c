@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.7 2004-10-13 10:40:55 ron_lima Exp $
+ $Id: ivector_alloc.c,v 1.8 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 
 int
 ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc,
-               size_t datalen)
+           size_t datalen)
 {
   /* Assertives for debugging purposes */
   assert (vector != NULL);
@@ -47,18 +47,18 @@ ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc,
     return EGAINVAL;
   }
   /* Allocates memory for the vector descriptor */
-  *vector = (ivector_t *) malloc (sizeof(ivector_t));
+  *vector = (ivector_t *) malloc (sizeof (ivector_t));
   assert (*vector != NULL);
   if (!*vector)
   {
     return EGANOMEM;
   }
   /* Initializes each vector descriptor field */
-  (*vector)->size_    = 0x0;
+  (*vector)->size_ = 0x0;
   (*vector)->datalen_ = datalen;
-  (*vector)->comp_    = comp;
+  (*vector)->comp_ = comp;
   (*vector)->dealloc_ = dealloc;
-  (*vector)->data_    = (void *)NULL;
+  (*vector)->data_ = (void *)NULL;
 
   return 0x0;
 }

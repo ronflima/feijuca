@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_alloc.c,v 1.8 2004-10-10 23:36:41 ron_lima Exp $
+ $Id: list_alloc.c,v 1.9 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,11 +44,11 @@ list_alloc (list_t ** list, deallocator_t * dealloc)
     return EGAINVAL;
   }
   /* Allocates memory for the list structure */
-  *list = (list_t *) malloc (sizeof(list_t));
-  assert(*list != NULL);
+  *list = (list_t *) malloc (sizeof (list_t));
+  assert (*list != NULL);
   if (!*list)
   {
-    return  EGANOMEM;
+    return EGANOMEM;
   }
   /* Initializes each data member */
   (*list)->size_ = 0x0;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.5 2004-10-07 08:44:50 ron_lima Exp $
+ $Id: queue.h,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
 */
 
 #ifndef QUEUE_H
@@ -43,10 +43,10 @@ typedef list_t queue_t;
 /*
  * Prototypes
  */
-int (queue_alloc) __P((queue_t **, deallocator_t *));
-int (queue_free) __P((queue_t **));
-int (queue_pop) __P((queue_t *, void **));
-int (queue_push) __P((queue_t *, const void *));
+int (queue_alloc) __P ((queue_t **, deallocator_t *));
+int (queue_free) __P ((queue_t **));
+int (queue_pop) __P ((queue_t *, void **));
+int (queue_push) __P ((queue_t *, const void *));
 
 GAENDDECLS
 

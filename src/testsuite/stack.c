@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.2 2004-10-05 10:29:29 ron_lima Exp $
+ $Id: stack.c,v 1.3 2004-10-20 10:38:30 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -39,7 +39,7 @@
  */
 
 int
-test_stack(void)
+test_stack (void)
 {
   stack_t *stack;		/* Descriptor for stacks */
   int rc;			/* General return code for errors */
@@ -50,11 +50,11 @@ test_stack(void)
   errors = 0x0;
 
   /* Allocates memory for the stack - use the free function as deallocator */
-  rc = stack_alloc(&stack, free);
+  rc = stack_alloc (&stack, free);
   if (rc)
   {
     ++errors;
-    printf("STACK TEST: Could not allocate the stack\n");
+    printf ("STACK TEST: Could not allocate the stack\n");
     return errors;
   }
 
@@ -63,17 +63,17 @@ test_stack(void)
   {
     int *data;			/* Data to push into the stack */
 
-    data = (int *)malloc(sizeof(int));
+    data = (int *)malloc (sizeof (int));
 
     if (data)
     {
       /* Puts some value inside the data pointer */
       *data = i;
       /* Pushes the data into the stack */
-      rc = stack_push(stack, data);
+      rc = stack_push (stack, data);
       if (rc)
       {
-	++errors;
+    ++errors;
       }
     }
   }
@@ -84,7 +84,7 @@ test_stack(void)
   {
     int *data;
     /* pops data from the stack */
-    rc = stack_pop(stack, &data);
+    rc = stack_pop (stack, &data);
     if (!rc)
     {
       ++i;
@@ -100,7 +100,7 @@ test_stack(void)
     ++errors;
   }
   /* Frees the entire stack */
-  rc = stack_free(&stack);
+  rc = stack_free (&stack);
   if (rc)
   {
     ++errors;

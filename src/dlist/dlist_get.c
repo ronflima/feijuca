@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.9 2004-10-13 00:30:23 ron_lima Exp $
+ $Id: dlist_get.c,v 1.10 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,14 +33,14 @@
 #include "dlist.h"
 
 int
-dlist_get (dlist_t * list, void ** data, position_t whence)
+dlist_get (dlist_t * list, void **data, position_t whence)
 {
   /* Assertives for debugging purposes */
   assert (list != NULL);
   assert (data != NULL);
-  
+
   /* Checks if the current pointer points to somewhere */
-  if (! list->curr_)
+  if (!list->curr_)
   {
     return EOF;
   }
@@ -54,7 +54,7 @@ dlist_get (dlist_t * list, void ** data, position_t whence)
     break;
   case NEXT:			/* Moves to the next element */
   case PREV:			/* Moves to the previous element */
-    return dlist_move(list, whence);
+    return dlist_move (list, whence);
     break;
   default:			/* Invalid parameter provided */
     return EGAINVAL;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.10 2004-10-13 00:30:23 ron_lima Exp $
+ $Id: dlist_del.c,v 1.11 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,31 +35,31 @@
  * Local prototypes
  */
 static void
-relink_list (dlist_t *, dlist_element_t *);
+  relink_list (dlist_t *, dlist_element_t *);
 
 static dlist_element_t *
-delete_head (dlist_t *);
+  delete_head (dlist_t *);
 
 static dlist_element_t *
-delete_tail (dlist_t *);
+  delete_tail (dlist_t *);
 
 static dlist_element_t *
-delete_current (dlist_t *);
+  delete_current (dlist_t *);
 
 static dlist_element_t *
-delete_next (dlist_t *);
+  delete_next (dlist_t *);
 
 static dlist_element_t *
-delete_prev (dlist_t *);
+  delete_prev (dlist_t *);
 
 /*
  * Exported functions
  */
 int
-dlist_del (dlist_t * list, void ** data, position_t whence)
+dlist_del (dlist_t * list, void **data, position_t whence)
 {
-  dlist_element_t * currelem;       /* Current element being processed */
-  void *            extracted_data; /* Data extracted from the list */
+  dlist_element_t *currelem;	/* Current element being processed */
+  void *extracted_data;		/* Data extracted from the list */
 
   /* Assertives for debugging purposes */
   assert (list != NULL);
@@ -68,10 +68,10 @@ dlist_del (dlist_t * list, void ** data, position_t whence)
   currelem = (dlist_element_t *) NULL;
   if (data)
   {
-    *data = (void *) NULL;
+    *data = (void *)NULL;
   }
   /* Sanity check: Will not delete an element if the list is empty */
-  if (! list->size_)
+  if (!list->size_)
   {
     return EOF;
   }
@@ -106,13 +106,13 @@ dlist_del (dlist_t * list, void ** data, position_t whence)
   /* The current element to be deleted was not determined. It means that the
      function have reached the end of the list or the operation was not
      possible */
-  if (! currelem)
+  if (!currelem)
   {
     return EOF;
   }
   /* Free resources and updates the list descriptor */
   extracted_data = currelem->data_;
-  free(currelem);
+  free (currelem);
   list->size_--;
   /* If data storage is provided, puts the extracted data in there */
   if (data)
@@ -135,7 +135,7 @@ static void
 relink_list (dlist_t * list, dlist_element_t * element)
 {
   /* If the element is not valid, simply return. Nothing to do */
-  if (! element)
+  if (!element)
   {
     return;
   }
@@ -164,8 +164,8 @@ relink_list (dlist_t * list, dlist_element_t * element)
 static dlist_element_t *
 delete_head (dlist_t * list)
 {
-  dlist_element_t * element;	/* Element to be popped out from the list */
-  
+  dlist_element_t *element;	/* Element to be popped out from the list */
+
   element = list->head_;
   relink_list (list, element);
   return element;
@@ -175,7 +175,7 @@ delete_head (dlist_t * list)
 static dlist_element_t *
 delete_tail (dlist_t * list)
 {
-  dlist_element_t * element;	/* Element to be popped out from the list */
+  dlist_element_t *element;	/* Element to be popped out from the list */
   element = list->tail_;
   relink_list (list, element);
   return element;
@@ -186,7 +186,7 @@ delete_tail (dlist_t * list)
 static dlist_element_t *
 delete_current (dlist_t * list)
 {
-  dlist_element_t * element;	/* Element deleted from the list */
+  dlist_element_t *element;	/* Element deleted from the list */
   element = list->curr_;
   relink_list (list, element);
   list->curr_ = (dlist_element_t *) NULL;
@@ -198,10 +198,9 @@ delete_current (dlist_t * list)
 static dlist_element_t *
 delete_next (dlist_t * list)
 {
-  dlist_element_t * element; /* Element to be popped from the list */
-  /* curr_ pointer will be dereferenced later. This check avoids
-   * coredumps :) */
-  if (! list->curr_)
+  dlist_element_t *element;	/* Element to be popped from the list */
+  /* curr_ pointer will be dereferenced later. This check avoids coredumps :) */
+  if (!list->curr_)
   {
     return (dlist_element_t *) NULL;
   }
@@ -217,9 +216,8 @@ delete_next (dlist_t * list)
 static dlist_element_t *
 delete_prev (dlist_t * list)
 {
-  dlist_element_t * element; /* Element to be popped from the list */
-  /* curr_ pointer will be dereferenced later. This check avoids
-   * coredumps :) */
+  dlist_element_t *element;	/* Element to be popped from the list */
+  /* curr_ pointer will be dereferenced later. This check avoids coredumps :) */
   if (!list->curr_)
   {
     return (dlist_element_t *) NULL;

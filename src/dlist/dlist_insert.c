@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.10 2004-10-13 00:30:23 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.11 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,16 +34,16 @@
  * Local prototypes
  */
 static int
-relink_list (dlist_t *, dlist_element_t *, position_t);
+  relink_list (dlist_t *, dlist_element_t *, position_t);
 
 /*
  * Exported functions
  */
 int
-dlist_insert (dlist_t * list, const void * data, position_t whence)
+dlist_insert (dlist_t * list, const void *data, position_t whence)
 {
-  dlist_element_t * element; /* New element to be inserted */
-  
+  dlist_element_t *element;	/* New element to be inserted */
+
   /* Assertives for debugging purposes */
   assert (list != NULL);
   assert (data != NULL);
@@ -59,7 +59,7 @@ dlist_insert (dlist_t * list, const void * data, position_t whence)
   element->data_ = (void *)data;
   element->next_ = (dlist_element_t *) NULL;
   element->prev_ = (dlist_element_t *) NULL;
-  
+
   /* Check the size of the list */
   if (!list->size_)
   {
@@ -69,10 +69,10 @@ dlist_insert (dlist_t * list, const void * data, position_t whence)
   }
   else
   {
-    int rc; /* General error handling variable */
-    
+    int rc;			/* General error handling variable */
+
     /* Relinks the list based on whence parameter */
-    rc = relink_list (list, element, whence); 
+    rc = relink_list (list, element, whence);
     if (rc)
     {
       free (element);
@@ -95,26 +95,28 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
 {
   switch (whence)
   {
-    case NEXT: /* Inserts the new element after the current pointer */
+    case NEXT:			/* Inserts the new element after the current
+    			   pointer */
     assert (list->curr_ != NULL);
     if (list->curr_)
     {
-      element->next_     = list->curr_->next_;
-      element->prev_     = list->curr_;
+      element->next_ = list->curr_->next_;
+      element->prev_ = list->curr_;
       list->curr_->next_ = element;
-      list->tail_        = element;
+      list->tail_ = element;
     }
     else
     {
       return EGABADC;
     }
     break;
-  case PREV: /* Inserts the new element before the current pointer */
-    assert(list->curr_ != NULL);
+  case PREV:			/* Inserts the new element before the current
+    			   pointer */
+    assert (list->curr_ != NULL);
     if (list->curr_)
     {
-      element->next_     = list->curr_;
-      element->prev_     = list->curr_->prev_;
+      element->next_ = list->curr_;
+      element->prev_ = list->curr_->prev_;
       list->curr_->prev_ = element;
     }
     else
@@ -122,15 +124,17 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
       return EGABADC;
     }
     break;
-  case HEAD: /* Inserts the new element in the head of the list */
-    element->next_     = list->head_->next_;
+  case HEAD:			/* Inserts the new element in the head of the
+    			   list */
+    element->next_ = list->head_->next_;
     list->head_->prev_ = element;
-    list->head_        = element;
+    list->head_ = element;
     break;
-  case TAIL: /* Inserts the new element in the tail of the list */
-    element->prev_     = list->tail_;
+  case TAIL:			/* Inserts the new element in the tail of the
+    			   list */
+    element->prev_ = list->tail_;
     list->tail_->next_ = element;
-    list->tail_        = element;
+    list->tail_ = element;
     break;
   default:			/* Invalid parameter provided */
     return EGAINVAL;

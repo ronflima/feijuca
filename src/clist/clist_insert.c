@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_insert.c,v 1.6 2004-10-13 10:23:44 ron_lima Exp $
+ $Id: clist_insert.c,v 1.7 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,23 +32,23 @@
 #include "clist.h"
 
 int
-clist_insert (clist_t * clist, const void * data)
+clist_insert (clist_t * clist, const void *data)
 {
-  clist_element_t * element;
+  clist_element_t *element;
 
   /* Assertives for debugging purposes */
   assert (clist != NULL);
   /* Allocates memory for the new element */
-  element = (clist_element_t *) malloc (sizeof(clist_element_t));
+  element = (clist_element_t *) malloc (sizeof (clist_element_t));
   assert (element != NULL);
-  if (! element)
+  if (!element)
   {
     return EGANOMEM;
   }
-  element->data_ = (void *) data;
+  element->data_ = (void *)data;
   element->next_ = (clist_element_t *) NULL;
   /* Check the size of the list */
-  if (! clist->size_)
+  if (!clist->size_)
   {
     /* This is the head of the list */
     clist->head_ = element;
@@ -58,12 +58,12 @@ clist_insert (clist_t * clist, const void * data)
   {
     /* Insert at the end */
     clist->tail_->next_ = element;
-    clist->tail_        = element;
+    clist->tail_ = element;
   }
   /* Makes the circular link in the list */
   clist->tail_->next_ = clist->head_;
-  clist->curr_        = element;
+  clist->curr_ = element;
   clist->size_++;
-  
+
   return 0x0;
 }

@@ -24,9 +24,9 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.3 2004-09-12 23:30:47 ron_lima Exp $
+ $Id: gatests.h,v 1.4 2004-10-20 10:40:00 ron_lima Exp $
 */
- 
+
 #ifndef GATESTS_H
 #define GATESTS_H
 /*
@@ -41,12 +41,13 @@
 /*
  * Datatypes
  */
-typedef int (test_proc_t)(void);
-typedef struct 
+typedef int (test_proc_t) (void);
+typedef struct
 {
-    char        * test_name;
-    test_proc_t * test_routine;
+  char *test_name;
+  test_proc_t *test_routine;
 } test_t;
+
 /*
  * External storage
  */
@@ -55,10 +56,10 @@ typedef struct
  * Prototypes
  */
 extern int
-(test_list) (void);
+  (test_list) (void);
 extern int
-(test_dlist)(void);
+  (test_dlist) (void);
 extern int
-(test_stack)(void);
+  (test_stack) (void);
 
-#endif /* GATESTS_H */
+#endif				/* GATESTS_H */

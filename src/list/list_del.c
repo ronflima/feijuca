@@ -1,28 +1,28 @@
 /*
  -*-c-*- Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
- 
+
  Feel free to contact the author in <ronaldo@ronaldolima.eti.br>
- 
+
  This file is part of G.A. Lib.
- 
+
  G.A. Lib is free software; you can redistribute it and/or modify it
  under the terms of the GNU General Public License as published by
  the Free Software Foundation; either version 2 of the License, or
  (at your option) any later version.
- 
+
  G.A. Lib is distributed in the hope that it will be useful, but
  WITHOUT ANY WARRANTY; without even the implied warranty of
  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
  General Public License for more details.
- 
+
  You should have received a copy of the GNU General Public License
  along with G.A. Lib; if not, write to the Free Software Foundation,
  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- 
+
   System: G.A. Lib
- 
+
   Description: Deletes the next element pointed by element
- 
+
  CVS Information $Author: ron_lima $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
  ron_lima Exp $
  */
@@ -34,8 +34,8 @@
 int
 list_del (list_t * list, void **data)
 {
-  list_element_t * currelem;       /* Current element being processed */
-  void *           extracted_data; /* Data extracted from the list */
+  list_element_t *currelem;	/* Current element being processed */
+  void *extracted_data;		/* Data extracted from the list */
 
   /* Assertives for debugging purposes */
   assert (list != NULL);
@@ -43,7 +43,7 @@ list_del (list_t * list, void **data)
   /* Initializations */
   if (data)
   {
-    *data = (void *) NULL;
+    *data = (void *)NULL;
   }
   /* Sanity check: Will not delete an element if the list is empty */
   if (!list->size_)
@@ -61,17 +61,17 @@ list_del (list_t * list, void **data)
   if (list->curr_ == list->head_ || !list->curr_)
   {
     /* Deletes from the head of the list */
-    currelem       = list->head_;
+    currelem = list->head_;
     extracted_data = list->head_->data_;
-    list->head_    = currelem->next_;
+    list->head_ = currelem->next_;
   }
   else
   {
     /* Delete the next item, if the curr_ points to somewhere */
     if (list->curr_->next_)
     {
-      currelem           = list->curr_->next_;
-      extracted_data     = currelem->data_;
+      currelem = list->curr_->next_;
+      extracted_data = currelem->data_;
       list->curr_->next_ = currelem->next_;
     }
     else
@@ -83,10 +83,10 @@ list_del (list_t * list, void **data)
   /* Adjusts the tail of the list */
   if (currelem == list->tail_ && list->curr_)
   {
-    /* We are about to delete the tail. At this point, if the curr_
-     * points to somewhere, it will be the new tail. If curr_ points
-     * to nowhere, we are deleting hte head and the tail will be
-     * adjusted later only if the list get empty. */
+    /* We are about to delete the tail. At this point, if the curr_ points to
+       somewhere, it will be the new tail. If curr_ points to nowhere, we are
+       deleting hte head and the tail will be adjusted later only if the list
+       get empty. */
     list->tail_ = list->curr_;
   }
   /* Free resources and updates the list descriptor */

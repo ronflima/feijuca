@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.9 2004-10-10 23:36:41 ron_lima Exp $
+ $Id: list_get.c,v 1.10 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -52,7 +52,7 @@ list_get (list_t * list, void **data, position_t whence)
     break;
   case NEXT:
     /* Moves to the next element of the list */
-    return list_move(list, whence);
+    return list_move (list, whence);
     break;
   default:
     /* Wrong navigation mode provided */

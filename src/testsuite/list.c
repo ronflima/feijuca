@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.5 2004-10-05 10:29:29 ron_lima Exp $
+ $Id: list.c,v 1.6 2004-10-20 10:38:30 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -38,14 +38,14 @@
  * Local prototypes
  */
 static int
-  load_list(list_t * list, size_t elements);
+  load_list (list_t * list, size_t elements);
 static int
-  check_contents(list_t * list, size_t elements);
+  check_contents (list_t * list, size_t elements);
 static int
-  check_deletion(list_t * list, size_t elements);
+  check_deletion (list_t * list, size_t elements);
 
 int
-test_list(void)
+test_list (void)
 {
   list_t *list;			/* List descriptor */
   int *item;			/* Item to load into the list */
@@ -58,30 +58,30 @@ test_list(void)
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
   errno = 0;
-  rc = list_alloc(&list, free);
+  rc = list_alloc (&list, free);
   if (errno)
   {
-    printf("[LIST TEST] Error allocating list\n");
+    printf ("[LIST TEST] Error allocating list\n");
     ++errors;
     list = (list_t *) NULL;
   }
   if (!rc)
   {
     /* Performs the load test */
-    errors += load_list(list, MAX_ELEMENTS);
+    errors += load_list (list, MAX_ELEMENTS);
     /* Performs the navigation test */
-    errors += check_contents(list, MAX_ELEMENTS);
+    errors += check_contents (list, MAX_ELEMENTS);
     /* Performs the deletion test */
-    errors += check_deletion(list, MAX_ELEMENTS);
+    errors += check_deletion (list, MAX_ELEMENTS);
   }
   /* Frees the list only if it was already allocated */
   if (list)
   {
     errno = 0;
-    rc = list_free(&list);
+    rc = list_free (&list);
     if (errno)
     {
-      printf("[LIST TEST] Could not free the list\n");
+      printf ("[LIST TEST] Could not free the list\n");
       ++errors;
     }
   }
@@ -92,7 +92,7 @@ test_list(void)
  * Loads data into the list
  */
 static int
-load_list(list_t * list, size_t elements)
+load_list (list_t * list, size_t elements)
 {
   int errors;			/* Errors counter */
   register int i;		/* General purpose iterator */
@@ -106,11 +106,11 @@ load_list(list_t * list, size_t elements)
     int *item;			/* Item to insert */
 
     /* Allocates memory for a single item */
-    item = (int *)malloc(sizeof(int));
+    item = (int *)malloc (sizeof (int));
     if (!item)
     {
-      printf("[LIST TEST] Could not allocate memory" \
-	     " for an item\n");
+      printf ("[LIST TEST] Could not allocate memory" \
+          " for an item\n");
       ++errors;
       break;
     }
@@ -118,11 +118,11 @@ load_list(list_t * list, size_t elements)
     *item = i + 1;
     /* Inserts the item in the list */
     errno = 0;
-    list_insert(list, item);
+    list_insert (list, item);
     if (errno)
     {
-      printf("[LIST TEST] Error inserting into " \
-	     "the list\n");
+      printf ("[LIST TEST] Error inserting into " \
+          "the list\n");
       ++errors;
     }
   }
@@ -133,7 +133,7 @@ load_list(list_t * list, size_t elements)
  * Check lists contents
  */
 static int
-check_contents(list_t * list, size_t elements)
+check_contents (list_t * list, size_t elements)
 {
   int errors;			/* Error counter */
   int *item;			/* Item to grab from the list */
@@ -146,10 +146,10 @@ check_contents(list_t * list, size_t elements)
 
   /* Gets the data from the list, iterating it and checking the contents */
   errno = 0;
-  list_move(list, HEAD);
+  list_move (list, HEAD);
   if (errno)
   {
-    printf("[LIST TEST] Error moving the list\n");
+    printf ("[LIST TEST] Error moving the list\n");
     ++errors;
     rc = -1;
   }
@@ -158,11 +158,11 @@ check_contents(list_t * list, size_t elements)
   {
     /* Gets the current item of the list and goes to the next */
     errno = 0;
-    rc = list_get(list, (void **)&item, NEXT);
+    rc = list_get (list, (void **)&item, NEXT);
     if (errno)
     {
-      printf("[LIST TEST] Could not get the list " \
-	     "item\n");
+      printf ("[LIST TEST] Could not get the list " \
+          "item\n");
       ++errors;
     }
     if (rc)
@@ -172,15 +172,15 @@ check_contents(list_t * list, size_t elements)
     }
     if (*item != (i + 1))
     {
-      printf("[LIST TEST] Data mismatch: i=%d, item=%d\n",
-	     i, *item);
+      printf ("[LIST TEST] Data mismatch: i=%d, item=%d\n",
+          i, *item);
       ++errors;
     }
     ++i;
   }
   if (i != elements)
   {
-    printf("[LIST TEST] Number of elements mismatch\n");
+    printf ("[LIST TEST] Number of elements mismatch\n");
     ++errors;
   }
   return errors;
@@ -190,7 +190,7 @@ check_contents(list_t * list, size_t elements)
  * Checks the deletion of items of the list
  */
 static int
-check_deletion(list_t * list, size_t elements)
+check_deletion (list_t * list, size_t elements)
 {
   int errors;			/* Error counter */
   int deleted;			/* Number of elements deleted */
@@ -203,32 +203,32 @@ check_deletion(list_t * list, size_t elements)
   i = 0x0;
 
   /* Deletes the head of the list */
-  list_move(list, HEAD);
-  list_del(list, (void **)&item);
-  free(item);
+  list_move (list, HEAD);
+  list_del (list, (void **)&item);
+  free (item);
   ++deleted;
   /* Moves to somewhere in the middle of the list */
   for (i = 0; i < elements / 2; ++i)
   {
-    list_move(list, NEXT);
+    list_move (list, NEXT);
   }
   /* Deletes an item at somewhere in the middle of the list */
-  list_del(list, (void **)&item);
-  free(item);
+  list_del (list, (void **)&item);
+  free (item);
   ++deleted;
   /* Deletes the tail of the list */
-  list_move(list, TAIL);
-  if (!list_del(list, (void **)NULL))
+  list_move (list, TAIL);
+  if (!list_del (list, (void **)NULL))
   {
     /* The tail was deleted. This is a serious bug, since it is not possible
        to delete the tail of a single linked list */
     ++errors;
-    printf("[LIST TEST] The tail was deleted. It is a serious bug\n");
+    printf ("[LIST TEST] The tail was deleted. It is a serious bug\n");
   }
   /* Check for inconsistencies */
-  if (elements - deleted != descriptor_size(list))
+  if (elements - deleted != descriptor_size (list))
   {
-    printf("[LIST TEST] Number of elements mismatch for deletion\n");
+    printf ("[LIST TEST] Number of elements mismatch for deletion\n");
     ++errors;
   }
   return errors;

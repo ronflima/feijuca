@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_push.c,v 1.5 2004-10-13 10:28:58 ron_lima Exp $
+ $Id: queue_push.c,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 int
-queue_push (queue_t * queue, const void * data)
+queue_push (queue_t * queue, const void *data)
 {
   /* Assertives for debugging purposes */
   assert (queue != NULL);
