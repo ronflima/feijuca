@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: dlist.texi,v 1.1 2004-03-04 10:46:42 ron_lima Exp $
+@c $Id: dlist.texi,v 1.2 2004-03-28 22:51:39 ron_lima Exp $
 @c %**start of header
 @setfilename dlist.info
 @settitle    Double linked lists
@@ -32,7 +32,7 @@ Revision: @value{VERSION}
 @c ** The top node
 @ifnottex
 @node Top
-@top Template
+@top DList
 @end ifnottex
 
 @c ** Main Menu
@@ -46,7 +46,7 @@ Revision: @value{VERSION}
 @end menu
 
 @node algorithm, constants, Top, Top
-@chapter Single linked lists in G.A. Library
+@chapter Double linked lists in G.A. Library
 G.A. Library implements double linked lists through the header file
 <dlist.h>. The list descriptor contains always the first and the last
 elements for fast access in the list. Navigation in the list is
