@@ -23,8 +23,8 @@
  Description: Allocates and initializes a stack
 
  CVS Information
- $Author: daniel_csoares $
- $Id: stack_alloc.c,v 1.5 2004-10-07 19:47:43 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: stack_alloc.c,v 1.6 2004-10-13 10:27:03 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,10 +33,10 @@
 #include "list.h"
 
 int
-stack_alloc(stack_t ** stack, deallocator_t * dealloc)
+stack_alloc (stack_t ** stack, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
-  assert(stack != NULL);
-  assert(dealloc != NULL);
-  return list_alloc((list_t **) stack, dealloc);
+  assert (stack != NULL);
+  assert (dealloc != NULL);
+  return list_alloc ((list_t **) stack, dealloc);
 }

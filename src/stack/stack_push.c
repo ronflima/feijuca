@@ -23,8 +23,8 @@
  Description: Pushes a new element into the stack
 
  CVS Information
- $Author: daniel_csoares $
- $Id: stack_push.c,v 1.4 2004-10-07 19:47:48 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: stack_push.c,v 1.5 2004-10-13 10:27:03 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,9 +33,9 @@
 #include "list.h"
 
 int
-stack_push(stack_t * stack, const void *data)
+stack_push (stack_t * stack, const void * data)
 {
   /* Assertives for debugging purposes */
-  assert(stack != NULL);
-  return list_insert((list_t *) stack, data);
+  assert (stack != NULL);
+  return list_insert ((list_t *) stack, data);
 }

@@ -23,8 +23,8 @@
  Description: Pops an element from the stack
 
  CVS Information
- $Author: daniel_csoares $
- $Id: stack_pop.c,v 1.4 2004-10-07 19:47:48 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: stack_pop.c,v 1.5 2004-10-13 10:27:03 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,16 +33,17 @@
 #include "list.h"
 
 int
-stack_pop(stack_t * stack, void **data)
+stack_pop (stack_t * stack, void ** data)
 {
-  int rc = 0x0;
-  
+  int rc; /* General purpose error handling variable */
+
   /* Assertives for debugging purposes */
-  assert(stack != NULL);
-  rc = list_move((list_t *) stack, HEAD);
+  assert (stack != NULL);
+  rc = list_move ((list_t *) stack, HEAD);
   /* Check if there was an error */
-  if (rc) {
+  if (rc)
+  {
     return rc;
   }
-  return list_del((list_t *) stack, data);
+  return list_del ((list_t *) stack, data);
 }
