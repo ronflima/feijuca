@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.1 2004-02-29 22:25:42 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.2 2004-03-01 00:05:16 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdlib.h>
@@ -43,9 +43,6 @@ int
 dlist_insert (DLIST * list, const void *data, int whence)
 {
   DLIST_ELEMENT * element;      /* New element to be inserted */
-  int rc;                       /* Used for named insertions */
-  /* Initializations */
-  rc = 0;
   /* Allocates memory for the new element */
   element = (DLIST_ELEMENT *) malloc (sizeof( DLIST_ELEMENT ));
   if (! element)
