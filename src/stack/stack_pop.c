@@ -24,16 +24,19 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_pop.c,v 1.1 2004-04-30 09:53:57 ron_lima Exp $
+ $Id: stack_pop.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <assert.h>
 #include "stack.h"
 #include "list.h"
 
 int
 stack_pop (stack_t * stack, void **data)
 {
+    /* Assertives for debugging purposes */
+    assert (stack != NULL);
     return list_del ((list_t *) stack, data);
 }

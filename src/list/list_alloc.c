@@ -24,16 +24,21 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_alloc.c,v 1.5 2004-06-09 00:55:20 ron_lima Exp $
+ $Id: list_alloc.c,v 1.6 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "list.h"
 
 int
 list_alloc (list_t ** list, deallocator_t * dealloc)
 {
+    /* Assertives for debugging purposes */
+    assert (list    != NULL);
+    assert (dealloc != NULL);
+
     /* The deallocator must be always provided */
     if(! dealloc)
         {
@@ -42,6 +47,7 @@ list_alloc (list_t ** list, deallocator_t * dealloc)
         }
     /* Allocates memory for the list structure */
     *list = (list_t *) malloc (sizeof (list_t));
+    assert (*list != NULL);
     if(! *list)
         {
             errno = ENOMEM;

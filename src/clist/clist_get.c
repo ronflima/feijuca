@@ -25,14 +25,17 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_get.c,v 1.1 2004-06-27 00:20:25 ron_lima Exp $
+ $Id: clist_get.c,v 1.2 2004-07-17 00:11:22 ron_lima Exp $
 */
+#include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 int 
 clist_get (clist_t * clist, void **data, position_t whence)
 {
+    /* Assertives for debugging purposes */
+    assert (clist != NULL);
     /* Just calls the list getter function */
     return list_get ((list_t *) clist, data, whence);
 }

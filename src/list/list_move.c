@@ -25,15 +25,20 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.8 2004-05-25 11:08:53 ron_lima Exp $
+ $Id: list_move.c,v 1.9 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
+#include <assert.h>
 #include "list.h"
 
 int
 list_move (list_t * list, position_t whence)
 {
+    /* Small assertives for debugging purposes */
+    assert (list != NULL);
+
+    /* Decides how to navigate the list */
     switch (whence)
         {
         case HEAD:

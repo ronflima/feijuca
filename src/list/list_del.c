@@ -24,11 +24,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_del.c,v 1.5 2004-04-11 12:16:01 ron_lima Exp $
+ $Id: list_del.c,v 1.6 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <assert.h>
 #include "list.h"
 
 int
@@ -36,6 +37,9 @@ list_del (list_t * list, void **data)
 {
     list_element_t * currelem; /* Current element being processed */
     void * extracted_data;   /* Data extracted from the list */
+
+    /* Assertives for debugging purposes */
+    assert (list != NULL);
 
     /* Initializations */
     if (data)

@@ -25,14 +25,18 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_free.c,v 1.1 2004-06-27 00:20:25 ron_lima Exp $
+ $Id: clist_free.c,v 1.2 2004-07-17 00:11:22 ron_lima Exp $
 */
+#include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 int
 clist_free (clist_t ** clist)
 {
+    /* Assertives for debugging purposes */
+    assert (clist != NULL);
+    assert (*clist != NULL);
     /* Just calls the list free function */
     return list_free ((list_t **) clist);
 }

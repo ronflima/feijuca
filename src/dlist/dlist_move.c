@@ -25,15 +25,19 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.8 2004-05-25 11:08:53 ron_lima Exp $
+ $Id: dlist_move.c,v 1.9 2004-07-17 00:11:22 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
+#include <assert.h>
 #include "dlist.h"
 
 int
 dlist_move (dlist_t * list, position_t whence)
 {
+    /* Assertives for debugging purposes */
+    assert (list != NULL);
+    /* Decides how to navigate in the list */
     switch (whence)
         {
         case HEAD:                  /* Moves to the head of the list */

@@ -24,16 +24,21 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_qsort.c,v 1.1 2004-04-04 11:13:54 ron_lima Exp $
+ $Id: ivector_qsort.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "ivector.h"
 
 int
 ivector_qsort (ivector_t * vector)
 {
+    /* Assertives for debugging purposes */
+    assert (vector != NULL);
+
+    /* Checks if the compare function was set */
     if (!vector->comp_)
         {
             errno = EINVAL;

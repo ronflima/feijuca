@@ -24,16 +24,19 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_get.c,v 1.1 2004-04-04 11:13:54 ron_lima Exp $
+ $Id: ivector_get.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "ivector.h"
 
 void *
 ivector_get (ivector_t * vector, size_t idx)
 {
+    /* Assertives for debugging purposes */
+    assert (vector != NULL);
     /* Sanity tests */
     if ((idx < 0) || (idx >= vector->size_))
         {

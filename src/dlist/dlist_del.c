@@ -24,11 +24,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.7 2004-05-25 11:08:53 ron_lima Exp $
+ $Id: dlist_del.c,v 1.8 2004-07-17 00:11:22 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <assert.h>
 #include "dlist.h"
 
 /*
@@ -60,6 +61,10 @@ dlist_del (dlist_t * list, void **data, position_t whence)
 {
     dlist_element_t * currelem; /* Current element being processed */
     void * extracted_data;   /* Data extracted from the list */
+
+    /* Assertives for debugging purposes */
+    assert (list != NULL);
+
     /* Initializations */
     currelem = (dlist_element_t *) NULL;
     if (data)

@@ -24,20 +24,29 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_put.c,v 1.2 2004-04-11 12:16:01 ron_lima Exp $
+ $Id: ivector_put.c,v 1.3 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "ivector.h"
 
 int
 ivector_put (ivector_t * vector, size_t idx, const void * data)
 {
     void * i;                   /* Indexer for the vector */
+    /* Assertives for debugging purposes */
+    assert (vector != NULL);
+    assert (data   != NULL);
     /* Sanity tests */
     if (idx >= vector->size_)
+        {
+            errno = EINVAL;
+            return -1;
+        }
+    if (! data) 
         {
             errno = EINVAL;
             return -1;

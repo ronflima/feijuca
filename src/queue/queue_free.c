@@ -25,15 +25,19 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_free.c,v 1.1 2004-05-03 00:25:07 ron_lima Exp $
+ $Id: queue_free.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "queue.h"
 #include "list.h"
 
 int
 queue_free (queue_t ** queue)
 {
+    /* Assertives for debugging purposes */
+    assert (queue  != NULL);
+    assert (*queue != NULL);
     return list_free ((list_t **) queue);
 }

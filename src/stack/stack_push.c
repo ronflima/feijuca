@@ -24,16 +24,19 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_push.c,v 1.1 2004-04-30 09:53:57 ron_lima Exp $
+ $Id: stack_push.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "stack.h"
 #include "list.h"
 
 int 
 stack_push (stack_t * stack, const void *data)
 {
+    /* Assertives for debugging purposes */
+    assert (stack != NULL);
     return list_insert ((list_t *) stack, data);
 }

@@ -24,17 +24,23 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.3 2004-06-09 00:55:20 ron_lima Exp $
+ $Id: ivector_alloc.c,v 1.4 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "ivector.h"
 
 int
 ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc, 
                size_t datalen)
 {
+    /* Assertives for debugging purposes */
+    assert (vector  != NULL);
+    assert (comp    != NULL);
+    assert (dealloc != NULL);
+    assert (datalen != 0   );
     /* Sanity tests */
     if (! datalen)
         {
@@ -43,6 +49,7 @@ ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc,
         }
     /* Allocates memory for the vector descriptor */
     *vector = (ivector_t *) malloc (sizeof (ivector_t));
+    assert (*vector != NULL);
     if (! *vector)
         {
             errno = ENOMEM;

@@ -24,11 +24,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.7 2004-05-25 11:08:53 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.8 2004-07-17 00:11:22 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <assert.h>
 #include "dlist.h"
 /*
  * Local prototypes
@@ -43,8 +44,13 @@ int
 dlist_insert (dlist_t * list, const void *data, position_t whence)
 {
     dlist_element_t * element;      /* New element to be inserted */
+    /* Assertives for debugging purposes */
+    assert (list != NULL);
+    assert (data != NULL);
+
     /* Allocates memory for the new element */
     element = (dlist_element_t *) malloc (sizeof( dlist_element_t ));
+    assert (element != NULL);
     if (! element)
         {
             errno = ENOMEM;
@@ -87,6 +93,7 @@ relink_list (dlist_t *list, dlist_element_t *element, position_t whence)
         {
         case NEXT:                  /* Inserts the new element after the
                                        current pointer */
+            assert (list->curr_ != NULL);
             if (list->curr_)
                 {
                     element->next_ = list->curr_->next_;
@@ -102,6 +109,7 @@ relink_list (dlist_t *list, dlist_element_t *element, position_t whence)
             break;
         case PREV:                  /* Inserts the new element before the
                                        current pointer */
+            assert (list->curr_ != NULL);
             if (list->curr_)
                 {
                     element->next_ = list->curr_;

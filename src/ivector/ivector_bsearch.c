@@ -24,11 +24,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.2 2004-04-11 12:16:01 ron_lima Exp $
+ $Id: ivector_bsearch.c,v 1.3 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "ivector.h"
 
 void *
@@ -36,10 +37,13 @@ ivector_bsearch (ivector_t * vector, const void * data)
 {
     void * found;               /* Data found by the bsearch */
 
+    /* Assertives for debugging purposes */
+    assert (vector != NULL);
+    assert (data   != NULL);
     /* Initializations */
     found = (void *) NULL;
     /* Sanity tests */
-    if (! vector->comp_)
+    if ((! vector->comp_) || (! data))
         {
             errno = EINVAL;
             return (void *) NULL;

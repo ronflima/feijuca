@@ -25,12 +25,13 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.2 2004-04-11 12:16:01 ron_lima Exp $
+ $Id: ivector_del.c,v 1.3 2004-07-17 00:11:23 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "ivector.h"
 
 int
@@ -40,6 +41,9 @@ ivector_del (ivector_t * vector, size_t idx)
     void * orig;                /* Origin address */
     void * newplace;            /* New reallocated place for vector->data_ */
     size_t newsize;             /* New size of the vector in bytes */
+
+    /* Assertives for debugging purposes */
+    assert (vector != NULL);
 
     /* Sanity tests */
     if ((idx < 0) || (idx > vector->size_))
@@ -72,7 +76,9 @@ ivector_del (ivector_t * vector, size_t idx)
     newplace = realloc (vector->data_, newsize);
     /* Updates the vector descriptor accordingly */
     if (newplace != vector->data_ && newplace)
-        vector->data_ = newplace;
+        {
+            vector->data_ = newplace;
+        }
     vector->size_--;
     return 0x0;
 }

@@ -24,11 +24,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_insert.c,v 1.3 2004-06-27 00:20:25 ron_lima Exp $
+ $Id: clist_insert.c,v 1.4 2004-07-17 00:11:22 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <assert.h>
 #include "clist.h"
 
 int 
@@ -36,8 +37,11 @@ clist_insert (clist_t * clist, const void *data)
 {
     clist_element_t * element;
 
+    /* Assertives for debugging purposes */
+    assert (clist != NULL);
     /* Allocates memory for the new element */
     element = (clist_element_t *) malloc (sizeof (clist_element_t));
+    assert (element != NULL);
     if (! element)
         {
             errno = ENOMEM;

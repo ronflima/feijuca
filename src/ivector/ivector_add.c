@@ -24,19 +24,23 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.3 2004-04-11 12:16:01 ron_lima Exp $
+ $Id: ivector_add.c,v 1.4 2004-07-17 00:11:22 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 #include "ivector.h"
 
 int 
 ivector_add (ivector_t * vector, const void * data)
 {
     void * v;                   /* New redimensioned vector */
+
+    assert (vector != NULL);
     v = realloc (vector->data_, vector->datalen_ * (vector->size_ + 1));
+    assert (v != NULL);
     if (!v)
         {
             errno = ENOMEM;
