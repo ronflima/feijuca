@@ -1,5 +1,6 @@
-/*
- -*-c-*- Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
+/* -*-c-*-
+
+ Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
 
  Feel free to contact the author in <ronaldo@ronaldolima.eti.br>
 
@@ -34,16 +35,19 @@
 int
 list_del (list_t * list, void **data)
 {
-  list_element_t *currelem;	/* Current element being processed */
-  void *extracted_data;		/* Data extracted from the list */
+  list_element_t * currelem;	/* Current element being processed */
+  void * extracted_data;        /* Data extracted from the list */
 
+  /* Initializations  */
+  currelem = (list_element_t *) NULL;
+  
   /* Assertives for debugging purposes */
   assert (list != NULL);
 
   /* Initializations */
   if (data)
   {
-    *data = (void *)NULL;
+    *data = (void *) NULL;
   }
   /* Sanity check: Will not delete an element if the list is empty */
   if (!list->size_)
@@ -52,13 +56,13 @@ list_del (list_t * list, void **data)
   }
   /* Sanity check: check if the data storage and the deallocator were
      provided. If not, there is a problem in the list initialization */
-  if (!data && !list->deallocator_)
+  if (! data && ! list->deallocator_)
   {
     return EGAINVAL;
   }
   /* Check if the current element points to the head of the list or if the
      curr_ points to nowhere */
-  if (list->curr_ == list->head_ || !list->curr_)
+  if (list->curr_ == list->head_ || ! list->curr_)
   {
     /* Deletes from the head of the list */
     currelem = list->head_;
@@ -85,7 +89,7 @@ list_del (list_t * list, void **data)
   {
     /* We are about to delete the tail. At this point, if the curr_ points to
        somewhere, it will be the new tail. If curr_ points to nowhere, we are
-       deleting hte head and the tail will be adjusted later only if the list
+       deleting the head and the tail will be adjusted later only if the list
        get empty. */
     list->tail_ = list->curr_;
   }
