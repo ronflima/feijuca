@@ -20,12 +20,11 @@
 
  System: G.A. Lib
 
- Description: Finishes the stack. This routine will delete the stack
- from the memory
+ Description: Allocates and initializes a stack
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_free.c,v 1.5 2005-01-28 00:11:45 ron_lima Exp $
+ $Id: stack_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,13 +33,13 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_free.c,v 1.5 2005-01-28 00:11:45 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-stack_free (stack_t ** stack)
+stack_init (stack_t * stack, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
   assert (stack != NULL);
-  assert (*stack != NULL);
-  return list_free ((list_t **) stack);
+  assert (dealloc != NULL);
+  return list_init ((list_t *) stack, dealloc);
 }

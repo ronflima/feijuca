@@ -20,48 +20,37 @@
 
  System: G.A. Lib
 
- Description: Allocates and initializes the infinite vector
+ Description: Allocates and initializes the list
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.11 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: list_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "ivector.h"
+#include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_alloc.c,v 1.11 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc,
-               size_t datalen)
+list_init (list_t * list, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
-  assert (vector != NULL);
-  assert (comp != NULL);
-  assert (datalen != 0);
+  assert (list != NULL);
+  assert (dealloc != NULL);
 
-  /* Sanity tests */
-  if (!datalen)
+  /* The deallocator must be always provided */
+  if (!dealloc)
     {
       return EGAINVAL;
     }
-  /* Allocates memory for the vector descriptor */
-  *vector = (ivector_t *) malloc (sizeof (ivector_t));
-  assert (*vector != NULL);
-  if (!*vector)
-    {
-      return EGANOMEM;
-    }
-  /* Initializes each vector descriptor field */
-  (*vector)->size_ = 0x0;
-  (*vector)->datalen_ = datalen;
-  (*vector)->comp_ = comp;
-  (*vector)->dealloc_ = dealloc;
-  (*vector)->data_ = (void *) NULL;
-
+  /* Initializes each data member */
+  list->size_ = 0x0;
+  list->head_ = (list_element_t *) NULL;
+  list->tail_ = (list_element_t *) NULL;
+  list->curr_ = (list_element_t *) NULL;
+  list->deallocator_ = dealloc;
   return 0x0;
 }

@@ -3,11 +3,11 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.2 2004-05-20 10:38:21 ron_lima Exp $
+# $Id: Makefile.am,v 1.3 2005-02-19 16:47:32 ron_lima Exp $
 noinst_LTLIBRARIES = libqueue.la
-libqueue_la_SOURCES = queue_alloc.c		\
+libqueue_la_SOURCES = queue_init.c		\
                       queue_push.c		\
-                      queue_free.c		\
+                      queue_destroy.c	\
                       queue_pop.c		\
                       ../../include/queue.h
 INCLUDES=-I../../include/

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.13 2005-01-31 09:55:52 ron_lima Exp $
+ $Id: list.c,v 1.14 2005-02-19 16:47:32 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.13 2005-01-31 09:55:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.14 2005-02-19 16:47:32 ron_lima Exp $";
 
 /*
  * Local macros
@@ -52,34 +52,34 @@ static int check_deletion (list_t *, size_t);
 int
 test_list (size_t maxelements)
 {
-  list_t *list;			/* List descriptor */
-  int rc;			/* Error handling variable */
-  int test_status;		/* Test status control variable  */
+  list_t list;                  /* List descriptor */
+  int rc;                       /* Error handling variable */
+  int test_status;              /* Test status control variable  */
 
   /* Initializations */
   test_status = 0x0;
 
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
-  rc = list_alloc (&list, free);
+  rc = list_init (&list, free);
   if (rc)
     {
       ERROR (TEST, "list_alloc", rc);
       return EFAILED;
     }
   /* Performs the load test */
-  rc = load_list (list, maxelements);
+  rc = load_list (&list, maxelements);
   if (!rc)
     {
       /* Performs the navigation test */
-      rc = check_contents (list, maxelements);
+      rc = check_contents (&list, maxelements);
       if (rc)
         {
           ERROR (TEST, "check_contents", rc);
           test_status = EFAILED;
         }
       /* Performs the deletion test */
-      rc = check_deletion (list, maxelements);
+      rc = check_deletion (&list, maxelements);
       if (rc)
         {
           ERROR (TEST, "check_deletion", rc);
@@ -92,7 +92,7 @@ test_list (size_t maxelements)
       test_status = EFAILED;
     }
   /* Frees the list only if it was already allocated */
-  rc = list_free (&list);
+  rc = list_destroy (&list);
   if (rc)
     {
       ERROR (TEST, "list_free", rc);

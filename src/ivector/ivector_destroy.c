@@ -20,27 +20,42 @@
 
  System: G.A. Lib
 
- Description: Finishes the queue. This routine will delete the stack
- from the memory
+ Description: Deallocates the list descriptor
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_free.c,v 1.5 2005-01-28 00:11:45 ron_lima Exp $
+ $Id: ivector_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "queue.h"
-#include "list.h"
+#include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_free.c,v 1.5 2005-01-28 00:11:45 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-queue_free (queue_t ** queue)
+ivector_destroy (ivector_t * vector)
 {
   /* Assertives for debugging purposes */
-  assert (queue != NULL);
-  assert (*queue != NULL);
-  return list_free ((list_t **) queue);
+  assert (vector != NULL);
+
+  /* Checks if the deallocator is a valid one */
+  if (vector->dealloc_)
+    {
+      void *item;		/* Item of the vector list */
+
+      /* Deallocates each vector element */
+      item = vector->data_;
+
+      while ((char *) item - (char *) vector->data_ < vector->size_)
+        {
+          vector->dealloc_ (item);
+          item = (void *) ((char *) item + vector->datalen_);
+        }
+    }
+  /* Just frees whatever was allocated */
+  free (vector->data_);
+
+  return 0x0;
 }

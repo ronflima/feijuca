@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.15 2005-01-19 23:55:47 ron_lima Exp $
+ $Id: dlist.h,v 1.16 2005-02-19 16:47:30 ron_lima Exp $
 */
 
 #ifndef DLIST_H
@@ -62,8 +62,8 @@ dlist_t;
 /*
  * Prototypes
  */
-int (dlist_alloc) __P ((dlist_t **, deallocator_t *));
-int (dlist_free) __P ((dlist_t **));
+int (dlist_init) __P ((dlist_t *, deallocator_t *));
+int (dlist_destroy) __P ((dlist_t *));
 int (dlist_get) __P ((dlist_t *, void **, position_t));
 int (dlist_insert) __P ((dlist_t *, const void *, position_t));
 int (dlist_move) __P ((dlist_t *, position_t));

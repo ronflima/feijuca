@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_alloc.c,v 1.7 2005-01-28 00:11:45 ron_lima Exp $
+ $Id: queue_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,13 +33,13 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_alloc.c,v 1.7 2005-01-28 00:11:45 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-queue_alloc (queue_t ** queue, deallocator_t * dealloc)
+queue_init (queue_t * queue, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
   assert (queue != NULL);
   assert (dealloc != NULL);
-  return list_alloc ((queue_t **) queue, dealloc);
+  return list_init ((list_t *) queue, dealloc);
 }

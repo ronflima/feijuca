@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.11 2005-02-07 21:45:09 ron_lima Exp $
+ $Id: dlist.c,v 1.12 2005-02-19 16:47:32 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.11 2005-02-07 21:45:09 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.12 2005-02-19 16:47:32 ron_lima Exp $";
 
 /*
  * Local macros
@@ -52,16 +52,16 @@ static int check_deletion (dlist_t *, size_t);
 int
 test_dlist (size_t maxelements)
 {
-  dlist_t *list;		/* List descriptor */
-  int rc;			/* Error handling variable */
-  int test_status;		/* Test status variable */
+  dlist_t list;                 /* List descriptor */
+  int rc;                       /* Error handling variable */
+  int test_status;              /* Test status variable */
 
   /* Initializations */
   test_status = 0x0;
 
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
-  rc = dlist_alloc (&list, free);
+  rc = dlist_init (&list, free);
   if (rc)
     {
       ERROR (TEST, "dlist_alloc", rc);
@@ -70,18 +70,18 @@ test_dlist (size_t maxelements)
   else
     {
       /* Performs the load test */
-      rc = load_list (list, maxelements);
+      rc = load_list (&list, maxelements);
       if (!rc)
         {
           /* Performs the navigation test */
-          rc = check_contents (list, maxelements);
+          rc = check_contents (&list, maxelements);
           if (rc)
             {
               ERROR (TEST, "check_contents", rc);
               test_status = EFAILED;
             }
           /* Performs the deletion test */
-          rc = check_deletion (list, maxelements);
+          rc = check_deletion (&list, maxelements);
           if (rc)
             {
               ERROR (TEST, "check_deletion", rc);
@@ -95,7 +95,7 @@ test_dlist (size_t maxelements)
         }
 
       /* Frees the list only if it was already allocated */
-      rc = dlist_free (&list);
+      rc = dlist_destroy (&list);
       if (rc)
         {
           ERROR (TEST, "dlist_free", rc);

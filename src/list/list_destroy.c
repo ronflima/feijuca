@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_free.c,v 1.11 2005-01-28 00:11:45 ron_lima Exp $
+ $Id: list_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,25 +33,21 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_free.c,v 1.11 2005-01-28 00:11:45 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-list_free (list_t ** list)
+list_destroy (list_t * list)
 {
   /* Assertives for debugging purposes */
   assert (list != NULL);
-  assert (*list != NULL);
 
   /* Makes the current pointer pointing to nowhere. It will force list_del to
      delete always from the head of the list */
-  (*list)->curr_ = NULL;
+  list->curr_ = NULL;
   /* Proceeds with the deletion */
-  while ((*list)->size_)
+  while (descriptor_size (list))
     {
-      list_del (*list, NULL);
+      list_del (list, NULL);
     }
-  /* Deletes the list descriptor from memory */
-  free (*list);
-  *list = (list_t *) NULL;
   return 0x0;
 }

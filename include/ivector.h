@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.14 2005-01-19 23:55:47 ron_lima Exp $
+ $Id: ivector.h,v 1.15 2005-02-19 16:47:30 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -51,8 +51,8 @@ ivector_t;
 /*
  * Prototypes
  */
-int (ivector_alloc) __P ((ivector_t **, compare_t *, deallocator_t *, size_t));
-int (ivector_free) __P ((ivector_t **));
+int (ivector_init) __P ((ivector_t *, compare_t *, deallocator_t *, size_t));
+int (ivector_destroy) __P ((ivector_t *));
 int (ivector_get) __P ((ivector_t *, void **, size_t));
 int (ivector_put) __P ((ivector_t *, size_t, const void *));
 int (ivector_add) __P ((ivector_t *, const void *));

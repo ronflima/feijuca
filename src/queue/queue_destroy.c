@@ -20,44 +20,26 @@
 
  System: G.A. Lib
 
- Description: Allocates and initializes the list
+ Description: Finishes the queue. This routine will delete the stack
+ from the memory
 
  CVS Information
  $Author: ron_lima $
- $Id: list_alloc.c,v 1.12 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: queue_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "queue.h"
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_alloc.c,v 1.12 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-list_alloc (list_t ** list, deallocator_t * dealloc)
+queue_destroy (queue_t * queue)
 {
   /* Assertives for debugging purposes */
-  assert (list != NULL);
-  assert (dealloc != NULL);
-
-  /* The deallocator must be always provided */
-  if (!dealloc)
-    {
-      return EGAINVAL;
-    }
-  /* Allocates memory for the list structure */
-  *list = (list_t *) malloc (sizeof (list_t));
-  assert (*list != NULL);
-  if (!*list)
-    {
-      return EGANOMEM;
-    }
-  /* Initializes each data member */
-  (*list)->size_ = 0x0;
-  (*list)->head_ = (list_element_t *) NULL;
-  (*list)->tail_ = (list_element_t *) NULL;
-  (*list)->curr_ = (list_element_t *) NULL;
-  (*list)->deallocator_ = dealloc;
-  return 0x0;
+  assert (queue != NULL);
+  return list_destroy ((list_t *) queue);
 }

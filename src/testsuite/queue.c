@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.6 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: queue.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "queue.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue.c,v 1.6 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $";
 
 /*
  * Local macros
@@ -53,11 +53,11 @@ static int check_pop (queue_t *, size_t);
 int
 test_queue (size_t maxelements)
 {
-  queue_t *queue;		/* Queue descriptor */
+  queue_t queue;		/* Queue descriptor */
   int rc;			/* General error handle variable */
 
   /* Check the queue allocation */
-  rc = queue_alloc (&queue, free);
+  rc = queue_init (&queue, free);
   if (rc)
     {
       ERROR (TEST, "queue_alloc", rc);
@@ -65,7 +65,7 @@ test_queue (size_t maxelements)
     }
 
   /* Loads data into the queue */
-  rc = check_push (queue, maxelements);
+  rc = check_push (&queue, maxelements);
   if (rc)
     {
       ERROR (TEST, "check_push", rc);
@@ -73,7 +73,7 @@ test_queue (size_t maxelements)
     }
 
   /* Checks the pop of data from the queue */
-  rc = check_pop (queue, maxelements);
+  rc = check_pop (&queue, maxelements);
   if (rc)
     {
       ERROR (TEST, "check_pop", rc);
@@ -81,7 +81,7 @@ test_queue (size_t maxelements)
     }
 
   /* Frees the queue */
-  rc = queue_free (&queue);
+  rc = queue_destroy (&queue);
   if (rc)
     {
       ERROR (TEST, "queue_free", rc);

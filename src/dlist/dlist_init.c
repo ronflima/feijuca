@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_alloc.c,v 1.11 2005-01-28 00:11:43 ron_lima Exp $
+ $Id: dlist_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,10 +33,10 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_alloc.c,v 1.11 2005-01-28 00:11:43 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-dlist_alloc (dlist_t ** list, deallocator_t * dealloc)
+dlist_init (dlist_t * list, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
   assert (list != NULL);
@@ -47,18 +47,11 @@ dlist_alloc (dlist_t ** list, deallocator_t * dealloc)
     {
       return EGAINVAL;
     }
-  /* Allocates memory for the list structure */
-  *list = (dlist_t *) malloc (sizeof (dlist_t));
-  assert (*list != NULL);
-  if (!*list)
-    {
-      return EGANOMEM;
-    }
   /* Initializes each data member of the list descriptor */
-  (*list)->size_ = 0x0;
-  (*list)->head_ = (dlist_element_t *) NULL;
-  (*list)->tail_ = (dlist_element_t *) NULL;
-  (*list)->curr_ = (dlist_element_t *) NULL;
-  (*list)->deallocator_ = dealloc;
+  list->size_ = 0x0;
+  list->head_ = (dlist_element_t *) NULL;
+  list->tail_ = (dlist_element_t *) NULL;
+  list->curr_ = (dlist_element_t *) NULL;
+  list->deallocator_ = dealloc;
   return 0x0;
 }

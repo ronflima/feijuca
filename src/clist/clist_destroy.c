@@ -25,29 +25,20 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_free.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: clist_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
-#include "dlist.h"
+#include "list.h"
+#include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_free.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-dlist_free (dlist_t ** list)
+clist_destroy (clist_t * clist)
 {
   /* Assertives for debugging purposes */
-  assert (list != NULL);
-  assert (*list != NULL);
-  /* Proceeds with the deletion - Deletes the list from the head, always */
-  while ((*list)->size_)
-    {
-      dlist_del (*list, NULL, POS_HEAD);
-    }
-  /* Deletes the list descriptor from memory */
-  free (*list);
-  *list = (dlist_t *) NULL;
-  return 0x0;
+  assert (clist != NULL);
+  /* Just calls the list free function */
+  return list_destroy ((list_t *) clist);
 }

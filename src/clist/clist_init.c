@@ -20,26 +20,25 @@
 
  System: G.A. Lib
 
- Description: Finishes a list. This routine will delete the whole list
- from memory
+ Description: Allocates and initializes the circular list
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_free.c,v 1.5 2005-01-28 00:11:43 ron_lima Exp $
+ $Id: clist_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_free.c,v 1.5 2005-01-28 00:11:43 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-clist_free (clist_t ** clist)
+clist_init (clist_t * clist, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
   assert (clist != NULL);
-  assert (*clist != NULL);
-  /* Just calls the list free function */
-  return list_free ((list_t **) clist);
+  assert (dealloc != NULL);
+  /* Just calls the list allocation function */
+  return list_init ((list_t *) clist, dealloc);
 }

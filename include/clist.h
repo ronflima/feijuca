@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.10 2005-01-19 23:55:46 ron_lima Exp $
+ $Id: clist.h,v 1.11 2005-02-19 16:47:30 ron_lima Exp $
 */
 
 #ifndef CLIST_H
@@ -45,8 +45,8 @@ typedef list_t clist_t;         /* List descriptor */
 /*
  * Prototypes
  */
-int (clist_alloc) __P ((clist_t **, deallocator_t *));
-int (clist_free) __P ((clist_t **));
+int (clist_init) __P ((clist_t *, deallocator_t *));
+int (clist_destroy) __P ((clist_t *));
 int (clist_del) __P ((clist_t *, void **));
 int (clist_get) __P ((clist_t *, void **, position_t));
 int (clist_move) __P ((clist_t *, position_t));

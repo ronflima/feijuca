@@ -20,25 +20,30 @@
 
  System: G.A. Lib
 
- Description: Allocates and initializes the circular list
+ Description: Finishes a list. This routine will delete the whole list
+ from memory
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_alloc.c,v 1.5 2005-01-28 00:11:43 ron_lima Exp $
+ $Id: dlist_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
+#include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
-#include "list.h"
-#include "clist.h"
+#include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_alloc.c,v 1.5 2005-01-28 00:11:43 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-clist_alloc (clist_t ** clist, deallocator_t * dealloc)
+dlist_destroy (dlist_t * list)
 {
   /* Assertives for debugging purposes */
-  assert (clist != NULL);
-  assert (dealloc != NULL);
-  /* Just calls the list allocation function */
-  return list_alloc ((list_t **) clist, dealloc);
+  assert (list != NULL);
+   /* Proceeds with the deletion - Deletes the list from the head, always */
+  while (descriptor_size (list))
+    {
+      dlist_del (list, NULL, POS_HEAD);
+    }
+  return 0x0;
 }

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.c,v 1.6 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: clist.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.6 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $";
 
 /*
  * Local macros
@@ -55,11 +55,11 @@ static int check_deletion (clist_t *);
 int
 test_clist (size_t maxelements)
 {
-  clist_t *clist;		/* Circular list descriptor */
-  int rc;			/* General error handle variable */
+  clist_t clist;                /* Circular list descriptor */
+  int rc;                       /* General error handle variable */
 
   /* Check the list allocation */
-  rc = clist_alloc (&clist, free);
+  rc = clist_init (&clist, free);
   if (rc)
     {
       ERROR (TEST, "clist_alloc", rc);
@@ -67,7 +67,7 @@ test_clist (size_t maxelements)
     }
 
   /* Loads data into the list */
-  rc = load_data (clist, maxelements);
+  rc = load_data (&clist, maxelements);
   if (rc)
     {
       ERROR (TEST, "load_clist", rc);
@@ -75,7 +75,7 @@ test_clist (size_t maxelements)
     }
 
   /* Checks the navigation and data retrieval from the list */
-  rc = check_navigation (clist);
+  rc = check_navigation (&clist);
   if (rc)
     {
       ERROR (TEST, "check_navigation", rc);
@@ -83,7 +83,7 @@ test_clist (size_t maxelements)
     }
 
   /* Checks the deletion of elements */
-  rc = check_deletion (clist);
+  rc = check_deletion (&clist);
   if (rc)
     {
       ERROR (TEST, "check_deletion", rc);
@@ -91,7 +91,7 @@ test_clist (size_t maxelements)
     }
 
   /* Frees the list */
-  rc = clist_free (&clist);
+  rc = clist_destroy (&clist);
   if (rc)
     {
       ERROR (TEST, "clist_free", rc);

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.8 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: ivector.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector.c,v 1.8 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $";
 
 /*
  * Local macros
@@ -55,26 +55,26 @@ static int check_del (ivector_t *, size_t);
 int
 test_ivector (size_t maxelements)
 {
-  ivector_t *ivector;		/* Infinite vector descriptor */
-  int rc;			/* General error handling variable */
-  int *buffer;			/* Buffer to hold data */
-  int key;			/* Search key */
+  ivector_t ivector;            /* Infinite vector descriptor */
+  int rc;                       /* General error handling variable */
+  int *buffer;                  /* Buffer to hold data */
+  int key;                      /* Search key */
 
   /* Allocates the whole vector */
-  rc = ivector_alloc (&ivector, compare, NULL, sizeof (int));
+  rc = ivector_init (&ivector, compare, NULL, sizeof (int));
   if (rc)
     {
       ERROR (TEST, "ivector_alloc", rc);
       return EFAILED;
     }
-  rc = load_ivector (ivector, maxelements);
+  rc = load_ivector (&ivector, maxelements);
   if (rc)
     {
       ERROR (TEST, "ivector load error", ECKFAIL);
       return EFAILED;
     }
   /* Re-orders the list */
-  rc = ivector_qsort (ivector);
+  rc = ivector_qsort (&ivector);
   if (rc)
     {
       ERROR (TEST, "ivector_qsort", rc);
@@ -82,7 +82,7 @@ test_ivector (size_t maxelements)
     }
   /* Searches for something */
   key = maxelements / 2;
-  rc = ivector_bsearch (ivector, (void **) &buffer, &key);
+  rc = ivector_bsearch (&ivector, (void **) &buffer, &key);
   if (rc)
     {
       ERROR (TEST, "ivector_bsearch", rc);
@@ -90,21 +90,21 @@ test_ivector (size_t maxelements)
     }
   /* Puts something using an index */
   key /= 2;
-  rc = ivector_put (ivector, maxelements / 2, &key);
+  rc = ivector_put (&ivector, maxelements / 2, &key);
   if (rc)
     {
       ERROR (TEST, "ivector_put", rc);
       return EFAILED;
     }
   /* Check deletions */
-  rc = check_del (ivector, maxelements);
+  rc = check_del (&ivector, maxelements);
   if (rc)
     {
       ERROR (TEST, "check_del", ECKFAIL);
       return EFAILED;
     }
   /* Deallocates the vector */
-  rc = ivector_free (&ivector);
+  rc = ivector_destroy (&ivector);
   if (rc)
     {
       ERROR (TEST, "ivector_free", rc);

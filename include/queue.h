@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.7 2005-01-16 11:46:54 ron_lima Exp $
+ $Id: queue.h,v 1.8 2005-02-19 16:47:30 ron_lima Exp $
 */
 
 #ifndef QUEUE_H
@@ -43,8 +43,8 @@ typedef list_t queue_t;
 /*
  * Prototypes
  */
-int (queue_alloc) __P ((queue_t **, deallocator_t *));
-int (queue_free) __P ((queue_t **));
+int (queue_init) __P ((queue_t *, deallocator_t *));
+int (queue_destroy) __P ((queue_t *));
 int (queue_pop) __P ((queue_t *, void **));
 int (queue_push) __P ((queue_t *, const void *));
 

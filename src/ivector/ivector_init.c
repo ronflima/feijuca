@@ -20,44 +20,41 @@
 
  System: G.A. Lib
 
- Description: Deallocates the list descriptor
+ Description: Allocates and initializes the infinite vector
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_free.c,v 1.11 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: ivector_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_free.c,v 1.11 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
 
 int
-ivector_free (ivector_t ** vector)
+ivector_init (ivector_t * vector, compare_t * comp, deallocator_t * dealloc,
+              size_t datalen)
 {
   /* Assertives for debugging purposes */
   assert (vector != NULL);
+  assert (comp != NULL);
+  assert (datalen != 0);
 
-  /* Checks if the deallocator is a valid one */
-  if ((*vector)->dealloc_)
+  /* Sanity tests */
+  if (!datalen)
     {
-      void *item;		/* Item of the vector list */
-
-      /* Deallocates each vector element */
-      item = (*vector)->data_;
-
-      while ((char *) item - (char *) (*vector)->data_ < (*vector)->size_)
-        {
-          (*vector)->dealloc_ (item);
-          item = (void *) ((char *) item + (*vector)->datalen_);
-        }
+      return EGAINVAL;
     }
-  /* Just frees whatever was allocated */
-  free ((*vector)->data_);
-  free ((*vector));
-  *vector = NULL;
+  /* Initializes each vector descriptor field */
+  vector->size_ = 0x0;
+  vector->datalen_ = datalen;
+  vector->comp_ = comp;
+  vector->dealloc_ = dealloc;
+  vector->data_ = (void *) NULL;
 
   return 0x0;
 }

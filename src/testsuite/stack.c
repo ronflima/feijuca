@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.8 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: stack.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "stack.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack.c,v 1.8 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $";
 
 /*
  * Local macros
@@ -53,15 +53,15 @@ static int test_stack_pop (stack_t *, size_t);
 int
 test_stack (size_t maxelements)
 {
-  stack_t *stack;		/* Descriptor for stacks */
-  int rc;			/* General return code for errors */
-  int test_status;		/* Status of the test */
+  stack_t stack;                /* Descriptor for stacks */
+  int rc;                       /* General return code for errors */
+  int test_status;              /* Status of the test */
 
   /* Initializations */
   test_status = 0x0;
 
   /* Allocates memory for the stack - use the free function as deallocator */
-  rc = stack_alloc (&stack, free);
+  rc = stack_init (&stack, free);
   if (rc)
     {
       ERROR (TEST, "stack_alloc", rc);
@@ -70,11 +70,11 @@ test_stack (size_t maxelements)
 
   /* Test the stack normal operations */
   /* Push stuff to the stack */
-  rc = test_stack_push (stack, maxelements);
+  rc = test_stack_push (&stack, maxelements);
   if (!rc)
     {
       /* Pop stuff from the stack */
-      rc = test_stack_pop (stack, maxelements);
+      rc = test_stack_pop (&stack, maxelements);
       if (rc)
         {
           /* Pop test has failed */
@@ -90,7 +90,7 @@ test_stack (size_t maxelements)
     }
 
   /* Frees the entire stack */
-  rc = stack_free (&stack);
+  rc = stack_destroy (&stack);
   if (rc)
     {
       ERROR (TEST, "stack_free", rc);
