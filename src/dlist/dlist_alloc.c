@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_alloc.c,v 1.9 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: dlist_alloc.c,v 1.10 2005-01-16 11:47:12 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,16 +41,16 @@ dlist_alloc (dlist_t ** list, deallocator_t * dealloc)
 
   /* The deallocator must be always provided */
   if (!dealloc)
-  {
-    return EGAINVAL;
-  }
+    {
+      return EGAINVAL;
+    }
   /* Allocates memory for the list structure */
   *list = (dlist_t *) malloc (sizeof (dlist_t));
   assert (*list != NULL);
   if (!*list)
-  {
-    return EGANOMEM;
-  }
+    {
+      return EGANOMEM;
+    }
   /* Initializes each data member of the list descriptor */
   (*list)->size_ = 0x0;
   (*list)->head_ = (dlist_element_t *) NULL;

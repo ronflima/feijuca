@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.10 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: dlist_get.c,v 1.11 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -41,23 +41,23 @@ dlist_get (dlist_t * list, void **data, position_t whence)
 
   /* Checks if the current pointer points to somewhere */
   if (!list->curr_)
-  {
-    return EOF;
-  }
+    {
+      return EOF;
+    }
   /* Gets the data from the current pointer */
   *data = list->curr_->data_;
   /* Decides how to navigate the list */
   switch (whence)
-  {
-  case CURR:
-    /* Used only for parameter checking */
-    break;
-  case NEXT:			/* Moves to the next element */
-  case PREV:			/* Moves to the previous element */
-    return dlist_move (list, whence);
-    break;
-  default:			/* Invalid parameter provided */
-    return EGAINVAL;
-  }
+    {
+    case CURR:
+      /* Used only for parameter checking */
+      break;
+    case NEXT:			/* Moves to the next element */
+    case PREV:			/* Moves to the previous element */
+      return dlist_move (list, whence);
+      break;
+    default:			/* Invalid parameter provided */
+      return EGAINVAL;
+    }
   return 0x0;
 }

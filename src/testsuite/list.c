@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.8 2005-01-09 00:01:58 ron_lima Exp $
+ $Id: list.c,v 1.9 2005-01-16 11:47:14 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -60,41 +60,41 @@ test_list (void)
      test will involve only simple allocated data */
   rc = list_alloc (&list, free);
   if (rc)
-  {
-    ERROR (TEST, "list_alloc", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "list_alloc", rc);
+      return EFAILED;
+    }
   /* Performs the load test */
   rc = load_list (list, MAX_ELEMENTS);
   if (!rc)
-  {
-    /* Performs the navigation test */
-    rc = check_contents (list, MAX_ELEMENTS);
-    if (rc)
     {
-      ERROR (TEST, "check_contents", rc);
-      test_status = EFAILED;
+      /* Performs the navigation test */
+      rc = check_contents (list, MAX_ELEMENTS);
+      if (rc)
+        {
+          ERROR (TEST, "check_contents", rc);
+          test_status = EFAILED;
+        }
+      /* Performs the deletion test */
+      rc = check_deletion (list, MAX_ELEMENTS);
+      if (rc)
+        {
+          ERROR (TEST, "check_deletion", rc);
+          test_status = EFAILED;
+        }
     }
-    /* Performs the deletion test */
-    rc = check_deletion (list, MAX_ELEMENTS);
-    if (rc)
-    {
-      ERROR (TEST, "check_deletion", rc);
-      test_status = EFAILED;
-    }
-  }
   else
-  {
-    ERROR (TEST, "load_list", rc);
-    test_status = EFAILED;
-  }
+    {
+      ERROR (TEST, "load_list", rc);
+      test_status = EFAILED;
+    }
   /* Frees the list only if it was already allocated */
   rc = list_free (&list);
   if (rc)
-  {
-    ERROR (TEST, "list_free", rc);
-    test_status = EFAILED;
-  }
+    {
+      ERROR (TEST, "list_free", rc);
+      test_status = EFAILED;
+    }
 
   return test_status;
 }
@@ -114,28 +114,28 @@ load_list (list_t * list, size_t elements)
 
   /* Loads the list */
   for (i = 0x0; (i < elements); ++i)
-  {
-    int *item;			/* Item to insert */
+    {
+      int *item;		/* Item to insert */
 
-    /* Allocates memory for a single item */
-    item = (int *)malloc (sizeof (int));
-    if (!item)
-    {
-      ERROR (TEST, "malloc", ECKFAIL);
-      test_status = ENOMEM;
-      break;
+      /* Allocates memory for a single item */
+      item = (int *) malloc (sizeof (int));
+      if (!item)
+        {
+          ERROR (TEST, "malloc", ECKFAIL);
+          test_status = ENOMEM;
+          break;
+        }
+      /* Builds the item data */
+      *item = i + 1;
+      /* Inserts the item in the list */
+      rc = list_insert (list, item);
+      if (rc)
+        {
+          ERROR (TEST, "list_insert", rc);
+          test_status = EFAILED;
+          break;
+        }
     }
-    /* Builds the item data */
-    *item = i + 1;
-    /* Inserts the item in the list */
-    rc = list_insert (list, item);
-    if (rc)
-    {
-      ERROR (TEST, "list_insert", rc);
-      test_status = EFAILED;
-      break;
-    }
-  }
 
   return test_status;
 }
@@ -158,37 +158,37 @@ check_contents (list_t * list, size_t elements)
   /* Gets the data from the list, iterating it and checking the contents */
   rc = list_move (list, HEAD);
   if (rc)
-  {
-    ERROR (TEST, "list_move", rc);
-    test_status = EFAILED;
-  }
+    {
+      ERROR (TEST, "list_move", rc);
+      test_status = EFAILED;
+    }
   while (!rc)
-  {
-    /* Gets the current item of the list and goes to the next */
-    rc = list_get (list, (void **)&item, NEXT);
-    if (rc > 0x0)
     {
-      ERROR (TEST, "list_get", rc);
-      test_status = EFAILED;
+      /* Gets the current item of the list and goes to the next */
+      rc = list_get (list, (void **) &item, NEXT);
+      if (rc > 0x0)
+        {
+          ERROR (TEST, "list_get", rc);
+          test_status = EFAILED;
+        }
+      if (rc == EOF)
+        {
+          /* EOF */
+          break;
+        }
+      if (*item != (i + 1))
+        {
+          ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
+          test_status = EFAILED;
+          break;
+        }
+      ++i;
     }
-    if (rc == EOF)
-    {
-      /* EOF */
-      break;
-    }
-    if (*item != (i + 1))
-    {
-      ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
-      test_status = EFAILED;
-      break;
-    }
-    ++i;
-  }
   if (i != elements)
-  {
-    ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
-    test_status = EFAILED;
-  }
+    {
+      ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
+      test_status = EFAILED;
+    }
   return test_status;
 }
 
@@ -210,60 +210,60 @@ check_deletion (list_t * list, size_t elements)
   /* Deletes the head of the list */
   rc = list_move (list, HEAD);
   if (rc)
-  {
-    ERROR (TEST, "list_move", rc);
-    return EFAILED;
-  }
-  rc = list_del (list, (void **)&item);
-  if (rc)
-  {
-    ERROR (TEST, "list_del", rc);
-    return EFAILED;
-  }
-  free (item);
-  ++deleted;
-  /* Moves to somewhere in the middle of the list */
-  for (i = 0; i < elements / 2; ++i)
-  {
-    rc = list_move (list, NEXT);
-    if (rc)
     {
       ERROR (TEST, "list_move", rc);
       return EFAILED;
     }
-  }
-  /* Deletes an item at somewhere in the middle of the list */
-  rc = list_del (list, (void **)&item);
+  rc = list_del (list, (void **) &item);
   if (rc)
-  {
-    ERROR (TEST, "list_del", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "list_del", rc);
+      return EFAILED;
+    }
+  free (item);
+  ++deleted;
+  /* Moves to somewhere in the middle of the list */
+  for (i = 0; i < elements / 2; ++i)
+    {
+      rc = list_move (list, NEXT);
+      if (rc)
+        {
+          ERROR (TEST, "list_move", rc);
+          return EFAILED;
+        }
+    }
+  /* Deletes an item at somewhere in the middle of the list */
+  rc = list_del (list, (void **) &item);
+  if (rc)
+    {
+      ERROR (TEST, "list_del", rc);
+      return EFAILED;
+    }
   free (item);
   ++deleted;
   /* Deletes the tail of the list */
   rc = list_move (list, TAIL);
   if (rc)
-  {
-    ERROR (TEST, "list_move", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "list_move", rc);
+      return EFAILED;
+    }
 
   /* Try to get the tail out */
-  rc = list_del (list, (void **)NULL);
+  rc = list_del (list, (void **) NULL);
   if (!rc)
-  {
-    /* The tail was deleted. This is a serious bug, since it is not possible
-       to delete the tail of a single linked list */
-    ERROR (TEST, "list_del - tail deletion", rc);
-    return EFAILED;
-  }
+    {
+      /* The tail was deleted. This is a serious bug, since it is not possible
+         to delete the tail of a single linked list */
+      ERROR (TEST, "list_del - tail deletion", rc);
+      return EFAILED;
+    }
   /* Check for inconsistencies */
   if (elements - deleted != descriptor_size (list))
-  {
-    ERROR (TEST, "Number of elements mismatch", ECKFAIL);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "Number of elements mismatch", ECKFAIL);
+      return EFAILED;
+    }
 
   return 0x0;
 }

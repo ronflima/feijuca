@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_put.c,v 1.7 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector_put.c,v 1.8 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,15 +43,15 @@ ivector_put (ivector_t * vector, size_t idx, const void *data)
   assert (data != NULL);
   /* Sanity tests */
   if (idx >= vector->size_)
-  {
-    return EGAINVAL;
-  }
+    {
+      return EGAINVAL;
+    }
   if (!data)
-  {
-    return EGAINVAL;
-  }
+    {
+      return EGAINVAL;
+    }
   /* Calculates the place where we want to overwrite data */
-  i = (void *)((char *)vector->data_ + idx * vector->datalen_);
+  i = (void *) ((char *) vector->data_ + idx * vector->datalen_);
   /* Overwrite data */
   memcpy (i, data, vector->datalen_);
 

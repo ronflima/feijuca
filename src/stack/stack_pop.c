@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_pop.c,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: stack_pop.c,v 1.7 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,8 +42,8 @@ stack_pop (stack_t * stack, void **data)
   rc = list_move ((list_t *) stack, HEAD);
   /* Check if there was an error */
   if (rc)
-  {
-    return rc;
-  }
+    {
+      return rc;
+    }
   return list_del ((list_t *) stack, data);
 }

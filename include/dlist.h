@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.13 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: dlist.h,v 1.14 2005-01-16 11:46:54 ron_lima Exp $
 */
 
 #ifndef DLIST_H
@@ -40,12 +40,13 @@ GABEGINDECLS
  * Datatypes
  */
 /* Abstraction for a single list element */
-typedef struct dlist_element_t_
+    typedef struct dlist_element_t_
 {
   void *data_;
   struct dlist_element_t_ *next_;
   struct dlist_element_t_ *prev_;
-} dlist_element_t;
+}
+dlist_element_t;
 
 /* Abstraction for the list descriptor */
 typedef struct dlist_t
@@ -55,7 +56,8 @@ typedef struct dlist_t
   dlist_element_t *head_;
   dlist_element_t *tail_;
   deallocator_t *deallocator_;
-} dlist_t;
+}
+dlist_t;
 
 /*
  * Prototypes
@@ -68,5 +70,4 @@ int (dlist_move) __P ((dlist_t *, position_t));
 int (dlist_del) __P ((dlist_t *, void **, position_t));
 
 GAENDDECLS
-
-#endif				/* LIST_H */
+#endif /* LIST_H */

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: queue.h,v 1.7 2005-01-16 11:46:54 ron_lima Exp $
 */
 
 #ifndef QUEUE_H
@@ -49,5 +49,4 @@ int (queue_pop) __P ((queue_t *, void **));
 int (queue_push) __P ((queue_t *, const void *));
 
 GAENDDECLS
-
-#endif				/* QUEUE_H */
+#endif /* QUEUE_H */

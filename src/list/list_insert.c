@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.11 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: list_insert.c,v 1.12 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,24 +44,24 @@ list_insert (list_t * list, const void *data)
   element = (list_element_t *) malloc (sizeof (list_element_t));
   assert (element != NULL);
   if (!element)
-  {
-    return EGANOMEM;
-  }
-  element->data_ = (void *)data;
+    {
+      return EGANOMEM;
+    }
+  element->data_ = (void *) data;
   element->next_ = (list_element_t *) NULL;
   /* Check the size of the list */
   if (!list->size_)
-  {
-    /* This is the head of the list */
-    list->head_ = element;
-    list->tail_ = element;
-  }
+    {
+      /* This is the head of the list */
+      list->head_ = element;
+      list->tail_ = element;
+    }
   else
-  {
-    /* Insert at the end */
-    list->tail_->next_ = element;
-    list->tail_ = element;
-  }
+    {
+      /* Insert at the end */
+      list->tail_->next_ = element;
+      list->tail_ = element;
+    }
   list->curr_ = element;
   ++(list->size_);
   return 0x0;

@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.16 2004-10-20 10:38:29 ron_lima Exp $
+   $Id: gacommon.h,v 1.17 2005-01-16 11:46:54 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -68,14 +68,15 @@ GABEGINDECLS
  * Datatypes
  */
 /* List iteration types */
-typedef enum
+    typedef enum
 {
   HEAD = 0x0,
   TAIL,
   NEXT,
   CURR,
   PREV
-} position_t;
+}
+position_t;
 
 /* Deallocator function pointer type */
 typedef void (deallocator_t) (void *);
@@ -83,5 +84,4 @@ typedef void (deallocator_t) (void *);
 typedef int (compare_t) (const void *, const void *);
 
 GAENDDECLS
-
-#endif				/* GACOMMON_H */
+#endif /* GACOMMON_H */

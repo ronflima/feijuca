@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.11 2004-10-13 00:30:23 ron_lima Exp $
+ $Id: dlist_move.c,v 1.12 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -38,35 +38,35 @@ dlist_move (dlist_t * list, position_t whence)
   assert (list != NULL);
   /* Decides how to navigate in the list */
   switch (whence)
-  {
-  case HEAD:			/* Moves to the head of the list */
-    list->curr_ = list->head_;
-    break;
-  case TAIL:			/* Moves to the tail of the list */
-    list->curr_ = list->tail_;
-    break;
-  case NEXT:			/* Moves to the next element */
-    if (list->curr_)
     {
-      list->curr_ = list->curr_->next_;
+    case HEAD:			/* Moves to the head of the list */
+      list->curr_ = list->head_;
+      break;
+    case TAIL:			/* Moves to the tail of the list */
+      list->curr_ = list->tail_;
+      break;
+    case NEXT:			/* Moves to the next element */
+      if (list->curr_)
+        {
+          list->curr_ = list->curr_->next_;
+        }
+      else
+        {
+          return EOF;
+        }
+      break;
+    case PREV:			/* Moves to the previous element */
+      if (list->curr_)
+        {
+          list->curr_ = list->curr_->prev_;
+        }
+      else
+        {
+          return EOF;
+        }
+      break;
+    default:			/* Invalid parameter provided */
+      return EGAINVAL;
     }
-    else
-    {
-      return EOF;
-    }
-    break;
-  case PREV:			/* Moves to the previous element */
-    if (list->curr_)
-    {
-      list->curr_ = list->curr_->prev_;
-    }
-    else
-    {
-      return EOF;
-    }
-    break;
-  default:			/* Invalid parameter provided */
-    return EGAINVAL;
-  }
   return 0x0;
 }

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.8 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector_add.c,v 1.9 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,12 +42,12 @@ ivector_add (ivector_t * vector, const void *data)
   v = realloc (vector->data_, vector->datalen_ * (vector->size_ + 1));
   assert (v != NULL);
   if (!v)
-  {
-    return EGANOMEM;
-  }
+    {
+      return EGANOMEM;
+    }
   vector->data_ = v;
   /* Moves v to the newly created entry */
-  v = (void *)((char *)v + vector->size_ * vector->datalen_);
+  v = (void *) ((char *) v + vector->size_ * vector->datalen_);
   /* Copies data into the new element */
   memcpy (v, data, vector->datalen_);
   vector->size_++;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_get.c,v 1.7 2004-12-21 09:22:16 ron_lima Exp $
+ $Id: ivector_get.c,v 1.8 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,12 +39,12 @@ ivector_get (ivector_t * vector, void **data, size_t idx)
   assert (vector != NULL);
   /* Sanity tests */
   if ((idx < 0x0u) || (idx >= vector->size_))
-  {
-    *data = NULL;
-    return EGAINVAL;
-  }
+    {
+      *data = NULL;
+      return EGAINVAL;
+    }
   /* Shifts the address idx times the data structure */
-  *data = (void *)((char *)vector->data_ + idx * vector->datalen_);
+  *data = (void *) ((char *) vector->data_ + idx * vector->datalen_);
 
   return 0x0;
 }

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.8 2004-12-21 09:17:59 ron_lima Exp $
+ $Id: ivector_del.c,v 1.9 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,36 +47,36 @@ ivector_del (ivector_t * vector, size_t idx)
 
   /* Sanity tests */
   if ((idx < 0x0u) || (idx > vector->size_))
-  {
-    return EGAINVAL;
-  }
+    {
+      return EGAINVAL;
+    }
   if ((idx + 1) < vector->size_)
-  {
-    size_t dest_index;
-    size_t orig_index;
-    size_t block_size;
+    {
+      size_t dest_index;
+      size_t orig_index;
+      size_t block_size;
 
-    /* Calculates the origin and the destiny in order to overwrite the
-       element of the vector that is placed in idx */
-    dest_index = idx * vector->datalen_;
-    orig_index = (idx + 1) * vector->datalen_;
-    dest = (void *)(((char *)vector->data_) + dest_index);
-    orig = (void *)(((char *)vector->data_) + orig_index);
+      /* Calculates the origin and the destiny in order to overwrite the
+         element of the vector that is placed in idx */
+      dest_index = idx * vector->datalen_;
+      orig_index = (idx + 1) * vector->datalen_;
+      dest = (void *) (((char *) vector->data_) + dest_index);
+      orig = (void *) (((char *) vector->data_) + orig_index);
 
-    /* Overwrites the element pointed to by idx, moving all other elements
-       one element to the right within the vector */
-    block_size = (vector->size_ - idx - 1) * vector->datalen_;
-    memcpy (dest, orig, block_size);
-  }
+      /* Overwrites the element pointed to by idx, moving all other elements
+         one element to the right within the vector */
+      block_size = (vector->size_ - idx - 1) * vector->datalen_;
+      memcpy (dest, orig, block_size);
+    }
   /* Calculates, in bytes, the new size of the vector */
   newsize = (vector->size_ - 1) * vector->datalen_;
   /* Deletes the last element of the vector and resizes it accordingly */
   newplace = realloc (vector->data_, newsize);
   /* Updates the vector descriptor accordingly */
   if (newplace != vector->data_ && newplace)
-  {
-    vector->data_ = newplace;
-  }
+    {
+      vector->data_ = newplace;
+    }
   vector->size_--;
 
   return 0x0;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.12 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector.h,v 1.13 2005-01-16 11:46:54 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -38,14 +38,15 @@ GABEGINDECLS
  * Datatypes
  */
 /* Infinite vector descriptor */
-typedef struct ivector_
+    typedef struct ivector_
 {
   void *data_;			/* Vector data */
   size_t size_;			/* Size of the vector */
   size_t datalen_;		/* Size of each vector element */
   compare_t *comp_;		/* Comparison function */
   deallocator_t *dealloc_;	/* Deallocation function */
-} ivector_t;
+}
+ivector_t;
 
 /*
  * Prototypes
@@ -60,5 +61,4 @@ int (ivector_bsearch) __P ((ivector_t *, void **, const void *));
 int (ivector_del) __P ((ivector_t *, size_t));
 
 GAENDDECLS
-
-#endif				/* IVECTOR_H */
+#endif /* IVECTOR_H */

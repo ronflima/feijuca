@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.10 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: list_get.c,v 1.11 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,23 +40,23 @@ list_get (list_t * list, void **data, position_t whence)
   assert (data != NULL);
   /* Checks if the current element points to a valid address */
   if (!list->curr_)
-  {
-    return EOF;
-  }
+    {
+      return EOF;
+    }
   /* Grabs the data from the list element */
   *data = list->curr_->data_;
   switch (whence)
-  {
-  case CURR:
-    /* Do nothing. Used only for parameter checking */
-    break;
-  case NEXT:
-    /* Moves to the next element of the list */
-    return list_move (list, whence);
-    break;
-  default:
-    /* Wrong navigation mode provided */
-    return EGAINVAL;
-  }
+    {
+    case CURR:
+      /* Do nothing. Used only for parameter checking */
+      break;
+    case NEXT:
+      /* Moves to the next element of the list */
+      return list_move (list, whence);
+      break;
+    default:
+      /* Wrong navigation mode provided */
+      return EGAINVAL;
+    }
   return 0x0;
 }

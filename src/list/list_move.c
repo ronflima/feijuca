@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.11 2004-10-10 23:36:41 ron_lima Exp $
+ $Id: list_move.c,v 1.12 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -39,25 +39,25 @@ list_move (list_t * list, position_t whence)
 
   /* Decides how to navigate the list */
   switch (whence)
-  {
-  case HEAD:
-    list->curr_ = list->head_;
-    break;
-  case TAIL:
-    list->curr_ = list->tail_;
-    break;
-  case NEXT:
-    if (list->curr_)
     {
-      list->curr_ = list->curr_->next_;
+    case HEAD:
+      list->curr_ = list->head_;
+      break;
+    case TAIL:
+      list->curr_ = list->tail_;
+      break;
+    case NEXT:
+      if (list->curr_)
+        {
+          list->curr_ = list->curr_->next_;
+        }
+      else
+        {
+          return EOF;
+        }
+      break;
+    default:
+      return EGAINVAL;
     }
-    else
-    {
-      return EOF;
-    }
-    break;
-  default:
-    return EGAINVAL;
-  }
   return 0x0;
 }

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.3 2005-01-09 12:09:22 ron_lima Exp $
+ $Id: queue.c,v 1.4 2005-01-16 11:47:14 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -50,40 +50,40 @@ static int check_pop (queue_t *, size_t);
 int
 test_queue (void)
 {
-  queue_t * queue;		/* Queue descriptor */
+  queue_t *queue;		/* Queue descriptor */
   int rc;			/* General error handle variable */
 
   /* Check the queue allocation */
   rc = queue_alloc (&queue, free);
   if (rc)
-  {
-    ERROR (TEST, "queue_alloc", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "queue_alloc", rc);
+      return EFAILED;
+    }
 
   /* Loads data into the queue */
   rc = check_push (queue, MAX_ELEMENTS);
   if (rc)
-  {
-    ERROR (TEST, "check_push", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "check_push", rc);
+      return EFAILED;
+    }
 
   /* Checks the pop of data from the queue */
   rc = check_pop (queue, MAX_ELEMENTS);
   if (rc)
-  {
-    ERROR (TEST, "check_pop", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "check_pop", rc);
+      return EFAILED;
+    }
 
   /* Frees the queue */
   rc = queue_free (&queue);
   if (rc)
-  {
-    ERROR (TEST, "queue_free", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "queue_free", rc);
+      return EFAILED;
+    }
 
   return 0x0;
 }
@@ -101,28 +101,28 @@ check_push (queue_t * queue, size_t elements)
 
   /* Loads the list */
   for (i = 0x0; (i < elements); ++i)
-  {
-    int *item;			/* Item to insert */
+    {
+      int *item;		/* Item to insert */
 
-    /* Allocates memory for a single item */
-    item = (int *)malloc (sizeof (int));
-    if (!item)
-    {
-      ERROR (TEST, "malloc", ECKFAIL);
-      test_status = ENOMEM;
-      break;
+      /* Allocates memory for a single item */
+      item = (int *) malloc (sizeof (int));
+      if (!item)
+        {
+          ERROR (TEST, "malloc", ECKFAIL);
+          test_status = ENOMEM;
+          break;
+        }
+      /* Builds the item data */
+      *item = i + 1;
+      /* Inserts the item in the list */
+      rc = queue_push (queue, item);
+      if (rc)
+        {
+          ERROR (TEST, "queue_push", rc);
+          test_status = EFAILED;
+          break;
+        }
     }
-    /* Builds the item data */
-    *item = i + 1;
-    /* Inserts the item in the list */
-    rc = queue_push (queue, item);
-    if (rc)
-    {
-      ERROR (TEST, "queue_push", rc);
-      test_status = EFAILED;
-      break;
-    }
-  }
 
   return test_status;
 }
@@ -131,34 +131,33 @@ check_push (queue_t * queue, size_t elements)
 static int
 check_pop (queue_t * queue, size_t elements)
 {
-  register int i;               /* General iterator */
+  register int i;		/* General iterator */
 
   for (i = 0; i < elements; ++i)
-  {
-    int * buffer;               /* Buffer to hold popped data from the queue */
-    int rc;                     /* General error handling variable */
-    
-    /* Pops data from the queue */
-    rc = queue_pop (queue, (void **) & buffer);
-    if (rc)
     {
-      ERROR (TEST, "queue_pop", rc);
-      return EFAILED;
+      int *buffer;		/* Buffer to hold popped data from the queue */
+      int rc;			/* General error handling variable */
+
+      /* Pops data from the queue */
+      rc = queue_pop (queue, (void **) &buffer);
+      if (rc)
+        {
+          ERROR (TEST, "queue_pop", rc);
+          return EFAILED;
+        }
+      /* Checks popped data */
+      if (!buffer)
+        {
+          ERROR (TEST, "Null popped data found", ECKFAIL);
+          return EFAILED;
+        }
+      if (*buffer != i + 1)
+        {
+          ERROR (TEST, "Popped data mismatch", ECKFAIL);
+          return EFAILED;
+        }
+      /* Frees popped data */
+      free ((void *) buffer);
     }
-    /* Checks popped data */
-    if (! buffer)
-    {
-      ERROR (TEST, "Null popped data found", ECKFAIL);
-      return EFAILED;
-    }
-    if (*buffer != i + 1)
-    {
-      ERROR (TEST, "Popped data mismatch", ECKFAIL);
-      return EFAILED;
-    }
-    /* Frees popped data */
-    free ((void *)buffer);
-  }
   return 0x0;
 }
-

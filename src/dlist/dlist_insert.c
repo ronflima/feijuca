@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.11 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.12 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -33,8 +33,7 @@
 /*
  * Local prototypes
  */
-static int
-  relink_list (dlist_t *, dlist_element_t *, position_t);
+static int relink_list (dlist_t *, dlist_element_t *, position_t);
 
 /*
  * Exported functions
@@ -52,33 +51,33 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
   element = (dlist_element_t *) malloc (sizeof (dlist_element_t));
   assert (element != NULL);
   if (!element)
-  {
-    return EGANOMEM;
-  }
+    {
+      return EGANOMEM;
+    }
   /* Initializes all inner data of the descriptor */
-  element->data_ = (void *)data;
+  element->data_ = (void *) data;
   element->next_ = (dlist_element_t *) NULL;
   element->prev_ = (dlist_element_t *) NULL;
 
   /* Check the size of the list */
   if (!list->size_)
-  {
-    /* This is the head of the list */
-    list->head_ = element;
-    list->tail_ = element;
-  }
-  else
-  {
-    int rc;			/* General error handling variable */
-
-    /* Relinks the list based on whence parameter */
-    rc = relink_list (list, element, whence);
-    if (rc)
     {
-      free (element);
-      return rc;
+      /* This is the head of the list */
+      list->head_ = element;
+      list->tail_ = element;
     }
-  }
+  else
+    {
+      int rc;			/* General error handling variable */
+
+      /* Relinks the list based on whence parameter */
+      rc = relink_list (list, element, whence);
+      if (rc)
+        {
+          free (element);
+          return rc;
+        }
+    }
   list->curr_ = element;
   list->size_++;
   return 0x0;
@@ -94,50 +93,50 @@ static int
 relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
 {
   switch (whence)
-  {
+    {
     case NEXT:			/* Inserts the new element after the current
-    			   pointer */
-    assert (list->curr_ != NULL);
-    if (list->curr_)
-    {
-      element->next_ = list->curr_->next_;
-      element->prev_ = list->curr_;
-      list->curr_->next_ = element;
+        			   pointer */
+      assert (list->curr_ != NULL);
+      if (list->curr_)
+        {
+          element->next_ = list->curr_->next_;
+          element->prev_ = list->curr_;
+          list->curr_->next_ = element;
+          list->tail_ = element;
+        }
+      else
+        {
+          return EGABADC;
+        }
+      break;
+    case PREV:			/* Inserts the new element before the current
+        			   pointer */
+      assert (list->curr_ != NULL);
+      if (list->curr_)
+        {
+          element->next_ = list->curr_;
+          element->prev_ = list->curr_->prev_;
+          list->curr_->prev_ = element;
+        }
+      else
+        {
+          return EGABADC;
+        }
+      break;
+    case HEAD:			/* Inserts the new element in the head of the
+        			   list */
+      element->next_ = list->head_->next_;
+      list->head_->prev_ = element;
+      list->head_ = element;
+      break;
+    case TAIL:			/* Inserts the new element in the tail of the
+        			   list */
+      element->prev_ = list->tail_;
+      list->tail_->next_ = element;
       list->tail_ = element;
+      break;
+    default:			/* Invalid parameter provided */
+      return EGAINVAL;
     }
-    else
-    {
-      return EGABADC;
-    }
-    break;
-  case PREV:			/* Inserts the new element before the current
-    			   pointer */
-    assert (list->curr_ != NULL);
-    if (list->curr_)
-    {
-      element->next_ = list->curr_;
-      element->prev_ = list->curr_->prev_;
-      list->curr_->prev_ = element;
-    }
-    else
-    {
-      return EGABADC;
-    }
-    break;
-  case HEAD:			/* Inserts the new element in the head of the
-    			   list */
-    element->next_ = list->head_->next_;
-    list->head_->prev_ = element;
-    list->head_ = element;
-    break;
-  case TAIL:			/* Inserts the new element in the tail of the
-    			   list */
-    element->prev_ = list->tail_;
-    list->tail_->next_ = element;
-    list->tail_ = element;
-    break;
-  default:			/* Invalid parameter provided */
-    return EGAINVAL;
-  }
   return 0x0;
 }

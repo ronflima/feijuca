@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_pop.c,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: queue_pop.c,v 1.7 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,8 +44,8 @@ queue_pop (queue_t * queue, void **data)
   rc = list_move ((list_t *) queue, HEAD);
   /* Check if there was an error */
   if (rc)
-  {
-    return rc;
-  }
+    {
+      return rc;
+    }
   return list_del ((list_t *) queue, data);
 }

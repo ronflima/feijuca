@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.7 2005-01-09 00:01:58 ron_lima Exp $
+ $Id: testsuite.c,v 1.8 2005-01-16 11:47:14 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -54,27 +54,27 @@ main (int argc, char **argv)
 
   /* Performs all tests at once */
   for (i = 0x0; i < sizeof (tests) / sizeof (test_t); ++i)
-  {
-    int rc;			/* Error handling */
-    char *result;		/* Test result */
-
-    /* Performs each test */
-    printf ("[%-7s] Performing test...\n", tests[i].test_name);
-    rc = tests[i].test_routine ();
-    switch (rc)
     {
-    case 0x0:			/* Successful test */
-      result = "SUCESSFUL";
-      break;
+      int rc;			/* Error handling */
+      char *result;		/* Test result */
 
-    case ENOTIMP:		/* Test not implemented yet */
-      result = "This test is not implemented yet";
-      break;
+      /* Performs each test */
+      printf ("[%-7s] Performing test...\n", tests[i].test_name);
+      rc = tests[i].test_routine ();
+      switch (rc)
+        {
+        case 0x0:		/* Successful test */
+          result = "SUCESSFUL";
+          break;
 
-    default:			/* Failure */
-      result = "FAILED";
+        case ENOTIMP:		/* Test not implemented yet */
+          result = "This test is not implemented yet";
+          break;
+
+        default:		/* Failure */
+          result = "FAILED";
+        }
+      printf ("\tTest result: %s.\n", result);
     }
-    printf ("\tTest result: %s.\n", result);
-  }
   return 0;
 }

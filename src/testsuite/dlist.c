@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.6 2005-01-09 13:24:04 ron_lima Exp $
+ $Id: dlist.c,v 1.7 2005-01-16 11:47:14 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -60,45 +60,45 @@ test_dlist (void)
      test will involve only simple allocated data */
   rc = dlist_alloc (&list, free);
   if (rc)
-  {
-    ERROR (TEST, "dlist_alloc", rc);
-    test_status = EFAILED;
-  }
+    {
+      ERROR (TEST, "dlist_alloc", rc);
+      test_status = EFAILED;
+    }
   else
-  {
-    /* Performs the load test */
-    rc = load_list (list, MAX_ELEMENTS);
-    if (!rc)
     {
-      /* Performs the navigation test */
-      rc = check_contents (list, MAX_ELEMENTS);
-      if (rc)
-      {
-        ERROR (TEST, "check_contents", rc);
-        test_status = EFAILED;
-      }
-      /* Performs the deletion test */
-      rc = check_deletion (list, MAX_ELEMENTS);
-      if (rc)
-      {
-        ERROR (TEST, "check_deletion", rc);
-        test_status = EFAILED;
-      }
-    }
-    else
-    {
-      ERROR (TEST, "dload_list", rc);
-      test_status = EFAILED;
-    }
+      /* Performs the load test */
+      rc = load_list (list, MAX_ELEMENTS);
+      if (!rc)
+        {
+          /* Performs the navigation test */
+          rc = check_contents (list, MAX_ELEMENTS);
+          if (rc)
+            {
+              ERROR (TEST, "check_contents", rc);
+              test_status = EFAILED;
+            }
+          /* Performs the deletion test */
+          rc = check_deletion (list, MAX_ELEMENTS);
+          if (rc)
+            {
+              ERROR (TEST, "check_deletion", rc);
+              test_status = EFAILED;
+            }
+        }
+      else
+        {
+          ERROR (TEST, "dload_list", rc);
+          test_status = EFAILED;
+        }
 
-    /* Frees the list only if it was already allocated */
-    rc = dlist_free (&list);
-    if (rc)
-    {
-      ERROR (TEST, "dlist_free", rc);
-      test_status = EFAILED;
+      /* Frees the list only if it was already allocated */
+      rc = dlist_free (&list);
+      if (rc)
+        {
+          ERROR (TEST, "dlist_free", rc);
+          test_status = EFAILED;
+        }
     }
-  }
 
   return test_status;
 }
@@ -113,28 +113,28 @@ load_list (dlist_t * list, size_t elements)
 
   /* Loads the list */
   for (i = 0x0; (i < elements); ++i)
-  {
-    int *item;			/* Item to insert */
-    int rc;			/* General purpose error handling variable */
-
-    /* Allocates memory for a single item */
-    item = (int *)malloc (sizeof (int));
-    if (!item)
     {
-      ERROR (TEST, "malloc", ECKFAIL);
-      return ENOMEM;
-    }
-    /* Builds the item data */
-    *item = i + 1;
+      int *item;		/* Item to insert */
+      int rc;			/* General purpose error handling variable */
 
-    /* Inserts the item in the list */
-    rc = dlist_insert (list, item, NEXT);
-    if (rc)
-    {
-      ERROR (TEST, "dlist_insert", rc);
-      return EFAILED;
+      /* Allocates memory for a single item */
+      item = (int *) malloc (sizeof (int));
+      if (!item)
+        {
+          ERROR (TEST, "malloc", ECKFAIL);
+          return ENOMEM;
+        }
+      /* Builds the item data */
+      *item = i + 1;
+
+      /* Inserts the item in the list */
+      rc = dlist_insert (list, item, NEXT);
+      if (rc)
+        {
+          ERROR (TEST, "dlist_insert", rc);
+          return EFAILED;
+        }
     }
-  }
   return 0x0;
 }
 
@@ -151,37 +151,37 @@ check_contents (dlist_t * list, size_t elements)
   /* Gets the data from the list, iterating it and checking the contents */
   rc = dlist_move (list, HEAD);
   if (rc)
-  {
-    ERROR (TEST, "dlist_move", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "dlist_move", rc);
+      return EFAILED;
+    }
   i = 0x0;
   while (!rc)
-  {
-    /* Gets the current item of the list and goes to the next */
-    rc = dlist_get (list, (void **)&item, NEXT);
-    if (rc > 0x0)
     {
-      ERROR (TEST, "dlist_get", rc);
-      return EFAILED;
+      /* Gets the current item of the list and goes to the next */
+      rc = dlist_get (list, (void **) &item, NEXT);
+      if (rc > 0x0)
+        {
+          ERROR (TEST, "dlist_get", rc);
+          return EFAILED;
+        }
+      if (rc < 0x0)
+        {
+          /* EOF */
+          break;
+        }
+      if (*item != (i + 1))
+        {
+          ERROR (TEST, "Data mismatch", ECKFAIL);
+          return EFAILED;
+        }
+      ++i;
     }
-    if (rc < 0x0)
-    {
-      /* EOF */
-      break;
-    }
-    if (*item != (i + 1))
-    {
-      ERROR (TEST, "Data mismatch", ECKFAIL);
-      return EFAILED;
-    }
-    ++i;
-  }
   if (i != elements)
-  {
-    ERROR (TEST, "Number of elements mismatch", ECKFAIL);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "Number of elements mismatch", ECKFAIL);
+      return EFAILED;
+    }
   return 0x0;
 }
 
@@ -203,61 +203,61 @@ check_deletion (dlist_t * list, size_t elements)
   /* Deletes the head of the list */
   rc = dlist_move (list, HEAD);
   if (rc)
-  {
-    ERROR (TEST, "dlist_move", rc);
-    return EFAILED;
-  }
-  rc = dlist_del (list, (void **)&item, CURR);
-  if (rc)
-  {
-    ERROR (TEST, "dlist_del", rc);
-    return EFAILED;
-  }
-  ++deleted;
-  /* Moves to the head of the list */
-  rc = dlist_move (list, HEAD);
-  if (rc)
-  {
-    ERROR (TEST, "dlist_move", rc);
-    return EFAILED;    
-  }
-  /* Moves to somewhere in the middle of the list */
-  for (i = 0; i < elements / 2; ++i)
-  {
-    rc = dlist_move (list, NEXT);
-    if (rc)
     {
       ERROR (TEST, "dlist_move", rc);
       return EFAILED;
     }
-  }
-  /* Deletes an item at somewhere in the middle of the list */
-  rc = dlist_del (list, (void **)&item, NEXT);
+  rc = dlist_del (list, (void **) &item, CURR);
   if (rc)
-  {
-    ERROR (TEST, "dlist_del", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "dlist_del", rc);
+      return EFAILED;
+    }
+  ++deleted;
+  /* Moves to the head of the list */
+  rc = dlist_move (list, HEAD);
+  if (rc)
+    {
+      ERROR (TEST, "dlist_move", rc);
+      return EFAILED;
+    }
+  /* Moves to somewhere in the middle of the list */
+  for (i = 0; i < elements / 2; ++i)
+    {
+      rc = dlist_move (list, NEXT);
+      if (rc)
+        {
+          ERROR (TEST, "dlist_move", rc);
+          return EFAILED;
+        }
+    }
+  /* Deletes an item at somewhere in the middle of the list */
+  rc = dlist_del (list, (void **) &item, NEXT);
+  if (rc)
+    {
+      ERROR (TEST, "dlist_del", rc);
+      return EFAILED;
+    }
   ++deleted;
   /* Deletes the tail of the list */
   rc = dlist_move (list, TAIL);
   if (rc)
-  {
-    ERROR (TEST, "dlist_move", rc);
-    return EFAILED;
-  }
-  rc = dlist_del (list, (void **)NULL, CURR);
+    {
+      ERROR (TEST, "dlist_move", rc);
+      return EFAILED;
+    }
+  rc = dlist_del (list, (void **) NULL, CURR);
   if (rc)
-  {
-    ERROR (TEST, "dlist_del", rc);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "dlist_del", rc);
+      return EFAILED;
+    }
   ++deleted;
   /* Check for inconsistencies */
   if (elements - deleted != descriptor_size (list))
-  {
-    ERROR (TEST, "Number of elements mismatch for deletion", ECKFAIL);
-    return EFAILED;
-  }
+    {
+      ERROR (TEST, "Number of elements mismatch for deletion", ECKFAIL);
+      return EFAILED;
+    }
   return 0x0;
 }

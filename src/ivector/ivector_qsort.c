@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_qsort.c,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector_qsort.c,v 1.7 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,9 +40,9 @@ ivector_qsort (ivector_t * vector)
 
   /* Checks if the compare function was set */
   if (!vector->comp_)
-  {
-    return EGAINVAL;
-  }
+    {
+      return EGAINVAL;
+    }
   /* Do not try to sort a vector with only one element. It coredumps! */
   if (vector->size_ > 1)
     qsort (vector->data_, vector->size_, vector->datalen_, vector->comp_);

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_free.c,v 1.8 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: list_free.c,v 1.9 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -44,9 +44,9 @@ list_free (list_t ** list)
   (*list)->curr_ = NULL;
   /* Proceeds with the deletion */
   while ((*list)->size_)
-  {
-    list_del (*list, NULL);
-  }
+    {
+      list_del (*list, NULL);
+    }
   /* Deletes the list descriptor from memory */
   free (*list);
   *list = (list_t *) NULL;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.6 2005-01-09 00:01:58 ron_lima Exp $
+ $Id: gatests.h,v 1.7 2005-01-16 11:47:14 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -37,13 +37,13 @@
  * Macros
  */
 /* Constants */
-#define MAX_TESTS    1          /* Maximum number of tests */
-#define MAX_ELEMENTS 10000U     /* Maximum number of elements  */
+#define MAX_TESTS    1		/* Maximum number of tests */
+#define MAX_ELEMENTS 10000U	/* Maximum number of elements  */
 
 /* Errors */
-#define EFAILED      50001u     /* Test failed */
-#define ENOTIMP      50002u     /* Test not implemented yet :"> */
-#define ECKFAIL      50003u     /* Check failed  */
+#define EFAILED      50001u	/* Test failed */
+#define ENOTIMP      50002u	/* Test not implemented yet :"> */
+#define ECKFAIL      50003u	/* Check failed  */
 
 /* Error reporting and handling */
 #define ERROR(test, function, status) printf ("\t[%-7s] error %d - %s "\
@@ -56,15 +56,16 @@ typedef struct
 {
   char *test_name;
   test_proc_t *test_routine;
-} test_t;
+}
+test_t;
 
 /*
  * Prototypes
  */
-int (test_list   ) (void);
-int (test_dlist  ) (void);
-int (test_stack  ) (void);
-int (test_clist  ) (void);
-int (test_queue  ) (void);
+int (test_list) (void);
+int (test_dlist) (void);
+int (test_stack) (void);
+int (test_clist) (void);
+int (test_queue) (void);
 int (test_ivector) (void);
-#endif				/* GATESTS_H */
+#endif /* GATESTS_H */

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.7 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: stack.h,v 1.8 2005-01-16 11:46:54 ron_lima Exp $
 */
 
 #ifndef STACK_H
@@ -35,7 +35,6 @@
 #include "list.h"
 
 GABEGINDECLS
-
 /*
  * Datatypes
  */
@@ -50,5 +49,4 @@ int (stack_pop) __P ((stack_t *, void **));
 int (stack_push) __P ((stack_t *, const void *));
 
 GAENDDECLS
-
-#endif				/* STACK_H */
+#endif /* STACK_H */

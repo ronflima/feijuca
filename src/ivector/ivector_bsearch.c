@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.7 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector_bsearch.c,v 1.8 2005-01-16 11:47:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,19 +40,19 @@ ivector_bsearch (ivector_t * vector, void **found, const void *data)
   assert (data != NULL);
 
   /* Initializations */
-  *found = (void *)NULL;
+  *found = (void *) NULL;
 
   /* Sanity tests */
   if ((!vector->comp_) || (!data))
-  {
-    return EGAINVAL;
-  }
+    {
+      return EGAINVAL;
+    }
   /* Searchs only if the vector has something */
   if (vector->size_)
-  {
-    *found = bsearch (data, vector->data_, vector->size_,
-    	      vector->datalen_, vector->comp_);
-  }
+    {
+      *found = bsearch (data, vector->data_, vector->size_,
+        		vector->datalen_, vector->comp_);
+    }
 
   return 0x0;
 }
