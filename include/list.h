@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.11 2004-10-07 08:44:50 ron_lima Exp $
+ $Id: list.h,v 1.12 2004-10-13 10:51:04 ron_lima Exp $
 */
 
 #ifndef LIST_H
@@ -40,18 +40,18 @@ GABEGINDECLS
 /* Abstraction for a single list element */
 typedef struct list_element_t_
 {
-  void *data_;
-  struct list_element_t_ *next_;
+  void *                   data_;
+  struct list_element_t_ * next_;
 } list_element_t;
 
 /* Abstraction for the list descriptor */
 typedef struct list_t
 {
-  size_t size_;
-  list_element_t *curr_;
-  list_element_t *head_;
-  list_element_t *tail_;
-  deallocator_t *deallocator_;
+  size_t           size_;
+  list_element_t * curr_;
+  list_element_t * head_;
+  list_element_t * tail_;
+  deallocator_t *  deallocator_;
 } list_t;
 
 /*

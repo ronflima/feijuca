@@ -23,8 +23,8 @@
  Description: Interfaces and datatypes for infinite vectors
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector.h,v 1.10 2004-10-07 19:28:08 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector.h,v 1.11 2004-10-13 10:51:04 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -40,11 +40,11 @@ GABEGINDECLS
 /* Infinite vector descriptor */
 typedef struct ivector_
 {
-  void *data_;			/* Vector data */
-  size_t size_;			/* Size of the vector */
-  size_t datalen_;		/* Size of each vector element */
-  compare_t *comp_;		/* Comparison function */
-  deallocator_t *dealloc_;	/* Deallocation function */
+  void *          data_;    /* Vector data */
+  size_t          size_;    /* Size of the vector */
+  size_t          datalen_; /* Size of each vector element */
+  compare_t *     comp_;    /* Comparison function */
+  deallocator_t * dealloc_; /* Deallocation function */
 } ivector_t;
 
 /*
