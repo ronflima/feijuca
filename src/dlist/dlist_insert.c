@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.2 2004-03-01 00:05:16 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.3 2004-03-07 20:51:58 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdlib.h>
@@ -34,13 +34,13 @@
  * Local prototypes
  */
 static int 
-relink_list (DLIST *list, DLIST_ELEMENT *element, int whence);
+relink_list (DLIST *list, DLIST_ELEMENT *element, LIST_POSITION whence);
 
 /*
  * Exported functions
  */
 int 
-dlist_insert (DLIST * list, const void *data, int whence)
+dlist_insert (DLIST * list, const void *data, LIST_POSITION whence)
 {
   DLIST_ELEMENT * element;      /* New element to be inserted */
   /* Allocates memory for the new element */
@@ -81,7 +81,7 @@ dlist_insert (DLIST * list, const void *data, int whence)
 /* Helper function: will relink the list based on the selected
    insertions position */
 static int 
-relink_list (DLIST *list, DLIST_ELEMENT *element, int whence)
+relink_list (DLIST *list, DLIST_ELEMENT *element, LIST_POSITION whence)
 {
   switch (whence)
     {
@@ -92,6 +92,7 @@ relink_list (DLIST *list, DLIST_ELEMENT *element, int whence)
           element->next_ = list->curr_->next_;
           element->prev_ = list->curr_;
           list->curr_->next_ = element;
+          list->tail_ = element;
         }
       else
         {
