@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.2 2004-07-19 00:53:45 ron_lima Exp $
+ $Id: list.c,v 1.3 2004-07-22 10:29:35 ron_lima Exp $
 */
  
 #include <stdio.h>
@@ -65,7 +65,6 @@ test_list (void)
             ++errors;
             list = (list_t *) NULL;
         }
-    /* Loads the list */
     if (! rc) 
         {
             /* Performs the load test */
@@ -101,7 +100,7 @@ load_list (list_t * list, size_t elements)
     /* Initializations */
     errors = 0x0;
 
-    /* Loads the list with 5.000 items */
+    /* Loads the list */
     for (i = 0x0; (i < elements); ++i)
         {
             int * item; /* Item to insert */
