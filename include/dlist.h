@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.2 2004-03-07 20:56:15 ron_lima Exp $
+ $Id: dlist.h,v 1.3 2004-03-19 11:12:22 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -40,19 +40,19 @@
 /* Abstraction for a single list element */
 typedef struct dlist_element_t
 {
-  void                   * data_;
-  struct dlist_element_t * next_;
-  struct dlist_element_t * prev_;
+    void                   * data_;
+    struct dlist_element_t * next_;
+    struct dlist_element_t * prev_;
 } DLIST_ELEMENT;
 
 /* Abstraction for the list descriptor */
 typedef struct dlist_t
 {
-  size_t          size_;
-  DLIST_ELEMENT * curr_;
-  DLIST_ELEMENT * head_;
-  DLIST_ELEMENT * tail_;
-  deallocator_t  deallocator_;
+    size_t          size_;
+    DLIST_ELEMENT * curr_;
+    DLIST_ELEMENT * head_;
+    DLIST_ELEMENT * tail_;
+    deallocator_t  deallocator_;
 } DLIST;
 
 /* 
