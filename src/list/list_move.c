@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.3 2004-03-07 20:54:39 ron_lima Exp $
+ $Id: list_move.c,v 1.4 2004-03-09 10:42:44 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -34,6 +34,10 @@
 int
 list_move (LIST * list, LIST_POSITION whence)
 {
+  if (! list->curr_)
+    {
+      return EOF;
+    }
   switch (whence)
     {
     case HEAD:
@@ -51,11 +55,6 @@ list_move (LIST * list, LIST_POSITION whence)
     default:
       errno = EINVAL;
       return -1;
-    }
-  /* Last resort check: check if the curr_ pointer is valid */
-  if (! list->curr_)
-    {
-      return EOF;
     }
   return 0;
 }
