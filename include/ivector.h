@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.13 2005-01-16 11:46:54 ron_lima Exp $
+ $Id: ivector.h,v 1.14 2005-01-19 23:55:47 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -38,7 +38,7 @@ GABEGINDECLS
  * Datatypes
  */
 /* Infinite vector descriptor */
-    typedef struct ivector_
+typedef struct ivector_t
 {
   void *data_;			/* Vector data */
   size_t size_;			/* Size of the vector */

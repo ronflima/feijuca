@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.17 2005-01-16 11:46:54 ron_lima Exp $
+   $Id: gacommon.h,v 1.18 2005-01-19 23:55:47 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -68,7 +68,7 @@ GABEGINDECLS
  * Datatypes
  */
 /* List iteration types */
-    typedef enum
+typedef enum
 {
   HEAD = 0x0,
   TAIL,
