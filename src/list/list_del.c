@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_del.c,v 1.6 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: list_del.c,v 1.7 2004-07-19 00:53:45 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -78,6 +78,11 @@ list_del (list_t * list, void **data)
                     currelem = list->curr_->next_;
                     extracted_data = currelem->data_;
                     list->curr_->next_ = currelem->next_;
+                }
+            else 
+                {
+                    /* Sorry. I can delete only the next element. */
+                    return EOF;
                 }
         }
     /* Free resources and updates the list descriptor */

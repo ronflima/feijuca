@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.1 2004-07-19 00:11:54 ron_lima Exp $
+ $Id: list.c,v 1.2 2004-07-19 00:53:45 ron_lima Exp $
 */
  
 #include <stdio.h>
@@ -218,8 +218,14 @@ check_deletion (list_t * list, size_t elements)
     ++deleted;
     /* Deletes the tail of the list */
     list_move (list, TAIL);
-    list_del (list, (void **) NULL);
-    ++deleted;
+    if (! list_del (list, (void **) NULL))
+        {
+            /* The tail was deleted. This is a serious bug, since it
+               is not possible to delete the tail of a single linked
+               list */
+            ++errors;
+            printf ("[LIST TEST] The tail was deleted. It is a serious bug\n");
+        }
     /* Check for inconsistencies */
     if (elements-deleted != descriptor_size (list))
         {
