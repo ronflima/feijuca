@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: dlist.texi,v 1.2 2004-03-28 22:51:39 ron_lima Exp $
+@c $Id: dlist.texi,v 1.3 2004-04-04 23:48:05 ron_lima Exp $
 @c %**start of header
 @setfilename dlist.info
 @settitle    Double linked lists
@@ -58,7 +58,7 @@ amount of data that will be stored in memory.
 
 The implementation for double linked lists was done from scratch,
 instead of using some of the single-linked lists routines or data
-types. It would be possible to reuse the LIST descriptor by adding
+types. It would be possible to reuse the list_t descriptor by adding
 into it a new field. However, this unused field would spend useless
 memory if you want to use the single-linked lists stuff.
 
@@ -102,10 +102,10 @@ The following data types are defined for list implementation.
 Pointer to a user function that will be called in order to deallocate
 memory for each data element of the list. This datatype is being
 reused from list.h.
-@item DLIST_ELEMENT:
+@item dlist_element_t:
 Data structure that describes a list element. There is no need to use
 this data type since this is used internally by the list descriptor.
-@item DLIST:
+@item Dlist_t:
 Data structure that decribes the list descriptor. This is used to hold
 all needed data to implement the list. There is no need to access
 directly any element of this structure since they are manipulated by
@@ -123,7 +123,7 @@ the functions of the library.
 * dlist_del   :: Deletes a single element of the list
 @end menu
 @node dlist_alloc, dlist_free, functions, functions
-@section int dlist_alloc (LIST ** list, deallocator_t dealloc)
+@section int dlist_alloc (list_t ** list, deallocator_t dealloc)
 Purpose: Allocates a new list and initializes the list descriptor
 
 Parameters:
@@ -165,7 +165,7 @@ You will note that this prototype is exactly the same definition of
 the @samp{deallocator_t} data type.
 @end itemize
 @node dlist_free, dlist_get, dlist_alloc, functions
-@section int dlist_free (LIST ** list)
+@section int dlist_free (list_t ** list)
 Purpose: Deallocates each element and releases the entire list from
 memory
 
@@ -189,7 +189,7 @@ this point, the deallocator function should be set.
 @end itemize
 
 @node dlist_get, dlist_insert, dlist_free, functions
-@section int dlist_get (LIST * list, void **data, int whence)
+@section int dlist_get (list_t * list, void **data, int whence)
 Purpose: Gets an element data from the list and make it possible to
 navigate the list after getting the data. 
 
@@ -247,7 +247,7 @@ design of this function complies with several Standard C function
 libraries.
 @end itemize
 @node dlist_insert, dlist_move, dlist_get, functions
-@section int dlist_insert (LIST * list, const void *data, int whence)
+@section int dlist_insert (list_t * list, const void *data, int whence)
 Purpose: Inserts a new element in the list
 
 Parameters:
@@ -297,7 +297,7 @@ current pointer will always point to the last inserted element.
 @end itemize
 
 @node dlist_move, dlist_del, dlist_insert, functions
-@section int dlist_move (LIST * list, int whence)
+@section int dlist_move (list_t * list, int whence)
 Purpose: Moves the current pointer to a specific location within the
 list
 
@@ -343,7 +343,7 @@ design of this function complies with several Standard C function
 libraries.
 @end itemize
 @node dlist_del, , dlist_move, functions
-@section int dlist_del (LIST * list, void **data, int whence)
+@section int dlist_del (list_t * list, void **data, int whence)
 Purpose: Deletes a single element from the list
 
 Parameters:
