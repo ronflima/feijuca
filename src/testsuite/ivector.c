@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.2 2005-01-09 00:01:58 ron_lima Exp $
+ $Id: ivector.c,v 1.3 2005-01-09 12:08:59 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -42,6 +42,9 @@
 /*
  * Local prototypes
  */
+static int compare (const void *, const void *);
+static int load_ivector (ivector_t *, size_t);
+static int check_del (ivector_t *);
 
 /*
  * Exported functions
@@ -49,6 +52,129 @@
 int
 test_ivector (void)
 {
-  /* TODO */
-  return ENOTIMP;
+  ivector_t * ivector;          /* Infinite vector descriptor */
+  int rc;                       /* General error handling variable */
+  int * buffer;                 /* Buffer to hold data */
+  int key;                      /* Search key */
+
+  /* Allocates the whole vector */
+  rc = ivector_alloc (&ivector, compare, free, sizeof (int));
+  if (rc)
+  {
+    ERROR (TEST, "ivector_alloc", rc);
+    return EFAILED;
+  }
+  rc = load_ivector (ivector, MAX_ELEMENTS);
+  if (rc)
+  {
+    ERROR (TEST, "ivector load error", ECKFAIL);
+    return EFAILED;
+  }  
+  /* Re-orders the list */
+  rc = ivector_qsort (ivector);
+  if (rc)
+  {
+    ERROR (TEST, "ivector_qsort", rc);
+    return EFAILED;
+  }
+  /* Searches for something */
+  key = MAX_ELEMENTS / 2;
+  rc = ivector_bsearch (ivector, &buffer, &key);
+  if (rc)
+  {
+    ERROR (TEST, "ivector_bsearch", rc);
+    return EFAILED;
+  }
+  /* Puts something using an index */
+  key /= 2;
+  rc = ivector_put (ivector, MAX_ELEMENTS / 2, &key);
+  if (rc)
+  {
+    ERROR (TEST, "ivector_put", rc);
+    return EFAILED;
+  }
+  /* Check deletions */
+  rc = check_del (ivector);
+  if (rc)
+  {
+    ERROR (TEST, "check_del", ECKFAIL);
+    return EFAILED;
+  }
+  /* Deallocates the vector */
+  rc = ivector_free (&ivector);
+  if (rc)
+  {
+    ERROR (TEST, "ivector_free", rc);
+    return EFAILED;
+  }
+  return 0x0;
+}
+
+/* Compare function for the infinite vector */
+static int compare (const void * arg1, const void * arg2)
+{
+  int * v1 = (int *) arg1;
+  int * v2 = (int *) arg2;
+
+  return *v1 > *v2;
+}
+
+/* Loads data into the infinite vector */
+static int
+load_ivector (ivector_t * ivector, size_t elements)
+{
+  register int i;               /* General iterator */
+
+  for (i = elements - 1; i > -1; --i)
+  {
+    int * buffer;               /* Data buffer to load into the vector */
+    int rc;                     /* General error handling variable */
+    
+    /* Allocate buffer */
+    buffer = (int *) malloc (sizeof (int));
+    if (! buffer)
+    {
+      ERROR (TEST, "malloc", ECKFAIL);
+      return ENOMEM;
+    }
+    /* Adds data to the vector */
+    rc = ivector_add (ivector, (void *) buffer);
+    if (rc)
+    {
+      ERROR (TEST, "ivector_add", rc);
+      return EFAILED;
+    }
+  }
+  return 0x0;
+}
+
+/* Checks deletions */
+static int
+check_del (ivector_t * ivector)
+{
+  int rc;                       /* General error handling variable */
+
+  /* Deletes something */
+  rc = ivector_del (ivector, MAX_ELEMENTS / 2);
+  if (rc)
+  {
+    ERROR (TEST, "ivector_del", rc);
+    return EFAILED;
+  }
+  /* Deletes the first element */
+  rc = ivector_del (ivector, 0x0);
+  if (rc)
+  {
+    ERROR (TEST, "ivector_del", rc);
+    return EFAILED;
+  }
+  /* Deletes the last element */
+  rc = ivector_del (ivector, descriptor_size(ivector));
+  if (rc)
+  {
+    ERROR (TEST, "ivector_del", rc);
+    return EFAILED;
+  }
+  
+  return 0x0;
 }
