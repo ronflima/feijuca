@@ -1,0 +1,70 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: ivector.texi,v 1.1 2004-04-11 12:04:47 ron_lima Exp $
+@c %**start of header
+@setfilename ivector.info
+@settitle    Infinite Vectors
+@c %**end of header
+
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
+
+Last update: @value{UPDATED}
+
+Revision: @value{VERSION}
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title G.A. Library
+@subtitle Infinite Vectors Interface5B
+@author Ronaldo Faria Lima
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top
+@top Template
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* algorithm :: Algorithm implemented by G.A. Library
+* constants :: Constants used in library
+* macros    :: Macros defined by lists.h
+* data types:: Data types
+* functions :: Description of all available functions
+* Licenses  :: Licenses and other information
+@end menu
+
+@node algorithm, constants, Top, Top
+@chapter Infinite vectors in G. A. Library
+
+@node constants, macros, algorithm, Top
+@chapter Constants
+
+@node macros, data types, constants, Top
+@chapter Macros
+
+@node data types, functions, macros, Top
+@chapter Data types
+
+@node functions, Licenses, data types, Top
+@chapter Functions
+@menu
+* 
+@end menu
+
+@c ** Includes the licenses 
+@node Licenses, , functions, Top
+@include licenses.texi
+
+@bye
