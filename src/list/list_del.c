@@ -68,6 +68,7 @@ list_del (list_t * list, void **data)
       currelem = list->head_;
       extracted_data = list->head_->data_;
       list->head_ = currelem->next_;
+      list->curr_ = list->head_;
     }
   else
     {
