@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.9 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: dlist.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.9 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $";
 
 /*
  * Local macros
@@ -131,7 +131,7 @@ load_list (dlist_t * list, size_t elements)
       *item = i + 1;
 
       /* Inserts the item in the list */
-      rc = dlist_insert (list, item, NEXT);
+      rc = dlist_insert (list, item, POS_NEXT);
       if (rc)
         {
           ERROR (TEST, "dlist_insert", rc);
@@ -152,7 +152,7 @@ check_contents (dlist_t * list, size_t elements)
   register int i;		/* General iterator */
 
   /* Gets the data from the list, iterating it and checking the contents */
-  rc = dlist_move (list, HEAD);
+  rc = dlist_move (list, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "dlist_move", rc);
@@ -162,7 +162,7 @@ check_contents (dlist_t * list, size_t elements)
   while (!rc)
     {
       /* Gets the current item of the list and goes to the next */
-      rc = dlist_get (list, (void **) &item, NEXT);
+      rc = dlist_get (list, (void **) &item, POS_NEXT);
       if (rc > 0x0)
         {
           ERROR (TEST, "dlist_get", rc);
@@ -204,13 +204,13 @@ check_deletion (dlist_t * list, size_t elements)
   i = 0x0;
 
   /* Deletes the head of the list */
-  rc = dlist_move (list, HEAD);
+  rc = dlist_move (list, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "dlist_move", rc);
       return EFAILED;
     }
-  rc = dlist_del (list, (void **) &item, CURR);
+  rc = dlist_del (list, (void **) &item, POS_CURR);
   if (rc)
     {
       ERROR (TEST, "dlist_del", rc);
@@ -218,7 +218,7 @@ check_deletion (dlist_t * list, size_t elements)
     }
   ++deleted;
   /* Moves to the head of the list */
-  rc = dlist_move (list, HEAD);
+  rc = dlist_move (list, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "dlist_move", rc);
@@ -227,7 +227,7 @@ check_deletion (dlist_t * list, size_t elements)
   /* Moves to somewhere in the middle of the list */
   for (i = 0; i < elements / 2; ++i)
     {
-      rc = dlist_move (list, NEXT);
+      rc = dlist_move (list, POS_NEXT);
       if (rc)
         {
           ERROR (TEST, "dlist_move", rc);
@@ -235,7 +235,7 @@ check_deletion (dlist_t * list, size_t elements)
         }
     }
   /* Deletes an item at somewhere in the middle of the list */
-  rc = dlist_del (list, (void **) &item, NEXT);
+  rc = dlist_del (list, (void **) &item, POS_NEXT);
   if (rc)
     {
       ERROR (TEST, "dlist_del", rc);
@@ -243,13 +243,13 @@ check_deletion (dlist_t * list, size_t elements)
     }
   ++deleted;
   /* Deletes the tail of the list */
-  rc = dlist_move (list, TAIL);
+  rc = dlist_move (list, POS_TAIL);
   if (rc)
     {
       ERROR (TEST, "dlist_move", rc);
       return EFAILED;
     }
-  rc = dlist_del (list, (void **) NULL, CURR);
+  rc = dlist_del (list, (void **) NULL, POS_CURR);
   if (rc)
     {
       ERROR (TEST, "dlist_del", rc);

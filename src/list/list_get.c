@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.12 2005-01-28 00:01:19 ron_lima Exp $
+ $Id: list_get.c,v 1.13 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.12 2005-01-28 00:01:19 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.13 2005-01-30 11:28:17 ron_lima Exp $"; 
 
 int
 list_get (list_t * list, void **data, position_t whence)
@@ -50,15 +50,13 @@ list_get (list_t * list, void **data, position_t whence)
   *data = list->curr_->data_;
   switch (whence)
     {
-    case CURR:
-      /* Do nothing. Used only for parameter checking */
+    case POS_CURR:              /* Does nothing: ignored */
+    case POS_NONE:              /* Does nothing: ignored */
       break;
-    case NEXT:
-      /* Moves to the next element of the list */
+    case POS_NEXT:         /* Moves to the next element of the list */
       return list_move (list, whence);
       break;
-    default:
-      /* Wrong navigation mode provided */
+    default:                    /* Wrong navigation mode provided */
       return EGAINVAL;
     }
   return 0x0;

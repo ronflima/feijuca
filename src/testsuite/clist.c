@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.c,v 1.5 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: clist.c,v 1.6 2005-01-30 11:28:17 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.5 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.6 2005-01-30 11:28:17 ron_lima Exp $";
 
 /*
  * Local macros
@@ -149,7 +149,7 @@ check_navigation (clist_t * clist)
   register int j;		/* General purpose iterator */
 
   /* Try to go to the first element of the list */
-  rc = clist_move (clist, HEAD);
+  rc = clist_move (clist, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "clist_move", rc);
@@ -157,7 +157,7 @@ check_navigation (clist_t * clist)
     }
 
   /* Try to go to the last element of the list */
-  rc = clist_move (clist, TAIL);
+  rc = clist_move (clist, POS_TAIL);
   if (rc)
     {
       ERROR (TEST, "clist_move", rc);
@@ -167,7 +167,7 @@ check_navigation (clist_t * clist)
   /* Runs the list 3 times to check the circularity */
   for (i = 0x0; i < descriptor_size (clist) * 3; ++i)
     {
-      rc = clist_move (clist, NEXT);
+      rc = clist_move (clist, POS_NEXT);
       if (rc)
         {
           ERROR (TEST, "clist_move", rc);
@@ -176,7 +176,7 @@ check_navigation (clist_t * clist)
     }
 
   /* Moves to the beginning of the list again */
-  rc = clist_move (clist, HEAD);
+  rc = clist_move (clist, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "clist_move", rc);
@@ -190,7 +190,7 @@ check_navigation (clist_t * clist)
         {
           int *buffer;		/* Buffer data  */
 
-          rc = clist_get (clist, (void *) &buffer, NEXT);
+          rc = clist_get (clist, (void *) &buffer, POS_NEXT);
           if (rc)
             {
               ERROR (TEST, "clist_move", rc);
@@ -215,7 +215,7 @@ check_deletion (clist_t * clist)
   int *buffer;			/* Buffer to save data */
 
   /* Goes to the beginning of the list */
-  rc = clist_move (clist, HEAD);
+  rc = clist_move (clist, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "clist_move", rc);
@@ -231,7 +231,7 @@ check_deletion (clist_t * clist)
     }
 
   /* Move to the tail */
-  rc = clist_move (clist, TAIL);
+  rc = clist_move (clist, POS_TAIL);
   if (rc)
     {
       ERROR (TEST, "clist_move", rc);

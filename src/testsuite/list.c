@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.11 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: list.c,v 1.12 2005-01-30 11:28:17 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.11 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.12 2005-01-30 11:28:17 ron_lima Exp $";
 
 /*
  * Local macros
@@ -131,7 +131,7 @@ load_list (list_t * list, size_t elements)
       /* Builds the item data */
       *item = i + 1;
       /* Inserts the item in the list */
-      rc = list_insert (list, item);
+      rc = list_insert (list, item, POS_NONE);
       if (rc)
         {
           ERROR (TEST, "list_insert", rc);
@@ -159,7 +159,7 @@ check_contents (list_t * list, size_t elements)
   i = 0x0;
 
   /* Gets the data from the list, iterating it and checking the contents */
-  rc = list_move (list, HEAD);
+  rc = list_move (list, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "list_move", rc);
@@ -168,7 +168,7 @@ check_contents (list_t * list, size_t elements)
   while (!rc)
     {
       /* Gets the current item of the list and goes to the next */
-      rc = list_get (list, (void **) &item, NEXT);
+      rc = list_get (list, (void **) &item, POS_NEXT);
       if (rc > 0x0)
         {
           ERROR (TEST, "list_get", rc);
@@ -211,7 +211,7 @@ check_deletion (list_t * list, size_t elements)
   i = 0x0;
 
   /* Deletes the head of the list */
-  rc = list_move (list, HEAD);
+  rc = list_move (list, POS_HEAD);
   if (rc)
     {
       ERROR (TEST, "list_move", rc);
@@ -228,7 +228,7 @@ check_deletion (list_t * list, size_t elements)
   /* Moves to somewhere in the middle of the list */
   for (i = 0; i < elements / 2; ++i)
     {
-      rc = list_move (list, NEXT);
+      rc = list_move (list, POS_NEXT);
       if (rc)
         {
           ERROR (TEST, "list_move", rc);
@@ -245,7 +245,7 @@ check_deletion (list_t * list, size_t elements)
   free (item);
   ++deleted;
   /* Deletes the tail of the list */
-  rc = list_move (list, TAIL);
+  rc = list_move (list, POS_TAIL);
   if (rc)
     {
       ERROR (TEST, "list_move", rc);

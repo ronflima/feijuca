@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.14 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: dlist_del.c,v 1.15 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.14 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.15 2005-01-30 11:28:17 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -82,19 +82,20 @@ dlist_del (dlist_t * list, void **data, position_t whence)
      list elements */
   switch (whence)
     {
-    case HEAD:			/* Deletes from the head of the list */
+    case POS_HEAD:			/* Deletes from the head of the list */
       currelem = delete_head (list);
       break;
-    case TAIL:			/* Deletes from the tail of the list */
+    case POS_TAIL:			/* Deletes from the tail of the list */
       currelem = delete_tail (list);
       break;
-    case CURR:			/* Deletes the current element  */
+    case POS_CURR:			/* Deletes the current element  */
+    case POS_NONE:
       currelem = delete_current (list);
       break;
-    case NEXT:			/* Deletes the next element */
+    case POS_NEXT:			/* Deletes the next element */
       currelem = delete_next (list);
       break;
-    case PREV:			/* Deletes the previous element */
+    case POS_PREV:			/* Deletes the previous element */
       currelem = delete_prev (list);
       break;
     default:			/* Error: wrong parameter provided */

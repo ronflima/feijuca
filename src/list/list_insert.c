@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.13 2005-01-28 00:01:19 ron_lima Exp $
+ $Id: list_insert.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,10 +32,10 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.13 2005-01-28 00:01:19 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $"; 
 
 int
-list_insert (list_t * list, const void *data)
+list_insert (list_t * list, const void *data, position_t whence)
 {
   list_element_t *element;
 
@@ -61,11 +61,28 @@ list_insert (list_t * list, const void *data)
     }
   else
     {
-      /* Insert at the end */
-      list->tail_->next_ = element;
-      list->tail_ = element;
+      /* Check if the current element is valid */
+      if (list->curr_)
+        {
+          /* Adds the new item after the current element */
+          element->next_ = list->curr_->next_;
+          list->curr_->next_ = element;
+        }
+      else
+        {
+          /* Insert at the end - the current element is not valid. */
+          list->tail_->next_ = element;
+          list->tail_ = element;
+        }
     }
-  list->curr_ = element;
+  if (list->curr_ && whence == POS_NEXT)
+    {
+      /* Updates the current element only if the current element is
+         valid and the selected position is next */
+      list->curr_ = element;
+    }
+  /* Updates the list size */
   ++(list->size_);
+
   return 0x0;
 }

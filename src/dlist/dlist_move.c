@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.13 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: dlist_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.13 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $";
 
 int
 dlist_move (dlist_t * list, position_t whence)
@@ -42,13 +42,13 @@ dlist_move (dlist_t * list, position_t whence)
   /* Decides how to navigate in the list */
   switch (whence)
     {
-    case HEAD:			/* Moves to the head of the list */
+    case POS_HEAD:			/* Moves to the head of the list */
       list->curr_ = list->head_;
       break;
-    case TAIL:			/* Moves to the tail of the list */
+    case POS_TAIL:			/* Moves to the tail of the list */
       list->curr_ = list->tail_;
       break;
-    case NEXT:			/* Moves to the next element */
+    case POS_NEXT:			/* Moves to the next element */
       if (list->curr_)
         {
           list->curr_ = list->curr_->next_;
@@ -58,7 +58,7 @@ dlist_move (dlist_t * list, position_t whence)
           return EOF;
         }
       break;
-    case PREV:			/* Moves to the previous element */
+    case POS_PREV:			/* Moves to the previous element */
       if (list->curr_)
         {
           list->curr_ = list->curr_->prev_;
@@ -67,6 +67,8 @@ dlist_move (dlist_t * list, position_t whence)
         {
           return EOF;
         }
+      break;
+    case POS_NONE:              /* Does nothing: ignored */
       break;
     default:			/* Invalid parameter provided */
       return EGAINVAL;

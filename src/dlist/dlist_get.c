@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.12 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: dlist_get.c,v 1.13 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.12 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.13 2005-01-30 11:28:17 ron_lima Exp $";
 
 int
 dlist_get (dlist_t * list, void **data, position_t whence)
@@ -52,11 +52,11 @@ dlist_get (dlist_t * list, void **data, position_t whence)
   /* Decides how to navigate the list */
   switch (whence)
     {
-    case CURR:
-      /* Used only for parameter checking */
+    case POS_NONE:              /* Used only for parameter checking */
+    case POS_CURR:              
       break;
-    case NEXT:			/* Moves to the next element */
-    case PREV:			/* Moves to the previous element */
+    case POS_NEXT:			/* Moves to the next element */
+    case POS_PREV:			/* Moves to the previous element */
       return dlist_move (list, whence);
       break;
     default:			/* Invalid parameter provided */

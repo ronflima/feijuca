@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_free.c,v 1.9 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: dlist_free.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_free.c,v 1.9 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_free.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $";
 
 int
 dlist_free (dlist_t ** list)
@@ -44,7 +44,7 @@ dlist_free (dlist_t ** list)
   /* Proceeds with the deletion - Deletes the list from the head, always */
   while ((*list)->size_)
     {
-      dlist_del (*list, NULL, HEAD);
+      dlist_del (*list, NULL, POS_HEAD);
     }
   /* Deletes the list descriptor from memory */
   free (*list);

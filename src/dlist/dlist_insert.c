@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.13 2005-01-28 00:11:44 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.13 2005-01-28 00:11:44 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -72,12 +72,14 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
     }
   else
     {
-      int rc;			/* General error handling variable */
+      int rc;                   /* General error handling variable */
 
       /* Relinks the list based on whence parameter */
       rc = relink_list (list, element, whence);
       if (rc)
         {
+          /* Could not insert the new element. Return an error to the
+             caller */
           free (element);
           return rc;
         }
@@ -98,8 +100,21 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
 {
   switch (whence)
     {
-    case NEXT:			/* Inserts the new element after the current
-        			   pointer */
+    case POS_CURR:  /* Inserts at the current position, if possible */
+    case POS_NONE:
+      if (list->curr_)
+        {
+          element->next_ = list->curr_;
+          element->prev_ = list->curr_->prev_;
+          list->curr_->prev_->next_ = element;
+          list->curr_->prev_ = element;
+        }
+      else
+        {
+          return EGABADC;
+        }
+      break;
+    case POS_NEXT:             /* Inserts after the current pointer */
       assert (list->curr_ != NULL);
       if (list->curr_)
         {
@@ -113,8 +128,7 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
           return EGABADC;
         }
       break;
-    case PREV:			/* Inserts the new element before the current
-        			   pointer */
+    case POS_PREV:            /* Inserts before the current pointer */
       assert (list->curr_ != NULL);
       if (list->curr_)
         {
@@ -127,14 +141,12 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
           return EGABADC;
         }
       break;
-    case HEAD:			/* Inserts the new element in the head of the
-        			   list */
+    case POS_HEAD:              /* Inserts at the head of the list */
       element->next_ = list->head_->next_;
       list->head_->prev_ = element;
       list->head_ = element;
       break;
-    case TAIL:			/* Inserts the new element in the tail of the
-        			   list */
+    case POS_TAIL:              /* Inserts at the tail of the list */
       element->prev_ = list->tail_;
       list->tail_->next_ = element;
       list->tail_ = element;

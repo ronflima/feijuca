@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.13 2005-01-28 00:01:19 ron_lima Exp $
+ $Id: list_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.13 2005-01-28 00:01:19 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $"; 
 
 int
 list_move (list_t * list, position_t whence)
@@ -43,13 +43,13 @@ list_move (list_t * list, position_t whence)
   /* Decides how to navigate the list */
   switch (whence)
     {
-    case HEAD:
+    case POS_HEAD:              /* Goes to the head */
       list->curr_ = list->head_;
       break;
-    case TAIL:
+    case POS_TAIL:              /* Goes to the tail */
       list->curr_ = list->tail_;
       break;
-    case NEXT:
+    case POS_NEXT:              /* Goes to the next element */
       if (list->curr_)
         {
           list->curr_ = list->curr_->next_;
@@ -59,7 +59,9 @@ list_move (list_t * list, position_t whence)
           return EOF;
         }
       break;
-    default:
+    case POS_NONE:              /* Does nothing: ignored */
+      break;
+    default:                    /* Invalid option */
       return EGAINVAL;
     }
   return 0x0;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.15 2005-01-19 23:55:47 ron_lima Exp $
+ $Id: list.h,v 1.16 2005-01-30 11:28:16 ron_lima Exp $
 */
 
 #ifndef LIST_H
@@ -62,7 +62,7 @@ list_t;
 int (list_alloc) __P ((list_t **, deallocator_t *));
 int (list_free) __P ((list_t **));
 int (list_get) __P ((list_t *, void **, position_t));
-int (list_insert) __P ((list_t *, const void *));
+int (list_insert) __P ((list_t *, const void *, position_t));
 int (list_move) __P ((list_t *, position_t));
 int (list_del) __P ((list_t *, void **));
 

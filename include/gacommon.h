@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.18 2005-01-19 23:55:47 ron_lima Exp $
+   $Id: gacommon.h,v 1.19 2005-01-30 11:28:10 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -43,6 +43,8 @@
 #define GABEGINDECLS
 #define GAENDDECLS
 #endif
+
+GABEGINDECLS
 
 /* Prototypation handle - It is used to let K&R compilers to compile
    and use the library */
@@ -63,18 +65,18 @@
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_
 
-GABEGINDECLS
 /*
  * Datatypes
  */
 /* List iteration types */
 typedef enum
 {
-  HEAD = 0x0,
-  TAIL,
-  NEXT,
-  CURR,
-  PREV
+  POS_NONE = 0x0,               /* No position - dummy value */
+  POS_HEAD,                     /* Head */
+  POS_TAIL,                     /* Tail */
+  POS_NEXT,                     /* Next element  */
+  POS_CURR,                     /* Current element */
+  POS_PREV                      /* Previous element */
 }
 position_t;
 
