@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.2 2004-04-30 09:53:43 ron_lima Exp $
+ $Id: stack.h,v 1.3 2004-05-02 23:55:00 ron_lima Exp $
 */
  
 #ifndef STACK_H
@@ -56,4 +56,4 @@ extern int
 #ifdef __cplusplus
 }
 #endif
-#endif /* IVECTOR_H */
+#endif /* STACK_H */
