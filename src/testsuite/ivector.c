@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.4 2005-01-09 12:30:21 ron_lima Exp $
+ $Id: ivector.c,v 1.5 2005-01-09 13:13:34 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -58,7 +58,7 @@ test_ivector (void)
   int key;                      /* Search key */
 
   /* Allocates the whole vector */
-  rc = ivector_alloc (&ivector, compare, free, sizeof (int));
+  rc = ivector_alloc (&ivector, compare, NULL, sizeof (int));
   if (rc)
   {
     ERROR (TEST, "ivector_alloc", rc);
