@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.4 2004-03-26 11:14:19 ron_lima Exp $
+ $Id: list.h,v 1.5 2004-04-02 10:25:19 ron_lima Exp $
 */
  
 #ifndef LIST_H
@@ -57,21 +57,21 @@ typedef struct list_t
  * Prototypes 
  */
 extern int
-list_alloc (list_t ** list, deallocator_t dealloc);
+(list_alloc) (list_t ** list, deallocator_t dealloc);
 
 extern int
-list_free (list_t ** list);
+(list_free) (list_t ** list);
 
 extern int 
-list_get (list_t * list, void **data, list_position_t whence);
+(list_get) (list_t * list, void **data, list_position_t whence);
 
 extern int 
-list_insert (list_t * list, const void *data);
+(list_insert) (list_t * list, const void *data);
 
 extern int
-list_move (list_t * list, list_position_t whence);
+(list_move) (list_t * list, list_position_t whence);
 
 extern int
-list_del (list_t * list, void **data);
+(list_del) (list_t * list, void **data);
 
 #endif /* LIST_H */

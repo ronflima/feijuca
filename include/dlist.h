@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.4 2004-03-26 11:14:19 ron_lima Exp $
+ $Id: dlist.h,v 1.5 2004-04-02 10:25:08 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -59,21 +59,21 @@ typedef struct dlist_t
  * Prototypes 
  */
 extern int
-dlist_alloc (dlist_t ** list, deallocator_t dealloc);
+(dlist_alloc) (dlist_t ** list, deallocator_t dealloc);
 
 extern int
-dlist_free (dlist_t ** list);
+(dlist_free) (dlist_t ** list);
 
 extern int 
-dlist_get (dlist_t * list, void **data, list_position_t whence);
+(dlist_get) (dlist_t * list, void **data, list_position_t whence);
 
 extern int 
-dlist_insert (dlist_t * list, const void *data, list_position_t whence);
+(dlist_insert) (dlist_t * list, const void *data, list_position_t whence);
 
 extern int
-dlist_move (dlist_t * list, list_position_t whence);
+(dlist_move) (dlist_t * list, list_position_t whence);
 
 extern int
-dlist_del (dlist_t * list, void **data, list_position_t whence);
+(dlist_del) (dlist_t * list, void **data, list_position_t whence);
 
 #endif /* LIST_H */
