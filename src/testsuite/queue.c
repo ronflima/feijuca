@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.2 2005-01-09 00:01:58 ron_lima Exp $
+ $Id: queue.c,v 1.3 2005-01-09 12:09:22 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -41,10 +41,8 @@
 /*
  * Local prototypes
  */
-#ifdef TODO
 static int check_push (queue_t *, size_t);
-static int check_pop (queue_t *);
-#endif
+static int check_pop (queue_t *, size_t);
 
 /*
  * Exported functions
@@ -52,12 +50,9 @@ static int check_pop (queue_t *);
 int
 test_queue (void)
 {
-  queue_t *queue;		/* Queue descriptor */
+  queue_t * queue;		/* Queue descriptor */
   int rc;			/* General error handle variable */
 
-  return ENOTIMP;
-
-#ifdef TODO
   /* Check the queue allocation */
   rc = queue_alloc (&queue, free);
   if (rc)
@@ -75,7 +70,7 @@ test_queue (void)
   }
 
   /* Checks the pop of data from the queue */
-  rc = check_pop (queue);
+  rc = check_pop (queue, MAX_ELEMENTS);
   if (rc)
   {
     ERROR (TEST, "check_pop", rc);
@@ -91,10 +86,8 @@ test_queue (void)
   }
 
   return 0x0;
-#endif
 }
 
-#ifdef TODO
 /* Loads data into the circular list */
 static int
 check_push (queue_t * queue, size_t elements)
@@ -136,10 +129,36 @@ check_push (queue_t * queue, size_t elements)
 
 /* Checks the pop of data from the queue */
 static int
-check_pop (queue_t * queue)
+check_pop (queue_t * queue, size_t elements)
 {
-  /* TODO */
-  return ENOTIMP;
+  register int i;               /* General iterator */
+
+  for (i = 0; i < elements; ++i)
+  {
+    int * buffer;               /* Buffer to hold popped data from the queue */
+    int rc;                     /* General error handling variable */
+    
+    /* Pops data from the queue */
+    rc = queue_pop (queue, (void **) & buffer);
+    if (rc)
+    {
+      ERROR (TEST, "queue_pop", rc);
+      return EFAILED;
+    }
+    /* Checks popped data */
+    if (! buffer)
+    {
+      ERROR (TEST, "Null popped data found", ECKFAIL);
+      return EFAILED;
+    }
+    if (*buffer != i + 1)
+    {
+      ERROR (TEST, "Popped data mismatch", ECKFAIL);
+      return EFAILED;
+    }
+    /* Frees popped data */
+    free ((void *)buffer);
+  }
+  return 0x0;
 }
 
-#endif
