@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.2 2004-04-04 23:55:16 ron_lima Exp $
+ $Id: ivector.h,v 1.3 2004-04-11 12:03:33 ron_lima Exp $
 */
  
 #ifndef IVECTOR_H
@@ -65,6 +65,8 @@ extern int
 (ivector_qsort) (ivector_t * vector);
 extern void *
 (ivector_bsearch) (ivector_t * vector, const void * data);
+extern int
+(ivector_del) (ivector_t * vector, size_t idx);
 
 #ifdef __cplusplus
 }
