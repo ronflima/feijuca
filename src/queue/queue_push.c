@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_push.c,v 1.8 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: queue_push.c,v 1.9 2005-01-31 09:53:28 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.8 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.9 2005-01-31 09:53:28 ron_lima Exp $";
 
 int
 queue_push (queue_t * queue, const void *data)
@@ -41,5 +41,5 @@ queue_push (queue_t * queue, const void *data)
   /* Assertives for debugging purposes */
   assert (queue != NULL);
   /* Calls the list insert function */
-  return list_insert ((list_t *) queue, data, POS_HEAD);
+  return list_insert ((list_t *) queue, data, POS_TAIL);
 }
