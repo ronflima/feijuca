@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.5 2005-01-09 00:01:58 ron_lima Exp $
+ $Id: dlist.c,v 1.6 2005-01-09 13:24:04 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -214,6 +214,13 @@ check_deletion (dlist_t * list, size_t elements)
     return EFAILED;
   }
   ++deleted;
+  /* Moves to the head of the list */
+  rc = dlist_move (list, HEAD);
+  if (rc)
+  {
+    ERROR (TEST, "dlist_move", rc);
+    return EFAILED;    
+  }
   /* Moves to somewhere in the middle of the list */
   for (i = 0; i < elements / 2; ++i)
   {
