@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.8 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector_alloc.c,v 1.9 2005-01-09 13:17:25 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,8 +39,8 @@ ivector_alloc (ivector_t ** vector, compare_t * comp, deallocator_t * dealloc,
   /* Assertives for debugging purposes */
   assert (vector != NULL);
   assert (comp != NULL);
-  assert (dealloc != NULL);
   assert (datalen != 0);
+  
   /* Sanity tests */
   if (!datalen)
   {
