@@ -1,8 +1,8 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: list.texi,v 1.3 2004-03-04 10:46:42 ron_lima Exp $
+@c $Id: dlist.texi,v 1.1 2004-03-04 10:46:42 ron_lima Exp $
 @c %**start of header
-@setfilename list.info
-@settitle    Lists
+@setfilename dlist.info
+@settitle    Double linked lists
 @c %**end of header
 
 @copying
@@ -18,7 +18,7 @@ Revision: @value{VERSION}
 @c ** Title page
 
 @title G.A. Library
-@subtitle Single linked lists interface
+@subtitle Double linked lists interface
 @author Ronaldo Faria Lima
 
 @c ** Copyright page
@@ -39,7 +39,7 @@ Revision: @value{VERSION}
 @menu
 * algorithm :: Algorithm implemented by G.A. Library
 * constants :: Constants used in library
-* macros    :: Macros defined by lists.h
+* macros    :: Macros defined by dlists.h
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
@@ -47,15 +47,20 @@ Revision: @value{VERSION}
 
 @node algorithm, constants, Top, Top
 @chapter Single linked lists in G.A. Library
-G.A. Library implements single linked lists through the header file
-<list.h>. The list descriptor contains always the first and the last
+G.A. Library implements double linked lists through the header file
+<dlist.h>. The list descriptor contains always the first and the last
 elements for fast access in the list. Navigation in the list is
-possible only in one way: from the beginning through the end. This is
-an effect on how single linked lists are built.
+possible only in both ways.
 
-Single linked lists are useful when you have a collection of data that
-must be traversed from the beginning through the end and you don't
-know the amount of data that will be loaded in memory.
+Double linked lists are useful when you have a collection of data that
+must be traversed in two directions in memory and you won't know the
+amount of data that will be stored in memory.
+
+The implementation for double linked lists was done from scratch,
+instead of using some of the single-linked lists routines or data
+types. It would be possible to reuse the LIST descriptor by adding
+into it a new field. However, this unused field would spend useless
+memory if you want to use the single-linked lists stuff.
 
 Until this release, no thread safety was analyzed or even implemented
 in the algorithms. So, thread safety is not guaranteed.
@@ -67,11 +72,15 @@ The only defined constants defines how to iterate in the list.
 
 @itemize @bullet
 @item HEAD:
-Move the current pointer to the beginning of the list
+Operations over the beginning of the list.
 @item TAIL:
-Move the pointer to the end of the list
+Operations over the tail of the list.
 @item NEXT:
-Move the pointer to the next item of the list
+Operations within the next item of the list, based on the current
+pointer.
+@item PREV:
+Operatarions within the previous item of the list based on the current
+pointer.
 @item CURR:
 Used to operate over the current item of the list
 @end itemize
@@ -81,7 +90,8 @@ Used to operate over the current item of the list
 @itemize @bullet
 @item list_size (list):
 Receives a list descriptor as argument and returns the list size in
-number of elements.
+number of elements. This is reused from the list.h header file and is
+common for both implementations.
 @end itemize
 
 @node data types, functions, macros, Top
@@ -90,11 +100,12 @@ The following data types are defined for list implementation.
 @itemize @bullet
 @item void (* deallocator_t)(void *data):
 Pointer to a user function that will be called in order to deallocate
-memory for each data element of the list.
-@item LIST_ELEMENT:
+memory for each data element of the list. This datatype is being
+reused from list.h.
+@item DLIST_ELEMENT:
 Data structure that describes a list element. There is no need to use
 this data type since this is used internally by the list descriptor.
-@item LIST:
+@item DLIST:
 Data structure that decribes the list descriptor. This is used to hold
 all needed data to implement the list. There is no need to access
 directly any element of this structure since they are manipulated by
@@ -104,15 +115,15 @@ the functions of the library.
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* list_alloc :: List allocator function
-* list_free  :: List deallocator function
-* list_get   :: Element getter
-* list_insert:: Inserts a new element
-* list_move  :: Iterates the list
-* list_del   :: Deletes a single element of the list
+* dlist_alloc :: List allocator function
+* dlist_free  :: List deallocator function
+* dlist_get   :: Element getter
+* dlist_insert:: Inserts a new element
+* dlist_move  :: Iterates the list
+* dlist_del   :: Deletes a single element of the list
 @end menu
-@node list_alloc, list_free, functions, functions
-@section int list_alloc (LIST ** list, deallocator_t dealloc)
+@node dlist_alloc, dlist_free, functions, functions
+@section int dlist_alloc (LIST ** list, deallocator_t dealloc)
 Purpose: Allocates a new list and initializes the list descriptor
 
 Parameters:
@@ -153,8 +164,8 @@ void deallocator (void *data);
 You will note that this prototype is exactly the same definition of
 the @samp{deallocator_t} data type.
 @end itemize
-@node list_free, list_get, list_alloc, functions
-@section int list_free (LIST ** list)
+@node dlist_free, dlist_get, dlist_alloc, functions
+@section int dlist_free (LIST ** list)
 Purpose: Deallocates each element and releases the entire list from
 memory
 
@@ -169,10 +180,16 @@ Return values:
 @item Always returns 0
 @end itemize
 
-Error values in errno: never sets any values in errno
+Error values in errno: 
+@itemize @bullet
+@item EINVAL: 
+The deallocator was not set. If set, it means that the library has
+some sort of bug or your application memory is corrupted somehow. At
+this point, the deallocator function should be set.
+@end itemize
 
-@node list_get, list_insert, list_free, functions
-@section int list_get (LIST * list, void **data, int whence)
+@node dlist_get, dlist_insert, dlist_free, functions
+@section int dlist_get (LIST * list, void **data, int whence)
 Purpose: Gets an element data from the list and make it possible to
 navigate the list after getting the data. 
 
@@ -192,6 +209,9 @@ Gets the current element data and do not update the current pointer.
 @item NEXT:
 Gets the current element data and makes the current pointer point to the
 next element (moves the list)
+@item PREV:
+Gets the current element data and makes the current pointer point to
+the previous element (moves the list).
 @end itemize
 @end itemize
 
@@ -210,11 +230,11 @@ if the whence parameter has invalid options
 @emph{Hints}: 
 @itemize
 @item
-To get the first element, use list_move function (see
-@xref{list_move}) and then use the function with whence=CURR.
+To get the first element, use dlist_move function (see
+@xref{dlist_move}) and then use this function with whence=CURR.
 @item
 This function was designed, basically, to retrieve data from the list
-by iterating it from the current position to the next. The data is
+by iterating it from the current position. The data is
 retrieved and not deleted from the list.
 @item 
 This function will return, always, the data from the current position
@@ -226,8 +246,8 @@ global data structure since EOF is a macro that expands to -1. The
 design of this function complies with several Standard C function
 libraries.
 @end itemize
-@node list_insert, list_move, list_get, functions
-@section int list_insert (LIST * list, const void *data)
+@node dlist_insert, dlist_move, dlist_get, functions
+@section int dlist_insert (LIST * list, const void *data, int whence)
 Purpose: Inserts a new element in the list
 
 Parameters:
@@ -236,6 +256,18 @@ Parameters:
 List descriptor
 @item data:
 Data pointer to be inserted in the list
+@item whence:
+Where to insert the new parameter:
+@itemize @bullet
+@item NEXT: 
+As the next element based on the current position.
+@item PREV:
+As the previous element, based on the current position.
+@item HEAD:
+As the list head.
+@item TAIL:
+As the list tail.
+@end itemize
 @end itemize
 
 Return values:
@@ -249,20 +281,23 @@ Error values in errno:
 @item ENOMEM:
 It was not possible to allocate memory for the element descriptor for
 the list.
+@item EINVAL:
+The @samp{whence} parameter is not valid.
+@item EFAULT:
+The operation in @samp{whence} was selected to be done using the
+current pointer but the current pointer is not set.
 @end itemize
 
 @emph{Hints}:
 @itemize
-@item
-This function always inserts the element at the end of the list.
 @item 
 This function updates the value of the current pointer. So, if the
 list was initialized and then several elements were inserted, the
 current pointer will always point to the last inserted element.
 @end itemize
 
-@node list_move, list_del, list_insert, functions
-@section int list_move (LIST * list, int whence)
+@node dlist_move, dlist_del, dlist_insert, functions
+@section int dlist_move (LIST * list, int whence)
 Purpose: Moves the current pointer to a specific location within the
 list
 
@@ -307,8 +342,8 @@ global data structure since EOF is a macro that expands to -1. The
 design of this function complies with several Standard C function
 libraries.
 @end itemize
-@node list_del, , list_move, functions
-@section int list_del (LIST * list, void **data)
+@node dlist_del, , dlist_move, functions
+@section int dlist_del (LIST * list, void **data, int whence)
 Purpose: Deletes a single element from the list
 
 Parameters:
@@ -316,14 +351,25 @@ Parameters:
 @item list:
 The list descriptor
 @item data:
-Data storage arena to store the data extracted from the list.
+Data storage arena to store the data extracted from the list
+@item whence:
+Where to delete the item:
+@itemize @bullet
+@item CURR:
+Deletes the current item
+@item NEXT:
+Deletes the next item based on the current pointer
+@item PREV:
+Deletes the previous item based on the current pointer
+@end itemize
 @end itemize
 
 Return values:
 @itemize @bullet
 @item 0: success
 @item -1: failure
-@item EOF: if the list is empty
+@item EOF: 
+if the list is empty or if the current pointer is not set.
 @end itemize
 
 Error values in errno:
@@ -336,12 +382,18 @@ Returned when the deallocator and the data storage are not provided.
 @itemize
 @item
 If the list was never iterated, the current position points to
-nowhere. So, the deletion will happen in the head of the list.
+nowhere. No deletion will take place for operations using whence=CURR,
+NEXT or PREV.
 @item
 Always check errno for error checking, since EOF expands to -1.
 @item 
 If you provide NULL for the data storage, the function will call the
 deallocator provided to free the data memory.
+@item
+If you delete the current element (whence=CURR), the current pointer
+will be reset to NULL and if you issue again the same operation, it
+will fail by returning to the caller EOF, since the current pointer
+was reset due to the previous operation.
 @end itemize
 
 @c ** Includes the licenses 
