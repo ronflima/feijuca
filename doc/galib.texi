@@ -1,0 +1,76 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: galib.texi,v 1.1 2004-05-24 01:58:24 ron_lima Exp $
+@c %**start of header
+@setfilename galib.info
+@settitle    Generic Algorithms Library
+@c %**end of header
+
+@c ** Inserts the version information into the current document
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
+
+Last update: @value{UPDATED}
+
+Revision: @value{VERSION}
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title GALib
+@subtitle A Generic Algorithms Library
+@author Ronaldo Faria Lima
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top
+@top GALib
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* Introduction          :: An introduction to the GA Lib
+* List:(list.info).     :: Single-linked lists
+* DList:(dlist.info).   :: Double-linked lists
+* CList:(clist.info).   :: Circular lists
+* IVect:(ivector.info). :: Infinite vectors
+
+* Licenses :: Licenses and other information
+@end menu
+
+@node Introduction, Licenses, Top, Top
+@chapter Introduction to G.A. Lib
+
+The idea of writing a library with generic algorithms is not new. In
+fact, several projects in Sourceforge are libraries that intend
+implement all general public domain algorithm like lists, queues and
+so on. In fact, G.A. Lib is a project that was born from my studies in
+algorithms. As a programmer, I was always looking for such a
+library. However I wanted to know the algorithms, not only play with
+someone else's library. then I decided to write a small library with
+all the ideas that I got with my studies.
+
+This library intends to be more general as possible. As a programmer,
+I was always developing some sort of algorithm that is implemented in
+this library. Actually, I was always reimplementing those
+algorithms. I believe that all C programmers around the world do
+exactly the same.
+
+This library intends to be as portable as possible. This library has
+born in unix but my primary idea is to make it work in every operating
+system that supports the Standard C library.
+
+@c ** Includes the licenses 
+@node Licenses, , Introduction, Top
+@include licenses.texi
+
+@bye
