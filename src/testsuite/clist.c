@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.c,v 1.3 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: clist.c,v 1.4 2005-01-24 09:33:08 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -50,7 +50,7 @@ static int check_deletion (clist_t *);
  * Exported functions
  */
 int
-test_clist (void)
+test_clist (size_t maxelements)
 {
   clist_t *clist;		/* Circular list descriptor */
   int rc;			/* General error handle variable */
@@ -64,7 +64,7 @@ test_clist (void)
     }
 
   /* Loads data into the list */
-  rc = load_data (clist, MAX_ELEMENTS);
+  rc = load_data (clist, maxelements);
   if (rc)
     {
       ERROR (TEST, "load_clist", rc);

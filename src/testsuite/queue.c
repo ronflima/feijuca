@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.4 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: queue.c,v 1.5 2005-01-24 09:33:09 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -48,7 +48,7 @@ static int check_pop (queue_t *, size_t);
  * Exported functions
  */
 int
-test_queue (void)
+test_queue (size_t maxelements)
 {
   queue_t *queue;		/* Queue descriptor */
   int rc;			/* General error handle variable */
@@ -62,7 +62,7 @@ test_queue (void)
     }
 
   /* Loads data into the queue */
-  rc = check_push (queue, MAX_ELEMENTS);
+  rc = check_push (queue, maxelements);
   if (rc)
     {
       ERROR (TEST, "check_push", rc);
@@ -70,7 +70,7 @@ test_queue (void)
     }
 
   /* Checks the pop of data from the queue */
-  rc = check_pop (queue, MAX_ELEMENTS);
+  rc = check_pop (queue, maxelements);
   if (rc)
     {
       ERROR (TEST, "check_pop", rc);

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.7 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: dlist.c,v 1.8 2005-01-24 09:33:09 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -47,7 +47,7 @@ static int check_contents (dlist_t *, size_t);
 static int check_deletion (dlist_t *, size_t);
 
 int
-test_dlist (void)
+test_dlist (size_t maxelements)
 {
   dlist_t *list;		/* List descriptor */
   int rc;			/* Error handling variable */
@@ -67,18 +67,18 @@ test_dlist (void)
   else
     {
       /* Performs the load test */
-      rc = load_list (list, MAX_ELEMENTS);
+      rc = load_list (list, maxelements);
       if (!rc)
         {
           /* Performs the navigation test */
-          rc = check_contents (list, MAX_ELEMENTS);
+          rc = check_contents (list, maxelements);
           if (rc)
             {
               ERROR (TEST, "check_contents", rc);
               test_status = EFAILED;
             }
           /* Performs the deletion test */
-          rc = check_deletion (list, MAX_ELEMENTS);
+          rc = check_deletion (list, maxelements);
           if (rc)
             {
               ERROR (TEST, "check_deletion", rc);

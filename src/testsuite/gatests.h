@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.7 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: gatests.h,v 1.8 2005-01-24 09:33:09 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -32,7 +32,10 @@
 /*
  * Includes
  */
+#include <stdio.h>
+#include "gacommon.h"
 
+GABEGINDECLS
 /*
  * Macros
  */
@@ -51,7 +54,7 @@
 /*
  * Datatypes
  */
-typedef int (test_proc_t) (void);
+typedef int (test_proc_t) (size_t);
 typedef struct
 {
   char *test_name;
@@ -62,10 +65,13 @@ test_t;
 /*
  * Prototypes
  */
-int (test_list) (void);
-int (test_dlist) (void);
-int (test_stack) (void);
-int (test_clist) (void);
-int (test_queue) (void);
-int (test_ivector) (void);
+int (test_list) (size_t);
+int (test_dlist) (size_t);
+int (test_stack) (size_t);
+int (test_clist) (size_t);
+int (test_queue) (size_t);
+int (test_ivector) (size_t);
+
+GAENDDECLS
+
 #endif /* GATESTS_H */

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.6 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: ivector.c,v 1.7 2005-01-24 09:33:09 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -44,13 +44,13 @@
  */
 static int compare (const void *, const void *);
 static int load_ivector (ivector_t *, size_t);
-static int check_del (ivector_t *);
+static int check_del (ivector_t *, size_t);
 
 /*
  * Exported functions
  */
 int
-test_ivector (void)
+test_ivector (size_t maxelements)
 {
   ivector_t *ivector;		/* Infinite vector descriptor */
   int rc;			/* General error handling variable */
@@ -64,7 +64,7 @@ test_ivector (void)
       ERROR (TEST, "ivector_alloc", rc);
       return EFAILED;
     }
-  rc = load_ivector (ivector, MAX_ELEMENTS);
+  rc = load_ivector (ivector, maxelements);
   if (rc)
     {
       ERROR (TEST, "ivector load error", ECKFAIL);
@@ -78,8 +78,8 @@ test_ivector (void)
       return EFAILED;
     }
   /* Searches for something */
-  key = MAX_ELEMENTS / 2;
-  rc = ivector_bsearch (ivector, &buffer, &key);
+  key = maxelements / 2;
+  rc = ivector_bsearch (ivector, (void **) &buffer, &key);
   if (rc)
     {
       ERROR (TEST, "ivector_bsearch", rc);
@@ -87,14 +87,14 @@ test_ivector (void)
     }
   /* Puts something using an index */
   key /= 2;
-  rc = ivector_put (ivector, MAX_ELEMENTS / 2, &key);
+  rc = ivector_put (ivector, maxelements / 2, &key);
   if (rc)
     {
       ERROR (TEST, "ivector_put", rc);
       return EFAILED;
     }
   /* Check deletions */
-  rc = check_del (ivector);
+  rc = check_del (ivector, maxelements);
   if (rc)
     {
       ERROR (TEST, "check_del", ECKFAIL);
@@ -146,12 +146,12 @@ load_ivector (ivector_t * ivector, size_t elements)
 
 /* Checks deletions */
 static int
-check_del (ivector_t * ivector)
+check_del (ivector_t * ivector, size_t maxelements)
 {
   int rc;			/* General error handling variable */
 
   /* Deletes something */
-  rc = ivector_del (ivector, MAX_ELEMENTS / 2);
+  rc = ivector_del (ivector, maxelements / 2);
   if (rc)
     {
       ERROR (TEST, "ivector_del", rc);

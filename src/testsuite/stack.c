@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.6 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: stack.c,v 1.7 2005-01-24 09:33:09 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -48,7 +48,7 @@ static int test_stack_pop (stack_t *, size_t);
  * Exported function definitions
  */
 int
-test_stack (void)
+test_stack (size_t maxelements)
 {
   stack_t *stack;		/* Descriptor for stacks */
   int rc;			/* General return code for errors */
@@ -67,11 +67,11 @@ test_stack (void)
 
   /* Test the stack normal operations */
   /* Push stuff to the stack */
-  rc = test_stack_push (stack, MAX_ELEMENTS);
+  rc = test_stack_push (stack, maxelements);
   if (!rc)
     {
       /* Pop stuff from the stack */
-      rc = test_stack_pop (stack, MAX_ELEMENTS);
+      rc = test_stack_pop (stack, maxelements);
       if (rc)
         {
           /* Pop test has failed */

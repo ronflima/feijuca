@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.8 2005-01-16 11:47:14 ron_lima Exp $
+ $Id: testsuite.c,v 1.9 2005-01-24 09:33:09 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -37,8 +37,9 @@
 int
 main (int argc, char **argv)
 {
-  register int i;		/* Simple iterator */
-  test_t tests[] =		/* Vector containing all tests to be done */
+  register int i;               /* Simple iterator */
+  size_t maxelements;           /* Maximum number of elements to load */
+  test_t tests[] =        /* Vector containing all tests to be done */
   {
     {"LIST", test_list},
     {"DLIST", test_dlist},
@@ -47,6 +48,9 @@ main (int argc, char **argv)
     {"QUEUE", test_queue},
     {"IVECTOR", test_ivector}
   };
+
+  /* Initializations */
+  maxelements = MAX_ELEMENTS;
 
   /* Prints a small friendly message */
   printf ("G.A. Library Test Suite\n(c) 2004 - Ronaldo Faria Lima\n");
@@ -60,7 +64,7 @@ main (int argc, char **argv)
 
       /* Performs each test */
       printf ("[%-7s] Performing test...\n", tests[i].test_name);
-      rc = tests[i].test_routine ();
+      rc = tests[i].test_routine (maxelements);
       switch (rc)
         {
         case 0x0:		/* Successful test */
