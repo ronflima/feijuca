@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gacommon.h,v 1.2 2004-03-07 20:56:15 ron_lima Exp $
+ $Id: gacommon.h,v 1.3 2004-03-08 10:55:31 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -34,6 +34,12 @@
 
 /*
  * Macros
+ */
+/* Simple information getters */
+#define list_size(list) (list)->size_
+
+/*
+ * Datatypes
  */
 /* List iteration types */
 typedef enum 
@@ -45,12 +51,6 @@ typedef enum
     PREV
   } LIST_POSITION;
 
-/* Simple information getters */
-#define list_size(list) (list)->size_
-
-/*
- * Datatypes
- */
 /* Deallocator function pointer type */
 typedef void (* deallocator_t)(void *data);
 
