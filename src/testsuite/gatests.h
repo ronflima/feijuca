@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.8 2005-01-24 09:33:09 ron_lima Exp $
+ $Id: gatests.h,v 1.9 2005-01-26 22:42:04 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -54,17 +54,31 @@ GABEGINDECLS
 /*
  * Datatypes
  */
-typedef int (test_proc_t) (size_t);
+/* Test procedures data types */
+typedef int (test_proc_t) (size_t); /* Test procedure entry */
+
 typedef struct
 {
   char *test_name;
   test_proc_t *test_routine;
-}
-test_t;
+} test_t;                       /* Test procedure descriptor */
 
+/* Command line parsing support structures */
+typedef struct
+{
+  char *option;                 /* Option */
+  char *value;                  /* Value of the parameter */
+} cmdline_item_t;               /* Command line item */
+
+typedef struct
+{
+  cmdline_item_t * items;       /* List of items */
+  size_t size;                  /* Size of the list */
+} cmdline_t;                    /* Command line descriptor */
 /*
  * Prototypes
  */
+/* Test procedures prototypes */
 int (test_list) (size_t);
 int (test_dlist) (size_t);
 int (test_stack) (size_t);

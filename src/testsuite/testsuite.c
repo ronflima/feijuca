@@ -28,17 +28,33 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.9 2005-01-24 09:33:09 ron_lima Exp $
+ $Id: testsuite.c,v 1.10 2005-01-26 22:42:04 ron_lima Exp $
 */
 
+/*
+ * Includes
+ */
 #include <stdio.h>
+#include <stdlib.h>
+#include <errno.h>
 #include "gatests.h"
+
+/*
+ * Local functions prototypes
+ */
+static int cmdline_parse (cmdline_t *, const int, const char **);
+static int cmdline_value_getint (int *, cmdline_t *, const char *);
+/*
+ * Exported functions definitions
+ */
 
 int
 main (int argc, char **argv)
 {
   register int i;               /* Simple iterator */
   size_t maxelements;           /* Maximum number of elements to load */
+  cmdline_t cmdline;            /* Command line parsed arguments */
+  int rc;                       /* General return code */
   test_t tests[] =        /* Vector containing all tests to be done */
   {
     {"LIST", test_list},
@@ -55,6 +71,15 @@ main (int argc, char **argv)
   /* Prints a small friendly message */
   printf ("G.A. Library Test Suite\n(c) 2004 - Ronaldo Faria Lima\n");
   printf ("This software is licensed under the Gnu Public License\n\n");
+
+  /* Parses the command line */
+  if (rc = cmdline_parse (&cmdline, argc, (const char **) argv))
+    {
+      printf ("Error parsing command line: %d\n", rc);
+      return -1;
+    }
+  /* Get the maximum number of elements  */
+  cmdline_value_getint (&maxelements, &cmdline, "m");
 
   /* Performs all tests at once */
   for (i = 0x0; i < sizeof (tests) / sizeof (test_t); ++i)
@@ -80,5 +105,94 @@ main (int argc, char **argv)
         }
       printf ("\tTest result: %s.\n", result);
     }
+  /* Frees the command line descriptor */
+  if (cmdline.items)
+    {
+      free (cmdline.items);
+    }
   return 0;
+}
+
+/*
+ * Local functions definitions
+ */
+/* Parses the command line and returns a structure of parsed stuff */
+static int cmdline_parse (cmdline_t * cmdline, const int argc, 
+                          const char **argv)
+{
+  register int i;               /* Iterator for the command line parsing */
+
+  /* Initializations */
+  cmdline->items = (cmdline_item_t *) NULL;
+  cmdline->size = 0x0ul;
+
+  /* Parses the command line in a portable way */
+  for (i=1; i<argc; ++i)
+    {
+      /* Check if the current one is a parameter */
+      if (* argv[i] == '-')
+        {
+          cmdline_item_t * newcmdline; /* Temporary buffer */
+          unsigned int j;       /* Iterator for the items list */
+
+          cmdline->size++;
+          newcmdline = (cmdline_item_t *) realloc ((void *) cmdline->items, 
+                                                   cmdline->size 
+                                                   * sizeof (cmdline_item_t));
+          if (! newcmdline)
+            {
+              /* No memory !! */
+              return ENOMEM;
+            }
+
+          /* Sets the iterator for the items list accordingly */
+          j = cmdline->size - 1;
+
+          /* Sets the provided pointer to the new location */
+          cmdline->items = newcmdline;
+
+          /* loads the cmd line */
+          cmdline->items[j].option = (char *) argv[i] + 1;
+
+          /* Check if there is an argument for the parameter */
+          cmdline->items[j].value = (char *) NULL;
+          if (*argv [++i] != '-')
+            {
+              cmdline->items[j].value = (char *)argv[i];
+            }
+        }
+    }
+  return 0x0;
+}
+
+/* Gets and int value from the command line parameter. If nothing
+   could be found. the value remains untouched. */
+static int cmdline_value_getint (int *value, cmdline_t *cmdline, const char *parm)
+{
+  register size_t i;            /* Iterator for the list */
+
+  /* Do a linear search in the list */
+  for (i=0; i<cmdline->size; ++i)
+    {
+      if (cmdline->items[i].option[0] == *parm)
+        {
+          int newvalue;
+          /* We have found the parameter. Lets check if the parameter has a value */
+          if (! cmdline->items[i].value)
+            {
+              return EOF;
+            }
+          /* Convert it to int */
+          newvalue = atoi (cmdline->items[i].value);
+          /* Check if the convertion was okay */
+          if (newvalue > 0x0)
+            {
+              *value = newvalue;
+              return 0x0;
+            }
+          /* Error - could not convert the value */
+          break;
+        }
+    }
+  return EOF;
 }
