@@ -23,10 +23,9 @@
  Description: Pushes a new element into the stack
 
  CVS Information
- $Author: ron_lima $
- $Id: stack_push.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: stack_push.c,v 1.4 2004-10-07 19:47:48 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
