@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: dlist.c,v 1.11 2005-02-07 21:45:09 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.10 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.11 2005-02-07 21:45:09 ron_lima Exp $";
 
 /*
  * Local macros
@@ -131,7 +131,7 @@ load_list (dlist_t * list, size_t elements)
       *item = i + 1;
 
       /* Inserts the item in the list */
-      rc = dlist_insert (list, item, POS_NEXT);
+      rc = dlist_insert (list, item, POS_TAIL);
       if (rc)
         {
           ERROR (TEST, "dlist_insert", rc);
