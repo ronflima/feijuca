@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: clist.texi,v 1.1 2004-04-04 23:48:05 ron_lima Exp $
+@c $Id: clist.texi,v 1.2 2004-04-06 09:36:56 ron_lima Exp $
 @c %**start of header
 @setfilename clist.info
 @settitle    Circular Lists
@@ -38,12 +38,13 @@ Revision: @value{VERSION}
 @c ** Main Menu
 @menu
 * algorithm :: Algorithm implemented by G.A. Library
+* notes     :: General notes
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
 @end menu
 
-@node algorithm, constants, Top, Top
+@node algorithm, notes, Top, Top
 @chapter Single circular linked lists in G.A. Library
 G.A. Library implements the circular lists as single linked lists
 where the tail of the list is linked back to the beginning. Since the
@@ -61,7 +62,7 @@ be thread safe in this current release.
 @node notes, data types, algorithm, Top
 @chapter Notes about circular lists documentation
 
-The circular lists is heavily based on the singular lists
+The circular lists are heavily based on the singular lists
 routines. For the constants and macros, please refer to the singular
 lists documentation.
 
