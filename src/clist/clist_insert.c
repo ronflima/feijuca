@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_insert.c,v 1.2 2004-04-11 12:16:01 ron_lima Exp $
+ $Id: clist_insert.c,v 1.3 2004-06-27 00:20:25 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "clist.h"
 
 int 
-clist_insert (clist_t * list, const void *data)
+clist_insert (clist_t * clist, const void *data)
 {
     clist_element_t * element;
 
@@ -46,21 +46,21 @@ clist_insert (clist_t * list, const void *data)
     element->data_ = (void *) data;
     element->next_ = (clist_element_t *) NULL;
     /* Check the size of the list */
-    if (! list->size_)
+    if (! clist->size_)
         {
             /* This is the head of the list */
-            list->head_ = element;
-            list->tail_ = element;
+            clist->head_ = element;
+            clist->tail_ = element;
         }
     else
         {
             /* Insert at the end */
-            list->tail_->next_ = element;
-            list->tail_        = element;
+            clist->tail_->next_ = element;
+            clist->tail_        = element;
         }
     /* Makes the circular link in the list */
-    list->tail_->next_ = list->head_;
-    list->curr_ = element;
-    list->size_++;
+    clist->tail_->next_ = clist->head_;
+    clist->curr_ = element;
+    clist->size_++;
     return 0;
 }

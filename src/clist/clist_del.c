@@ -20,50 +20,17 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for single linked circular lists
+ Description: Deletes the next element pointed by element
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.4 2004-06-27 00:20:24 ron_lima Exp $
+ $Id: clist_del.c,v 1.1 2004-06-27 00:20:25 ron_lima Exp $
 */
- 
-#ifndef CLIST_H
-#define CLIST_H
-
-#include <stdio.h>
 #include "list.h"
-#include "gacommon.h"
+#include "clist.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-/*
- * Datatypes
- */
-
-/* Abstraction for the list descriptor */
-typedef list_element_t clist_element_t; /* List element */
-typedef list_t         clist_t;         /* List descriptor */
-
-/* 
- * Prototypes 
- */
-extern int
-(clist_alloc) (clist_t ** clist, deallocator_t * dealloc);
-extern int
-(clist_free) (clist_t ** clist);
-extern int
-(clist_del) (clist_t * clist, void **data);
-extern int 
-(clist_get) (clist_t * clist, void **data, position_t whence);
-extern int
-(clist_move) (clist_t * clist, position_t whence);
-extern int 
-(clist_insert) (clist_t * clist, const void * data);
-
-#ifdef __cplusplus
+int
+clist_del (clist_t * clist, void **data)
+{
+    return list_del ((list_t *) clist, data);
 }
-#endif
-
-#endif /* CLIST_H */
