@@ -2,7 +2,7 @@
 # Makefile that handles intermediate libraries generation
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.5 2004-04-04 11:31:39 ron_lima Exp $
+# $Id: Makefile.am,v 1.6 2004-04-20 11:05:55 ron_lima Exp $
 SUBDIRS = list dlist clist ivector
 lib_LTLIBRARIES = libga.la
 libga_la_SOURCES =
@@ -14,5 +14,6 @@ include_HEADERS = ../include/list.h		\
                   ../include/dlist.h		\
                   ../include/clist.h		\
                   ../include/ivector.h          \
+                  ../include/stack.h            \
                   ../include/gacommon.h
 
