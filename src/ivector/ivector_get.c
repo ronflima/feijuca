@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_get.c,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: ivector_get.c,v 1.7 2004-12-21 09:22:16 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -38,7 +38,7 @@ ivector_get (ivector_t * vector, void **data, size_t idx)
   /* Assertives for debugging purposes */
   assert (vector != NULL);
   /* Sanity tests */
-  if ((idx < 0) || (idx >= vector->size_))
+  if ((idx < 0x0u) || (idx >= vector->size_))
   {
     *data = NULL;
     return EGAINVAL;
