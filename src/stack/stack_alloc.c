@@ -20,40 +20,20 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Allocates and initializes a stack
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.2 2004-04-30 09:53:43 ron_lima Exp $
+ $Id: stack_alloc.c,v 1.1 2004-04-30 09:53:57 ron_lima Exp $
 */
- 
-#ifndef STACK_H
-#define STACK_H
-
+#include <errno.h>
 #include <stdio.h>
-#include "gacommon.h"
+#include <stdlib.h>
+#include "stack.h"
 #include "list.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/*
- * Datatypes
- */
-typedef list_t stack_t;
-
-/* 
- * Prototypes 
- */
-extern int
-(stack_alloc) (stack_t ** stack, deallocator_t dealloc);
-extern int
-(stack_free) (stack_t ** stack);
-extern int
-(stack_pop) (stack_t * stack, void **data);
-extern int 
-(stack_push) (stack_t * stack, const void *data);
-#ifdef __cplusplus
+int
+stack_alloc (stack_t ** stack, deallocator_t dealloc)
+{
+    return list_alloc ((list_t **) stack, dealloc);
 }
-#endif
-#endif /* IVECTOR_H */

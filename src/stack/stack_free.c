@@ -20,40 +20,20 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Finishes the stack. This routine will delete the stack
+ from the memory
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.2 2004-04-30 09:53:43 ron_lima Exp $
+ $Id: stack_free.c,v 1.1 2004-04-30 09:53:57 ron_lima Exp $
 */
- 
-#ifndef STACK_H
-#define STACK_H
-
 #include <stdio.h>
-#include "gacommon.h"
+#include <stdlib.h>
+#include "stack.h"
 #include "list.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-/*
- * Datatypes
- */
-typedef list_t stack_t;
-
-/* 
- * Prototypes 
- */
-extern int
-(stack_alloc) (stack_t ** stack, deallocator_t dealloc);
-extern int
-(stack_free) (stack_t ** stack);
-extern int
-(stack_pop) (stack_t * stack, void **data);
-extern int 
-(stack_push) (stack_t * stack, const void *data);
-#ifdef __cplusplus
+int
+stack_free (stack_t ** stack)
+{
+    return list_free ((list_t **) stack);
 }
-#endif
-#endif /* IVECTOR_H */
