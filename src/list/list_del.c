@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_del.c,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+ $Id: list_del.c,v 1.2 2004-02-29 22:15:04 ron_lima Exp $
 */
 #include <stdio.h>
 #include <errno.h>
@@ -39,7 +39,7 @@ list_del (LIST * list, void **data)
   /* Initializations */
   if (data)
     {
-      *data = (void *) 0x0;
+      *data = (void *) NULL;
     }
   /* Sanity check: Will not delete an element if the list is empty */
   if (! list->size_)
@@ -86,5 +86,5 @@ list_del (LIST * list, void **data)
       /* Data storage was not provided. Deletes the data */
       list->deallocator_ (extracted_data);
     }   
-  return 0x0;
+  return 0;
 }
