@@ -24,13 +24,16 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_push.c,v 1.6 2004-10-20 10:38:29 ron_lima Exp $
+ $Id: queue_push.c,v 1.7 2005-01-28 00:11:45 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "queue.h"
 #include "list.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.7 2005-01-28 00:11:45 ron_lima Exp $";
 
 int
 queue_push (queue_t * queue, const void *data)

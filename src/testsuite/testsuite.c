@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.11 2005-01-26 23:01:21 ron_lima Exp $
+ $Id: testsuite.c,v 1.12 2005-01-28 00:13:58 ron_lima Exp $
 */
 
 /*
@@ -39,6 +39,9 @@
 #include <errno.h>
 #include "gacommon.h"
 #include "gatests.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.12 2005-01-28 00:13:58 ron_lima Exp $";
 
 /*
  * Local functions prototypes

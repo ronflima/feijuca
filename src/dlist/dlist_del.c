@@ -24,12 +24,15 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.13 2005-01-16 12:11:29 ron_lima Exp $
+ $Id: dlist_del.c,v 1.14 2005-01-28 00:11:44 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.14 2005-01-28 00:11:44 ron_lima Exp $";
 
 /*
  * Local prototypes

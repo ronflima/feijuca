@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.5 2005-01-24 09:33:09 ron_lima Exp $
+ $Id: queue.c,v 1.6 2005-01-28 00:13:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -32,6 +32,9 @@
 #include <errno.h>
 #include "gatests.h"
 #include "queue.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.6 2005-01-28 00:13:58 ron_lima Exp $";
 
 /*
  * Local macros

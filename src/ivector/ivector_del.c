@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.9 2005-01-16 11:47:13 ron_lima Exp $
+ $Id: ivector_del.c,v 1.10 2005-01-28 00:11:44 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,6 +33,9 @@
 #include <assert.h>
 #include "gacommon.h"
 #include "ivector.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: ivector_del.c,v 1.10 2005-01-28 00:11:44 ron_lima Exp $";
 
 int
 ivector_del (ivector_t * vector, size_t idx)

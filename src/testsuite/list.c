@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.10 2005-01-24 09:33:09 ron_lima Exp $
+ $Id: list.c,v 1.11 2005-01-28 00:13:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -33,6 +33,9 @@
 #include <errno.h>
 #include "gatests.h"
 #include "list.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: list.c,v 1.11 2005-01-28 00:13:58 ron_lima Exp $";
 
 /*
  * Local macros

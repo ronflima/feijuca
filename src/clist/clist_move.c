@@ -25,11 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_move.c,v 1.4 2004-10-13 10:23:44 ron_lima Exp $
+ $Id: clist_move.c,v 1.5 2005-01-28 00:11:43 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: clist_move.c,v 1.5 2005-01-28 00:11:43 ron_lima Exp $";
 
 int
 clist_move (clist_t * clist, position_t whence)

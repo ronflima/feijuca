@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_put.c,v 1.8 2005-01-16 11:47:13 ron_lima Exp $
+ $Id: ivector_put.c,v 1.9 2005-01-28 00:11:44 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,6 +32,9 @@
 #include <assert.h>
 #include "gacommon.h"
 #include "ivector.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.9 2005-01-28 00:11:44 ron_lima Exp $";
 
 int
 ivector_put (ivector_t * vector, size_t idx, const void *data)

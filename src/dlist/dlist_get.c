@@ -25,12 +25,15 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.11 2005-01-16 11:47:13 ron_lima Exp $
+ $Id: dlist_get.c,v 1.12 2005-01-28 00:11:44 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.12 2005-01-28 00:11:44 ron_lima Exp $";
 
 int
 dlist_get (dlist_t * list, void **data, position_t whence)

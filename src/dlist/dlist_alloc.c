@@ -25,12 +25,15 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_alloc.c,v 1.10 2005-01-16 11:47:12 ron_lima Exp $
+ $Id: dlist_alloc.c,v 1.11 2005-01-28 00:11:43 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: dlist_alloc.c,v 1.11 2005-01-28 00:11:43 ron_lima Exp $";
 
 int
 dlist_alloc (dlist_t ** list, deallocator_t * dealloc)

@@ -24,13 +24,16 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_alloc.c,v 1.6 2004-10-13 10:27:03 ron_lima Exp $
+ $Id: stack_alloc.c,v 1.7 2005-01-28 00:11:45 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "stack.h"
 #include "list.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: stack_alloc.c,v 1.7 2005-01-28 00:11:45 ron_lima Exp $";
 
 int
 stack_alloc (stack_t ** stack, deallocator_t * dealloc)

@@ -25,13 +25,16 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.7 2005-01-24 09:33:09 ron_lima Exp $
+ $Id: stack.c,v 1.8 2005-01-28 00:13:58 ron_lima Exp $
 */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include "gatests.h"
 #include "stack.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: stack.c,v 1.8 2005-01-28 00:13:58 ron_lima Exp $";
 
 /*
  * Local macros

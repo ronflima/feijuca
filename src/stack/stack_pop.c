@@ -24,13 +24,16 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_pop.c,v 1.7 2005-01-16 11:47:13 ron_lima Exp $
+ $Id: stack_pop.c,v 1.8 2005-01-28 00:11:45 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "stack.h"
 #include "list.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: stack_pop.c,v 1.8 2005-01-28 00:11:45 ron_lima Exp $";
 
 int
 stack_pop (stack_t * stack, void **data)
