@@ -1,0 +1,28 @@
+@c ** Licences information
+@c ** This file includes the GPL or LGPL based on some variables
+@c ** Author: Ronaldo Faria Lima
+@c ** $Id: licenses.texi,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+
+@menu
+* Feedback                :: How to contact the author
+* Copyright and trademarks:: Copyrights involved
+* Acknowledgements        :: Acknowledgments about his work
+* Documents               :: Other sources of information
+* GPL                     :: Gnu license disclaimer        
+@end menu
+
+@node Feedback, Copyright and trademarks, Licenses, Licenses
+@unnumberedsec Feedback
+
+@node Copyright and trademarks, Acknowledgements, Feedback, Licenses
+@unnumberedsec Copyright and trademarks
+
+@node Acknowledgements, Documents, Copyright and trademarks, Licenses
+@unnumberedsec Acknowledgements
+
+@node Documents, GPL, Acknowledgements, Licenses
+@unnumberedsec Documents
+
+@node GPL, , Documents, Licenses
+@include lgpl.en.texi
+

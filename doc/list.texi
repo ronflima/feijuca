@@ -1,0 +1,348 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: list.texi,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+@c %**start of header
+@setfilename list.info
+@settitle    Lists
+@c %**end of header
+
+@c ** Inserts the version information into the current document
+@include list-version.texi
+
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
+
+Last update: @value{LAST-UPDATE}
+
+Revision: @value{VERSION}
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title G.A. Library
+@subtitle Single linked lists interface
+@author Ronaldo Faria Lima
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top
+@top Template
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* algorithm :: Algorithm implemented by G.A. Library
+* constants :: Constants used in library
+* macros    :: Macros defined by lists.h
+* data types:: Data types
+* functions :: Description of all available functions
+* Licenses  :: Licenses and other information
+@end menu
+
+@node algorithm, constants, Top, Top
+@chapter Single linked lists in G.A. Library
+G.A. Library implements single linked lists through the header file
+<list.h>. The list descriptor contains always the first and the last
+elements for fast access in the list. Navigation in the list is
+possible only in one way: from the beginning through the end. This is
+an effect on how single linked lists are built.
+
+Single linked lists are useful when you have a collection of data that
+must be traversed from the beginning through the end and you don't
+know the amount of data that will be loaded in memory.
+
+Until this release, no thread safety was analyzed or even implemented
+in the algorithms. So, thread safety is not guaranteed.
+
+@node constants, macros, algorithm, Top
+@chapter Constants
+
+The only defined constants defines how to iterate in the list.
+
+@itemize @bullet
+@item HEAD:
+Move the current pointer to the beginning of the list
+@item TAIL:
+Move the pointer to the end of the list
+@item NEXT:
+Move the pointer to the next item of the list
+@item CURR:
+Used to operate over the current item of the list
+@end itemize
+
+@node macros, data types, constants, Top
+@chapter Macros
+@itemize @bullet
+@item list_size (list):
+Receives a list descriptor as argument and returns the list size in
+number of elements.
+@end itemize
+
+@node data types, functions, macros, Top
+@chapter Data types
+The following data types are defined for list implementation.
+@itemize @bullet
+@item void (* deallocator_t)(void *data):
+Pointer to a user function that will be called in order to deallocate
+memory for each data element of the list.
+@item LIST_ELEMENT:
+Data structure that describes a list element. There is no need to use
+this data type since this is used internally by the list descriptor.
+@item LIST:
+Data structure that decribes the list descriptor. This is used to hold
+all needed data to implement the list. There is no need to access
+directly any element of this structure since they are manipulated by
+the functions of the library.
+@end itemize
+
+@node functions, Licenses, data types, Top
+@chapter Functions
+@menu
+* list_alloc :: List allocator function
+* list_free  :: List deallocator function
+* list_get   :: Element getter
+* list_insert:: Inserts a new element
+* list_move  :: Iterates the list
+* list_del   :: Deletes a single element of the list
+@end menu
+@node list_alloc, list_free, functions, functions
+@section int list_alloc (LIST ** list, deallocator_t dealloc)
+Purpose: Allocates a new list and initializes the list descriptor
+
+Parameters:
+@itemize @bullet
+@item list:
+List descriptor pointer passed by reference (required)
+@item dealloc:
+Deallocator pointer function for the user-defined deallocation
+function (required)
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0: success
+@item -1: failure
+@end itemize
+
+Error values in errno:
+@itemize @bullet
+@item ENOMEM: 
+The function could not allocate memory for the list descriptor
+@item EINVAL:
+The function have received an invalid deallocator function pointer
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+The deallocator function is a user-defined function that will handle
+the deallocation of the data stored in the list. Since this set of
+functions were designed to work over any kind of user-defined data, so
+the deallocation will be responsibility of the user, since the library
+has no way to know how to handle deallocations of generic data. This
+function must have the following prototype:
+@example
+void deallocator (void *data);
+@end example
+You will note that this prototype is exactly the same definition of
+the @samp{deallocator_t} data type.
+@end itemize
+@node list_free, list_get, list_alloc, functions
+@section int list_free (LIST ** list)
+Purpose: Deallocates each element and releases the entire list from
+memory
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@end itemize
+
+Return values:
+@itemize @bullet
+@item Always returns 0
+@end itemize
+
+Error values in errno: never sets any values in errno
+
+@node list_get, list_insert, list_free, functions
+@section int list_get (LIST * list, void **data, int whence)
+Purpose: Gets an element from the list
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@item data:
+Data to be get
+@item whence:
+Where to get the element:
+@itemize @bullet
+@item CURR: 
+Gets the current element
+@item NEXT:
+Gets tne next element and makes the current pointer point to the next
+element (moves the list)
+@end itemize
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0: success
+@item -1: failure
+@item EOF: if the end of the list was reached
+@end itemize
+
+Error values in errno:
+@itemize @bullet
+@item EINVAL: 
+if the whence parameter has invalid options
+@end itemize
+@emph{Hints}: 
+@itemize
+@item
+To get the first element, use list_move function and then use this
+function with whence=CURR
+@item
+This function was designed, basically, to retrieve data from the list
+by iterating it from the current position to the next. The data is
+retrieved and not deleted from the list.
+@item
+For error checking it is a good idea to check, always, the errno
+global data structure since EOF is a macro that expands to -1. The
+design of this function complies with several Standard C function
+libraries.
+@end itemize
+@node list_insert, list_move, list_get, functions
+@section int list_insert (LIST * list, const void *data)
+Purpose: Inserts a new element in the list
+
+Parameters:
+@itemize @bullet
+@item list:
+List descriptor
+@item data:
+Data pointer to be inserted in the list
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0: success
+@item -1: failure
+@end itemize
+
+Error values in errno:
+@itemize @bullet
+@item ENOMEM:
+It was not possible to allocate memory for the element descriptor for
+the list.
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+This function always inserts the element at the end of the list.
+@item 
+This function never updates the value of the current pointer. So, if
+the list was initialized and then several elements were inserted, you
+will have to explicitly move the list descriptor to the first element
+of the list before iterating through it.
+@end itemize
+
+@node list_move, list_del, list_insert, functions
+@section int list_move (LIST * list, int whence)
+Purpose: Moves the current pointer to a specific location within the
+list
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@item whence:
+How to move the pointer:
+@itemize @bullet
+@item HEAD:
+Moves the pointer to the beginning of the list
+@item TAIL:
+Moves the pointer to the end of the list
+@item NEXT:
+Moves the pointer to the next item of the list
+@end itemize
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0: success
+@item -1: failure
+@item EOF: End of list reached
+@end itemize
+
+Error values in errno:
+@itemize @bullet
+@item EINVAL:
+The whence parameter has values not recognized by the function.
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+If the list was never moved, the current pointer points to
+nowhere. Any try to move the pointer to anywhere that is not the
+beginning or the end of the list will return EOF.
+@item
+For error checking it is a good idea to check, always, the errno
+global data structure since EOF is a macro that expands to -1. The
+design of this function complies with several Standard C function
+libraries.
+@end itemize
+@node list_del, , list_move, functions
+@section int list_del (LIST * list, void **data)
+Purpose: Deletes a single element from the list
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@item data:
+Data storage arena to store the data extracted from the list.
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0: success
+@item -1: failure
+@item EOF: if the list is empty
+@end itemize
+
+Error values in errno:
+@itemize @bullet
+@item EINVAL:
+Returned when the deallocator and the data storage are not provided.
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+If the list was never iterated, the current position points to
+nowhere. So, the deletion will happen in the head of the list.
+@item
+Always check errno for error checking, since EOF expands to -1.
+@item 
+If you provide NULL for the data storage, the function will call the
+deallocator provided to free the data memory.
+@end itemize
+
+@c ** Includes the licenses 
+@node Licenses, , functions, Top
+@include licenses.texi
+
+@bye
