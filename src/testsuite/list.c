@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.14 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: list.c,v 1.15 2005-02-20 18:05:18 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.14 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.15 2005-02-20 18:05:18 ron_lima Exp $";
 
 /*
  * Local macros
@@ -48,6 +48,7 @@ static char const rcsid [] = "@(#) $Id: list.c,v 1.14 2005-02-19 16:47:32 ron_li
 static int load_list (list_t *, size_t);
 static int check_contents (list_t *, size_t);
 static int check_deletion (list_t *, size_t);
+static int check_reversal (list_t *);
 
 int
 test_list (size_t maxelements)
@@ -76,6 +77,13 @@ test_list (size_t maxelements)
       if (rc)
         {
           ERROR (TEST, "check_contents", rc);
+          test_status = EFAILED;
+        }
+      /* Performs the reversal of the list */
+      rc = check_reversal (&list);
+      if (rc)
+        {
+          ERROR (TEST, "check_reversal", rc);
           test_status = EFAILED;
         }
       /* Performs the deletion test */
@@ -268,5 +276,48 @@ check_deletion (list_t * list, size_t elements)
       return EFAILED;
     }
 
+  return 0x0;
+}
+
+static int
+check_reversal (list_t * list)
+{
+  int rc;                       /* General return code */
+  int bigger;                   /* Bigger item */
+  size_t curr_item;             /* Current item counter */
+
+  /* Initializations */
+  rc = 0x0;
+  bigger = 0x0;
+  curr_item = 0x0u;
+
+  /* Reverses the list  */
+  if (list_reverse (list))
+    {
+      ERROR (TEST, "Error reversing the list", ECKFAIL);
+      return EFAILED;
+    }
+  /* Navigates the list to check the contents */
+  list_move (list, POS_HEAD);
+  while (! rc)
+    {
+      int * data;
+      rc = list_get (list, (void **) &data, POS_NEXT);
+      if (rc == 0)
+        {
+          if (bigger < *data)
+            if (! curr_item)
+              {
+                bigger = *data;
+              }
+            else
+              {
+                ERROR (TEST, "List reversion failed. Wrong sequence.", 
+                       ECKFAIL);
+                return EFAILED;
+              }
+          ++curr_item;
+        }
+    }
   return 0x0;
 }

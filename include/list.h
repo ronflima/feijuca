@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.17 2005-02-19 16:47:30 ron_lima Exp $
+ $Id: list.h,v 1.18 2005-02-20 18:05:18 ron_lima Exp $
 */
 
 #ifndef LIST_H
@@ -65,6 +65,7 @@ int (list_get) __P ((list_t *, void **, position_t));
 int (list_insert) __P ((list_t *, const void *, position_t));
 int (list_move) __P ((list_t *, position_t));
 int (list_del) __P ((list_t *, void **));
+int (list_reverse) __P((list_t *));
 
 GAENDDECLS
 #endif /* LIST_H */

@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: list.texi,v 1.6 2005-02-19 22:13:47 ron_lima Exp $
+@c $Id: list.texi,v 1.7 2005-02-20 18:05:16 ron_lima Exp $
 @c %**start of header
 @setfilename list.info
 @settitle    Lists
@@ -79,6 +79,7 @@ Here all possible operations regarding lists are described.
 * list_insert  :: Inserts a new element
 * list_move    :: Iterates the list
 * list_del     :: Deletes a single element of the list
+* list_reverse :: Reverses the list
 @end menu
 
 @c ***** list_init
@@ -295,7 +296,7 @@ lists algorithm.
 @end itemize
 
 @c ***** list_del
-@node list_del, , list_move, functions
+@node list_del, list_reverse, list_move, functions
 @section int list_del (list_t * list, void **data)
 Purpose: Deletes a single element from the list
 
@@ -326,6 +327,26 @@ nowhere. So, the deletion will happen in the head of the list.
 @item 
 If you provide NULL for the data storage, the function will call the
 deallocator provided to free the data memory.
+@end itemize
+
+@c ***** list_reverse
+@node list_reverse, ,list_del, functions
+@section int list_reverse (list_t * list)
+Purpose: Reverses the order of the items in the list
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeded
+@item EOF
+The list is empty or there is not enough information to reverse the
+list.
 @end itemize
 
 @c ** Includes the licenses 
