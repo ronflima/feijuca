@@ -25,8 +25,9 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_free.c,v 1.1 2004-02-29 22:25:42 ron_lima Exp $
+ $Id: dlist_free.c,v 1.2 2004-03-01 00:04:38 ron_lima Exp $
 */
+#include <stdio.h>
 #include <stdlib.h>
 #include "dlist.h"
 

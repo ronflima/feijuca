@@ -24,9 +24,10 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_alloc.c,v 1.1 2004-02-29 22:25:42 ron_lima Exp $
+ $Id: dlist_alloc.c,v 1.2 2004-03-01 00:03:30 ron_lima Exp $
 */
 #include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "dlist.h"
 
