@@ -20,38 +20,46 @@
 
  System: G.A. Lib
 
- Description: Gets the current element of the list and iterates to the
- next one
+ Description: Inserts a new element in the list
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.5 2004-03-30 11:29:41 ron_lima Exp $
+ $Id: clist_insert.c,v 1.1 2004-03-30 11:29:41 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
-#include <stdlib.h>
-#include "dlist.h"
+#include "clist.h"
 
 int 
-dlist_get (dlist_t * list, void **data, list_position_t whence)
+clist_insert (clist_t * list, const void *data)
 {
-    if (! list->curr_)
+    clist_element_t * element;
+
+    /* Allocates memory for the new element */
+    element = (clist_element_t *) malloc (sizeof (clist_element_t));
+    if (! element)
         {
-            return EOF;
-        }
-    *data = list->curr_->data_;
-    switch (whence)
-        {
-        case CURR: 
-            /* Used only for parameter checking */
-            break;
-        case NEXT:                  /* Moves to the next element */
-        case PREV:                  /* Moves to the previous element */
-            return dlist_move (list, whence);
-            break;
-        default:                    /* Invalid parameter provided */
-            errno = EINVAL;
+            errno = ENOMEM;
             return -1;
         }
+    element->data_ = (void *) data;
+    element->next_ = (clist_element_t *) NULL;
+    /* Check the size of the list */
+    if (! list->size_)
+        {
+            /* This is the head of the list */
+            list->head_ = element;
+            list->tail_ = element;
+        }
+    else
+        {
+            /* Insert at the end */
+            list->tail_->next_ = element;
+            list->tail_        = element;
+        }
+    /* Makes the circular link in the list */
+    list->tail_->next_ = list->head_;
+    list->curr_ = element;
+    list->size_++;
     return 0;
 }

@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.6 2004-03-26 11:14:01 ron_lima Exp $
+ $Id: dlist_move.c,v 1.7 2004-03-30 11:29:41 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include "dlist.h"
 
 int
-dlist_move (dlist_t * list, LIST_POSITION whence)
+dlist_move (dlist_t * list, list_position_t whence)
 {
     switch (whence)
         {

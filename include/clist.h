@@ -20,38 +20,40 @@
 
  System: G.A. Lib
 
- Description: Gets the current element of the list and iterates to the
- next one
+ Description: Interfaces and datatypes for single linked circular lists
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.5 2004-03-30 11:29:41 ron_lima Exp $
+ $Id: clist.h,v 1.1 2004-03-30 11:29:31 ron_lima Exp $
 */
-#include <errno.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "dlist.h"
+ 
+#ifndef CLIST_H
+#define CLIST_H
 
-int 
-dlist_get (dlist_t * list, void **data, list_position_t whence)
-{
-    if (! list->curr_)
-        {
-            return EOF;
-        }
-    *data = list->curr_->data_;
-    switch (whence)
-        {
-        case CURR: 
-            /* Used only for parameter checking */
-            break;
-        case NEXT:                  /* Moves to the next element */
-        case PREV:                  /* Moves to the previous element */
-            return dlist_move (list, whence);
-            break;
-        default:                    /* Invalid parameter provided */
-            errno = EINVAL;
-            return -1;
-        }
-    return 0;
-}
+#include <stdio.h>
+#include "list.h"
+#include "gacommon.h"
+
+/*
+ * Datatypes
+ */
+
+/* Abstraction for the list descriptor */
+typedef list_element_t clist_element_t; /* List element */
+typedef list_t         clist_t;         /* List descriptor */
+
+/* 
+ * Prototypes 
+ */
+
+/* Masked functions */
+#define clist_alloc(list, dealloc)    list_alloc((list_t **)list, dealloc)
+#define clist_free(list)              list_free ((list_t **)list)
+#define clist_del(list, data)         list_del  ((list_t *) list, data)
+#define clist_get(list, data, whence) list_get  ((list_t *) list, data, whence)
+#define clist_move(list, whence)      list_move ((list_t *) list, whence)
+/* Real functions */
+extern int 
+clist_insert (clist_t * list, const void *data);
+
+#endif /* CLIST_H */
