@@ -24,12 +24,15 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.12 2005-01-16 11:47:13 ron_lima Exp $
+ $Id: list_insert.c,v 1.13 2005-01-28 00:01:19 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "list.h"
+
+/* Version info */
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.13 2005-01-28 00:01:19 ron_lima Exp $"; 
 
 int
 list_insert (list_t * list, const void *data)

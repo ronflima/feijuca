@@ -32,6 +32,9 @@
 #include <assert.h>
 #include "list.h"
 
+ /* Version info */
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.15 2005-01-28 00:01:19 ron_lima Exp $";
+
 int
 list_del (list_t * list, void **data)
 {
