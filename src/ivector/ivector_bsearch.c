@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.1 2004-04-04 11:13:54 ron_lima Exp $
+ $Id: ivector_bsearch.c,v 1.2 2004-04-11 12:16:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -39,13 +39,16 @@ ivector_bsearch (ivector_t * vector, const void * data)
     /* Initializations */
     found = (void *) NULL;
     /* Sanity tests */
-    if (!vector->comp_)
+    if (! vector->comp_)
         {
             errno = EINVAL;
-            return -1;
+            return (void *) NULL;
         }
     /* Searchs only if the vector has something */
     if (vector->size_)
-        found = bsearch (data, vector->data_, vector->size_, vector->datalen_, vector->comp_);
+        {
+            found = bsearch (data, vector->data_, vector->size_, 
+                             vector->datalen_, vector->comp_);
+        }
     return found;
 }

@@ -24,11 +24,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.2 2004-04-04 11:39:17 ron_lima Exp $
+ $Id: ivector_add.c,v 1.3 2004-04-11 12:16:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "ivector.h"
 
 int 

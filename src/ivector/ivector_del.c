@@ -25,11 +25,12 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.1 2004-04-11 12:04:11 ron_lima Exp $
+ $Id: ivector_del.c,v 1.2 2004-04-11 12:16:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "ivector.h"
 
 int

@@ -24,10 +24,11 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.5 2004-03-26 11:14:02 ron_lima Exp $
+ $Id: list_insert.c,v 1.6 2004-04-11 12:16:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "list.h"
 
 int 
