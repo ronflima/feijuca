@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.3 2004-07-22 10:29:35 ron_lima Exp $
+ $Id: list.c,v 1.4 2004-09-12 23:30:47 ron_lima Exp $
 */
  
 #include <stdio.h>
@@ -206,6 +206,7 @@ check_deletion (list_t * list, size_t elements)
     /* Deletes the head of the list */
     list_move (list, HEAD);
     list_del  (list, (void **) & item);
+    free (item);
     ++deleted;
     /* Moves to somewhere in the middle of the list */
     for (i = 0; i<elements/2; ++i)
@@ -214,6 +215,7 @@ check_deletion (list_t * list, size_t elements)
         }
     /* Deletes an item at somewhere in the middle of the list */
     list_del (list, (void **) & item);
+    free (item);
     ++deleted;
     /* Deletes the tail of the list */
     list_move (list, TAIL);

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.2 2004-08-04 10:15:01 ron_lima Exp $
+ $Id: testsuite.c,v 1.3 2004-09-12 23:30:47 ron_lima Exp $
 */
  
 #include <stdio.h>
@@ -37,7 +37,8 @@ main (int argc, char ** argv)
     test_t tests [] = /* Vector containing all tests to be done */
         { 
             {"List Test" , test_list },
-            {"DList Test", test_dlist} 
+            {"DList Test", test_dlist},
+            {"Stack Test", test_stack} 
         }; 
 
     for (i=0x0; i < sizeof (tests)/sizeof(test_t); ++i)
