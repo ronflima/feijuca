@@ -24,9 +24,9 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.8 2004-09-22 12:07:01 ron_lima Exp $
+ $Id: ivector.h,v 1.9 2004-10-07 08:44:50 ron_lima Exp $
 */
- 
+
 #ifndef IVECTOR_H
 #define IVECTOR_H
 
@@ -39,26 +39,26 @@ GABEGINDECLS
  */
 /* Infinite vector descriptor */
 typedef struct ivector_
-    {
-        void          * data_;        /* Vector data */
-        size_t          size_;        /* Size of the vector */
-        size_t          datalen_;     /* Size of each vector element */
-        compare_t     * comp_;        /* Comparison function */
-        deallocator_t * dealloc_;     /* Deallocation function */
-    } ivector_t;
+{
+  void *data_;			/* Vector data */
+  size_t size_;			/* Size of the vector */
+  size_t datalen_;		/* Size of each vector element */
+  compare_t *comp_;		/* Comparison function */
+  deallocator_t *dealloc_;	/* Deallocation function */
+} ivector_t;
 
-/* 
- * Prototypes 
+/*
+ * Prototypes
  */
 int (ivector_alloc) __P((ivector_t **, compare_t *, deallocator_t *, size_t));
 void (ivector_free) __P((ivector_t **));
-void * (ivector_get) __P((ivector_t *, size_t));
+void *(ivector_get) __P((ivector_t *, size_t));
 int (ivector_put) __P((ivector_t *, size_t, const void *));
 int (ivector_add) __P((ivector_t *, const void *));
 int (ivector_qsort) __P((ivector_t *));
-void * (ivector_bsearch) __P((ivector_t *, const void *));
+void *(ivector_bsearch) __P((ivector_t *, const void *));
 int (ivector_del) __P((ivector_t *, size_t));
 
 GAENDDECLS
 
-#endif /* IVECTOR_H */
+#endif				/* IVECTOR_H */

@@ -24,9 +24,9 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.5 2004-09-22 12:07:01 ron_lima Exp $
+ $Id: clist.h,v 1.6 2004-10-07 08:44:49 ron_lima Exp $
 */
- 
+
 #ifndef CLIST_H
 #define CLIST_H
 
@@ -40,11 +40,11 @@ GABEGINDECLS
  */
 
 /* Abstraction for the list descriptor */
-typedef list_element_t clist_element_t; /* List element */
-typedef list_t         clist_t;         /* List descriptor */
+typedef list_element_t clist_element_t;		/* List element */
+typedef list_t clist_t;		/* List descriptor */
 
-/* 
- * Prototypes 
+/*
+ * Prototypes
  */
 int (clist_alloc) __P((clist_t **, deallocator_t *));
 int (clist_free) __P((clist_t **));
@@ -55,4 +55,4 @@ int (clist_insert) __P((clist_t *, const void *));
 
 GAENDDECLS
 
-#endif /* CLIST_H */
+#endif				/* CLIST_H */

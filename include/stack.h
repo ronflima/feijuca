@@ -24,9 +24,9 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.5 2004-09-22 12:07:01 ron_lima Exp $
+ $Id: stack.h,v 1.6 2004-10-07 08:44:50 ron_lima Exp $
 */
- 
+
 #ifndef STACK_H
 #define STACK_H
 
@@ -41,8 +41,8 @@ GABEGINDECLS
  */
 typedef list_t stack_t;
 
-/* 
- * Prototypes 
+/*
+ * Prototypes
  */
 int (stack_alloc) __P((stack_t **, deallocator_t *));
 int (stack_free) __P((stack_t **));
@@ -51,4 +51,4 @@ int (stack_push) __P((stack_t *, const void *));
 
 GAENDDECLS
 
-#endif /* STACK_H */
+#endif				/* STACK_H */

@@ -24,9 +24,9 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.4 2004-09-22 12:07:01 ron_lima Exp $
+ $Id: queue.h,v 1.5 2004-10-07 08:44:50 ron_lima Exp $
 */
- 
+
 #ifndef QUEUE_H
 #define QUEUE_H
 
@@ -40,8 +40,8 @@ GABEGINDECLS
  */
 typedef list_t queue_t;
 
-/* 
- * Prototypes 
+/*
+ * Prototypes
  */
 int (queue_alloc) __P((queue_t **, deallocator_t *));
 int (queue_free) __P((queue_t **));
@@ -50,4 +50,4 @@ int (queue_push) __P((queue_t *, const void *));
 
 GAENDDECLS
 
-#endif /* QUEUE_H */
+#endif				/* QUEUE_H */
