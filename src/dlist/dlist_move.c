@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.2 2004-03-07 20:53:29 ron_lima Exp $
+ $Id: dlist_move.c,v 1.3 2004-03-09 10:45:12 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -34,6 +34,10 @@
 int
 dlist_move (DLIST * list, LIST_POSITION whence)
 {
+  if (! list->curr_)
+    {
+      return EOF;
+    }
   switch (whence)
     {
     case HEAD:                  /* Moves to the head of the list */
@@ -57,11 +61,6 @@ dlist_move (DLIST * list, LIST_POSITION whence)
     default:                    /* Invalid parameter provided */
       errno = EINVAL;
       return -1;
-    }
-  /* Last resort check: check if the curr_ pointer is valid */
-  if (! list->curr_)
-    {
-      return EOF;
     }
   return 0;
 }
