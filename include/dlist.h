@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.6 2004-04-04 23:55:16 ron_lima Exp $
+ $Id: dlist.h,v 1.7 2004-05-25 11:08:52 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -70,16 +70,16 @@ extern int
 (dlist_free) (dlist_t ** list);
 
 extern int 
-(dlist_get) (dlist_t * list, void **data, list_position_t whence);
+(dlist_get) (dlist_t * list, void **data, position_t whence);
 
 extern int 
-(dlist_insert) (dlist_t * list, const void *data, list_position_t whence);
+(dlist_insert) (dlist_t * list, const void *data, position_t whence);
 
 extern int
-(dlist_move) (dlist_t * list, list_position_t whence);
+(dlist_move) (dlist_t * list, position_t whence);
 
 extern int
-(dlist_del) (dlist_t * list, void **data, list_position_t whence);
+(dlist_del) (dlist_t * list, void **data, position_t whence);
 
 #ifdef __cplusplus
 }

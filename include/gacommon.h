@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gacommon.h,v 1.7 2004-04-11 12:02:59 ron_lima Exp $
+ $Id: gacommon.h,v 1.8 2004-05-25 11:08:53 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -53,7 +53,7 @@ typedef enum
     NEXT,
     CURR,
     PREV
-  } list_position_t;
+  } position_t;
 
 /* Deallocator function pointer type */
 typedef void (* deallocator_t)(void *data);
