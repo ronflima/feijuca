@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.3 2004-03-07 20:51:58 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.4 2004-03-19 11:14:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdlib.h>
@@ -42,36 +42,36 @@ relink_list (DLIST *list, DLIST_ELEMENT *element, LIST_POSITION whence);
 int 
 dlist_insert (DLIST * list, const void *data, LIST_POSITION whence)
 {
-  DLIST_ELEMENT * element;      /* New element to be inserted */
-  /* Allocates memory for the new element */
-  element = (DLIST_ELEMENT *) malloc (sizeof( DLIST_ELEMENT ));
-  if (! element)
-    {
-      errno = ENOMEM;
-      return -1;
-    }
-  element->data_ = (void *) data;
-  element->next_ = (DLIST_ELEMENT *) NULL;
-  element->prev_ = (DLIST_ELEMENT *) NULL;
-  /* Check the size of the list */
-  if (! list->size_)
-    {
-      /* This is the head of the list */
-      list->head_ = element;
-      list->tail_ = element;
-    }
-  else
-    {
-      /* Relinks the list based on whence parameter */
-      if (relink_list (list, element, whence))
+    DLIST_ELEMENT * element;      /* New element to be inserted */
+    /* Allocates memory for the new element */
+    element = (DLIST_ELEMENT *) malloc (sizeof( DLIST_ELEMENT ));
+    if (! element)
         {
-          free (element);
-          return -1;
+            errno = ENOMEM;
+            return -1;
         }
-    }
-  list->curr_ = element;
-  list->size_++;
-  return 0;
+    element->data_ = (void *) data;
+    element->next_ = (DLIST_ELEMENT *) NULL;
+    element->prev_ = (DLIST_ELEMENT *) NULL;
+    /* Check the size of the list */
+    if (! list->size_)
+        {
+            /* This is the head of the list */
+            list->head_ = element;
+            list->tail_ = element;
+        }
+    else
+        {
+            /* Relinks the list based on whence parameter */
+            if (relink_list (list, element, whence))
+                {
+                    free (element);
+                    return -1;
+                }
+        }
+    list->curr_ = element;
+    list->size_++;
+    return 0;
 }
 
 /*
@@ -83,52 +83,52 @@ dlist_insert (DLIST * list, const void *data, LIST_POSITION whence)
 static int 
 relink_list (DLIST *list, DLIST_ELEMENT *element, LIST_POSITION whence)
 {
-  switch (whence)
-    {
-    case NEXT:                  /* Inserts the new element after the
-                                   current pointer */
-      if (list->curr_)
+    switch (whence)
         {
-          element->next_ = list->curr_->next_;
-          element->prev_ = list->curr_;
-          list->curr_->next_ = element;
-          list->tail_ = element;
+        case NEXT:                  /* Inserts the new element after the
+                                       current pointer */
+            if (list->curr_)
+                {
+                    element->next_ = list->curr_->next_;
+                    element->prev_ = list->curr_;
+                    list->curr_->next_ = element;
+                    list->tail_ = element;
+                }
+            else
+                {
+                    errno = EFAULT;
+                    return -1;
+                }
+            break;
+        case PREV:                  /* Inserts the new element before the
+                                       current pointer */
+            if (list->curr_)
+                {
+                    element->next_ = list->curr_;
+                    element->prev_ = list->curr_->prev_;
+                    list->curr_->prev_ = element;
+                }
+            else 
+                {
+                    errno = EFAULT;
+                    return -1;
+                }
+            break;
+        case HEAD:                  /* Inserts the new element in the head
+                                       of the list */
+            element->next_ = list->head_->next_;
+            list->head_->prev_ = element;
+            list->head_ = element;
+            break;
+        case TAIL:                  /* Inserts the new element in the tail
+                                       of the list */
+            element->prev_ = list->tail_;
+            list->tail_->next_ = element;
+            list->tail_ = element;
+            break;
+        default:                    /* Invalid parameter provided */
+            errno = EINVAL;
+            return -1;
         }
-      else
-        {
-          errno = EFAULT;
-          return -1;
-        }
-      break;
-    case PREV:                  /* Inserts the new element before the
-                                   current pointer */
-      if (list->curr_)
-        {
-          element->next_ = list->curr_;
-          element->prev_ = list->curr_->prev_;
-          list->curr_->prev_ = element;
-        }
-      else 
-        {
-          errno = EFAULT;
-          return -1;
-        }
-      break;
-    case HEAD:                  /* Inserts the new element in the head
-                                   of the list */
-      element->next_ = list->head_->next_;
-      list->head_->prev_ = element;
-      list->head_ = element;
-      break;
-    case TAIL:                  /* Inserts the new element in the tail
-                                   of the list */
-      element->prev_ = list->tail_;
-      list->tail_->next_ = element;
-      list->tail_ = element;
-      break;
-    default:                    /* Invalid parameter provided */
-      errno = EINVAL;
-      return -1;
-    }
-  return 0;
+    return 0;
 }

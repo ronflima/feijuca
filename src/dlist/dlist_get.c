@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.2 2004-03-07 20:53:56 ron_lima Exp $
+ $Id: dlist_get.c,v 1.3 2004-03-19 11:14:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -35,23 +35,23 @@
 int 
 dlist_get (DLIST * list, void **data, LIST_POSITION whence)
 {
-  if (! list->curr_)
-    {
-      return EOF;
-    }
-  *data = list->curr_->data_;
-  switch (whence)
-    {
-    case CURR: 
-      /* Used only for parameter checking */
-      break;
-    case NEXT:                  /* Moves to the next element */
-    case PREV:                  /* Moves to the previous element */
-      return dlist_move (list, whence);
-      break;
-    default:                    /* Invalid parameter provided */
-      errno = EINVAL;
-      return -1;
-    }
-  return 0;
+    if (! list->curr_)
+        {
+            return EOF;
+        }
+    *data = list->curr_->data_;
+    switch (whence)
+        {
+        case CURR: 
+            /* Used only for parameter checking */
+            break;
+        case NEXT:                  /* Moves to the next element */
+        case PREV:                  /* Moves to the previous element */
+            return dlist_move (list, whence);
+            break;
+        default:                    /* Invalid parameter provided */
+            errno = EINVAL;
+            return -1;
+        }
+    return 0;
 }

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.4 2004-03-09 10:55:25 ron_lima Exp $
+ $Id: dlist_move.c,v 1.5 2004-03-19 11:14:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -34,37 +34,37 @@
 int
 dlist_move (DLIST * list, LIST_POSITION whence)
 {
-  switch (whence)
-    {
-    case HEAD:                  /* Moves to the head of the list */
-      list->curr_ = list->head_;
-      break;
-    case TAIL:                  /* Moves to the tail of the list */
-      list->curr_ = list->tail_;
-      break;
-    case NEXT:                  /* Moves to the next element */
-      if (list->curr_)
+    switch (whence)
         {
-          list->curr_ = list->curr_->next_;
+        case HEAD:                  /* Moves to the head of the list */
+            list->curr_ = list->head_;
+            break;
+        case TAIL:                  /* Moves to the tail of the list */
+            list->curr_ = list->tail_;
+            break;
+        case NEXT:                  /* Moves to the next element */
+            if (list->curr_)
+                {
+                    list->curr_ = list->curr_->next_;
+                }
+            else
+                {
+                    return EOF;
+                }
+            break;
+        case PREV:                  /* Moves to the previous element */
+            if (list->curr_)
+                {
+                    list->curr_ = list->curr_->prev_;
+                }
+            else
+                {
+                    return EOF;
+                }
+            break;
+        default:                    /* Invalid parameter provided */
+            errno = EINVAL;
+            return -1;
         }
-      else
-        {
-          return EOF;
-        }
-      break;
-    case PREV:                  /* Moves to the previous element */
-      if (list->curr_)
-        {
-          list->curr_ = list->curr_->prev_;
-        }
-      else
-        {
-          return EOF;
-        }
-      break;
-    default:                    /* Invalid parameter provided */
-      errno = EINVAL;
-      return -1;
-    }
-  return 0;
+    return 0;
 }
