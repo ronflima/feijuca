@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: list_insert.c,v 1.15 2005-01-31 09:50:47 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.15 2005-01-31 09:50:47 ron_lima Exp $"; 
 
 int
 list_insert (list_t * list, const void *data, position_t whence)
@@ -42,6 +42,13 @@ list_insert (list_t * list, const void *data, position_t whence)
   /* Several assertives for debugging purposes */
   assert (list != NULL);
   assert (data != NULL);
+
+  /* Check if the whence argument is acceptable */
+  if (whence != POS_HEAD && whence != POS_CURR && whence != POS_TAIL)
+    {
+      /* Invalid argument provided */
+      return EGAINVAL;
+    }
 
   /* Allocates memory for the new element */
   element = (list_element_t *) malloc (sizeof (list_element_t));
@@ -55,31 +62,39 @@ list_insert (list_t * list, const void *data, position_t whence)
   /* Check the size of the list */
   if (!list->size_)
     {
-      /* This is the head of the list */
+      /* The list is empty. Sets the head and tail to point to the
+         element */
       list->head_ = element;
       list->tail_ = element;
     }
   else
     {
-      /* Check if the current element is valid */
-      if (list->curr_)
+      switch (whence)
         {
-          /* Adds the new item after the current element */
-          element->next_ = list->curr_->next_;
-          list->curr_->next_ = element;
-        }
-      else
-        {
-          /* Insert at the end - the current element is not valid. */
+        case POS_HEAD: /* Insert at the head */
+          element->next_ = list->head_;
+          list->head_ = element;
+          break;
+        case POS_NEXT: /* Insert at the current position */
+          if (list->curr_)
+            {
+              /* Adds the new item after the current element */
+              element->next_ = list->curr_->next_;
+              list->curr_->next_ = element;
+            }
+          else
+            {
+              /* There is no valid current elemen. We cannot just
+                 insert anything into the list */
+              free (element);
+              return EGABADC;
+            }
+          break;
+        case POS_TAIL:          /* Insert at the end */
           list->tail_->next_ = element;
           list->tail_ = element;
+          break;
         }
-    }
-  if (list->curr_ && whence == POS_NEXT)
-    {
-      /* Updates the current element only if the current element is
-         valid and the selected position is next */
-      list->curr_ = element;
     }
   /* Updates the list size */
   ++(list->size_);
