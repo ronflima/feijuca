@@ -23,10 +23,9 @@
  Description: Pushes a new element into the queue
 
  CVS Information
- $Author: ron_lima $
- $Id: queue_push.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: queue_push.c,v 1.4 2004-10-07 19:40:05 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>

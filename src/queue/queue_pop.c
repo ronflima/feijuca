@@ -23,12 +23,11 @@
  Description: Pops an element from the queue
 
  CVS Information
- $Author: ron_lima $
- $Id: queue_pop.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: queue_pop.c,v 1.4 2004-10-07 19:40:05 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <assert.h>
 #include "queue.h"
 #include "list.h"
@@ -36,10 +35,16 @@
 int
 queue_pop(queue_t * queue, void **data)
 {
+  int rc = 0x0;
+  
   /* Assertives for debugging purposes */
   assert(queue != NULL);
   /* Moves to the beginning of the list. We need to extract the first element
      entered into the queue */
-  list_move((list_t *) queue, HEAD);
+  rc = list_move((list_t *) queue, HEAD);
+  /* Check if there was an error */
+  if (rc) {
+    return rc;
+  }
   return list_del((list_t *) queue, data);
 }
