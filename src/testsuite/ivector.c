@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.3 2005-01-09 12:08:59 ron_lima Exp $
+ $Id: ivector.c,v 1.4 2005-01-09 12:30:21 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -127,18 +127,13 @@ load_ivector (ivector_t * ivector, size_t elements)
 
   for (i = elements - 1; i > -1; --i)
   {
-    int * buffer;               /* Data buffer to load into the vector */
+    int buffer;              /* Data buffer to load into the vector */
     int rc;                     /* General error handling variable */
     
-    /* Allocate buffer */
-    buffer = (int *) malloc (sizeof (int));
-    if (! buffer)
-    {
-      ERROR (TEST, "malloc", ECKFAIL);
-      return ENOMEM;
-    }
+    /* Loads data into the buffer */
+    buffer = i + 1;
     /* Adds data to the vector */
-    rc = ivector_add (ivector, (void *) buffer);
+    rc = ivector_add (ivector, (void *) & buffer);
     if (rc)
     {
       ERROR (TEST, "ivector_add", rc);
