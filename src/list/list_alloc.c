@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_alloc.c,v 1.3 2004-03-19 11:13:47 ron_lima Exp $
+ $Id: list_alloc.c,v 1.4 2004-03-26 11:14:02 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "list.h"
 
 int
-list_alloc (LIST ** list, deallocator_t dealloc)
+list_alloc (list_t ** list, deallocator_t dealloc)
 {
     /* The deallocator must be always provided */
     if(! dealloc)
@@ -41,7 +41,7 @@ list_alloc (LIST ** list, deallocator_t dealloc)
             return -1;
         }
     /* Allocates memory for the list structure */
-    *list = (LIST *) malloc (sizeof (LIST));
+    *list = (list_t *) malloc (sizeof (list_t));
     if(! *list)
         {
             errno = ENOMEM;
@@ -49,9 +49,9 @@ list_alloc (LIST ** list, deallocator_t dealloc)
         }
     /* Initializes each data member */
     (*list)->size_        = 0x0;
-    (*list)->head_        = (LIST_ELEMENT *) NULL;
-    (*list)->tail_        = (LIST_ELEMENT *) NULL;
-    (*list)->curr_        = (LIST_ELEMENT *) NULL;
+    (*list)->head_        = (list_element_t *) NULL;
+    (*list)->tail_        = (list_element_t *) NULL;
+    (*list)->curr_        = (list_element_t *) NULL;
     (*list)->deallocator_ = dealloc;
     return 0x0;
 }

@@ -24,26 +24,26 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.4 2004-03-19 11:13:47 ron_lima Exp $
+ $Id: list_insert.c,v 1.5 2004-03-26 11:14:02 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include "list.h"
 
 int 
-list_insert (LIST * list, const void *data)
+list_insert (list_t * list, const void *data)
 {
-    LIST_ELEMENT * element;
+    list_element_t * element;
 
     /* Allocates memory for the new element */
-    element = (LIST_ELEMENT *) malloc (sizeof( LIST_ELEMENT ));
+    element = (list_element_t *) malloc (sizeof( list_element_t ));
     if (! element)
         {
             errno = ENOMEM;
             return -1;
         }
     element->data_ = (void *) data;
-    element->next_ = (LIST_ELEMENT *) NULL;
+    element->next_ = (list_element_t *) NULL;
     /* Check the size of the list */
     if (! list->size_)
         {

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.3 2004-03-07 20:56:15 ron_lima Exp $
+ $Id: list.h,v 1.4 2004-03-26 11:14:19 ron_lima Exp $
 */
  
 #ifndef LIST_H
@@ -37,41 +37,41 @@
  * Datatypes
  */
 /* Abstraction for a single list element */
-typedef struct list_element_t
+typedef struct list_element_t_
 {
-  void                  * data_;
-  struct list_element_t * next_;
-} LIST_ELEMENT;
+  void                   * data_;
+  struct list_element_t_ * next_;
+} list_element_t;
 
 /* Abstraction for the list descriptor */
 typedef struct list_t
 {
-  size_t         size_;
-  LIST_ELEMENT * curr_;
-  LIST_ELEMENT * head_;
-  LIST_ELEMENT * tail_;
-  deallocator_t  deallocator_;
-} LIST;
+  size_t           size_;
+  list_element_t * curr_;
+  list_element_t * head_;
+  list_element_t * tail_;
+  deallocator_t    deallocator_;
+} list_t;
 
 /* 
  * Prototypes 
  */
 extern int
-list_alloc (LIST ** list, deallocator_t dealloc);
+list_alloc (list_t ** list, deallocator_t dealloc);
 
 extern int
-list_free (LIST ** list);
+list_free (list_t ** list);
 
 extern int 
-list_get (LIST * list, void **data, LIST_POSITION whence);
+list_get (list_t * list, void **data, list_position_t whence);
 
 extern int 
-list_insert (LIST * list, const void *data);
+list_insert (list_t * list, const void *data);
 
 extern int
-list_move (LIST * list, LIST_POSITION whence);
+list_move (list_t * list, list_position_t whence);
 
 extern int
-list_del (LIST * list, void **data);
+list_del (list_t * list, void **data);
 
 #endif /* LIST_H */

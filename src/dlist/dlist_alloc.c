@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_alloc.c,v 1.3 2004-03-19 11:14:01 ron_lima Exp $
+ $Id: dlist_alloc.c,v 1.4 2004-03-26 11:14:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 int
-dlist_alloc (DLIST ** list, deallocator_t dealloc)
+dlist_alloc (dlist_t ** list, deallocator_t dealloc)
 {
     /* The deallocator must be always provided */
     if (! dealloc)
@@ -41,7 +41,7 @@ dlist_alloc (DLIST ** list, deallocator_t dealloc)
             return -1;
         }
     /* Allocates memory for the list structure */
-    *list = (DLIST *) malloc (sizeof (DLIST));
+    *list = (dlist_t *) malloc (sizeof (dlist_t));
     if(! *list)
         {
             errno = ENOMEM;
@@ -49,9 +49,9 @@ dlist_alloc (DLIST ** list, deallocator_t dealloc)
         }
     /* Initializes each data member of the list descriptor */
     (*list)->size_        = 0x0;
-    (*list)->head_        = (DLIST_ELEMENT *) NULL;
-    (*list)->tail_        = (DLIST_ELEMENT *) NULL;
-    (*list)->curr_        = (DLIST_ELEMENT *) NULL;
+    (*list)->head_        = (dlist_element_t *) NULL;
+    (*list)->tail_        = (dlist_element_t *) NULL;
+    (*list)->curr_        = (dlist_element_t *) NULL;
     (*list)->deallocator_ = dealloc;
     return 0x0;
 }

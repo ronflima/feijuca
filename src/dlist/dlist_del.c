@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.3 2004-03-19 11:14:01 ron_lima Exp $
+ $Id: dlist_del.c,v 1.4 2004-03-26 11:14:01 ron_lima Exp $
 */
 #include <stdio.h>
 #include <errno.h>
@@ -34,33 +34,33 @@
  * Local prototypes
  */
 static void
-relink_list (DLIST * list, DLIST_ELEMENT * element);
+relink_list (dlist_t * list, dlist_element_t * element);
 
-static DLIST_ELEMENT *
-delete_head (DLIST * list);
+static dlist_element_t *
+delete_head (dlist_t * list);
 
-static DLIST_ELEMENT *
-delete_tail (DLIST * list);
+static dlist_element_t *
+delete_tail (dlist_t * list);
 
-static DLIST_ELEMENT *
-delete_current (DLIST * list);
+static dlist_element_t *
+delete_current (dlist_t * list);
 
-static DLIST_ELEMENT *
-delete_next (DLIST * list);
+static dlist_element_t *
+delete_next (dlist_t * list);
 
-static DLIST_ELEMENT *
-delete_prev (DLIST * list);
+static dlist_element_t *
+delete_prev (dlist_t * list);
 
 /* 
  * Exported functions 
  */
 int
-dlist_del (DLIST * list, void **data, LIST_POSITION whence)
+dlist_del (dlist_t * list, void **data, LIST_POSITION whence)
 {
-    DLIST_ELEMENT * currelem; /* Current element being processed */
+    dlist_element_t * currelem; /* Current element being processed */
     void * extracted_data;   /* Data extracted from the list */
     /* Initializations */
-    currelem = (DLIST_ELEMENT *) NULL;
+    currelem = (dlist_element_t *) NULL;
     if (data)
         {
             *data = (void *) NULL;
@@ -129,7 +129,7 @@ dlist_del (DLIST * list, void **data, LIST_POSITION whence)
  */
 /* Relinks the list popping the element out from the list */
 static void
-relink_list (DLIST * list, DLIST_ELEMENT * element)
+relink_list (dlist_t * list, dlist_element_t * element)
 {
     /* If the element is not valid, simply return. Nothing to do */
     if (! element)
@@ -157,19 +157,19 @@ relink_list (DLIST * list, DLIST_ELEMENT * element)
         }  
 }
 /* Deletes the head of the list */
-static DLIST_ELEMENT *
-delete_head (DLIST * list)
+static dlist_element_t *
+delete_head (dlist_t * list)
 {
-    DLIST_ELEMENT * element; /* Element to be popped out from the list */
+    dlist_element_t * element; /* Element to be popped out from the list */
     element = list->head_;
     relink_list (list, element);
     return element;
 }
 /* Deletes the tail of the list */
-static DLIST_ELEMENT *
-delete_tail (DLIST * list)
+static dlist_element_t *
+delete_tail (dlist_t * list)
 {
-    DLIST_ELEMENT * element; /* Element to be popped out from the list */
+    dlist_element_t * element; /* Element to be popped out from the list */
     element = list->tail_;
     relink_list (list, element);
     return element;
@@ -177,26 +177,26 @@ delete_tail (DLIST * list)
 
 /* Deletes the current element of the list by rebuilding the list
    links based on the current element */
-static DLIST_ELEMENT *
-delete_current (DLIST * list)
+static dlist_element_t *
+delete_current (dlist_t * list)
 {
-    DLIST_ELEMENT * element; /* Element deleted from the list */
+    dlist_element_t * element; /* Element deleted from the list */
     element = list->curr_;
     relink_list (list, element);
-    list->curr_ = (DLIST_ELEMENT *) NULL;
+    list->curr_ = (dlist_element_t *) NULL;
     return element;
 }
 /* Deletes the next element of the list by rebuilding the list links
    based on current element */
-static DLIST_ELEMENT *
-delete_next (DLIST * list)
+static dlist_element_t *
+delete_next (dlist_t * list)
 {
-    DLIST_ELEMENT * element; /* Element to be popped from the list */
+    dlist_element_t * element; /* Element to be popped from the list */
     /* curr_ pointer will be dereferenced later. This check avoids
        coredumps :) */
     if (! list->curr_)
         {
-            return (DLIST_ELEMENT *) NULL;
+            return (dlist_element_t *) NULL;
         }
     /* Pops the element to be deleted */
     element = list->curr_->next_;
@@ -206,15 +206,15 @@ delete_next (DLIST * list)
 }
 /* Deletes the previous element based on the current pointer of the
    list descriptor */
-static DLIST_ELEMENT *
-delete_prev (DLIST * list)
+static dlist_element_t *
+delete_prev (dlist_t * list)
 {
-    DLIST_ELEMENT * element; /* Element to be popped from the list */
+    dlist_element_t * element; /* Element to be popped from the list */
     /* curr_ pointer will be dereferenced later. This check avoids
        coredumps :) */
     if (! list->curr_)
         {
-            return (DLIST_ELEMENT *) NULL;
+            return (dlist_element_t *) NULL;
         }
     element = list->curr_->prev_;
     /* Relinks the list, deleting the selected element */

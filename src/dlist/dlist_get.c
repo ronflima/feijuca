@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.3 2004-03-19 11:14:01 ron_lima Exp $
+ $Id: dlist_get.c,v 1.4 2004-03-26 11:14:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "dlist.h"
 
 int 
-dlist_get (DLIST * list, void **data, LIST_POSITION whence)
+dlist_get (dlist_t * list, void **data, LIST_POSITION whence)
 {
     if (! list->curr_)
         {

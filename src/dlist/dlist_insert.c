@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.4 2004-03-19 11:14:01 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.5 2004-03-26 11:14:01 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdlib.h>
@@ -34,25 +34,25 @@
  * Local prototypes
  */
 static int 
-relink_list (DLIST *list, DLIST_ELEMENT *element, LIST_POSITION whence);
+relink_list (dlist_t *list, dlist_element_t *element, LIST_POSITION whence);
 
 /*
  * Exported functions
  */
 int 
-dlist_insert (DLIST * list, const void *data, LIST_POSITION whence)
+dlist_insert (dlist_t * list, const void *data, LIST_POSITION whence)
 {
-    DLIST_ELEMENT * element;      /* New element to be inserted */
+    dlist_element_t * element;      /* New element to be inserted */
     /* Allocates memory for the new element */
-    element = (DLIST_ELEMENT *) malloc (sizeof( DLIST_ELEMENT ));
+    element = (dlist_element_t *) malloc (sizeof( dlist_element_t ));
     if (! element)
         {
             errno = ENOMEM;
             return -1;
         }
     element->data_ = (void *) data;
-    element->next_ = (DLIST_ELEMENT *) NULL;
-    element->prev_ = (DLIST_ELEMENT *) NULL;
+    element->next_ = (dlist_element_t *) NULL;
+    element->prev_ = (dlist_element_t *) NULL;
     /* Check the size of the list */
     if (! list->size_)
         {
@@ -81,7 +81,7 @@ dlist_insert (DLIST * list, const void *data, LIST_POSITION whence)
 /* Helper function: will relink the list based on the selected
    insertions position */
 static int 
-relink_list (DLIST *list, DLIST_ELEMENT *element, LIST_POSITION whence)
+relink_list (dlist_t *list, dlist_element_t *element, LIST_POSITION whence)
 {
     switch (whence)
         {

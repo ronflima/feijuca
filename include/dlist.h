@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.3 2004-03-19 11:12:22 ron_lima Exp $
+ $Id: dlist.h,v 1.4 2004-03-26 11:14:19 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -38,42 +38,42 @@
  * Datatypes
  */
 /* Abstraction for a single list element */
-typedef struct dlist_element_t
+typedef struct dlist_element_t_
 {
-    void                   * data_;
-    struct dlist_element_t * next_;
-    struct dlist_element_t * prev_;
-} DLIST_ELEMENT;
+    void                    * data_;
+    struct dlist_element_t_ * next_;
+    struct dlist_element_t_ * prev_;
+} dlist_element_t;
 
 /* Abstraction for the list descriptor */
 typedef struct dlist_t
 {
-    size_t          size_;
-    DLIST_ELEMENT * curr_;
-    DLIST_ELEMENT * head_;
-    DLIST_ELEMENT * tail_;
-    deallocator_t  deallocator_;
-} DLIST;
+    size_t            size_;
+    dlist_element_t * curr_;
+    dlist_element_t * head_;
+    dlist_element_t * tail_;
+    deallocator_t     deallocator_;
+} dlist_t;
 
 /* 
  * Prototypes 
  */
 extern int
-dlist_alloc (DLIST ** list, deallocator_t dealloc);
+dlist_alloc (dlist_t ** list, deallocator_t dealloc);
 
 extern int
-dlist_free (DLIST ** list);
+dlist_free (dlist_t ** list);
 
 extern int 
-dlist_get (DLIST * list, void **data, LIST_POSITION whence);
+dlist_get (dlist_t * list, void **data, list_position_t whence);
 
 extern int 
-dlist_insert (DLIST * list, const void *data, LIST_POSITION whence);
+dlist_insert (dlist_t * list, const void *data, list_position_t whence);
 
 extern int
-dlist_move (DLIST * list, LIST_POSITION whence);
+dlist_move (dlist_t * list, list_position_t whence);
 
 extern int
-dlist_del (DLIST * list, void **data, LIST_POSITION whence);
+dlist_del (dlist_t * list, void **data, list_position_t whence);
 
 #endif /* LIST_H */

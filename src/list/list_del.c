@@ -24,16 +24,16 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_del.c,v 1.3 2004-03-19 11:13:47 ron_lima Exp $
+ $Id: list_del.c,v 1.4 2004-03-26 11:14:02 ron_lima Exp $
 */
 #include <stdio.h>
 #include <errno.h>
 #include "list.h"
 
 int
-list_del (LIST * list, void **data)
+list_del (list_t * list, void **data)
 {
-    LIST_ELEMENT * currelem; /* Current element being processed */
+    list_element_t * currelem; /* Current element being processed */
     void * extracted_data;   /* Data extracted from the list */
 
     /* Initializations */

@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_free.c,v 1.3 2004-03-19 11:13:47 ron_lima Exp $
+ $Id: list_free.c,v 1.4 2004-03-26 11:14:02 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include "list.h"
 
 int
-list_free (LIST ** list)
+list_free (list_t ** list)
 {
     /* Makes the current pointer pointing to nowhere. It will force
        list_del to delete always from the head of the list */
@@ -44,7 +44,7 @@ list_free (LIST ** list)
         }
     /* Deletes the list descriptor from memory */
     free (*list);
-    *list = (LIST *) NULL;
+    *list = (list_t *) NULL;
     return 0x0;
 }
  

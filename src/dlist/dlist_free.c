@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_free.c,v 1.3 2004-03-19 11:14:01 ron_lima Exp $
+ $Id: dlist_free.c,v 1.4 2004-03-26 11:14:01 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include "dlist.h"
 
 int
-dlist_free (DLIST ** list)
+dlist_free (dlist_t ** list)
 {
     /* Proceeds with the deletion - Deletes the list from the head,
        always */
@@ -42,7 +42,7 @@ dlist_free (DLIST ** list)
         }
     /* Deletes the list descriptor from memory */
     free (*list);
-    *list = (DLIST *) NULL;
+    *list = (dlist_t *) NULL;
     return 0x0;
 }
  
