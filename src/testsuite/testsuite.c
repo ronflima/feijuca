@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.1 2004-07-19 00:11:54 ron_lima Exp $
+ $Id: testsuite.c,v 1.2 2004-08-04 10:15:01 ron_lima Exp $
 */
  
 #include <stdio.h>
@@ -36,10 +36,11 @@ main (int argc, char ** argv)
     register int i;   /* Simple iterator */    
     test_t tests [] = /* Vector containing all tests to be done */
         { 
-            {"List Test", test_list} 
+            {"List Test" , test_list },
+            {"DList Test", test_dlist} 
         }; 
 
-    for (i=0x0; i < MAX_TESTS; ++i)
+    for (i=0x0; i < sizeof (tests)/sizeof(test_t); ++i)
         {
             int errors; /* Errors detected */
 

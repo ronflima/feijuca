@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.1 2004-07-19 00:11:54 ron_lima Exp $
+ $Id: gatests.h,v 1.2 2004-08-04 10:15:01 ron_lima Exp $
 */
  
 #ifndef GATESTS_H
@@ -55,6 +55,8 @@ typedef struct
  * Prototypes
  */
 extern int
-(test_list)(void);
+(test_list) (void);
+extern int
+(test_dlist)(void);
 
 #endif /* GATESTS_H */

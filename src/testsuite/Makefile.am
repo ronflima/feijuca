@@ -6,6 +6,7 @@
 noinst_PROGRAMS = gatest
 gatest_SOURCES = gatests.h			\
                  list.c				\
+                 dlist.c                        \
                  testsuite.c
 AM_CPPFLAGS=-I./ -I../../include
 AM_CFLAGS=$(CFLAGS)
