@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.5 2004-04-02 10:25:08 ron_lima Exp $
+ $Id: dlist.h,v 1.6 2004-04-04 23:55:16 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -34,6 +34,11 @@
 
 #include <stdio.h>
 #include "gacommon.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*
  * Datatypes
  */
@@ -75,5 +80,9 @@ extern int
 
 extern int
 (dlist_del) (dlist_t * list, void **data, list_position_t whence);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LIST_H */

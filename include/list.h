@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.5 2004-04-02 10:25:19 ron_lima Exp $
+ $Id: list.h,v 1.6 2004-04-04 23:55:16 ron_lima Exp $
 */
  
 #ifndef LIST_H
@@ -32,6 +32,10 @@
 
 #include <stdio.h>
 #include "gacommon.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Datatypes
@@ -73,5 +77,9 @@ extern int
 
 extern int
 (list_del) (list_t * list, void **data);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* LIST_H */

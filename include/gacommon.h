@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gacommon.h,v 1.5 2004-04-02 10:26:13 ron_lima Exp $
+ $Id: gacommon.h,v 1.6 2004-04-04 23:55:16 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -37,6 +37,10 @@
  */
 /* Simple information getters */
 #define list_size(list) (list)->size_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Datatypes
@@ -55,5 +59,9 @@ typedef enum
 typedef void (* deallocator_t)(void *data);
 /* Comparison function pointer type */
 typedef int (* compare_t)(const void * a, const void * b);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* GACOMMON_H */

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.2 2004-03-31 09:23:53 ron_lima Exp $
+ $Id: clist.h,v 1.3 2004-04-04 23:55:16 ron_lima Exp $
 */
  
 #ifndef CLIST_H
@@ -33,6 +33,10 @@
 #include <stdio.h>
 #include "list.h"
 #include "gacommon.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Datatypes
@@ -55,5 +59,9 @@ typedef list_t         clist_t;         /* List descriptor */
 /* Real functions */
 extern int 
 clist_insert (clist_t * list, const void *data);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* CLIST_H */

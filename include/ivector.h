@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.1 2004-04-04 11:13:53 ron_lima Exp $
+ $Id: ivector.h,v 1.2 2004-04-04 23:55:16 ron_lima Exp $
 */
  
 #ifndef IVECTOR_H
@@ -33,6 +33,9 @@
 #include <stdio.h>
 #include "gacommon.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 /*
  * Datatypes
  */
@@ -62,5 +65,9 @@ extern int
 (ivector_qsort) (ivector_t * vector);
 extern void *
 (ivector_bsearch) (ivector_t * vector, const void * data);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* IVECTOR_H */
