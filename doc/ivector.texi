@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: ivector.texi,v 1.2 2005-02-07 21:04:12 ron_lima Exp $
+@c $Id: ivector.texi,v 1.3 2005-02-08 14:04:26 ron_lima Exp $
 @c %**start of header
 @setfilename ivector.info
 @settitle    Infinite Vectors
@@ -80,49 +80,213 @@ involving this algorithm.
 @node ivector_alloc, ivector_free, functions, functions
 @section int ivector_alloc(ivector_t ** ivector, compare_t * compare, deallocator_t * dealloc, size_t size)
 
-Not documented yet!
+Purpose: Allocates a new vector descriptor.
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector to create (mandatory)
+@item compare
+Compare function to compare individual items of the vector (not
+required).
+@item dealloc
+Deallocator to deallocate each item of the vector (not required).
+@item datalen
+Size of each element of the vector
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+The operation suceeded
+@item EGAINVAL
+The data length provided has an invalid value. It must be always
+greater than zero.
+@item EGANOMEM
+The operation could not allocate memory for the descriptor.
+@end itemize
+
+@emph{Hints}:
+@itemize @bullet
+@item 
+The deallocator is used only when the vector contains a set of
+pointers. In normal operations, it is not needed and can be provided
+as a NULL pointer.
+@item
+The compare function is not mandatory. If you intend to use
+@samp{ivector_bsearch} or @samp{ivector_qsort} functions, then you
+will have to provide such function (@xref{ivector_bsearch},
+@xref{ivector_qsort}.).
+@end itemize
 
 @c ***** ivector_free
 @node ivector_free, ivector_get, ivector_alloc, functions
 @section int ivector_free (ivector_t ** ivector)
 
-Not documented yet!
+Purpose: Deallocates the whole vector from memory.
+
+Parameters:
+@itemize @bullet
+@item ivector
+Descriptor of the ivector, passed by reference (mandatory).
+@end itemize
+
+Return values:
+@itemize @bullet
+@item This function always returns zero.
+@end itemize
 
 @c ***** ivector_get
 @node ivector_get, ivector_put, ivector_free, functions
-@section int (ivector_get) (ivector_t *ivector, void **data, size_t size)
+@section int (ivector_get) (ivector_t *ivector, void **data, size_t idx)
 
-Not documented yet!
+Purpose: Retrieves an item from the vector
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector descriptor
+@item data
+Data arena to store the data retrieved from the vector.
+@item idx
+Index number. Identifies the position from where the element will be
+retrieved from.
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+The operation succeeded
+@item EGAINVAL
+The value of the @samp{idx} parameter is not valid. It may be greater
+than the size of the vector or less than zero.
+@end itemize
+
+@emph{Hints}:
+@itemize @bullet
+@item
+The retrieved data is actually a pointer to the right location within
+the vector. So, if you change the contents of the retrived data you
+will be changing, actually, the data inside the vector.
+@end itemize
 
 @c ***** ivector_put
 @node ivector_put, ivector_add, ivector_get, functions
-@section int ivector_put (ivector_t *ivector, size_t size, const void *data)
+@section int ivector_put (ivector_t *ivector, size_t idx, const void *data)
 
-Not documented yet!
+Purpose: Overwrite a given element of the vector
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector descriptor
+@item idx
+Index of the vector. Used to address the position where you want to
+overwrite data.
+@item data
+Memory arena that contains the data that will be used to overwrite the
+vector position.
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation suceeded
+@item EGAINVAL
+The idx parameter is not valid or the data arena provided is a NULL
+pointer.
+@end itemize
 
 @c ***** ivector_add
 @node ivector_add, ivector_qsort, ivector_put, functions
-@section int ivector_add (ivector_t *ivector, const void *key)
+@section int ivector_add (ivector_t *ivector, const void *data)
 
-Not documented yet!
+Purpose: Adds a new element to the vector by enlarging the vector
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector descriptor
+@item data
+Data to add into the vector
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded
+@item EGANOMEM
+No memory available to enlarge the vector
+@end itemize
 
 @c ***** ivector_qsort
 @node ivector_qsort, ivector_bsearch, ivector_add, functions
 @section int ivector_qsort (ivector_t *ivector)
 
-Not documented yet!
+Purpose: Sorts the vector using the quick sort algorithm
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector to sort
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation suceeded
+@item EGAINVAL
+There is no comparison function available for the sorting function.
+@end itemize
 
 @c ***** ivector_bsearch
 @node ivector_bsearch, ivector_del, ivector_qsort, functions
 @section int ivector_bsearch (ivector_t *ivector, void **data, const void *key)
 
-Not documented yet!
+Purpose: Searches the vector for a given key
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector descriptor
+@item data
+Found data
+@item key
+Key to search for
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded. The item was found.
+@item EOF
+No item was found.
+@item EGAINVAL
+The @samp{data} parameter is invalid or the comparison function was
+not provided during the vector initialization.
+@end itemize
 
 @c ***** ivector_del
 @node ivector_del, , ivector_bsearch, functions
-@section int ivector_del (ivector_t *ivector, size_t size)
+@section int ivector_del (ivector_t *ivector, size_t idx)
 
-Not documented yet!
+Purpose: Deletes a single entry in the vector
+
+Parameters:
+@itemize @bullet
+@item ivector
+Vector to delete the item from
+@item idx
+Index to the item to be deleted
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded
+@item EGAINVAL
+The @samp{idx} parameter is greater than the size of the vector.
+@end itemize
 
 @c ** Includes the licenses 
 @node Licenses, , functions, Top
