@@ -2,7 +2,7 @@
 # Autoconf script for the project
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: configure.ac,v 1.10 2004-07-18 23:37:23 ron_lima Exp $
+# $Id: configure.ac,v 1.11 2005-01-16 12:11:24 ron_lima Exp $
 
 AC_PREREQ(2.57)
 AC_INIT([ga-lib], [1.0.0.b4], [ronaldo@ronaldolima.eti.br])
@@ -28,6 +28,7 @@ AC_FUNC_MALLOC
 # compile the library without any optmization and with all debug
 # information inside
 
+# Create the ability to put debugging code into the library
 AC_ARG_ENABLE(debug,
 [  --enable-debug     Turn on debugging of the library],
 [case "${enableval}" in
@@ -38,6 +39,21 @@ esac], [debug=false])
 AM_CONDITIONAL(DEBUG, test x$debug = xtrue)
 if test x$debug = xtrue; then
   AC_SUBST([CFLAGS], [-g])
+else
+  AC_SUBST([AM_CFLAGS], [-DNDEBUG])
+fi
+
+# Create the ability to profile the library
+AC_ARG_ENABLE(profiling,
+[  --enable-profiling     Turn on profiling of the library],
+[case "${enableval}" in
+  yes) profiling=true;;
+  no) profiling=false;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --enable-profiling);;
+esac], [profiling=false])
+AM_CONDITIONAL(DEBUG, test x$profiling = xtrue)
+if test x$profiling = xtrue; then
+  AC_SUBST([CFLAGS], [-pg])
 else
   AC_SUBST([AM_CFLAGS], [-DNDEBUG])
 fi

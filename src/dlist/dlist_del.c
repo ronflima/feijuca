@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.12 2005-01-16 11:47:12 ron_lima Exp $
+ $Id: dlist_del.c,v 1.13 2005-01-16 12:11:29 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,17 +34,17 @@
 /*
  * Local prototypes
  */
-static void relink_list (dlist_t *, dlist_element_t *);
+static void relink_list __P((dlist_t *, dlist_element_t *));
 
-static dlist_element_t *delete_head (dlist_t *);
+static dlist_element_t *delete_head __P((dlist_t *));
 
-static dlist_element_t *delete_tail (dlist_t *);
+static dlist_element_t *delete_tail __P((dlist_t *));
 
-static dlist_element_t *delete_current (dlist_t *);
+static dlist_element_t *delete_current __P((dlist_t *));
 
-static dlist_element_t *delete_next (dlist_t *);
+static dlist_element_t *delete_next __P((dlist_t *));
 
-static dlist_element_t *delete_prev (dlist_t *);
+static dlist_element_t *delete_prev __P((dlist_t *));
 
 /*
  * Exported functions

@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: galib.texi,v 1.1 2004-05-24 01:58:24 ron_lima Exp $
+@c $Id: galib.texi,v 1.2 2005-01-16 12:11:29 ron_lima Exp $
 @c %**start of header
 @setfilename galib.info
 @settitle    Generic Algorithms Library
@@ -51,8 +51,8 @@ Revision: @value{VERSION}
 @chapter Introduction to G.A. Lib
 
 The idea of writing a library with generic algorithms is not new. In
-fact, several projects in Sourceforge are libraries that intend
-implement all general public domain algorithm like lists, queues and
+fact, several projects in Sourceforge are libraries that intend to
+implement all general public domain algorithms like lists, queues and
 so on. In fact, G.A. Lib is a project that was born from my studies in
 algorithms. As a programmer, I was always looking for such a
 library. However I wanted to know the algorithms, not only play with

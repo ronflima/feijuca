@@ -14,5 +14,5 @@ gatest_SOURCES = gatests.h						\
                  testsuite.c
 AM_CPPFLAGS=-I./ -I../../include
 AM_CFLAGS=$(CFLAGS)
-AM_LDFLAGS=-lga -L../
+AM_LDFLAGS=-static -lga -L../
 
