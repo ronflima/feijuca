@@ -20,20 +20,23 @@
 
  System: G.A. Lib
 
- Description: Pushes a new element into the queue
+ Description: Pops an element from the queue
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_enqueue.c,v 1.1 2004-05-03 00:25:07 ron_lima Exp $
+ $Id: queue_pop.c,v 1.1 2004-05-20 10:38:21 ron_lima Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <errno.h>
 #include "queue.h"
 #include "list.h"
 
-int 
-queue_enqueue (queue_t * queue, const void *data)
+int
+queue_pop (queue_t * queue, void **data)
 {
-    return list_insert ((list_t *) queue, data);
+    /* Moves to the beginning of the list. We need to extract the
+       first element entered into the queue */
+    list_move ((list_t *) queue, HEAD);
+    return list_del ((list_t *) queue, data);
 }

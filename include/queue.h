@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.1 2004-05-03 00:25:07 ron_lima Exp $
+ $Id: queue.h,v 1.2 2004-05-20 10:38:20 ron_lima Exp $
 */
  
 #ifndef QUEUE_H
@@ -50,9 +50,9 @@ extern int
 extern int
 (queue_free) (queue_t ** queue);
 extern int
-(queue_dequeue) (queue_t * queue, void **data);
+(queue_pop) (queue_t * queue, void **data);
 extern int 
-(queue_queue) (queue_t * queue, const void *data);
+(queue_push) (queue_t * queue, const void *data);
 #ifdef __cplusplus
 }
 #endif
