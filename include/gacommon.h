@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gacommon.h,v 1.6 2004-04-04 23:55:16 ron_lima Exp $
+ $Id: gacommon.h,v 1.7 2004-04-11 12:02:59 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -36,7 +36,7 @@
  * Macros
  */
 /* Simple information getters */
-#define list_size(list) (list)->size_
+#define descriptor_size(list) (list)->size_
 
 #ifdef __cplusplus
 extern "C" {
