@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+ $Id: list_insert.c,v 1.2 2004-02-29 22:17:59 ron_lima Exp $
 */
 #include <errno.h>
 #include "list.h"
@@ -56,6 +56,7 @@ list_insert (LIST * list, const void *data)
       list->tail_->next_ = element;
       list->tail_        = element;
     }
+  list->curr_ = element;
   list->size_++;
   return 0;
 }
