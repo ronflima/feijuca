@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: queue.texi,v 1.1 2005-02-07 21:04:12 ron_lima Exp $
+@c $Id: queue.texi,v 1.2 2005-02-08 18:09:37 ron_lima Exp $
 @c %**start of header
 @setfilename queue.info
 @settitle    Queue routines
@@ -43,13 +43,26 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @node algorithm, data types, Top, Top
 @chapter Queue implementation in G.A. Library
 
-Not documented yet!
+The queue algorithm is a data structure where the first item to get in
+will be the first item to get out. G.A. Library uses the single lists
+algorithm as the queue implementation basis.
+
+Like stacks, queue functions are front-ends for lists operations.
+
+To add queue algorithms to your program, simply include the queue.h
+header file. All needed declarations for lists are there.
 
 @c ***** data types
 @node data types, functions, algorithm, Top
 @chapter Data types
 
-Not documented yet!
+In order to implement the queues, the following data types are
+defined:
+
+@itemize @bullet
+@item queue_t
+Queue descriptor. Describes the entire queue.
+@end itemize
 
 @c ***** functions
 @node functions, Licenses , data types, Top
@@ -67,25 +80,77 @@ Not documented yet!
 @node queue_alloc, queue_free, functions, functions
 @section int queue_alloc (queue_t **queue, deallocator_t *dealloc)
 
-Not documented yet!
+Purpose: Allocates a queue descriptor and makes it available for
+usage.
+
+Parameters:
+@itemize @bullet
+@item queue
+Queue descriptor to create
+@item dealloc
+Deallocator to use to clean up memory when each element of the queue
+is popped.
+@end itemize
+
+@emph{Hints}:
+@itemize @bullet
+@item
+The deallocator is used effectively only by the queue_free
+routine. Even though, you have to provide it in order to avoid memory
+leaks when deleting the queue from memory.
+@end itemize
+
+@inforef{list_alloc, List allocation routine, list.info}, for more
+information.
 
 @c ***** queue_free
 @node queue_free, queue_pop, queue_alloc, functions
 @section int queue_free (queue_t ** queue)
 
-Not documented yet!
+Purpose: Deletes the entire queue from the memory
+
+Parameters:
+@itemize @bullet
+@item queue
+Queue descriptor
+@end itemize
+
+@inforef{list_free, List deallocation routine, list.info}, for more
+information.
 
 @c ***** queue_pop
 @node queue_pop, queue_push, queue_free, functions
 @section int queue_pop (queue_t *queue, void **data)
 
-Not documented yet!
+Purpose: Gets (pops) an element from the queue
+
+Parameters:
+@itemize @bullet
+@item queue
+Queue descriptor
+@item data
+Data popped from the queue
+@end itemize
+
+@inforef{list_del, List deletion routine, list.info}, for more
+information.
 
 @c ***** queue_push
 @node queue_push,  , queue_pop, functions
 @section int queue_push (queue_t *queue, const void *data)
 
-Not documented yet!
+Purpose: Adds (pushes) a new element to the queue
+
+Parameters:
+@itemize @bullet
+@item queue
+Queue descriptor
+@item data
+Data to push into the queue
+@end itemize
+
+@inforef{list_insert, List insertion routine, list.info}, for more
+information.
 
 @c ** Includes the licenses 
 @node Licenses, ,functions, Top
