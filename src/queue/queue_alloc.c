@@ -23,8 +23,8 @@
  Description: Allocates and initializes a queue
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_alloc.c,v 1.5 2004-10-07 19:40:05 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: queue_alloc.c,v 1.6 2004-10-13 10:28:58 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,10 +33,10 @@
 #include "list.h"
 
 int
-queue_alloc(queue_t ** queue, deallocator_t * dealloc)
+queue_alloc (queue_t ** queue, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
-  assert(queue != NULL);
-  assert(dealloc != NULL);
-  return list_alloc((queue_t **) queue, dealloc);
+  assert (queue != NULL);
+  assert (dealloc != NULL);
+  return list_alloc ((queue_t **) queue, dealloc);
 }

@@ -23,8 +23,8 @@
  Description: Pushes a new element into the queue
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_push.c,v 1.4 2004-10-07 19:40:05 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: queue_push.c,v 1.5 2004-10-13 10:28:58 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,10 +33,10 @@
 #include "list.h"
 
 int
-queue_push(queue_t * queue, const void *data)
+queue_push (queue_t * queue, const void * data)
 {
   /* Assertives for debugging purposes */
-  assert(queue != NULL);
+  assert (queue != NULL);
   /* Calls the list insert function */
-  return list_insert((list_t *) queue, data);
+  return list_insert ((list_t *) queue, data);
 }
