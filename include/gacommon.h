@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gacommon.h,v 1.4 2004-03-26 11:14:19 ron_lima Exp $
+ $Id: gacommon.h,v 1.5 2004-04-02 10:26:13 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -53,5 +53,7 @@ typedef enum
 
 /* Deallocator function pointer type */
 typedef void (* deallocator_t)(void *data);
+/* Comparison function pointer type */
+typedef int (* compare_t)(const void * a, const void * b);
 
 #endif /* GACOMMON_H */
