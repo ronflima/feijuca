@@ -25,8 +25,8 @@
    directly by your application.
 
    CVS Information
-   $Author: daniel_csoares $
-   $Id: gacommon.h,v 1.13 2004-10-07 19:28:08 daniel_csoares Exp $
+   $Author: ron_lima $
+   $Id: gacommon.h,v 1.14 2004-10-10 23:28:42 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -54,6 +54,8 @@
 #endif
 #endif
 
+/* Error codes: Errors that are returned from G.A. Library
+   routines. */
 /* Error value for invalid argument */
 #define EGAINVAL 2500
 /* Error value for problem at memory operations */
@@ -77,9 +79,9 @@ typedef enum
 } position_t;
 
 /* Deallocator function pointer type */
-typedef void (deallocator_t) (void *data);
+typedef void (deallocator_t) (void *);
 /* Comparison function pointer type */
-typedef int (compare_t) (const void *a, const void *b);
+typedef int (compare_t) (const void *, const void *);
 
 GAENDDECLS
 
