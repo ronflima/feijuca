@@ -24,32 +24,30 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.8 2004-10-05 10:29:28 ron_lima Exp $
+ $Id: list_insert.c,v 1.9 2004-10-10 23:36:41 ron_lima Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "list.h"
 
 int
-list_insert(list_t * list, const void *data)
+list_insert (list_t * list, const void *data)
 {
   list_element_t *element;
 
   /* Several assertives for debugging purposes */
-  assert(list != NULL);
-  assert(data != NULL);
+  assert (list != NULL);
+  assert (data != NULL);
 
   /* Allocates memory for the new element */
-  element = (list_element_t *) malloc(sizeof(list_element_t));
-  assert(element != NULL);
+  element = (list_element_t *) malloc (sizeof(list_element_t));
+  assert (element != NULL);
   if (!element)
   {
-    errno = ENOMEM;
-    return -1;
+    return EGANOMEM;
   }
-  element->data_ = (void *)data;
+  element->data_ = (void *) data;
   element->next_ = (list_element_t *) NULL;
   /* Check the size of the list */
   if (!list->size_)
@@ -66,5 +64,5 @@ list_insert(list_t * list, const void *data)
   }
   list->curr_ = element;
   list->size_++;
-  return 0;
+  return 0x0;
 }

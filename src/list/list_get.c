@@ -25,20 +25,19 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.8 2004-10-05 10:29:28 ron_lima Exp $
+ $Id: list_get.c,v 1.9 2004-10-10 23:36:41 ron_lima Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "list.h"
 
 int
-list_get(list_t * list, void **data, position_t whence)
+list_get (list_t * list, void **data, position_t whence)
 {
   /* Assertives for debugging purposes */
-  assert(list != NULL);
-  assert(data != NULL);
+  assert (list != NULL);
+  assert (data != NULL);
   /* Checks if the current element points to a valid address */
   if (!list->curr_)
   {
@@ -57,8 +56,7 @@ list_get(list_t * list, void **data, position_t whence)
     break;
   default:
     /* Wrong navigation mode provided */
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
-  return 0;
+  return 0x0;
 }

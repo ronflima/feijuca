@@ -28,23 +28,22 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include <errno.h>
 #include <assert.h>
 #include "list.h"
 
 int
-list_del(list_t * list, void **data)
+list_del (list_t * list, void **data)
 {
   list_element_t *currelem;	/* Current element being processed */
   void *extracted_data;		/* Data extracted from the list */
 
   /* Assertives for debugging purposes */
-  assert(list != NULL);
+  assert (list != NULL);
 
   /* Initializations */
   if (data)
   {
-    *data = (void *)NULL;
+    *data = (void *) NULL;
   }
   /* Sanity check: Will not delete an element if the list is empty */
   if (!list->size_)
@@ -55,8 +54,7 @@ list_del(list_t * list, void **data)
      provided. If not, there is a problem in the list initialization */
   if (!data && !list->deallocator_)
   {
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
   /* Check if the current element points to the head of the list or if the
      curr_ points to nowhere */
@@ -101,5 +99,5 @@ list_del(list_t * list, void **data)
     /* Data storage was not provided. Deletes the data */
     list->deallocator_(extracted_data);
   }
-  return 0;
+  return 0x0;
 }

@@ -25,18 +25,17 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.10 2004-10-05 10:29:28 ron_lima Exp $
+ $Id: list_move.c,v 1.11 2004-10-10 23:36:41 ron_lima Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <assert.h>
 #include "list.h"
 
 int
-list_move(list_t * list, position_t whence)
+list_move (list_t * list, position_t whence)
 {
   /* Small assertives for debugging purposes */
-  assert(list != NULL);
+  assert (list != NULL);
 
   /* Decides how to navigate the list */
   switch (whence)
@@ -58,8 +57,7 @@ list_move(list_t * list, position_t whence)
     }
     break;
   default:
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
-  return 0;
+  return 0x0;
 }
