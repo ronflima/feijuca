@@ -2,7 +2,7 @@
 # Autoconf script for the project
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: configure.ac,v 1.9 2004-05-03 00:25:07 ron_lima Exp $
+# $Id: configure.ac,v 1.10 2004-07-18 23:37:23 ron_lima Exp $
 
 AC_PREREQ(2.57)
 AC_INIT([ga-lib], [1.0.0.b4], [ronaldo@ronaldolima.eti.br])
@@ -50,5 +50,6 @@ AC_CONFIG_FILES([Makefile
                  src/ivector/Makefile
                  src/stack/Makefile
                  src/queue/Makefile
-                 doc/Makefile])
+                 doc/Makefile
+                 src/testsuite/Makefile])
 AC_OUTPUT

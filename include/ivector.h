@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.6 2004-07-17 11:49:31 ron_lima Exp $
+ $Id: ivector.h,v 1.7 2004-07-18 23:37:23 ron_lima Exp $
 */
  
 #ifndef IVECTOR_H
@@ -56,7 +56,7 @@ extern int
 (ivector_alloc) (ivector_t ** vector, compare_t * comp, 
                  deallocator_t * dealloc, size_t datalen);
 extern void
-(ivector_free) (ivector_t * vector);
+(ivector_free) (ivector_t ** vector);
 extern void *
 (ivector_get) (ivector_t * vector, size_t idx);
 extern int
