@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.2 2004-02-29 22:21:23 ron_lima Exp $
+ $Id: list.h,v 1.3 2004-03-07 20:56:15 ron_lima Exp $
 */
  
 #ifndef LIST_H
@@ -63,13 +63,13 @@ extern int
 list_free (LIST ** list);
 
 extern int 
-list_get (LIST * list, void **data, int whence);
+list_get (LIST * list, void **data, LIST_POSITION whence);
 
 extern int 
 list_insert (LIST * list, const void *data);
 
 extern int
-list_move (LIST * list, int whence);
+list_move (LIST * list, LIST_POSITION whence);
 
 extern int
 list_del (LIST * list, void **data);

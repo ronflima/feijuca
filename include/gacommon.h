@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gacommon.h,v 1.1 2004-02-29 22:21:58 ron_lima Exp $
+ $Id: gacommon.h,v 1.2 2004-03-07 20:56:15 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -36,11 +36,14 @@
  * Macros
  */
 /* List iteration types */
-#define HEAD 0x0
-#define TAIL 0x1
-#define NEXT 0x2
-#define CURR 0x4
-#define PREV 0x8
+typedef enum 
+  {
+    HEAD = 0,
+    TAIL,
+    NEXT,
+    CURR,
+    PREV
+  } LIST_POSITION;
 
 /* Simple information getters */
 #define list_size(list) (list)->size_
