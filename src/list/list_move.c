@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.2 2004-02-29 22:19:08 ron_lima Exp $
+ $Id: list_move.c,v 1.3 2004-03-07 20:54:39 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include "list.h"
 
 int
-list_move (LIST * list, int whence)
+list_move (LIST * list, LIST_POSITION whence)
 {
   switch (whence)
     {

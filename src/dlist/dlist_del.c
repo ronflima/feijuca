@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.1 2004-02-29 22:25:42 ron_lima Exp $
+ $Id: dlist_del.c,v 1.2 2004-03-07 20:53:56 ron_lima Exp $
 */
 #include <stdio.h>
 #include <errno.h>
@@ -55,7 +55,7 @@ delete_prev (DLIST * list);
  * Exported functions 
  */
 int
-dlist_del (DLIST * list, void **data, int whence)
+dlist_del (DLIST * list, void **data, LIST_POSITION whence)
 {
   DLIST_ELEMENT * currelem; /* Current element being processed */
   void * extracted_data;   /* Data extracted from the list */
