@@ -23,8 +23,8 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector_bsearch.c,v 1.5 2004-10-07 19:26:38 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector_bsearch.c,v 1.6 2004-10-13 10:40:55 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,13 +33,15 @@
 #include "ivector.h"
 
 int
-ivector_bsearch(ivector_t * vector, void ** found, const void *data)
+ivector_bsearch (ivector_t * vector, void ** found, const void * data)
 {
   /* Assertives for debugging purposes */
-  assert(vector != NULL);
-  assert(data != NULL);
+  assert (vector != NULL);
+  assert (data != NULL);
+  
   /* Initializations */
-  *found = (void *)NULL;
+  *found = (void *) NULL;
+  
   /* Sanity tests */
   if ((!vector->comp_) || (!data))
   {
@@ -48,8 +50,9 @@ ivector_bsearch(ivector_t * vector, void ** found, const void *data)
   /* Searchs only if the vector has something */
   if (vector->size_)
   {
-    *found = bsearch(data, vector->data_, vector->size_,
-		     vector->datalen_, vector->comp_);
+    *found = bsearch (data, vector->data_, vector->size_,
+                      vector->datalen_, vector->comp_);
   }
+  
   return 0x0;
 }

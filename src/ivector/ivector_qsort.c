@@ -23,8 +23,8 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector_qsort.c,v 1.4 2004-10-07 19:26:38 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector_qsort.c,v 1.5 2004-10-13 10:40:55 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,18 +33,19 @@
 #include "ivector.h"
 
 int
-ivector_qsort(ivector_t * vector)
+ivector_qsort (ivector_t * vector)
 {
   /* Assertives for debugging purposes */
-  assert(vector != NULL);
+  assert (vector != NULL);
 
   /* Checks if the compare function was set */
-  if (!vector->comp_)
+  if (! vector->comp_)
   {
     return EGAINVAL;
   }
   /* Do not try to sort a vector with only one element. It coredumps! */
   if (vector->size_ > 1)
-    qsort(vector->data_, vector->size_, vector->datalen_, vector->comp_);
+    qsort (vector->data_, vector->size_, vector->datalen_, vector->comp_);
+  
   return 0x0;
 }

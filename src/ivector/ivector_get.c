@@ -23,8 +23,8 @@
  Description: Gets an item from the list
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector_get.c,v 1.4 2004-10-07 19:26:38 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector_get.c,v 1.5 2004-10-13 10:40:55 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,10 +33,10 @@
 #include "ivector.h"
 
 int
-ivector_get(ivector_t * vector, void ** data, size_t idx)
+ivector_get (ivector_t * vector, void ** data, size_t idx)
 {
   /* Assertives for debugging purposes */
-  assert(vector != NULL);
+  assert (vector != NULL);
   /* Sanity tests */
   if ((idx < 0) || (idx >= vector->size_))
   {
@@ -45,5 +45,6 @@ ivector_get(ivector_t * vector, void ** data, size_t idx)
   }
   /* Shifts the address idx times the data structure */
   *data = (void *)((char *)vector->data_ + idx * vector->datalen_);
+  
   return 0x0;
 }

@@ -23,8 +23,8 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector_add.c,v 1.6 2004-10-07 19:26:37 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector_add.c,v 1.7 2004-10-13 10:40:55 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,14 +34,14 @@
 #include "ivector.h"
 
 int
-ivector_add(ivector_t * vector, const void *data)
+ivector_add (ivector_t * vector, const void * data)
 {
-  void *v;			/* New redimensioned vector */
+  void * v; /* New redimensioned vector */
 
-  assert(vector != NULL);
-  v = realloc(vector->data_, vector->datalen_ * (vector->size_ + 1));
-  assert(v != NULL);
-  if (!v)
+  assert (vector != NULL);
+  v = realloc (vector->data_, vector->datalen_ * (vector->size_ + 1));
+  assert (v != NULL);
+  if (! v)
   {
     return EGANOMEM;
   }
@@ -49,7 +49,8 @@ ivector_add(ivector_t * vector, const void *data)
   /* Moves v to the newly created entry */
   v = (void *)((char *)v + vector->size_ * vector->datalen_);
   /* Copies data into the new element */
-  memcpy(v, data, vector->datalen_);
+  memcpy (v, data, vector->datalen_);
   vector->size_++;
+  
   return 0x0;
 }

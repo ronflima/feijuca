@@ -23,8 +23,8 @@
  Description: Puts a new data element in an existing slot in the vector
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector_put.c,v 1.5 2004-10-07 19:26:38 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector_put.c,v 1.6 2004-10-13 10:40:55 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,12 +34,13 @@
 #include "ivector.h"
 
 int
-ivector_put(ivector_t * vector, size_t idx, const void *data)
+ivector_put (ivector_t * vector, size_t idx, const void *data)
 {
-  void *i;			/* Indexer for the vector */
+  void * i; /* Indexer for the vector */
+  
   /* Assertives for debugging purposes */
-  assert(vector != NULL);
-  assert(data != NULL);
+  assert (vector != NULL);
+  assert (data != NULL);
   /* Sanity tests */
   if (idx >= vector->size_)
   {
@@ -52,6 +53,7 @@ ivector_put(ivector_t * vector, size_t idx, const void *data)
   /* Calculates the place where we want to overwrite data */
   i = (void *)((char *)vector->data_ + idx * vector->datalen_);
   /* Overwrite data */
-  memcpy(i, data, vector->datalen_);
+  memcpy (i, data, vector->datalen_);
+  
   return 0x0;
 }
