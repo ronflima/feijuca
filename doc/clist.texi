@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: clist.texi,v 1.2 2004-04-06 09:36:56 ron_lima Exp $
+@c $Id: clist.texi,v 1.3 2005-02-07 21:04:12 ron_lima Exp $
 @c %**start of header
 @setfilename clist.info
 @settitle    Circular Lists
@@ -8,10 +8,6 @@
 @copying
 @c ** Copyrght
 Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
-
-Last update: @value{UPDATED}
-
-Revision: @value{VERSION}
 @end copying
 
 @titlepage
@@ -32,19 +28,19 @@ Revision: @value{VERSION}
 @c ** The top node
 @ifnottex
 @node Top
-@top Template
+@top CList
 @end ifnottex
 
 @c ** Main Menu
 @menu
 * algorithm :: Algorithm implemented by G.A. Library
-* notes     :: General notes
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
 @end menu
 
-@node algorithm, notes, Top, Top
+@c ***** algorithm
+@node algorithm, data types, Top, Top
 @chapter Single circular linked lists in G.A. Library
 G.A. Library implements the circular lists as single linked lists
 where the tail of the list is linked back to the beginning. Since the
@@ -53,22 +49,17 @@ iterate through the list solely in one direction.
 
 The circular lists routines are built on the single linked lists
 routines. The functions that manages the circular lists are exactly
-the same for the single linked lists. For better reading, the common
-functions were masked by macros.
+the same for the single linked lists. 
 
 Thread safety is not guaranteed, since the lists are not expected to
 be thread safe in this current release.
 
-@node notes, data types, algorithm, Top
-@chapter Notes about circular lists documentation
-
-The circular lists are heavily based on the singular lists
-routines. For the constants and macros, please refer to the singular
-lists documentation.
-
-@node data types, functions, notes, Top
+@c ***** data types
+@node data types, functions, algorithm, Top
 @chapter Data types
+
 The following data types are defined for circular list implementation.
+
 @itemize @bullet
 @item clist_element_t:
 Data structure that describes a list element. There is no need to use
@@ -86,6 +77,7 @@ list_t datatype.
 Please refer to the list documentation for a complete set of
 information on other data types.
 
+@c ***** functions
 @node functions, Licenses, data types, Top
 @chapter Functions
 All the functions in the clist.h header file are implemented as macros
@@ -96,24 +88,102 @@ list.h functions. The following table shows each macro and the real
 function that it masks. Refer to the proper list.h documentation for
 reference.
 
-@table @samp
-@item clist_alloc
-list_alloc
-@item clist_free
-list_free
-@item clist_del
-list_del
-@item clist_get
-list_get
-@item clist_move
-list_move
-@end table
-
+@c ***** functions menu
 @menu
-* clist_insert:: Inserts a new element
+* clist_alloc  :: Allocates the circular list descriptor
+* clist_free   :: Frees the entire circular list
+* clist_del    :: Deletes a single object from the list
+* clist_get    :: Get an item from the list
+* clist_move   :: Moves the current pointer of the list
+* clist_insert :: Inserts a new item to the list
 @end menu
 
-@node clist_insert, , functions, functions
+@c ***** clist_alloc
+@node clist_alloc, clist_free, functions, functions
+@section int clist_alloc (clist_t ** clist, deallocator_t * dealloc)
+
+Purpose: Allocates a new list descriptor
+
+Parameters:
+@itemize @bullet
+@item clist
+List descriptor for the circular list (required)
+@item dealloc
+Deallocator to deallocate each single element of the list.
+@end itemize
+
+@inforef{list_alloc, List allocation routine, list.info}, for more
+information.
+
+@c ***** clist_free
+@node clist_free, clist_del, clist_alloc, functions
+@section int clist_free (clist_t ** clist)
+
+Purpose: Deletes the circular lists, cleaning it entirely from the
+memory.
+
+Parameters:
+@itemize @bullet
+@item clist
+List descriptor to wipe from memory.
+@end itemize
+
+@inforef{list_free, List deallocation routine, list}, for more
+information.
+
+@c ***** clist_del
+@node clist_del, clist_get, clist_free, functions
+@section int clist_del(clist_t *clist, void **data)
+
+Purpose: Deletes a single object from the circular list.
+
+Parameters:
+@itemize @bullet
+@item clist
+Circular list descriptor (required)
+@item data
+Data extracted from the deleted item
+@end itemize
+
+@inforef{list_del, List deletion routine, list}, for more information.
+
+@c ***** clist_get
+@node clist_get, clist_move, clist_del, functions
+@section int clist_get(clist_t * clist, void **data, position_t whence)
+
+Purpose: Get an item from the circular list
+
+Parameters:
+@itemize @bullet
+@item clist
+List descriptor
+@item data
+Data got from the list
+@item whence
+Where to get the data from
+@end itemize
+
+@inforef{list_get, List getter routine, list}, for more information.
+
+@c ***** clist_move
+@node clist_move, clist_insert, clist_get, functions
+@section int clist_move (clist_t *clist, position_t whence)
+
+Purpose: moves the current pointer of the list
+
+Parameters:
+@itemize @bullet
+@item clist
+List descriptor
+@item whence
+Where to move the current descriptor to
+@end itemize
+
+@inforef{list_move, List navigation routine, list}, for more
+information.
+
+@c ***** clist_insert
+@node clist_insert, , clist_move, functions
 @section int clist_insert (clist_t * list, const void *data)
 Purpose: Inserts a new element in the list
 
@@ -125,28 +195,8 @@ List descriptor
 Data pointer to be inserted in the list
 @end itemize
 
-Return values:
-@itemize @bullet
-@item 0: success
-@item -1: failure
-@end itemize
-
-Error values in errno:
-@itemize @bullet
-@item ENOMEM:
-It was not possible to allocate memory for the element descriptor for
-the list.
-@end itemize
-
-@emph{Hints}:
-@itemize
-@item
-This function always inserts the element at the end of the list.
-@item 
-This function updates the value of the current pointer. So, if the
-list was initialized and then several elements were inserted, the
-current pointer will always point to the last inserted element.
-@end itemize
+@inforef{list_insert, List insertion routine, list}, for more
+information.
 
 @c ** Includes the licenses 
 @node Licenses, , functions, Top

@@ -1,0 +1,94 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: queue.texi,v 1.1 2005-02-07 21:04:12 ron_lima Exp $
+@c %**start of header
+@setfilename queue.info
+@settitle    Queue routines
+@c %**end of header
+
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title G.A. Library
+@subtitle Queue interfaces
+@author Ronaldo Faria Lima
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top, algorithm, (dir), (dir)
+@top Queue
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* algorithm :: Algorithm implemented by G.A. Library
+* data types:: Data types
+* functions :: Description of all available functions
+* Licenses  :: Licenses and other information
+@end menu
+
+@c ***** algorithm
+@node algorithm, data types, Top, Top
+@chapter Queue implementation in G.A. Library
+
+Not documented yet!
+
+@c ***** data types
+@node data types, functions, algorithm, Top
+@chapter Data types
+
+Not documented yet!
+
+@c ***** functions
+@node functions, Licenses , data types, Top
+@chapter Functions
+
+@c ***** functions menu
+@menu
+* queue_alloc :: Allocates a queue descriptor
+* queue_free  :: Frees the queue descriptor from memory
+* queue_pop   :: Gets (pops) an item from the queue
+* queue_push  :: Adds (pushes) an item into the queue
+@end menu
+
+@c ***** queue_alloc
+@node queue_alloc, queue_free, functions, functions
+@section int queue_alloc (queue_t **queue, deallocator_t *dealloc)
+
+Not documented yet!
+
+@c ***** queue_free
+@node queue_free, queue_pop, queue_alloc, functions
+@section int queue_free (queue_t ** queue)
+
+Not documented yet!
+
+@c ***** queue_pop
+@node queue_pop, queue_push, queue_free, functions
+@section int queue_pop (queue_t *queue, void **data)
+
+Not documented yet!
+
+@c ***** queue_push
+@node queue_push,  , queue_pop, functions
+@section int queue_push (queue_t *queue, const void *data)
+
+Not documented yet!
+
+@c ** Includes the licenses 
+@node Licenses, ,functions, Top
+@include licenses.texi
+
+@bye

@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: ivector.texi,v 1.1 2004-04-11 12:04:47 ron_lima Exp $
+@c $Id: ivector.texi,v 1.2 2005-02-07 21:04:12 ron_lima Exp $
 @c %**start of header
 @setfilename ivector.info
 @settitle    Infinite Vectors
@@ -8,17 +8,13 @@
 @copying
 @c ** Copyrght
 Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
-
-Last update: @value{UPDATED}
-
-Revision: @value{VERSION}
 @end copying
 
 @titlepage
 @c ** Title page
 
 @title G.A. Library
-@subtitle Infinite Vectors Interface5B
+@subtitle Infinite Vectors Interface
 @author Ronaldo Faria Lima
 
 @c ** Copyright page
@@ -38,30 +34,95 @@ Revision: @value{VERSION}
 @c ** Main Menu
 @menu
 * algorithm :: Algorithm implemented by G.A. Library
-* constants :: Constants used in library
-* macros    :: Macros defined by lists.h
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
 @end menu
 
-@node algorithm, constants, Top, Top
+@node algorithm, data types, Top, Top
 @chapter Infinite vectors in G. A. Library
 
-@node constants, macros, algorithm, Top
-@chapter Constants
+The infinite vetor is a vector that let you redimension it. You can
+keep adding data to it without having to worry about the limits of
+it. The G.A. Library implementation of infinite vectors always
+allocates it as a contiguous memory arena.
 
-@node macros, data types, constants, Top
-@chapter Macros
+That is the main limitation of the algorithm: it needs always
+contiguous memory to keep allocating memory. 
 
-@node data types, functions, macros, Top
+Use this algorithm when you have a small amount of data to load.
+
+@node data types, functions, algorithm, Top
 @chapter Data types
+
+The following data types are defined for the infinite vectors:
+
+@itemize @bullet
+@item ivector_t
+The vector descriptor. This is the base data type of all operations
+involving this algorithm.
+@end itemize
 
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* 
+* ivector_alloc   :: Vector allocation routine
+* ivector_free    :: Frees an entire vector from memory
+* ivector_get     :: Gets a single element from a vector
+* ivector_put     :: Overwrites a single location in the vector
+* ivector_add     :: Adds a new entry in the vector
+* ivector_qsort   :: Sorts the vector
+* ivector_bsearch :: Searches the vector using a criterion
+* ivector_del     :: Deletes a single entry in the vector 
 @end menu
+
+@c ***** ivector_alloc
+@node ivector_alloc, ivector_free, functions, functions
+@section int ivector_alloc(ivector_t ** ivector, compare_t * compare, deallocator_t * dealloc, size_t size)
+
+Not documented yet!
+
+@c ***** ivector_free
+@node ivector_free, ivector_get, ivector_alloc, functions
+@section int ivector_free (ivector_t ** ivector)
+
+Not documented yet!
+
+@c ***** ivector_get
+@node ivector_get, ivector_put, ivector_free, functions
+@section int (ivector_get) (ivector_t *ivector, void **data, size_t size)
+
+Not documented yet!
+
+@c ***** ivector_put
+@node ivector_put, ivector_add, ivector_get, functions
+@section int ivector_put (ivector_t *ivector, size_t size, const void *data)
+
+Not documented yet!
+
+@c ***** ivector_add
+@node ivector_add, ivector_qsort, ivector_put, functions
+@section int ivector_add (ivector_t *ivector, const void *key)
+
+Not documented yet!
+
+@c ***** ivector_qsort
+@node ivector_qsort, ivector_bsearch, ivector_add, functions
+@section int ivector_qsort (ivector_t *ivector)
+
+Not documented yet!
+
+@c ***** ivector_bsearch
+@node ivector_bsearch, ivector_del, ivector_qsort, functions
+@section int ivector_bsearch (ivector_t *ivector, void **data, const void *key)
+
+Not documented yet!
+
+@c ***** ivector_del
+@node ivector_del, , ivector_bsearch, functions
+@section int ivector_del (ivector_t *ivector, size_t size)
+
+Not documented yet!
 
 @c ** Includes the licenses 
 @node Licenses, , functions, Top

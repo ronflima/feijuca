@@ -1,0 +1,96 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: stack.texi,v 1.1 2005-02-07 21:04:13 ron_lima Exp $
+@c %**start of header
+@setfilename stack.info
+@settitle    Stack routines
+@c %**end of header
+
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title G.A. Library
+@subtitle Stacks interfaces
+@author Ronaldo Faria Lima
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top, algorithm, (dir), (dir)
+@top Stack
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* algorithm :: Algorithm implemented by G.A. Library
+* data types:: Data types
+* functions :: Description of all available functions
+* Licenses  :: Licenses and other information
+@end menu
+
+@c ***** algorithm
+@node algorithm, data types, Top, Top
+@chapter Single circular linked lists in G.A. Library
+
+Not documented yet!
+
+@c ***** data types
+@node data types, functions, algorithm, Top
+@chapter Data types
+
+Not documented yet!
+
+@c ***** functions
+@node functions, Licenses, data types, Top
+@chapter Functions
+
+Not documented yet!
+
+@c ***** functions menu
+@menu
+* stack_alloc :: Allocates a stack descriptor
+* stack_free  :: Frees a stack descriptor
+* stack_pop   :: Gets (pops) data from a stack
+* stack_push  :: Adds (pushes) data to a stack
+@end menu
+
+@c ***** stack_alloc
+@node stack_alloc, stack_free, functions, functions
+@section int stack_alloc (stack_t **stack, deallocator_t *dealloc)
+
+Not documented yet!
+
+@c ***** stack_free
+@node stack_free, stack_pop, stack_alloc, functions
+@section int stack_free (stack_t **stack)
+
+Not documented yet!
+
+@c ***** stack_pop
+@node stack_pop, stack_push, stack_free, functions
+@section int stack_pop (stack_t *stack, void **data)
+
+Not documented yet!
+
+@c ***** stack_push
+@node stack_push,  , stack_pop, functions
+@section int stack_push (stack_t *stack, const void *data)
+
+Not documented yet!
+
+@c ** Includes the licenses 
+@node Licenses, , functions, Top
+@include licenses.texi
+
+@bye
