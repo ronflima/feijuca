@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.1 2004-03-30 11:29:31 ron_lima Exp $
+ $Id: clist.h,v 1.2 2004-03-31 09:23:53 ron_lima Exp $
 */
  
 #ifndef CLIST_H
@@ -47,11 +47,11 @@ typedef list_t         clist_t;         /* List descriptor */
  */
 
 /* Masked functions */
-#define clist_alloc(list, dealloc)    list_alloc((list_t **)list, dealloc)
-#define clist_free(list)              list_free ((list_t **)list)
-#define clist_del(list, data)         list_del  ((list_t *) list, data)
-#define clist_get(list, data, whence) list_get  ((list_t *) list, data, whence)
-#define clist_move(list, whence)      list_move ((list_t *) list, whence)
+#define clist_alloc(list, dealloc)    (list_alloc)((list_t **)list, dealloc)
+#define clist_free(list)              (list_free) ((list_t **)list)
+#define clist_del(list, data)         (list_del)  ((list_t *) list, data)
+#define clist_get(list, data, whence) (list_get)((list_t *) list, data, whence)
+#define clist_move(list, whence)      (list_move) ((list_t *) list, whence)
 /* Real functions */
 extern int 
 clist_insert (clist_t * list, const void *data);
