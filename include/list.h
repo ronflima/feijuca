@@ -24,33 +24,18 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+ $Id: list.h,v 1.2 2004-02-29 22:21:23 ron_lima Exp $
 */
  
 #ifndef LIST_H
 #define LIST_H
 
 #include <stdio.h>
-
-/*
- * Macros
- */
-
-/* List iteration types */
-#define HEAD 0x0
-#define TAIL 0x1
-#define NEXT 0x2
-#define CURR 0x4
-
-/* Simple information getters */
-#define list_size(list) (list)->size_
+#include "gacommon.h"
 
 /*
  * Datatypes
  */
-/* Deallocator function pointer type */
-typedef void (* deallocator_t)(void *data);
-
 /* Abstraction for a single list element */
 typedef struct list_element_t
 {
