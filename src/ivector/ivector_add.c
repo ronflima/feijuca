@@ -23,14 +23,14 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_add.c,v 1.5 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_add.c,v 1.6 2004-10-07 19:26:37 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
 int
@@ -43,8 +43,7 @@ ivector_add(ivector_t * vector, const void *data)
   assert(v != NULL);
   if (!v)
   {
-    errno = ENOMEM;
-    return -1;
+    return EGANOMEM;
   }
   vector->data_ = v;
   /* Moves v to the newly created entry */

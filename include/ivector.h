@@ -23,8 +23,8 @@
  Description: Interfaces and datatypes for infinite vectors
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector.h,v 1.9 2004-10-07 08:44:50 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector.h,v 1.10 2004-10-07 19:28:08 daniel_csoares Exp $
 */
 
 #ifndef IVECTOR_H
@@ -51,12 +51,12 @@ typedef struct ivector_
  * Prototypes
  */
 int (ivector_alloc) __P((ivector_t **, compare_t *, deallocator_t *, size_t));
-void (ivector_free) __P((ivector_t **));
-void *(ivector_get) __P((ivector_t *, size_t));
+int (ivector_free) __P((ivector_t **));
+int (ivector_get) __P((ivector_t *, void **, size_t));
 int (ivector_put) __P((ivector_t *, size_t, const void *));
 int (ivector_add) __P((ivector_t *, const void *));
 int (ivector_qsort) __P((ivector_t *));
-void *(ivector_bsearch) __P((ivector_t *, const void *));
+int (ivector_bsearch) __P((ivector_t *, void **, const void *));
 int (ivector_del) __P((ivector_t *, size_t));
 
 GAENDDECLS

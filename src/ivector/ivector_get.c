@@ -23,26 +23,27 @@
  Description: Gets an item from the list
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_get.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_get.c,v 1.4 2004-10-07 19:26:38 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
-void *
-ivector_get(ivector_t * vector, size_t idx)
+int
+ivector_get(ivector_t * vector, void ** data, size_t idx)
 {
   /* Assertives for debugging purposes */
   assert(vector != NULL);
   /* Sanity tests */
   if ((idx < 0) || (idx >= vector->size_))
   {
-    errno = EINVAL;
-    return (void *)NULL;
+	*data = NULL;
+    return EGAINVAL;
   }
   /* Shifts the address idx times the data structure */
-  return (void *)((char *)vector->data_ + idx * vector->datalen_);
+  *data = (void *)((char *)vector->data_ + idx * vector->datalen_);
+  return 0x0;
 }

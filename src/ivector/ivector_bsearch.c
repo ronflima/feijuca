@@ -23,36 +23,33 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.4 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_bsearch.c,v 1.5 2004-10-07 19:26:38 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
-void *
-ivector_bsearch(ivector_t * vector, const void *data)
+int
+ivector_bsearch(ivector_t * vector, void ** found, const void *data)
 {
-  void *found;			/* Data found by the bsearch */
-
   /* Assertives for debugging purposes */
   assert(vector != NULL);
   assert(data != NULL);
   /* Initializations */
-  found = (void *)NULL;
+  *found = (void *)NULL;
   /* Sanity tests */
   if ((!vector->comp_) || (!data))
   {
-    errno = EINVAL;
-    return (void *)NULL;
+    return EGAINVAL;
   }
   /* Searchs only if the vector has something */
   if (vector->size_)
   {
-    found = bsearch(data, vector->data_, vector->size_,
-		    vector->datalen_, vector->comp_);
+    *found = bsearch(data, vector->data_, vector->size_,
+		     vector->datalen_, vector->comp_);
   }
-  return found;
+  return 0x0;
 }

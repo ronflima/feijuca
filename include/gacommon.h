@@ -25,8 +25,8 @@
    directly by your application.
 
    CVS Information
-   $Author: ron_lima $
-   $Id: gacommon.h,v 1.12 2004-10-07 08:44:50 ron_lima Exp $
+   $Author: daniel_csoares $
+   $Id: gacommon.h,v 1.13 2004-10-07 19:28:08 daniel_csoares Exp $
 */
 
 #ifndef GACOMMON_H
@@ -53,6 +53,11 @@
 #define __P(prototype) ()
 #endif
 #endif
+
+/* Error value for invalid argument */
+#define EGAINVAL 2500
+/* Error value for problem at memory operations */
+#define EGANOMEM 2501
 
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_

@@ -23,15 +23,15 @@
  Description: Deallocates the list descriptor
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_free.c,v 1.5 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_free.c,v 1.6 2004-10-07 19:26:38 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "ivector.h"
 
-void
+int
 ivector_free(ivector_t ** vector)
 {
   /* Assertives for debugging purposes */
@@ -53,4 +53,5 @@ ivector_free(ivector_t ** vector)
   free((*vector)->data_);
   free((*vector));
   *vector = NULL;
+  return 0x0;
 }

@@ -23,13 +23,13 @@
  Description: Allocates and initializes the infinite vector
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_alloc.c,v 1.5 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_alloc.c,v 1.6 2004-10-07 19:26:38 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
 int
@@ -44,16 +44,14 @@ ivector_alloc(ivector_t ** vector, compare_t * comp, deallocator_t * dealloc,
   /* Sanity tests */
   if (!datalen)
   {
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
   /* Allocates memory for the vector descriptor */
   *vector = (ivector_t *) malloc(sizeof(ivector_t));
   assert(*vector != NULL);
   if (!*vector)
   {
-    errno = ENOMEM;
-    return -1;
+    return EGANOMEM;
   }
   /* Initializes each vector descriptor field */
   (*vector)->size_ = 0x0;

@@ -23,14 +23,14 @@
  Description: Puts a new data element in an existing slot in the vector
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_put.c,v 1.4 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_put.c,v 1.5 2004-10-07 19:26:38 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
 int
@@ -43,17 +43,15 @@ ivector_put(ivector_t * vector, size_t idx, const void *data)
   /* Sanity tests */
   if (idx >= vector->size_)
   {
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
   if (!data)
   {
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
   /* Calculates the place where we want to overwrite data */
   i = (void *)((char *)vector->data_ + idx * vector->datalen_);
   /* Overwrite data */
   memcpy(i, data, vector->datalen_);
-  return 0;
+  return 0x0;
 }

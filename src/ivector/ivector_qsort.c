@@ -23,13 +23,13 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_qsort.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_qsort.c,v 1.4 2004-10-07 19:26:38 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
 int
@@ -41,8 +41,7 @@ ivector_qsort(ivector_t * vector)
   /* Checks if the compare function was set */
   if (!vector->comp_)
   {
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
   /* Do not try to sort a vector with only one element. It coredumps! */
   if (vector->size_ > 1)

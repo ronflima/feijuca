@@ -24,14 +24,14 @@
  accomodate solely the elements that are mean to be accessible
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_del.c,v 1.4 2004-10-05 10:29:28 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: ivector_del.c,v 1.5 2004-10-07 19:26:38 daniel_csoares Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include "gacommon.h"
 #include "ivector.h"
 
 int
@@ -48,8 +48,7 @@ ivector_del(ivector_t * vector, size_t idx)
   /* Sanity tests */
   if ((idx < 0) || (idx > vector->size_))
   {
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
   if ((idx + 1) < vector->size_)
   {
