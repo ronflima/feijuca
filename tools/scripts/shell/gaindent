@@ -26,7 +26,7 @@
 
 #  Description: Indentation script for source code beautification
 
-# $Id: gaindent,v 1.1 2004-10-20 10:31:32 ron_lima Exp $
+# $Id: gaindent,v 1.2 2004-10-27 01:36:38 ron_lima Exp $
 
 
 # Command line checking
@@ -43,6 +43,6 @@ else
     indent -nbad -bap -nbc -bbb -ncdb -bl -nce -di2 -ndj -nfc1 -i2 -ip \
            -lp -psl -pcs -nsc -nsob $1
     # Deletes all tabs from the file
-    cat $1 | sed 's/^[	]/    /' > $1.tmp
+    cat $1 | sed 's/^[	]/        /' > $1.tmp
     mv $1.tmp $1
 fi
