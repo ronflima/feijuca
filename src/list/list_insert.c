@@ -24,9 +24,10 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.2 2004-02-29 22:17:59 ron_lima Exp $
+ $Id: list_insert.c,v 1.3 2004-02-29 23:59:04 ron_lima Exp $
 */
 #include <errno.h>
+#include <stdio.h>
 #include "list.h"
 
 int 
@@ -42,7 +43,7 @@ list_insert (LIST * list, const void *data)
       return -1;
     }
   element->data_ = (void *) data;
-  element->next_ = (LIST_ELEMENT *) 0x0;
+  element->next_ = (LIST_ELEMENT *) NULL;
   /* Check the size of the list */
   if (! list->size_)
     {
