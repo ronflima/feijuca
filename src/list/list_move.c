@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.5 2004-03-09 10:56:27 ron_lima Exp $
+ $Id: list_move.c,v 1.6 2004-03-19 11:13:47 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -34,27 +34,27 @@
 int
 list_move (LIST * list, LIST_POSITION whence)
 {
-  switch (whence)
-    {
-    case HEAD:
-      list->curr_ = list->head_;
-      break;
-    case TAIL:
-      list->curr_ = list->tail_;
-      break;
-    case NEXT:
-      if (list->curr_)
+    switch (whence)
         {
-          list->curr_ = list->curr_->next_;
+        case HEAD:
+            list->curr_ = list->head_;
+            break;
+        case TAIL:
+            list->curr_ = list->tail_;
+            break;
+        case NEXT:
+            if (list->curr_)
+                {
+                    list->curr_ = list->curr_->next_;
+                }
+            else
+                {
+                    return EOF;
+                }
+            break;
+        default:
+            errno = EINVAL;
+            return -1;
         }
-      else
-        {
-          return EOF;
-        }
-      break;
-    default:
-      errno = EINVAL;
-      return -1;
-    }
-  return 0;
+    return 0;
 }

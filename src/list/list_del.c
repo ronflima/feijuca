@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_del.c,v 1.2 2004-02-29 22:15:04 ron_lima Exp $
+ $Id: list_del.c,v 1.3 2004-03-19 11:13:47 ron_lima Exp $
 */
 #include <stdio.h>
 #include <errno.h>
@@ -33,58 +33,61 @@
 int
 list_del (LIST * list, void **data)
 {
-  LIST_ELEMENT * currelem; /* Current element being processed */
-  void * extracted_data;   /* Data extracted from the list */
+    LIST_ELEMENT * currelem; /* Current element being processed */
+    void * extracted_data;   /* Data extracted from the list */
 
-  /* Initializations */
-  if (data)
-    {
-      *data = (void *) NULL;
-    }
-  /* Sanity check: Will not delete an element if the list is empty */
-  if (! list->size_)
-    {
-      return EOF;
-    }
-  /* Sanity check: check if the data storage and the deallocator were
-     provided. If not, there is a problem in the list initialization */
-  if (! data && ! list->deallocator_)
-    {
-      errno = EINVAL;
-      return -1;
-    }
-  /* Check if the current element points to the head of the list or if
-     the curr_ points to nowhere */
-  if (list->curr_ == list->head_ || ! list->curr_)
-    {
-      /* Deletes from the head of the list */
-      currelem = list->head_;
-      extracted_data = list->head_->data_ ;
-      list->head_ = currelem->next_;
-    }
-  else 
-    {
-      /* Delete the next item, if the curr_ points to somewhere */
-      if (list->curr_->next_)
+    /* Initializations */
+    if (data)
         {
-          currelem = list->curr_->next_;
-          extracted_data = currelem->data_;
-          list->curr_->next_ = currelem->next_;
+            *data = (void *) NULL;
         }
-    }
-  /* Free resources and updates the list descriptor */
-  free (currelem);
-  list->size_--;
-  /* If data storage is provided, puts the extracted data in
-     there */
-  if (data)
-    {
-      * data = extracted_data;
-    }
-  else 
-    { 
-      /* Data storage was not provided. Deletes the data */
-      list->deallocator_ (extracted_data);
-    }   
-  return 0;
+    /* Sanity check: Will not delete an element if the list is
+       empty */
+    if (! list->size_)
+        {
+            return EOF;
+        }
+    /* Sanity check: check if the data storage and the deallocator
+       were provided. If not, there is a problem in the list
+       initialization */
+    if (! data && ! list->deallocator_)
+        {
+            errno = EINVAL;
+            return -1;
+        }
+    /* Check if the current element points to the head of the list or
+       if the curr_ points to nowhere */
+    if (list->curr_ == list->head_ || ! list->curr_)
+        {
+            /* Deletes from the head of the list */
+            currelem = list->head_;
+            extracted_data = list->head_->data_ ;
+            list->head_ = currelem->next_;
+        }
+    else 
+        {
+            /* Delete the next item, if the curr_ points to
+               somewhere */
+            if (list->curr_->next_)
+                {
+                    currelem = list->curr_->next_;
+                    extracted_data = currelem->data_;
+                    list->curr_->next_ = currelem->next_;
+                }
+        }
+    /* Free resources and updates the list descriptor */
+    free (currelem);
+    list->size_--;
+    /* If data storage is provided, puts the extracted data in
+       there */
+    if (data)
+        {
+            * data = extracted_data;
+        }
+    else 
+        { 
+            /* Data storage was not provided. Deletes the data */
+            list->deallocator_ (extracted_data);
+        }   
+    return 0;
 }

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.3 2004-03-07 20:54:39 ron_lima Exp $
+ $Id: list_get.c,v 1.4 2004-03-19 11:13:47 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -35,22 +35,22 @@
 int 
 list_get (LIST * list, void **data, LIST_POSITION whence)
 {
-  if (! list->curr_)
-    {
-      return EOF;
-    }
-  * data = list->curr_->data_;
-  switch (whence)
-    {
-    case CURR:
-      /* Do nothing. Used only for parameter checking */
-      break;
-    case NEXT:
-      return list_move (list, whence);
-      break;
-    default:
-      errno = EINVAL;
-      return -1;
-    }
-  return 0;
+    if (! list->curr_)
+        {
+            return EOF;
+        }
+    * data = list->curr_->data_;
+    switch (whence)
+        {
+        case CURR:
+            /* Do nothing. Used only for parameter checking */
+            break;
+        case NEXT:
+            return list_move (list, whence);
+            break;
+        default:
+            errno = EINVAL;
+            return -1;
+        }
+    return 0;
 }

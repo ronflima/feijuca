@@ -20,44 +20,22 @@
 
  System: G.A. Lib
 
- Description: Inserts a new element in the list
+ Description: Moves the iterator to the next item of the list. Do not
+ update the list current item.
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.4 2004-03-19 11:13:47 ron_lima Exp $
+ $Id: list_imove.c,v 1.1 2004-03-19 11:13:47 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
+#include <assert.h>
 #include "list.h"
 
-int 
-list_insert (LIST * list, const void *data)
+LIST_ITERATOR *
+list_imove (LIST_ITERATOR * iterator)
 {
-    LIST_ELEMENT * element;
-
-    /* Allocates memory for the new element */
-    element = (LIST_ELEMENT *) malloc (sizeof( LIST_ELEMENT ));
-    if (! element)
-        {
-            errno = ENOMEM;
-            return -1;
-        }
-    element->data_ = (void *) data;
-    element->next_ = (LIST_ELEMENT *) NULL;
-    /* Check the size of the list */
-    if (! list->size_)
-        {
-            /* This is the head of the list */
-            list->head_ = element;
-            list->tail_ = element;
-        }
-    else
-        {
-            /* Insert at the end */
-            list->tail_->next_ = element;
-            list->tail_        = element;
-        }
-    list->curr_ = element;
-    list->size_++;
-    return 0;
+    assert (iterator != NULL);
+    iterator = iterator->next_;
+    return iterator;
 }
