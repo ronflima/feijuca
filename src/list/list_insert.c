@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.7 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: list_insert.c,v 1.8 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,39 +32,39 @@
 #include <assert.h>
 #include "list.h"
 
-int 
-list_insert (list_t * list, const void *data)
+int
+list_insert(list_t * list, const void *data)
 {
-    list_element_t * element;
+  list_element_t *element;
 
-    /* Several assertives for debugging purposes */
-    assert (list != NULL);
-    assert (data != NULL);
+  /* Several assertives for debugging purposes */
+  assert(list != NULL);
+  assert(data != NULL);
 
-    /* Allocates memory for the new element */
-    element = (list_element_t *) malloc (sizeof( list_element_t ));
-    assert (element != NULL);
-    if (! element)
-        {
-            errno = ENOMEM;
-            return -1;
-        }
-    element->data_ = (void *) data;
-    element->next_ = (list_element_t *) NULL;
-    /* Check the size of the list */
-    if (! list->size_)
-        {
-            /* This is the head of the list */
-            list->head_ = element;
-            list->tail_ = element;
-        }
-    else
-        {
-            /* Insert at the end */
-            list->tail_->next_ = element;
-            list->tail_        = element;
-        }
-    list->curr_ = element;
-    list->size_++;
-    return 0;
+  /* Allocates memory for the new element */
+  element = (list_element_t *) malloc(sizeof(list_element_t));
+  assert(element != NULL);
+  if (!element)
+  {
+    errno = ENOMEM;
+    return -1;
+  }
+  element->data_ = (void *)data;
+  element->next_ = (list_element_t *) NULL;
+  /* Check the size of the list */
+  if (!list->size_)
+  {
+    /* This is the head of the list */
+    list->head_ = element;
+    list->tail_ = element;
+  }
+  else
+  {
+    /* Insert at the end */
+    list->tail_->next_ = element;
+    list->tail_ = element;
+  }
+  list->curr_ = element;
+  list->size_++;
+  return 0;
 }

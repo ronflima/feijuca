@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.3 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: ivector_del.c,v 1.4 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -35,50 +35,49 @@
 #include "ivector.h"
 
 int
-ivector_del (ivector_t * vector, size_t idx)
+ivector_del(ivector_t * vector, size_t idx)
 {
-    void * dest;                /* Destination address */
-    void * orig;                /* Origin address */
-    void * newplace;            /* New reallocated place for vector->data_ */
-    size_t newsize;             /* New size of the vector in bytes */
+  void *dest;			/* Destination address */
+  void *orig;			/* Origin address */
+  void *newplace;		/* New reallocated place for vector->data_ */
+  size_t newsize;		/* New size of the vector in bytes */
 
-    /* Assertives for debugging purposes */
-    assert (vector != NULL);
+  /* Assertives for debugging purposes */
+  assert(vector != NULL);
 
-    /* Sanity tests */
-    if ((idx < 0) || (idx > vector->size_))
-        {
-            errno = EINVAL;
-            return -1;
-        }
-    if ((idx + 1) < vector->size_)
-        {
-            size_t dest_index;
-            size_t orig_index;
-            size_t block_size;
+  /* Sanity tests */
+  if ((idx < 0) || (idx > vector->size_))
+  {
+    errno = EINVAL;
+    return -1;
+  }
+  if ((idx + 1) < vector->size_)
+  {
+    size_t dest_index;
+    size_t orig_index;
+    size_t block_size;
 
-            /* Calculates the origin and the destiny in order to
-               overwrite the element of the vector that is placed in
-               idx */
-            dest_index = idx * vector->datalen_;
-            orig_index = (idx + 1) * vector->datalen_;
-            dest = (void *)(((char *)vector->data_) + dest_index);
-            orig = (void *)(((char *)vector->data_) + orig_index);
+    /* Calculates the origin and the destiny in order to overwrite the
+       element of the vector that is placed in idx */
+    dest_index = idx * vector->datalen_;
+    orig_index = (idx + 1) * vector->datalen_;
+    dest = (void *)(((char *)vector->data_) + dest_index);
+    orig = (void *)(((char *)vector->data_) + orig_index);
 
-            /* Overwrites the element pointed to by idx, moving all other
-               elements one element to the right within the vector */
-            block_size = (vector->size_ - idx - 1) * vector->datalen_;
-            memcpy (dest, orig, block_size);
-        }
-    /* Calculates, in bytes, the new size of the vector */
-    newsize = (vector->size_ - 1) * vector->datalen_;
-    /* Deletes the last element of the vector and resizes it accordingly */
-    newplace = realloc (vector->data_, newsize);
-    /* Updates the vector descriptor accordingly */
-    if (newplace != vector->data_ && newplace)
-        {
-            vector->data_ = newplace;
-        }
-    vector->size_--;
-    return 0x0;
+    /* Overwrites the element pointed to by idx, moving all other elements
+       one element to the right within the vector */
+    block_size = (vector->size_ - idx - 1) * vector->datalen_;
+    memcpy(dest, orig, block_size);
+  }
+  /* Calculates, in bytes, the new size of the vector */
+  newsize = (vector->size_ - 1) * vector->datalen_;
+  /* Deletes the last element of the vector and resizes it accordingly */
+  newplace = realloc(vector->data_, newsize);
+  /* Updates the vector descriptor accordingly */
+  if (newplace != vector->data_ && newplace)
+  {
+    vector->data_ = newplace;
+  }
+  vector->size_--;
+  return 0x0;
 }

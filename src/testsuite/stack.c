@@ -20,14 +20,14 @@
 
  System: G.A. Lib
 
- Description: Test suite routines for stacks. This test suite is also an 
+ Description: Test suite routines for stacks. This test suite is also an
               example on how to use the stacks routines
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.1 2004-09-12 23:30:47 ron_lima Exp $
+ $Id: stack.c,v 1.2 2004-10-05 10:29:29 ron_lima Exp $
 */
- 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -39,72 +39,71 @@
  */
 
 int
-test_stack (void)
+test_stack(void)
 {
-    stack_t *    stack;  /* Descriptor for stacks */
-    int          rc;     /* General return code for errors */
-    int          errors; /* Counter for errors */
-    register int i;      /* General iterator */
+  stack_t *stack;		/* Descriptor for stacks */
+  int rc;			/* General return code for errors */
+  int errors;			/* Counter for errors */
+  register int i;		/* General iterator */
 
-    /* Initializations */
-    errors = 0x0;
+  /* Initializations */
+  errors = 0x0;
 
-    /* Allocates memory for the stack - use the free function as
-       deallocator */
-    rc = stack_alloc (&stack, free);
-    if (rc) 
-        {
-            ++errors;
-            printf ("STACK TEST: Could not allocate the stack\n");
-            return errors;
-        }
-
-    /* Pushes stuff to the stack */
-    for (i=0; i < MAX_ELEMENTS; ++i)
-        {
-            int * data; /* Data to push into the stack */
-
-            data = (int *) malloc (sizeof (int));
-
-            if (data)
-                {
-                    /* Puts some value inside the data pointer */
-                    * data = i;
-                    /* Pushes the data into the stack */
-                    rc = stack_push (stack, data);
-                    if (rc)
-                        {
-                            ++ errors;
-                        }
-                }
-        }
-
-    /* Gets all the pushed data from the stack */
-    i = 0x0;
-    while (1)
-        {
-            int * data;
-            /* pops data from the stack */
-            rc = stack_pop (stack, &data);
-            if (! rc)
-                {
-                    ++i;
-                }
-            else
-                {
-                    break;
-                }
-        }
-    if (i != MAX_ELEMENTS) 
-        {
-            /* Not everything was pushed from the stack */
-            ++errors;
-        }
-    /* Frees the entire stack */
-    rc = stack_free (& stack);
-    if (rc)
-        {
-            ++errors;
-        }
+  /* Allocates memory for the stack - use the free function as deallocator */
+  rc = stack_alloc(&stack, free);
+  if (rc)
+  {
+    ++errors;
+    printf("STACK TEST: Could not allocate the stack\n");
     return errors;
+  }
+
+  /* Pushes stuff to the stack */
+  for (i = 0; i < MAX_ELEMENTS; ++i)
+  {
+    int *data;			/* Data to push into the stack */
+
+    data = (int *)malloc(sizeof(int));
+
+    if (data)
+    {
+      /* Puts some value inside the data pointer */
+      *data = i;
+      /* Pushes the data into the stack */
+      rc = stack_push(stack, data);
+      if (rc)
+      {
+	++errors;
+      }
+    }
+  }
+
+  /* Gets all the pushed data from the stack */
+  i = 0x0;
+  while (1)
+  {
+    int *data;
+    /* pops data from the stack */
+    rc = stack_pop(stack, &data);
+    if (!rc)
+    {
+      ++i;
+    }
+    else
+    {
+      break;
+    }
+  }
+  if (i != MAX_ELEMENTS)
+  {
+    /* Not everything was pushed from the stack */
+    ++errors;
+  }
+  /* Frees the entire stack */
+  rc = stack_free(&stack);
+  if (rc)
+  {
+    ++errors;
+  }
+  return errors;
 }

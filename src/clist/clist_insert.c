@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_insert.c,v 1.4 2004-07-17 00:11:22 ron_lima Exp $
+ $Id: clist_insert.c,v 1.5 2004-10-05 10:29:27 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -32,39 +32,39 @@
 #include <assert.h>
 #include "clist.h"
 
-int 
-clist_insert (clist_t * clist, const void *data)
+int
+clist_insert(clist_t * clist, const void *data)
 {
-    clist_element_t * element;
+  clist_element_t *element;
 
-    /* Assertives for debugging purposes */
-    assert (clist != NULL);
-    /* Allocates memory for the new element */
-    element = (clist_element_t *) malloc (sizeof (clist_element_t));
-    assert (element != NULL);
-    if (! element)
-        {
-            errno = ENOMEM;
-            return -1;
-        }
-    element->data_ = (void *) data;
-    element->next_ = (clist_element_t *) NULL;
-    /* Check the size of the list */
-    if (! clist->size_)
-        {
-            /* This is the head of the list */
-            clist->head_ = element;
-            clist->tail_ = element;
-        }
-    else
-        {
-            /* Insert at the end */
-            clist->tail_->next_ = element;
-            clist->tail_        = element;
-        }
-    /* Makes the circular link in the list */
-    clist->tail_->next_ = clist->head_;
-    clist->curr_ = element;
-    clist->size_++;
-    return 0;
+  /* Assertives for debugging purposes */
+  assert(clist != NULL);
+  /* Allocates memory for the new element */
+  element = (clist_element_t *) malloc(sizeof(clist_element_t));
+  assert(element != NULL);
+  if (!element)
+  {
+    errno = ENOMEM;
+    return -1;
+  }
+  element->data_ = (void *)data;
+  element->next_ = (clist_element_t *) NULL;
+  /* Check the size of the list */
+  if (!clist->size_)
+  {
+    /* This is the head of the list */
+    clist->head_ = element;
+    clist->tail_ = element;
+  }
+  else
+  {
+    /* Insert at the end */
+    clist->tail_->next_ = element;
+    clist->tail_ = element;
+  }
+  /* Makes the circular link in the list */
+  clist->tail_->next_ = clist->head_;
+  clist->curr_ = element;
+  clist->size_++;
+  return 0;
 }

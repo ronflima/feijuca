@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.4 2004-07-17 00:11:22 ron_lima Exp $
+ $Id: ivector_add.c,v 1.5 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,24 +33,24 @@
 #include <assert.h>
 #include "ivector.h"
 
-int 
-ivector_add (ivector_t * vector, const void * data)
+int
+ivector_add(ivector_t * vector, const void *data)
 {
-    void * v;                   /* New redimensioned vector */
+  void *v;			/* New redimensioned vector */
 
-    assert (vector != NULL);
-    v = realloc (vector->data_, vector->datalen_ * (vector->size_ + 1));
-    assert (v != NULL);
-    if (!v)
-        {
-            errno = ENOMEM;
-            return -1;
-        }
-    vector->data_ = v;
-    /* Moves v to the newly created entry */
-    v = (void *)((char *) v + vector->size_ * vector->datalen_);
-    /* Copies data into the new element */
-    memcpy (v, data, vector->datalen_);
-    vector->size_++;
-    return 0x0;
+  assert(vector != NULL);
+  v = realloc(vector->data_, vector->datalen_ * (vector->size_ + 1));
+  assert(v != NULL);
+  if (!v)
+  {
+    errno = ENOMEM;
+    return -1;
+  }
+  vector->data_ = v;
+  /* Moves v to the newly created entry */
+  v = (void *)((char *)v + vector->size_ * vector->datalen_);
+  /* Copies data into the new element */
+  memcpy(v, data, vector->datalen_);
+  vector->size_++;
+  return 0x0;
 }

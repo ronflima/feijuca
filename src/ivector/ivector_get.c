@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_get.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: ivector_get.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,16 +33,16 @@
 #include "ivector.h"
 
 void *
-ivector_get (ivector_t * vector, size_t idx)
+ivector_get(ivector_t * vector, size_t idx)
 {
-    /* Assertives for debugging purposes */
-    assert (vector != NULL);
-    /* Sanity tests */
-    if ((idx < 0) || (idx >= vector->size_))
-        {
-            errno = EINVAL;
-            return (void *) NULL;
-        }
-    /* Shifts the address idx times the data structure */
-    return (void *)((char *)vector->data_ + idx * vector->datalen_);
+  /* Assertives for debugging purposes */
+  assert(vector != NULL);
+  /* Sanity tests */
+  if ((idx < 0) || (idx >= vector->size_))
+  {
+    errno = EINVAL;
+    return (void *)NULL;
+  }
+  /* Shifts the address idx times the data structure */
+  return (void *)((char *)vector->data_ + idx * vector->datalen_);
 }

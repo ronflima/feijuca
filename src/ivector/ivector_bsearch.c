@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.3 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: ivector_bsearch.c,v 1.4 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,26 +33,26 @@
 #include "ivector.h"
 
 void *
-ivector_bsearch (ivector_t * vector, const void * data)
+ivector_bsearch(ivector_t * vector, const void *data)
 {
-    void * found;               /* Data found by the bsearch */
+  void *found;			/* Data found by the bsearch */
 
-    /* Assertives for debugging purposes */
-    assert (vector != NULL);
-    assert (data   != NULL);
-    /* Initializations */
-    found = (void *) NULL;
-    /* Sanity tests */
-    if ((! vector->comp_) || (! data))
-        {
-            errno = EINVAL;
-            return (void *) NULL;
-        }
-    /* Searchs only if the vector has something */
-    if (vector->size_)
-        {
-            found = bsearch (data, vector->data_, vector->size_, 
-                             vector->datalen_, vector->comp_);
-        }
-    return found;
+  /* Assertives for debugging purposes */
+  assert(vector != NULL);
+  assert(data != NULL);
+  /* Initializations */
+  found = (void *)NULL;
+  /* Sanity tests */
+  if ((!vector->comp_) || (!data))
+  {
+    errno = EINVAL;
+    return (void *)NULL;
+  }
+  /* Searchs only if the vector has something */
+  if (vector->size_)
+  {
+    found = bsearch(data, vector->data_, vector->size_,
+		    vector->datalen_, vector->comp_);
+  }
+  return found;
 }

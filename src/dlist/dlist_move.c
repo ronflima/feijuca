@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.9 2004-07-17 00:11:22 ron_lima Exp $
+ $Id: dlist_move.c,v 1.10 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,42 +33,42 @@
 #include "dlist.h"
 
 int
-dlist_move (dlist_t * list, position_t whence)
+dlist_move(dlist_t * list, position_t whence)
 {
-    /* Assertives for debugging purposes */
-    assert (list != NULL);
-    /* Decides how to navigate in the list */
-    switch (whence)
-        {
-        case HEAD:                  /* Moves to the head of the list */
-            list->curr_ = list->head_;
-            break;
-        case TAIL:                  /* Moves to the tail of the list */
-            list->curr_ = list->tail_;
-            break;
-        case NEXT:                  /* Moves to the next element */
-            if (list->curr_)
-                {
-                    list->curr_ = list->curr_->next_;
-                }
-            else
-                {
-                    return EOF;
-                }
-            break;
-        case PREV:                  /* Moves to the previous element */
-            if (list->curr_)
-                {
-                    list->curr_ = list->curr_->prev_;
-                }
-            else
-                {
-                    return EOF;
-                }
-            break;
-        default:                    /* Invalid parameter provided */
-            errno = EINVAL;
-            return -1;
-        }
-    return 0;
+  /* Assertives for debugging purposes */
+  assert(list != NULL);
+  /* Decides how to navigate in the list */
+  switch (whence)
+  {
+  case HEAD:			/* Moves to the head of the list */
+    list->curr_ = list->head_;
+    break;
+  case TAIL:			/* Moves to the tail of the list */
+    list->curr_ = list->tail_;
+    break;
+  case NEXT:			/* Moves to the next element */
+    if (list->curr_)
+    {
+      list->curr_ = list->curr_->next_;
+    }
+    else
+    {
+      return EOF;
+    }
+    break;
+  case PREV:			/* Moves to the previous element */
+    if (list->curr_)
+    {
+      list->curr_ = list->curr_->prev_;
+    }
+    else
+    {
+      return EOF;
+    }
+    break;
+  default:			/* Invalid parameter provided */
+    errno = EINVAL;
+    return -1;
+  }
+  return 0;
 }

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.9 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: list_move.c,v 1.10 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,33 +33,33 @@
 #include "list.h"
 
 int
-list_move (list_t * list, position_t whence)
+list_move(list_t * list, position_t whence)
 {
-    /* Small assertives for debugging purposes */
-    assert (list != NULL);
+  /* Small assertives for debugging purposes */
+  assert(list != NULL);
 
-    /* Decides how to navigate the list */
-    switch (whence)
-        {
-        case HEAD:
-            list->curr_ = list->head_;
-            break;
-        case TAIL:
-            list->curr_ = list->tail_;
-            break;
-        case NEXT:
-            if (list->curr_)
-                {
-                    list->curr_ = list->curr_->next_;
-                }
-            else
-                {
-                    return EOF;
-                }
-            break;
-        default:
-            errno = EINVAL;
-            return -1;
-        }
-    return 0;
+  /* Decides how to navigate the list */
+  switch (whence)
+  {
+  case HEAD:
+    list->curr_ = list->head_;
+    break;
+  case TAIL:
+    list->curr_ = list->tail_;
+    break;
+  case NEXT:
+    if (list->curr_)
+    {
+      list->curr_ = list->curr_->next_;
+    }
+    else
+    {
+      return EOF;
+    }
+    break;
+  default:
+    errno = EINVAL;
+    return -1;
+  }
+  return 0;
 }

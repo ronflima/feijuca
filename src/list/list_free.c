@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_free.c,v 1.5 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: list_free.c,v 1.6 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,23 +33,22 @@
 #include "list.h"
 
 int
-list_free (list_t ** list)
+list_free(list_t ** list)
 {
-    /* Assertives for debugging purposes */
-    assert (list != NULL);
-    assert (*list != NULL);
+  /* Assertives for debugging purposes */
+  assert(list != NULL);
+  assert(*list != NULL);
 
-    /* Makes the current pointer pointing to nowhere. It will force
-       list_del to delete always from the head of the list */
-    (*list)->curr_ = NULL;
-    /* Proceeds with the deletion */
-    while ((*list)->size_)
-        {
-            list_del (*list, NULL);
-        }
-    /* Deletes the list descriptor from memory */
-    free (*list);
-    *list = (list_t *) NULL;
-    return 0x0;
+  /* Makes the current pointer pointing to nowhere. It will force list_del to
+     delete always from the head of the list */
+  (*list)->curr_ = NULL;
+  /* Proceeds with the deletion */
+  while ((*list)->size_)
+  {
+    list_del(*list, NULL);
+  }
+  /* Deletes the list descriptor from memory */
+  free(*list);
+  *list = (list_t *) NULL;
+  return 0x0;
 }
- 

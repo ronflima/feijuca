@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_free.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: stack_free.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,10 +34,10 @@
 #include "list.h"
 
 int
-stack_free (stack_t ** stack)
+stack_free(stack_t ** stack)
 {
-    /* Assertives for debugging purposes */
-    assert (stack  != NULL);
-    assert (*stack != NULL);
-    return list_free ((list_t **) stack);
+  /* Assertives for debugging purposes */
+  assert(stack != NULL);
+  assert(*stack != NULL);
+  return list_free((list_t **) stack);
 }

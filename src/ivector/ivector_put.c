@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_put.c,v 1.3 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: ivector_put.c,v 1.4 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -34,26 +34,26 @@
 #include "ivector.h"
 
 int
-ivector_put (ivector_t * vector, size_t idx, const void * data)
+ivector_put(ivector_t * vector, size_t idx, const void *data)
 {
-    void * i;                   /* Indexer for the vector */
-    /* Assertives for debugging purposes */
-    assert (vector != NULL);
-    assert (data   != NULL);
-    /* Sanity tests */
-    if (idx >= vector->size_)
-        {
-            errno = EINVAL;
-            return -1;
-        }
-    if (! data) 
-        {
-            errno = EINVAL;
-            return -1;
-        }
-    /* Calculates the place where we want to overwrite data */
-    i = (void *)((char *)vector->data_ + idx * vector->datalen_);
-    /* Overwrite data */
-    memcpy (i, data, vector->datalen_);
-    return 0;
+  void *i;			/* Indexer for the vector */
+  /* Assertives for debugging purposes */
+  assert(vector != NULL);
+  assert(data != NULL);
+  /* Sanity tests */
+  if (idx >= vector->size_)
+  {
+    errno = EINVAL;
+    return -1;
+  }
+  if (!data)
+  {
+    errno = EINVAL;
+    return -1;
+  }
+  /* Calculates the place where we want to overwrite data */
+  i = (void *)((char *)vector->data_ + idx * vector->datalen_);
+  /* Overwrite data */
+  memcpy(i, data, vector->datalen_);
+  return 0;
 }

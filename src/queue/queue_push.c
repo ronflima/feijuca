@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_push.c,v 1.2 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: queue_push.c,v 1.3 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,11 +33,11 @@
 #include "queue.h"
 #include "list.h"
 
-int 
-queue_push (queue_t * queue, const void *data)
+int
+queue_push(queue_t * queue, const void *data)
 {
-    /* Assertives for debugging purposes */
-    assert (queue != NULL);
-    /* Calls the list insert function */
-    return list_insert ((list_t *) queue, data);
+  /* Assertives for debugging purposes */
+  assert(queue != NULL);
+  /* Calls the list insert function */
+  return list_insert((list_t *) queue, data);
 }

@@ -24,32 +24,32 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.3 2004-09-12 23:30:47 ron_lima Exp $
+ $Id: testsuite.c,v 1.4 2004-10-05 10:29:29 ron_lima Exp $
 */
- 
+
 #include <stdio.h>
 #include "gatests.h"
 
-int 
-main (int argc, char ** argv)
+int
+main(int argc, char **argv)
 {
-    register int i;   /* Simple iterator */    
-    test_t tests [] = /* Vector containing all tests to be done */
-        { 
-            {"List Test" , test_list },
-            {"DList Test", test_dlist},
-            {"Stack Test", test_stack} 
-        }; 
+  register int i;		/* Simple iterator */
+  test_t tests[] =		/* Vector containing all tests to be done */
+  {
+    {"List Test", test_list},
+    {"DList Test", test_dlist},
+    {"Stack Test", test_stack}
+  };
 
-    for (i=0x0; i < sizeof (tests)/sizeof(test_t); ++i)
-        {
-            int errors; /* Errors detected */
+  for (i = 0x0; i < sizeof(tests) / sizeof(test_t); ++i)
+  {
+    int errors;			/* Errors detected */
 
-            /* Performs each test */
-            printf ("Performing %s\n", tests [i].test_name);
-            errors = tests [i].test_routine ();
-            printf ("Found %d error(s) for %s. Test %s.\n", errors, 
-                    tests [i].test_name, errors ? "failed" : "passed");
-        }
-    return 0;
+    /* Performs each test */
+    printf("Performing %s\n", tests[i].test_name);
+    errors = tests[i].test_routine();
+    printf("Found %d error(s) for %s. Test %s.\n", errors,
+	   tests[i].test_name, errors ? "failed" : "passed");
+  }
+  return 0;
 }

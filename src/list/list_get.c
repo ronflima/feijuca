@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_get.c,v 1.7 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: list_get.c,v 1.8 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,32 +33,32 @@
 #include <assert.h>
 #include "list.h"
 
-int 
-list_get (list_t * list, void **data, position_t whence)
+int
+list_get(list_t * list, void **data, position_t whence)
 {
-    /* Assertives for debugging purposes */
-    assert (list != NULL);
-    assert (data != NULL);
-    /* Checks if the current element points to a valid address */
-    if (! list->curr_)
-        {
-            return EOF;
-        }
-    /* Grabs the data from the list element */
-    * data = list->curr_->data_;
-    switch (whence)
-        {
-        case CURR:
-            /* Do nothing. Used only for parameter checking */
-            break;
-        case NEXT:
-            /* Moves to the next element of the list */
-            return list_move (list, whence);
-            break;
-        default:
-            /* Wrong navigation mode provided */
-            errno = EINVAL;
-            return -1;
-        }
-    return 0;
+  /* Assertives for debugging purposes */
+  assert(list != NULL);
+  assert(data != NULL);
+  /* Checks if the current element points to a valid address */
+  if (!list->curr_)
+  {
+    return EOF;
+  }
+  /* Grabs the data from the list element */
+  *data = list->curr_->data_;
+  switch (whence)
+  {
+  case CURR:
+    /* Do nothing. Used only for parameter checking */
+    break;
+  case NEXT:
+    /* Moves to the next element of the list */
+    return list_move(list, whence);
+    break;
+  default:
+    /* Wrong navigation mode provided */
+    errno = EINVAL;
+    return -1;
+  }
+  return 0;
 }

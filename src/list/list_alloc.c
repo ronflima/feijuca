@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_alloc.c,v 1.6 2004-07-17 00:11:23 ron_lima Exp $
+ $Id: list_alloc.c,v 1.7 2004-10-05 10:29:28 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
@@ -33,31 +33,31 @@
 #include "list.h"
 
 int
-list_alloc (list_t ** list, deallocator_t * dealloc)
+list_alloc(list_t ** list, deallocator_t * dealloc)
 {
-    /* Assertives for debugging purposes */
-    assert (list    != NULL);
-    assert (dealloc != NULL);
+  /* Assertives for debugging purposes */
+  assert(list != NULL);
+  assert(dealloc != NULL);
 
-    /* The deallocator must be always provided */
-    if(! dealloc)
-        {
-            errno = EINVAL;
-            return -1;
-        }
-    /* Allocates memory for the list structure */
-    *list = (list_t *) malloc (sizeof (list_t));
-    assert (*list != NULL);
-    if(! *list)
-        {
-            errno = ENOMEM;
-            return -1;
-        }
-    /* Initializes each data member */
-    (*list)->size_        = 0x0;
-    (*list)->head_        = (list_element_t *) NULL;
-    (*list)->tail_        = (list_element_t *) NULL;
-    (*list)->curr_        = (list_element_t *) NULL;
-    (*list)->deallocator_ = dealloc;
-    return 0x0;
+  /* The deallocator must be always provided */
+  if (!dealloc)
+  {
+    errno = EINVAL;
+    return -1;
+  }
+  /* Allocates memory for the list structure */
+  *list = (list_t *) malloc(sizeof(list_t));
+  assert(*list != NULL);
+  if (!*list)
+  {
+    errno = ENOMEM;
+    return -1;
+  }
+  /* Initializes each data member */
+  (*list)->size_ = 0x0;
+  (*list)->head_ = (list_element_t *) NULL;
+  (*list)->tail_ = (list_element_t *) NULL;
+  (*list)->curr_ = (list_element_t *) NULL;
+  (*list)->deallocator_ = dealloc;
+  return 0x0;
 }
