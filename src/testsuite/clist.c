@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.c,v 1.1 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: clist.c,v 1.2 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -42,12 +42,9 @@
 /*
  * Local prototypes
  */
-static int
-load_data (clist_t *, size_t);
-static int
-check_navigation (clist_t *);
-static int
-check_deletion (clist_t *);
+static int load_data (clist_t *, size_t);
+static int check_navigation (clist_t *);
+static int check_deletion (clist_t *);
 
 /*
  * Exported functions
@@ -55,8 +52,8 @@ check_deletion (clist_t *);
 int
 test_clist (void)
 {
-  clist_t * clist;              /* Circular list descriptor */
-  int rc;                       /* General error handle variable */
+  clist_t *clist;		/* Circular list descriptor */
+  int rc;			/* General error handle variable */
 
   /* Check the list allocation */
   rc = clist_alloc (&clist, free);
@@ -79,7 +76,7 @@ test_clist (void)
   if (rc)
   {
     ERROR (TEST, "check_navigation", rc);
-    return EFAILED;    
+    return EFAILED;
   }
 
   /* Checks the deletion of elements */
@@ -87,9 +84,9 @@ test_clist (void)
   if (rc)
   {
     ERROR (TEST, "check_deletion", rc);
-    return EFAILED;    
+    return EFAILED;
   }
-  
+
   /* Frees the list */
   rc = clist_free (&clist);
   if (rc)
@@ -97,7 +94,7 @@ test_clist (void)
     ERROR (TEST, "clist_free", rc);
     return EFAILED;
   }
-  
+
   return 0x0;
 }
 
@@ -106,8 +103,8 @@ static int
 load_data (clist_t * clist, size_t elements)
 {
   register int i;		/* General purpose iterator */
-  int test_status;              /* Test status variable  */
-  int rc;                       /* General purpose error handling variable */
+  int test_status;		/* Test status variable  */
+  int rc;			/* General purpose error handling variable */
 
   /* Initializations */
   test_status = 0x0;
@@ -118,7 +115,7 @@ load_data (clist_t * clist, size_t elements)
     int *item;			/* Item to insert */
 
     /* Allocates memory for a single item */
-    item = (int *) malloc (sizeof (int));
+    item = (int *)malloc (sizeof (int));
     if (!item)
     {
       ERROR (TEST, "malloc", 0);
@@ -136,16 +133,17 @@ load_data (clist_t * clist, size_t elements)
       break;
     }
   }
-  
-  return test_status;  
+
+  return test_status;
 }
 
 /* Checks the navigation and data retrieval from the list */
 static int
 check_navigation (clist_t * clist)
 {
-  int rc;                       /* General error handling variable */
-  register int i;               /* General purpose iterator */
+  int rc;			/* General error handling variable */
+  register int i;		/* General purpose iterator */
+  register int j;		/* General purpose iterator */
 
   /* Try to go to the first element of the list */
   rc = clist_move (clist, HEAD);
@@ -174,6 +172,35 @@ check_navigation (clist_t * clist)
     }
   }
 
+  /* Moves to the beginning of the list again */
+  rc = clist_move (clist, HEAD);
+  if (rc)
+  {
+    ERROR (TEST, "clist_move", rc);
+    return EFAILED;
+  }
+
+  /* Executes a loop for 3 times again, but now getting data */
+  for (j = 0x0; j < 3; ++j)
+  {
+    for (i = 0x0; i < descriptor_size (clist); ++i)
+    {
+      int *buffer;		/* Buffer data  */
+
+      rc = clist_get (clist, (void *)&buffer, NEXT);
+      if (rc)
+      {
+        ERROR (TEST, "clist_move", rc);
+        return EFAILED;
+      }
+      if (*buffer != i + 1)
+      {
+        ERROR (TEST, "Data mismatch in clist_get", ECKFAIL);
+        return EFAILED;
+      }
+    }
+  }
+
   return 0x0;
 }
 
@@ -181,6 +208,43 @@ check_navigation (clist_t * clist)
 static int
 check_deletion (clist_t * clist)
 {
-  /* TODO */
+  int rc;			/* General purpose error handling variable */
+  int *buffer;			/* Buffer to save data */
+
+  /* Goes to the beginning of the list */
+  rc = clist_move (clist, HEAD);
+  if (rc)
+  {
+    ERROR (TEST, "clist_move", rc);
+    return EFAILED;
+  }
+
+  /* Deletes the HEAD of the list */
+  rc = clist_del (clist, NULL);
+  if (rc)
+  {
+    ERROR (TEST, "clist_del", rc);
+    return EFAILED;
+  }
+
+  /* Move to the tail */
+  rc = clist_move (clist, TAIL);
+  if (rc)
+  {
+    ERROR (TEST, "clist_move", rc);
+    return EFAILED;
+  }
+
+  /* Deletes the TAIL of the list */
+  rc = clist_del (clist, (void **)&buffer);
+  if (rc)
+  {
+    ERROR (TEST, "clist_del", rc);
+    return EFAILED;
+  }
+
+  /* Frees the buffer */
+  free (buffer);
+
   return 0x0;
 }

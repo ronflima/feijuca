@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.6 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: testsuite.c,v 1.7 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -40,39 +40,39 @@ main (int argc, char **argv)
   register int i;		/* Simple iterator */
   test_t tests[] =		/* Vector containing all tests to be done */
   {
-    { "LIST"   , test_list    },
-    { "DLIST"  , test_dlist   },
-    { "STACK"  , test_stack   },
-    { "CLIST"  , test_clist   },
-    { "QUEUE"  , test_queue   },
-    { "IVECTOR", test_ivector }    
+    {"LIST", test_list},
+    {"DLIST", test_dlist},
+    {"STACK", test_stack},
+    {"CLIST", test_clist},
+    {"QUEUE", test_queue},
+    {"IVECTOR", test_ivector}
   };
 
   /* Prints a small friendly message */
   printf ("G.A. Library Test Suite\n(c) 2004 - Ronaldo Faria Lima\n");
   printf ("This software is licensed under the Gnu Public License\n\n");
-  
+
   /* Performs all tests at once */
   for (i = 0x0; i < sizeof (tests) / sizeof (test_t); ++i)
   {
     int rc;			/* Error handling */
-    char * result;              /* Test result */
+    char *result;		/* Test result */
 
     /* Performs each test */
     printf ("[%-7s] Performing test...\n", tests[i].test_name);
     rc = tests[i].test_routine ();
     switch (rc)
     {
-        case 0x0:               /* Successful test */
-          result = "SUCESSFUL";
-          break;
-          
-        case ENOTIMP:           /* Test not implemented yet */
-          result = "This test is not implemented yet";
-          break;
-          
-        default:                /* Failure */
-          result = "FAILED";
+    case 0x0:			/* Successful test */
+      result = "SUCESSFUL";
+      break;
+
+    case ENOTIMP:		/* Test not implemented yet */
+      result = "This test is not implemented yet";
+      break;
+
+    default:			/* Failure */
+      result = "FAILED";
     }
     printf ("\tTest result: %s.\n", result);
   }

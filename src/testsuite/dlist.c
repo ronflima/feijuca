@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.4 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: dlist.c,v 1.5 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -42,23 +42,20 @@
 /*
  * Local prototypes
  */
-static int
-load_list (dlist_t * list, size_t elements);
-static int
-check_contents (dlist_t * list, size_t elements);
-static int
-check_deletion (dlist_t * list, size_t elements);
+static int load_list (dlist_t *, size_t);
+static int check_contents (dlist_t *, size_t);
+static int check_deletion (dlist_t *, size_t);
 
 int
 test_dlist (void)
 {
   dlist_t *list;		/* List descriptor */
   int rc;			/* Error handling variable */
-  int test_status;              /* Test status variable */
+  int test_status;		/* Test status variable */
 
   /* Initializations */
   test_status = 0x0;
-  
+
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
   rc = dlist_alloc (&list, free);
@@ -71,7 +68,7 @@ test_dlist (void)
   {
     /* Performs the load test */
     rc = load_list (list, MAX_ELEMENTS);
-    if (! rc)
+    if (!rc)
     {
       /* Performs the navigation test */
       rc = check_contents (list, MAX_ELEMENTS);
@@ -102,7 +99,7 @@ test_dlist (void)
       test_status = EFAILED;
     }
   }
-  
+
   return test_status;
 }
 
@@ -118,18 +115,18 @@ load_list (dlist_t * list, size_t elements)
   for (i = 0x0; (i < elements); ++i)
   {
     int *item;			/* Item to insert */
-    int rc;                     /* General purpose error handling variable */
+    int rc;			/* General purpose error handling variable */
 
     /* Allocates memory for a single item */
     item = (int *)malloc (sizeof (int));
     if (!item)
     {
-      ERROR (TEST, "malloc", 0);
+      ERROR (TEST, "malloc", ECKFAIL);
       return ENOMEM;
     }
     /* Builds the item data */
     *item = i + 1;
-    
+
     /* Inserts the item in the list */
     rc = dlist_insert (list, item, NEXT);
     if (rc)
@@ -159,7 +156,7 @@ check_contents (dlist_t * list, size_t elements)
     return EFAILED;
   }
   i = 0x0;
-  while (! rc)
+  while (!rc)
   {
     /* Gets the current item of the list and goes to the next */
     rc = dlist_get (list, (void **)&item, NEXT);
@@ -175,15 +172,14 @@ check_contents (dlist_t * list, size_t elements)
     }
     if (*item != (i + 1))
     {
-      printf ("[LIST TEST] Data mismatch: i=%d, item=%d\n",
-          i, *item);
+      ERROR (TEST, "Data mismatch", ECKFAIL);
       return EFAILED;
     }
     ++i;
   }
   if (i != elements)
   {
-    printf ("[LIST TEST] Number of elements mismatch\n");
+    ERROR (TEST, "Number of elements mismatch", ECKFAIL);
     return EFAILED;
   }
   return 0x0;
@@ -197,7 +193,7 @@ check_deletion (dlist_t * list, size_t elements)
 {
   int deleted;			/* Number of elements deleted */
   int *item;			/* Item deleted from the list */
-  int rc;                       /* General error handling variable */
+  int rc;			/* General error handling variable */
   register int i;		/* A simple iterator */
 
   /* Initializations */
@@ -225,7 +221,7 @@ check_deletion (dlist_t * list, size_t elements)
     if (rc)
     {
       ERROR (TEST, "dlist_move", rc);
-      return EFAILED;      
+      return EFAILED;
     }
   }
   /* Deletes an item at somewhere in the middle of the list */
@@ -233,7 +229,7 @@ check_deletion (dlist_t * list, size_t elements)
   if (rc)
   {
     ERROR (TEST, "dlist_del", rc);
-    return EFAILED;      
+    return EFAILED;
   }
   ++deleted;
   /* Deletes the tail of the list */
@@ -241,19 +237,19 @@ check_deletion (dlist_t * list, size_t elements)
   if (rc)
   {
     ERROR (TEST, "dlist_move", rc);
-    return EFAILED;      
-  }  
+    return EFAILED;
+  }
   rc = dlist_del (list, (void **)NULL, CURR);
   if (rc)
   {
     ERROR (TEST, "dlist_del", rc);
-    return EFAILED;      
+    return EFAILED;
   }
   ++deleted;
   /* Check for inconsistencies */
   if (elements - deleted != descriptor_size (list))
   {
-    ERROR (TEST, "Number of elements mismatch for deletion", 0);
+    ERROR (TEST, "Number of elements mismatch for deletion", ECKFAIL);
     return EFAILED;
   }
   return 0x0;

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.7 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: list.c,v 1.8 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -42,25 +42,22 @@
 /*
  * Local prototypes
  */
-static int
-  load_list (list_t * list, size_t elements);
-static int
-  check_contents (list_t * list, size_t elements);
-static int
-  check_deletion (list_t * list, size_t elements);
+static int load_list (list_t *, size_t);
+static int check_contents (list_t *, size_t);
+static int check_deletion (list_t *, size_t);
 
 int
 test_list (void)
 {
   list_t *list;			/* List descriptor */
   int rc;			/* Error handling variable */
-  int test_status;              /* Test status control variable  */
+  int test_status;		/* Test status control variable  */
 
   /* Initializations */
   test_status = 0x0;
 
-  /* Allocates the list. We are using the free as the deallocator
-     since this test will involve only simple allocated data */
+  /* Allocates the list. We are using the free as the deallocator since this
+     test will involve only simple allocated data */
   rc = list_alloc (&list, free);
   if (rc)
   {
@@ -69,7 +66,7 @@ test_list (void)
   }
   /* Performs the load test */
   rc = load_list (list, MAX_ELEMENTS);
-  if (! rc)
+  if (!rc)
   {
     /* Performs the navigation test */
     rc = check_contents (list, MAX_ELEMENTS);
@@ -98,7 +95,7 @@ test_list (void)
     ERROR (TEST, "list_free", rc);
     test_status = EFAILED;
   }
-  
+
   return test_status;
 }
 
@@ -109,8 +106,8 @@ static int
 load_list (list_t * list, size_t elements)
 {
   register int i;		/* General purpose iterator */
-  int test_status;              /* Test status variable  */
-  int rc;                       /* General purpose error handling variable */
+  int test_status;		/* Test status variable  */
+  int rc;			/* General purpose error handling variable */
 
   /* Initializations */
   test_status = 0x0;
@@ -124,7 +121,7 @@ load_list (list_t * list, size_t elements)
     item = (int *)malloc (sizeof (int));
     if (!item)
     {
-      ERROR (TEST, "malloc", 0);
+      ERROR (TEST, "malloc", ECKFAIL);
       test_status = ENOMEM;
       break;
     }
@@ -139,7 +136,7 @@ load_list (list_t * list, size_t elements)
       break;
     }
   }
-  
+
   return test_status;
 }
 
@@ -151,13 +148,13 @@ check_contents (list_t * list, size_t elements)
 {
   int *item;			/* Item to grab from the list */
   int rc;			/* General error checking variable */
-  int test_status;              /* Test status */
+  int test_status;		/* Test status */
   register int i;		/* General iterator */
 
   /* Initializations */
   test_status = 0x0;
   i = 0x0;
-  
+
   /* Gets the data from the list, iterating it and checking the contents */
   rc = list_move (list, HEAD);
   if (rc)
@@ -165,11 +162,11 @@ check_contents (list_t * list, size_t elements)
     ERROR (TEST, "list_move", rc);
     test_status = EFAILED;
   }
-  while (! rc)
+  while (!rc)
   {
     /* Gets the current item of the list and goes to the next */
     rc = list_get (list, (void **)&item, NEXT);
-    if (rc  > 0x0)
+    if (rc > 0x0)
     {
       ERROR (TEST, "list_get", rc);
       test_status = EFAILED;
@@ -181,8 +178,7 @@ check_contents (list_t * list, size_t elements)
     }
     if (*item != (i + 1))
     {
-      printf ("[LIST TEST] Data mismatch: i=%d, item=%d\n",
-          i, *item);
+      ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
       test_status = EFAILED;
       break;
     }
@@ -190,8 +186,7 @@ check_contents (list_t * list, size_t elements)
   }
   if (i != elements)
   {
-    printf ("[LIST TEST] Number of elements mismatch: %d != %d\n", i,
-            elements);
+    ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
     test_status = EFAILED;
   }
   return test_status;
@@ -205,7 +200,7 @@ check_deletion (list_t * list, size_t elements)
 {
   int deleted;			/* Number of elements deleted */
   int *item;			/* Item deleted from the list */
-  int rc;                       /* General purpose error handling variable */
+  int rc;			/* General purpose error handling variable */
   register int i;		/* A simple iterator */
 
   /* Initializations */
@@ -256,7 +251,7 @@ check_deletion (list_t * list, size_t elements)
 
   /* Try to get the tail out */
   rc = list_del (list, (void **)NULL);
-  if (! rc)
+  if (!rc)
   {
     /* The tail was deleted. This is a serious bug, since it is not possible
        to delete the tail of a single linked list */
@@ -266,9 +261,9 @@ check_deletion (list_t * list, size_t elements)
   /* Check for inconsistencies */
   if (elements - deleted != descriptor_size (list))
   {
-    printf ("[LIST TEST] Number of elements mismatch for deletion\n");
+    ERROR (TEST, "Number of elements mismatch", ECKFAIL);
     return EFAILED;
   }
-  
+
   return 0x0;
 }

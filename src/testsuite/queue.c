@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.1 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: queue.c,v 1.2 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -41,10 +41,10 @@
 /*
  * Local prototypes
  */
-static int
-check_push (queue_t *, size_t);
-static int
-check_pop (queue_t *);
+#ifdef TODO
+static int check_push (queue_t *, size_t);
+static int check_pop (queue_t *);
+#endif
 
 /*
  * Exported functions
@@ -52,9 +52,12 @@ check_pop (queue_t *);
 int
 test_queue (void)
 {
-  queue_t * queue;              /* Queue descriptor */
-  int rc;                       /* General error handle variable */
+  queue_t *queue;		/* Queue descriptor */
+  int rc;			/* General error handle variable */
 
+  return ENOTIMP;
+
+#ifdef TODO
   /* Check the queue allocation */
   rc = queue_alloc (&queue, free);
   if (rc)
@@ -76,7 +79,7 @@ test_queue (void)
   if (rc)
   {
     ERROR (TEST, "check_pop", rc);
-    return EFAILED;    
+    return EFAILED;
   }
 
   /* Frees the queue */
@@ -86,17 +89,19 @@ test_queue (void)
     ERROR (TEST, "queue_free", rc);
     return EFAILED;
   }
-  
+
   return 0x0;
+#endif
 }
 
+#ifdef TODO
 /* Loads data into the circular list */
 static int
 check_push (queue_t * queue, size_t elements)
 {
   register int i;		/* General purpose iterator */
-  int test_status;              /* Test status variable  */
-  int rc;                       /* General purpose error handling variable */
+  int test_status;		/* Test status variable  */
+  int rc;			/* General purpose error handling variable */
 
   /* Initializations */
   test_status = 0x0;
@@ -107,10 +112,10 @@ check_push (queue_t * queue, size_t elements)
     int *item;			/* Item to insert */
 
     /* Allocates memory for a single item */
-    item = (int *) malloc (sizeof (int));
+    item = (int *)malloc (sizeof (int));
     if (!item)
     {
-      ERROR (TEST, "malloc", 0);
+      ERROR (TEST, "malloc", ECKFAIL);
       test_status = ENOMEM;
       break;
     }
@@ -125,8 +130,8 @@ check_push (queue_t * queue, size_t elements)
       break;
     }
   }
-  
-  return test_status;  
+
+  return test_status;
 }
 
 /* Checks the pop of data from the queue */
@@ -136,3 +141,5 @@ check_pop (queue_t * queue)
   /* TODO */
   return ENOTIMP;
 }
+
+#endif

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.5 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: gatests.h,v 1.6 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -43,6 +43,7 @@
 /* Errors */
 #define EFAILED      50001u     /* Test failed */
 #define ENOTIMP      50002u     /* Test not implemented yet :"> */
+#define ECKFAIL      50003u     /* Check failed  */
 
 /* Error reporting and handling */
 #define ERROR(test, function, status) printf ("\t[%-7s] error %d - %s "\

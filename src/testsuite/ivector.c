@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.1 2005-01-08 23:25:56 ron_lima Exp $
+ $Id: ivector.c,v 1.2 2005-01-09 00:01:58 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -52,4 +52,3 @@ test_ivector (void)
   /* TODO */
   return ENOTIMP;
 }
-
