@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_free.c,v 1.6 2004-10-05 10:29:28 ron_lima Exp $
+ $Id: dlist_free.c,v 1.7 2004-10-13 00:30:23 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,18 +33,18 @@
 #include "dlist.h"
 
 int
-dlist_free(dlist_t ** list)
+dlist_free (dlist_t ** list)
 {
   /* Assertives for debugging purposes */
-  assert(list != NULL);
-  assert(*list != NULL);
+  assert (list != NULL);
+  assert (*list != NULL);
   /* Proceeds with the deletion - Deletes the list from the head, always */
   while ((*list)->size_)
   {
-    dlist_del(*list, NULL, HEAD);
+    dlist_del (*list, NULL, HEAD);
   }
   /* Deletes the list descriptor from memory */
-  free(*list);
+  free (*list);
   *list = (dlist_t *) NULL;
   return 0x0;
 }

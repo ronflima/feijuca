@@ -25,18 +25,17 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.10 2004-10-05 10:29:28 ron_lima Exp $
+ $Id: dlist_move.c,v 1.11 2004-10-13 00:30:23 ron_lima Exp $
 */
-#include <errno.h>
 #include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
 
 int
-dlist_move(dlist_t * list, position_t whence)
+dlist_move (dlist_t * list, position_t whence)
 {
   /* Assertives for debugging purposes */
-  assert(list != NULL);
+  assert (list != NULL);
   /* Decides how to navigate in the list */
   switch (whence)
   {
@@ -67,8 +66,7 @@ dlist_move(dlist_t * list, position_t whence)
     }
     break;
   default:			/* Invalid parameter provided */
-    errno = EINVAL;
-    return -1;
+    return EGAINVAL;
   }
-  return 0;
+  return 0x0;
 }
