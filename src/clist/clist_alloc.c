@@ -24,18 +24,18 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_alloc.c,v 1.3 2004-10-05 10:29:27 ron_lima Exp $
+ $Id: clist_alloc.c,v 1.4 2004-10-13 10:23:44 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 int
-clist_alloc(clist_t ** clist, deallocator_t * dealloc)
+clist_alloc (clist_t ** clist, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
-  assert(clist != NULL);
-  assert(dealloc != NULL);
+  assert (clist != NULL);
+  assert (dealloc != NULL);
   /* Just calls the list allocation function */
-  return list_alloc((list_t **) clist, dealloc);
+  return list_alloc ((list_t **) clist, dealloc);
 }
