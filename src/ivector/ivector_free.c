@@ -23,8 +23,8 @@
  Description: Deallocates the list descriptor
 
  CVS Information
- $Author: daniel_csoares $
- $Id: ivector_free.c,v 1.6 2004-10-07 19:26:38 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: ivector_free.c,v 1.7 2004-10-13 10:40:36 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,26 +32,29 @@
 #include "ivector.h"
 
 int
-ivector_free(ivector_t ** vector)
+ivector_free (ivector_t ** vector)
 {
   /* Assertives for debugging purposes */
-  assert(vector != NULL);
+  assert (vector != NULL);
 
   /* Checks if the deallocator is a valid one */
   if ((*vector)->dealloc_)
   {
-    void *item;			/* Item of the vector list */
+    void * item; /* Item of the vector list */
+    
     /* Deallocates each vector element */
-    for (item = (*vector)->data_;
-	 (item - (*vector)->data_) < (*vector)->size_;
-	 (char *)item += (*vector)->datalen_)
+    item = (*vector)->data_;
+    
+    while ((item - (*vector)->data_) < (*vector)->size_)
     {
       (*vector)->dealloc_(item);
+      (char *)item += (*vector)->datalen_;
     }
   }
   /* Just frees whatever was allocated */
-  free((*vector)->data_);
-  free((*vector));
+  free ((*vector)->data_);
+  free ((*vector));
   *vector = NULL;
+  
   return 0x0;
 }
