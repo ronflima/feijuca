@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.4 2004-06-09 00:55:20 ron_lima Exp $
+ $Id: stack.h,v 1.5 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef STACK_H
@@ -34,9 +34,8 @@
 #include "gacommon.h"
 #include "list.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+GABEGINDECLS
+
 /*
  * Datatypes
  */
@@ -45,15 +44,11 @@ typedef list_t stack_t;
 /* 
  * Prototypes 
  */
-extern int
-(stack_alloc) (stack_t ** stack, deallocator_t * dealloc);
-extern int
-(stack_free) (stack_t ** stack);
-extern int
-(stack_pop) (stack_t * stack, void **data);
-extern int 
-(stack_push) (stack_t * stack, const void *data);
-#ifdef __cplusplus
-}
-#endif
+int (stack_alloc) __P((stack_t **, deallocator_t *));
+int (stack_free) __P((stack_t **));
+int (stack_pop) __P((stack_t *, void **));
+int (stack_push) __P((stack_t *, const void *));
+
+GAENDDECLS
+
 #endif /* STACK_H */

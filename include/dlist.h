@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.h,v 1.9 2004-07-17 11:49:31 ron_lima Exp $
+ $Id: dlist.h,v 1.10 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef DLIST_H
@@ -35,10 +35,7 @@
 #include <stdio.h>
 #include "gacommon.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+GABEGINDECLS
 /*
  * Datatypes
  */
@@ -63,26 +60,13 @@ typedef struct dlist_t
 /* 
  * Prototypes 
  */
-extern int
-(dlist_alloc) (dlist_t ** list, deallocator_t * dealloc);
+int (dlist_alloc) __P((dlist_t **, deallocator_t *));
+int (dlist_free) __P((dlist_t **));
+int (dlist_get) __P((dlist_t *, void **, position_t));
+int (dlist_insert) __P((dlist_t *, const void *, position_t));
+int (dlist_move) __P((dlist_t *, position_t));
+int (dlist_del) __P((dlist_t *, void **, position_t));
 
-extern int
-(dlist_free) (dlist_t ** list);
-
-extern int 
-(dlist_get) (dlist_t * list, void **data, position_t whence);
-
-extern int 
-(dlist_insert) (dlist_t * list, const void *data, position_t whence);
-
-extern int
-(dlist_move) (dlist_t * list, position_t whence);
-
-extern int
-(dlist_del) (dlist_t * list, void **data, position_t whence);
-
-#ifdef __cplusplus
-}
-#endif
+GAENDDECLS
 
 #endif /* LIST_H */

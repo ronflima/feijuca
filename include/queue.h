@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.3 2004-06-09 00:55:20 ron_lima Exp $
+ $Id: queue.h,v 1.4 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef QUEUE_H
@@ -34,9 +34,7 @@
 #include "gacommon.h"
 #include "list.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+GABEGINDECLS
 /*
  * Datatypes
  */
@@ -45,15 +43,11 @@ typedef list_t queue_t;
 /* 
  * Prototypes 
  */
-extern int
-(queue_alloc) (queue_t ** queue, deallocator_t * dealloc);
-extern int
-(queue_free) (queue_t ** queue);
-extern int
-(queue_pop) (queue_t * queue, void **data);
-extern int 
-(queue_push) (queue_t * queue, const void *data);
-#ifdef __cplusplus
-}
-#endif
+int (queue_alloc) __P((queue_t **, deallocator_t *));
+int (queue_free) __P((queue_t **));
+int (queue_pop) __P((queue_t *, void **));
+int (queue_push) __P((queue_t *, const void *));
+
+GAENDDECLS
+
 #endif /* QUEUE_H */

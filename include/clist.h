@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.4 2004-06-27 00:20:24 ron_lima Exp $
+ $Id: clist.h,v 1.5 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef CLIST_H
@@ -34,10 +34,7 @@
 #include "list.h"
 #include "gacommon.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+GABEGINDECLS
 /*
  * Datatypes
  */
@@ -49,21 +46,13 @@ typedef list_t         clist_t;         /* List descriptor */
 /* 
  * Prototypes 
  */
-extern int
-(clist_alloc) (clist_t ** clist, deallocator_t * dealloc);
-extern int
-(clist_free) (clist_t ** clist);
-extern int
-(clist_del) (clist_t * clist, void **data);
-extern int 
-(clist_get) (clist_t * clist, void **data, position_t whence);
-extern int
-(clist_move) (clist_t * clist, position_t whence);
-extern int 
-(clist_insert) (clist_t * clist, const void * data);
+int (clist_alloc) __P((clist_t **, deallocator_t *));
+int (clist_free) __P((clist_t **));
+int (clist_del) __P((clist_t *, void **));
+int (clist_get) __P((clist_t *, void **, position_t));
+int (clist_move) __P((clist_t *, position_t));
+int (clist_insert) __P((clist_t *, const void *));
 
-#ifdef __cplusplus
-}
-#endif
+GAENDDECLS
 
 #endif /* CLIST_H */

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.9 2004-07-17 11:49:31 ron_lima Exp $
+ $Id: list.h,v 1.10 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef LIST_H
@@ -33,10 +33,7 @@
 #include <stdio.h>
 #include "gacommon.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+GABEGINDECLS
 /*
  * Datatypes
  */
@@ -60,26 +57,13 @@ typedef struct list_t
 /* 
  * Prototypes 
  */
-extern int
-(list_alloc) (list_t ** list, deallocator_t * dealloc);
+int (list_alloc) __P((list_t **, deallocator_t *));
+int (list_free) __P((list_t **));
+int (list_get) __P((list_t *, void **, position_t));
+int (list_insert) __P((list_t *, const void *));
+int (list_move) __P((list_t *, position_t));
+int (list_del) __P((list_t *, void **));
 
-extern int
-(list_free) (list_t ** list);
-
-extern int 
-(list_get) (list_t * list, void **data, position_t whence);
-
-extern int 
-(list_insert) (list_t * list, const void *data);
-
-extern int
-(list_move) (list_t * list, position_t whence);
-
-extern int
-(list_del) (list_t * list, void **data);
-
-#ifdef __cplusplus
-}
-#endif
+GAENDDECLS
 
 #endif /* LIST_H */

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.7 2004-07-18 23:37:23 ron_lima Exp $
+ $Id: ivector.h,v 1.8 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef IVECTOR_H
@@ -33,9 +33,7 @@
 #include <stdio.h>
 #include "gacommon.h"
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+GABEGINDECLS
 /*
  * Datatypes
  */
@@ -52,26 +50,15 @@ typedef struct ivector_
 /* 
  * Prototypes 
  */
-extern int
-(ivector_alloc) (ivector_t ** vector, compare_t * comp, 
-                 deallocator_t * dealloc, size_t datalen);
-extern void
-(ivector_free) (ivector_t ** vector);
-extern void *
-(ivector_get) (ivector_t * vector, size_t idx);
-extern int
-(ivector_put) (ivector_t * vector, size_t idx, const void * data);
-extern int 
-(ivector_add) (ivector_t * vector, const void * data);
-extern int
-(ivector_qsort) (ivector_t * vector);
-extern void *
-(ivector_bsearch) (ivector_t * vector, const void * data);
-extern int
-(ivector_del) (ivector_t * vector, size_t idx);
+int (ivector_alloc) __P((ivector_t **, compare_t *, deallocator_t *, size_t));
+void (ivector_free) __P((ivector_t **));
+void * (ivector_get) __P((ivector_t *, size_t));
+int (ivector_put) __P((ivector_t *, size_t, const void *));
+int (ivector_add) __P((ivector_t *, const void *));
+int (ivector_qsort) __P((ivector_t *));
+void * (ivector_bsearch) __P((ivector_t *, const void *));
+int (ivector_del) __P((ivector_t *, size_t));
 
-#ifdef __cplusplus
-}
-#endif
+GAENDDECLS
 
 #endif /* IVECTOR_H */

@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.10 2004-07-17 11:49:31 ron_lima Exp $
+   $Id: gacommon.h,v 1.11 2004-09-22 12:07:01 ron_lima Exp $
 */
  
 #ifndef GACOMMON_H
@@ -35,13 +35,29 @@
 /*
  * Macros
  */
+/* Declaration handles for C++ compilations - Simplifies the syntax */
+#if defined (__cplusplus) || defined (c_plusplus)
+#define GABEGINDECLS extern "C" {
+#define GAENDDECLS }
+#else
+#define GABEGINDECLS
+#define GAENDDECLS
+#endif
+
+/* Prototypation handle - It is used to let K&R compilers to compile
+   and use the library */
+#ifndef __P
+#if defined(__STDC__) || defined(__cplusplus) || defined(c_plusplus)
+#define __P(prototype) prototype
+#else
+#define __P(prototype) ()
+#endif
+#endif
+
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+GABEGINDECLS
 /*
  * Datatypes
  */
@@ -54,13 +70,12 @@ typedef enum
         CURR,
         PREV
     } position_t;
+
 /* Deallocator function pointer type */
 typedef void (deallocator_t)(void *data);
 /* Comparison function pointer type */
 typedef int (compare_t)(const void * a, const void * b);
 
-#ifdef __cplusplus
-}
-#endif
+GAENDDECLS
 
 #endif /* GACOMMON_H */
