@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: stack.texi,v 1.1 2005-02-07 21:04:13 ron_lima Exp $
+@c $Id: stack.texi,v 1.2 2005-02-08 16:50:03 ron_lima Exp $
 @c %**start of header
 @setfilename stack.info
 @settitle    Stack routines
@@ -41,21 +41,37 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ***** algorithm
 @node algorithm, data types, Top, Top
-@chapter Single circular linked lists in G.A. Library
+@chapter Stacks in G.A. Library
 
-Not documented yet!
+The stacks algorithm is built uppon the lists algorithm. The stack is
+a data structure where the first element to be added will be the last
+element to be deleted.
+
+G.A. Library implements the stacks in the classical manner: you have a
+push operation to add data into the stack and a pop operation to
+retrived data from the stack.
+
+In order to make the stacks available to your program, all you gotta
+do is to include the header file stack.h.
+
+The stacks routines are, in fact, front-ends to the G.A. Library lists
+routines.
 
 @c ***** data types
 @node data types, functions, algorithm, Top
 @chapter Data types
 
-Not documented yet!
+The following data types are defined for stacks:
+
+@itemize @bullet
+@item stack_t
+The stack descriptor. The descriptor that will have all needed data to
+implement the algorithm.
+@end itemize
 
 @c ***** functions
 @node functions, Licenses, data types, Top
 @chapter Functions
-
-Not documented yet!
 
 @c ***** functions menu
 @menu
@@ -69,25 +85,70 @@ Not documented yet!
 @node stack_alloc, stack_free, functions, functions
 @section int stack_alloc (stack_t **stack, deallocator_t *dealloc)
 
-Not documented yet!
+Purpose: Allocates a stack and make it ready to be used.
+
+Parameters:
+@itemize @bullet
+@item stack
+Stack descriptor to be created (mandatory)
+@item dealloc
+Deallocator function pointer. This is the function that will be called
+to deallocate each item of the stack (mandatory)
+@end itemize
+
+@inforef{list_alloc, List allocation routine, list.info}, for more
+information.
 
 @c ***** stack_free
 @node stack_free, stack_pop, stack_alloc, functions
 @section int stack_free (stack_t **stack)
 
-Not documented yet!
+Purpose: Frees the stack completely from memory
+
+Parameters:
+@itemize @bullet
+@item stack
+Stack descriptor to wipe from memory.
+@end itemize
+
+@inforef{list_free, List deallocation routine, list.info}, for more
+information.
 
 @c ***** stack_pop
 @node stack_pop, stack_push, stack_free, functions
 @section int stack_pop (stack_t *stack, void **data)
 
-Not documented yet!
+Purpose: Gets an element from the stack
+
+Parameters:
+@itemize @bullet
+@item stack
+Stack descriptor
+@item data
+Data ``popped'' from the stack
+@end itemize
+
+@inforef{list_del, List deletion routine, list.info}, for more
+information.
+@inforef{list_move, List navigation routine, list.info}, for more
+information.
 
 @c ***** stack_push
 @node stack_push,  , stack_pop, functions
 @section int stack_push (stack_t *stack, const void *data)
 
-Not documented yet!
+Purpose: Pushes a new item into the stack
+
+Parameters:
+@itemize @bullet
+@item stack
+Stack decriptor
+@item data
+Data to add into the stack
+@end itemize
+
+@inforef{list_insert, List insertion routine, list.info}, for more
+information.
 
 @c ** Includes the licenses 
 @node Licenses, , functions, Top
