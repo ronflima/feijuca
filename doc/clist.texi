@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: clist.texi,v 1.3 2005-02-07 21:04:12 ron_lima Exp $
+@c $Id: clist.texi,v 1.4 2005-02-19 22:13:47 ron_lima Exp $
 @c %**start of header
 @setfilename clist.info
 @settitle    Circular Lists
@@ -90,19 +90,19 @@ reference.
 
 @c ***** functions menu
 @menu
-* clist_alloc  :: Allocates the circular list descriptor
-* clist_free   :: Frees the entire circular list
+* clist_init      :: Initializes the circular list descriptor
+* clist_destroy   :: Destroys the entire circular list
 * clist_del    :: Deletes a single object from the list
 * clist_get    :: Get an item from the list
 * clist_move   :: Moves the current pointer of the list
 * clist_insert :: Inserts a new item to the list
 @end menu
 
-@c ***** clist_alloc
-@node clist_alloc, clist_free, functions, functions
-@section int clist_alloc (clist_t ** clist, deallocator_t * dealloc)
+@c ***** clist_init
+@node clist_init, clist_destroy, functions, functions
+@section int clist_init (clist_t *clist, deallocator_t * dealloc)
 
-Purpose: Allocates a new list descriptor
+Purpose: Initializes the list descriptor
 
 Parameters:
 @itemize @bullet
@@ -112,12 +112,12 @@ List descriptor for the circular list (required)
 Deallocator to deallocate each single element of the list.
 @end itemize
 
-@inforef{list_alloc, List allocation routine, list.info}, for more
+@inforef{list_init, List initialization routine, list.info}, for more
 information.
 
-@c ***** clist_free
-@node clist_free, clist_del, clist_alloc, functions
-@section int clist_free (clist_t ** clist)
+@c ***** clist_destroy
+@node clist_destroy, clist_del, clist_init, functions
+@section int clist_destroy (clist_t *clist)
 
 Purpose: Deletes the circular lists, cleaning it entirely from the
 memory.
@@ -128,11 +128,11 @@ Parameters:
 List descriptor to wipe from memory.
 @end itemize
 
-@inforef{list_free, List deallocation routine, list}, for more
+@inforef{list_destroy, List destruction routine, list}, for more
 information.
 
 @c ***** clist_del
-@node clist_del, clist_get, clist_free, functions
+@node clist_del, clist_get, clist_destroy, functions
 @section int clist_del(clist_t *clist, void **data)
 
 Purpose: Deletes a single object from the circular list.

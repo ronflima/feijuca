@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: ivector.texi,v 1.3 2005-02-08 14:04:26 ron_lima Exp $
+@c $Id: ivector.texi,v 1.4 2005-02-19 22:13:47 ron_lima Exp $
 @c %**start of header
 @setfilename ivector.info
 @settitle    Infinite Vectors
@@ -66,8 +66,8 @@ involving this algorithm.
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* ivector_alloc   :: Vector allocation routine
-* ivector_free    :: Frees an entire vector from memory
+* ivector_init   :: Vector allocation routine
+* ivector_destroy    :: Frees an entire vector from memory
 * ivector_get     :: Gets a single element from a vector
 * ivector_put     :: Overwrites a single location in the vector
 * ivector_add     :: Adds a new entry in the vector
@@ -76,11 +76,11 @@ involving this algorithm.
 * ivector_del     :: Deletes a single entry in the vector 
 @end menu
 
-@c ***** ivector_alloc
-@node ivector_alloc, ivector_free, functions, functions
-@section int ivector_alloc(ivector_t ** ivector, compare_t * compare, deallocator_t * dealloc, size_t size)
+@c ***** ivector_init
+@node ivector_init, ivector_destroy, functions, functions
+@section int ivector_init(ivector_t *ivector, compare_t * compare, deallocator_t * dealloc, size_t size)
 
-Purpose: Allocates a new vector descriptor.
+Purpose: Initializes a new vector descriptor.
 
 Parameters:
 @itemize @bullet
@@ -119,16 +119,16 @@ will have to provide such function (@xref{ivector_bsearch},
 @xref{ivector_qsort}.).
 @end itemize
 
-@c ***** ivector_free
-@node ivector_free, ivector_get, ivector_alloc, functions
-@section int ivector_free (ivector_t ** ivector)
+@c ***** ivector_destroy
+@node ivector_destroy, ivector_get, ivector_init, functions
+@section int ivector_destroy (ivector_t *ivector)
 
 Purpose: Deallocates the whole vector from memory.
 
 Parameters:
 @itemize @bullet
 @item ivector
-Descriptor of the ivector, passed by reference (mandatory).
+Descriptor of the ivector to be initialized
 @end itemize
 
 Return values:
@@ -137,7 +137,7 @@ Return values:
 @end itemize
 
 @c ***** ivector_get
-@node ivector_get, ivector_put, ivector_free, functions
+@node ivector_get, ivector_put, ivector_destroy, functions
 @section int (ivector_get) (ivector_t *ivector, void **data, size_t idx)
 
 Purpose: Retrieves an item from the vector

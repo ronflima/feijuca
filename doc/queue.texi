@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: queue.texi,v 1.2 2005-02-08 18:09:37 ron_lima Exp $
+@c $Id: queue.texi,v 1.3 2005-02-19 22:13:47 ron_lima Exp $
 @c %**start of header
 @setfilename queue.info
 @settitle    Queue routines
@@ -70,23 +70,23 @@ Queue descriptor. Describes the entire queue.
 
 @c ***** functions menu
 @menu
-* queue_alloc :: Allocates a queue descriptor
-* queue_free  :: Frees the queue descriptor from memory
-* queue_pop   :: Gets (pops) an item from the queue
-* queue_push  :: Adds (pushes) an item into the queue
+* queue_init    :: Initializes a queue descriptor
+* queue_destroy :: Destroys the queue descriptor
+* queue_pop     :: Gets (pops) an item from the queue
+* queue_push    :: Adds (pushes) an item into the queue
 @end menu
 
-@c ***** queue_alloc
-@node queue_alloc, queue_free, functions, functions
-@section int queue_alloc (queue_t **queue, deallocator_t *dealloc)
+@c ***** queue_init
+@node queue_init, queue_destroy, functions, functions
+@section int queue_init (queue_t *queue, deallocator_t *dealloc)
 
-Purpose: Allocates a queue descriptor and makes it available for
+Purpose: Initializes a queue descriptor and makes it available for
 usage.
 
 Parameters:
 @itemize @bullet
 @item queue
-Queue descriptor to create
+Queue descriptor to initialize
 @item dealloc
 Deallocator to use to clean up memory when each element of the queue
 is popped.
@@ -100,26 +100,26 @@ routine. Even though, you have to provide it in order to avoid memory
 leaks when deleting the queue from memory.
 @end itemize
 
-@inforef{list_alloc, List allocation routine, list.info}, for more
+@inforef{list_init, List initialization routine, list.info}, for more
 information.
 
-@c ***** queue_free
-@node queue_free, queue_pop, queue_alloc, functions
-@section int queue_free (queue_t ** queue)
+@c ***** queue_destroy
+@node queue_destroy, queue_pop, queue_init, functions
+@section int queue_destroy (queue_t *queue)
 
 Purpose: Deletes the entire queue from the memory
 
 Parameters:
 @itemize @bullet
 @item queue
-Queue descriptor
+Queue descriptor to destroy
 @end itemize
 
-@inforef{list_free, List deallocation routine, list.info}, for more
+@inforef{list_destroy, List destruction routine, list.info}, for more
 information.
 
 @c ***** queue_pop
-@node queue_pop, queue_push, queue_free, functions
+@node queue_pop, queue_push, queue_destroy, functions
 @section int queue_pop (queue_t *queue, void **data)
 
 Purpose: Gets (pops) an element from the queue

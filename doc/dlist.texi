@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: dlist.texi,v 1.4 2005-02-07 21:04:12 ron_lima Exp $
+@c $Id: dlist.texi,v 1.5 2005-02-19 22:13:47 ron_lima Exp $
 @c %**start of header
 @setfilename dlist.info
 @settitle    Double linked lists
@@ -87,23 +87,23 @@ the functions of the library.
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* dlist_alloc :: List allocator function
-* dlist_free  :: List deallocator function
-* dlist_get   :: Element getter
-* dlist_insert:: Inserts a new element
-* dlist_move  :: Iterates the list
-* dlist_del   :: Deletes a single element of the list
+* dlist_init    :: List initialization function
+* dlist_destroy :: List destruction function
+* dlist_get     :: Element getter
+* dlist_insert  :: Inserts a new element
+* dlist_move    :: Iterates the list
+* dlist_del     :: Deletes a single element of the list
 @end menu
 
-@c ***** dlist_alloc
-@node dlist_alloc, dlist_free, functions, functions
-@section int dlist_alloc (list_t ** list, deallocator_t dealloc)
-Purpose: Allocates a new list and initializes the list descriptor
+@c ***** dlist_init
+@node dlist_init, dlist_destroy, functions, functions
+@section int dlist_init (list_t *list, deallocator_t dealloc)
+Purpose: Initializes the list descriptor
 
 Parameters:
 @itemize @bullet
 @item list:
-List descriptor pointer passed by reference (required)
+List descriptor to initialize.
 @item dealloc:
 Deallocator pointer function for the user-defined deallocation
 function (required)
@@ -136,9 +136,9 @@ You will note that this prototype is exactly the same definition of
 the @samp{deallocator_t} data type.
 @end itemize
 
-@c ***** dlist_free
-@node dlist_free, dlist_get, dlist_alloc, functions
-@section int dlist_free (list_t ** list)
+@c ***** dlist_destroy
+@node dlist_destroy, dlist_get, dlist_init, functions
+@section int dlist_destroy (list_t *list)
 Purpose: Deallocates each element and releases the entire list from
 memory
 
@@ -154,7 +154,7 @@ Return values:
 @end itemize
 
 @c ***** dlist_get
-@node dlist_get, dlist_insert, dlist_free, functions
+@node dlist_get, dlist_insert, dlist_destroy, functions
 @section int dlist_get (list_t * list, void **data, int whence)
 Purpose: Gets an element data from the list and make it possible to
 navigate the list after getting the data. 

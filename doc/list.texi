@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: list.texi,v 1.5 2005-02-07 21:04:12 ron_lima Exp $
+@c $Id: list.texi,v 1.6 2005-02-19 22:13:47 ron_lima Exp $
 @c %**start of header
 @setfilename list.info
 @settitle    Lists
@@ -73,23 +73,23 @@ the functions of the library.
 Here all possible operations regarding lists are described.
 
 @menu
-* list_alloc :: List allocator function
-* list_free  :: List deallocator function
-* list_get   :: Element getter
-* list_insert:: Inserts a new element
-* list_move  :: Iterates the list
-* list_del   :: Deletes a single element of the list
+* list_init    :: List initialization function
+* list_destroy :: List destruction function
+* list_get     :: Element getter
+* list_insert  :: Inserts a new element
+* list_move    :: Iterates the list
+* list_del     :: Deletes a single element of the list
 @end menu
 
-@c ***** list_alloc
-@node list_alloc, list_free, functions, functions
-@section int list_alloc (list_t ** list, deallocator_t dealloc)
+@c ***** list_init
+@node list_init, list_destroy, functions, functions
+@section int list_init (list_t *list, deallocator_t dealloc)
 Purpose: Allocates a new list descriptor and initializes it
 
 Parameters:
 @itemize @bullet
 @item list:
-List descriptor pointer passed by reference (required)
+List descriptor to initialize
 @item dealloc:
 Deallocator pointer function for the user-defined deallocation
 function (required)
@@ -122,16 +122,16 @@ You will note that this prototype is exactly the same definition of
 the @samp{deallocator_t} data type.
 @end itemize
 
-@c ***** list_free
-@node list_free, list_get, list_alloc, functions
-@section int list_free (list_t ** list)
-Purpose: Deallocates each element and releases the entire list from
+@c ***** list_destroy
+@node list_destroy, list_get, list_init, functions
+@section int list_destroy (list_t * list)
+Purpose: Destroys each element and releases the entire list from
 memory
 
 Parameters:
 @itemize @bullet
 @item list:
-The list descriptor
+The list descriptor to destroy
 @end itemize
 
 Return values:
@@ -140,7 +140,7 @@ Return values:
 @end itemize
 
 @c ***** list_get
-@node list_get, list_insert, list_free, functions
+@node list_get, list_insert, list_destroy, functions
 @section int list_get (list_t * list, void **data, int whence)
 Purpose: Gets an element data from the list and make it possible to
 navigate the list after getting the data. 

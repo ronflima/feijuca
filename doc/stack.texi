@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: stack.texi,v 1.2 2005-02-08 16:50:03 ron_lima Exp $
+@c $Id: stack.texi,v 1.3 2005-02-19 22:13:47 ron_lima Exp $
 @c %**start of header
 @setfilename stack.info
 @settitle    Stack routines
@@ -75,47 +75,47 @@ implement the algorithm.
 
 @c ***** functions menu
 @menu
-* stack_alloc :: Allocates a stack descriptor
-* stack_free  :: Frees a stack descriptor
-* stack_pop   :: Gets (pops) data from a stack
-* stack_push  :: Adds (pushes) data to a stack
+* stack_init    :: Initializes a stack descriptor
+* stack_destroy :: Destroys a stack descriptor
+* stack_pop     :: Gets (pops) data from a stack
+* stack_push    :: Adds (pushes) data to a stack
 @end menu
 
-@c ***** stack_alloc
-@node stack_alloc, stack_free, functions, functions
-@section int stack_alloc (stack_t **stack, deallocator_t *dealloc)
+@c ***** stack_init
+@node stack_init, stack_destroy, functions, functions
+@section int stack_init (stack_t *stack, deallocator_t *dealloc)
 
-Purpose: Allocates a stack and make it ready to be used.
+Purpose: Initializes a stack and make it ready to be used.
 
 Parameters:
 @itemize @bullet
 @item stack
-Stack descriptor to be created (mandatory)
+Stack descriptor to be initialized (mandatory)
 @item dealloc
 Deallocator function pointer. This is the function that will be called
 to deallocate each item of the stack (mandatory)
 @end itemize
 
-@inforef{list_alloc, List allocation routine, list.info}, for more
+@inforef{list_init, List initialization routine, list.info}, for more
 information.
 
-@c ***** stack_free
-@node stack_free, stack_pop, stack_alloc, functions
-@section int stack_free (stack_t **stack)
+@c ***** stack_destroy
+@node stack_destroy, stack_pop, stack_init, functions
+@section int stack_destroy (stack_t *stack)
 
-Purpose: Frees the stack completely from memory
+Purpose: Destroys the stack
 
 Parameters:
 @itemize @bullet
 @item stack
-Stack descriptor to wipe from memory.
+Stack descriptor to destroy.
 @end itemize
 
-@inforef{list_free, List deallocation routine, list.info}, for more
+@inforef{list_destroy, List destruction routine, list.info}, for more
 information.
 
 @c ***** stack_pop
-@node stack_pop, stack_push, stack_free, functions
+@node stack_pop, stack_push, stack_destroy, functions
 @section int stack_pop (stack_t *stack, void **data)
 
 Purpose: Gets an element from the stack
