@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.1 2004-02-29 22:25:42 ron_lima Exp $
+ $Id: dlist_move.c,v 1.2 2004-03-07 20:53:29 ron_lima Exp $
 */
 #include <errno.h>
 #include <stdio.h>
 #include "dlist.h"
 
 int
-dlist_move (DLIST * list, int whence)
+dlist_move (DLIST * list, LIST_POSITION whence)
 {
   switch (whence)
     {
@@ -53,6 +53,7 @@ dlist_move (DLIST * list, int whence)
         {
           list->curr_ = list->curr_->prev_;
         }
+      break;
     default:                    /* Invalid parameter provided */
       errno = EINVAL;
       return -1;
