@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.5 2004-06-09 00:55:20 ron_lima Exp $
+ $Id: ivector.h,v 1.6 2004-07-17 11:49:31 ron_lima Exp $
 */
  
 #ifndef IVECTOR_H
@@ -41,13 +41,13 @@ extern "C" {
  */
 /* Infinite vector descriptor */
 typedef struct ivector_
-{
-    void          * data_;        /* Vector data */
-    size_t          size_;        /* Size of the vector */
-    size_t          datalen_;     /* Size of each vector element */
-    compare_t     * comp_;        /* Comparison function */
-    deallocator_t * dealloc_;     /* Deallocation function */
-} ivector_t;
+    {
+        void          * data_;        /* Vector data */
+        size_t          size_;        /* Size of the vector */
+        size_t          datalen_;     /* Size of each vector element */
+        compare_t     * comp_;        /* Comparison function */
+        deallocator_t * dealloc_;     /* Deallocation function */
+    } ivector_t;
 
 /* 
  * Prototypes 
