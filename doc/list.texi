@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: list.texi,v 1.1 2004-02-29 10:30:55 ron_lima Exp $
+@c $Id: list.texi,v 1.2 2004-02-29 22:25:02 ron_lima Exp $
 @c %**start of header
 @setfilename list.info
 @settitle    Lists
@@ -176,22 +176,25 @@ Error values in errno: never sets any values in errno
 
 @node list_get, list_insert, list_free, functions
 @section int list_get (LIST * list, void **data, int whence)
-Purpose: Gets an element from the list
+Purpose: Gets an element data from the list and make it possible to
+navigate the list after getting the data. 
 
 Parameters:
 @itemize @bullet
 @item list:
 The list descriptor
 @item data:
-Data to be get
+Data to be get. Remain untouched if the function could not retrieve
+data for some reason.
 @item whence:
-Where to get the element:
+This parameter indicates how to navigate the list after the data is
+retrieved.
 @itemize @bullet
 @item CURR: 
-Gets the current element
+Gets the current element data and do not update the current pointer.
 @item NEXT:
-Gets tne next element and makes the current pointer point to the next
-element (moves the list)
+Gets the current element data and makes the current pointer point to the
+next element (moves the list)
 @end itemize
 @end itemize
 
@@ -210,12 +213,16 @@ if the whence parameter has invalid options
 @emph{Hints}: 
 @itemize
 @item
-To get the first element, use list_move function and then use this
-function with whence=CURR
+To get the first element, use list_move function (see
+@xref{list_move}) and then use the function with whence=CURR.
 @item
 This function was designed, basically, to retrieve data from the list
 by iterating it from the current position to the next. The data is
 retrieved and not deleted from the list.
+@item 
+This function will return, always, the data from the current position
+of the list. The @samp{whence} parameter says how the list will be
+navigated after the current element is returned.
 @item
 For error checking it is a good idea to check, always, the errno
 global data structure since EOF is a macro that expands to -1. The
@@ -252,10 +259,9 @@ the list.
 @item
 This function always inserts the element at the end of the list.
 @item 
-This function never updates the value of the current pointer. So, if
-the list was initialized and then several elements were inserted, you
-will have to explicitly move the list descriptor to the first element
-of the list before iterating through it.
+This function updates the value of the current pointer. So, if the
+list was initialized and then several elements were inserted, the
+current pointer will always point to the last inserted element.
 @end itemize
 
 @node list_move, list_del, list_insert, functions
