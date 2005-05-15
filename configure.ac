@@ -2,10 +2,10 @@
 # Autoconf script for the project
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: configure.ac,v 1.12 2005-02-07 21:29:55 ron_lima Exp $
+# $Id: configure.ac,v 1.13 2005-05-15 23:13:45 ron_lima Exp $
 
 AC_PREREQ(2.57)
-AC_INIT([ga-lib], [1.0.0.RC_1], [ronaldo@ronaldolima.eti.br])
+AC_INIT([ga-lib], [1.0.0.RC_2], [ronaldo@ronaldolima.eti.br])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([include/list.h])
 
