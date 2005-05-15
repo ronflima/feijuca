@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.12 2005-01-28 00:13:58 ron_lima Exp $
+ $Id: testsuite.c,v 1.13 2005-05-15 22:53:08 ron_lima Exp $
 */
 
 /*
@@ -41,7 +41,7 @@
 #include "gatests.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.12 2005-01-28 00:13:58 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.13 2005-05-15 22:53:08 ron_lima Exp $";
 
 /*
  * Local functions prototypes
@@ -132,7 +132,10 @@ main (int argc, char **argv)
 /*
  * Local functions definitions
  */
-/* Parses the command line and returns a structure of parsed stuff */
+/* Parses the command line and returns a structure of parsed
+   stuff. The command line parsing was written this way in order to
+   make it available to all possible platforms, since the getopts is
+   available only in unix systems.  */
 static int 
 cmdline_parse (cmdline_t * cmdline, const int argc, const char **argv)
 {
