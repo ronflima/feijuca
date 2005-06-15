@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_put.c,v 1.10 2005-02-08 14:05:08 ron_lima Exp $
+ $Id: ivector_put.c,v 1.11 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.10 2005-02-08 14:05:08 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.11 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 ivector_put (ivector_t * vector, size_t idx, const void *data)
@@ -44,6 +44,12 @@ ivector_put (ivector_t * vector, size_t idx, const void *data)
   /* Assertives for debugging purposes */
   assert (vector != NULL);
   assert (data != NULL);
+
+  if (vector->signature_ != GA_IVECTOR_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
   /* Sanity tests */
   if (idx >= vector->size_ || !data)
     {

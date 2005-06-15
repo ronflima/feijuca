@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.15 2005-02-07 21:26:57 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.16 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.15 2005-02-07 21:26:57 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.16 2005-06-15 11:03:17 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -51,6 +51,11 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
   assert (list != NULL);
   assert (data != NULL);
 
+  if (list->signature_ != GA_DLIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
   /* Allocates memory for the new element */
   element = (dlist_element_t *) malloc (sizeof (dlist_element_t));
   assert (element != NULL);

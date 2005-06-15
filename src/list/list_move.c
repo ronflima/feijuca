@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: list_move.c,v 1.15 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.15 2005-06-15 11:03:17 ron_lima Exp $"; 
 
 int
 list_move (list_t * list, position_t whence)
@@ -40,7 +40,12 @@ list_move (list_t * list, position_t whence)
   /* Small assertives for debugging purposes */
   assert (list != NULL);
 
-  /* Decides how to navigate the list */
+  if (list->signature_ != GA_LIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
+/* Decides how to navigate the list */
   switch (whence)
     {
     case POS_HEAD:              /* Goes to the head */

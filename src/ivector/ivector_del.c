@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.11 2005-02-08 14:05:08 ron_lima Exp $
+ $Id: ivector_del.c,v 1.12 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,7 +35,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_del.c,v 1.11 2005-02-08 14:05:08 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_del.c,v 1.12 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 ivector_del (ivector_t * vector, size_t idx)
@@ -47,7 +47,12 @@ ivector_del (ivector_t * vector, size_t idx)
 
   /* Assertives for debugging purposes */
   assert (vector != NULL);
-
+  
+  if (vector->signature_ != GA_IVECTOR_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
   /* Sanity tests */
   if (idx > vector->size_)
     {

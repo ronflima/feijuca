@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.18 2005-02-20 18:05:18 ron_lima Exp $
+ $Id: list.h,v 1.19 2005-06-15 11:03:17 ron_lima Exp $
 */
 
 #ifndef LIST_H
@@ -34,6 +34,11 @@
 #include "gacommon.h"
 
 GABEGINDECLS
+/*
+ * Macros
+ */
+#define GA_LIST_SIGNATURE (ga_magic_t)0xFADEBAD1
+
 /*
  * Datatypes
  */
@@ -48,11 +53,12 @@ list_element_t;
 /* Abstraction for the list descriptor */
 typedef struct list_t
 {
-  size_t size_;
-  list_element_t *curr_;
-  list_element_t *head_;
-  list_element_t *tail_;
-  deallocator_t *deallocator_;
+  size_t size_;                 /* List size */
+  list_element_t *curr_;        /* Current navigation point */
+  list_element_t *head_;        /* List head */
+  list_element_t *tail_;        /* List tail */
+  deallocator_t  *deallocator_; /* Deallocator function */
+  ga_magic_t signature_;        /* Structure signature */
 }
 list_t;
 

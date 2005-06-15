@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.16 2005-01-28 00:11:45 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.17 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 list_del (list_t * list, void **data)
@@ -47,6 +47,11 @@ list_del (list_t * list, void **data)
   /* Assertives for debugging purposes */
   assert (list != NULL);
 
+  if (list->signature_ != GA_LIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
   /* Initializations */
   if (data)
     {

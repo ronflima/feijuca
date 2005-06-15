@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: dlist_destroy.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,17 +33,25 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_destroy.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 dlist_destroy (dlist_t * list)
 {
   /* Assertives for debugging purposes */
   assert (list != NULL);
+  if (list->signature_ != GA_DLIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
    /* Proceeds with the deletion - Deletes the list from the head, always */
   while (descriptor_size (list))
     {
       dlist_del (list, NULL, POS_HEAD);
     }
+  
+  list->signature_ = (ga_magic_t) 0x0;
+  
   return 0x0;
 }

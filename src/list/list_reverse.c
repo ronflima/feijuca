@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_reverse.c,v 1.1 2005-02-20 18:05:18 ron_lima Exp $
+ $Id: list_reverse.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.1 2005-02-20 18:05:18 ron_lima Exp $";
+  "@(#) $Id: list_reverse.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 list_reverse (list_t * list)
@@ -42,8 +42,12 @@ list_reverse (list_t * list)
 
   /* Assertives for debugging purposes */
   assert (list != NULL);
-
-  /* Check if the list is empty or have enough information to reverse */
+  if (list->signature_ != GA_LIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
+/* Check if the list is empty or have enough information to reverse */
   if (descriptor_size (list) < 2)
     {
       return EOF;

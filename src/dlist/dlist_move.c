@@ -25,20 +25,26 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: dlist_move.c,v 1.15 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.14 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.15 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 dlist_move (dlist_t * list, position_t whence)
 {
   /* Assertives for debugging purposes */
   assert (list != NULL);
+  
+  if (list->signature_ != GA_DLIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
   /* Decides how to navigate in the list */
   switch (whence)
     {

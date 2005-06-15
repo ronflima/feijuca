@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: list_destroy.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $";
 
 int
 list_destroy (list_t * list)
@@ -41,6 +41,11 @@ list_destroy (list_t * list)
   /* Assertives for debugging purposes */
   assert (list != NULL);
 
+  if (list->signature_ != GA_LIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
   /* Makes the current pointer pointing to nowhere. It will force list_del to
      delete always from the head of the list */
   list->curr_ = NULL;
@@ -49,5 +54,8 @@ list_destroy (list_t * list)
     {
       list_del (list, NULL);
     }
+  /* Invalidates the descriptor signature */
+  list->signature_ = (ga_magic_t)0x0;
+  
   return 0x0;
 }

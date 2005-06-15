@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_insert.c,v 1.15 2005-01-31 09:50:47 ron_lima Exp $
+ $Id: list_insert.c,v 1.16 2005-06-15 11:03:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.15 2005-01-31 09:50:47 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.16 2005-06-15 11:03:17 ron_lima Exp $"; 
 
 int
 list_insert (list_t * list, const void *data, position_t whence)
@@ -43,7 +43,12 @@ list_insert (list_t * list, const void *data, position_t whence)
   assert (list != NULL);
   assert (data != NULL);
 
-  /* Check if the whence argument is acceptable */
+  if (list->signature_ != GA_LIST_SIGNATURE)
+    {
+      return EGAINVAL;
+    }
+  
+/* Check if the whence argument is acceptable */
   if (whence != POS_HEAD && whence != POS_CURR && whence != POS_TAIL)
     {
       /* Invalid argument provided */

@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.19 2005-01-30 11:28:10 ron_lima Exp $
+   $Id: gacommon.h,v 1.20 2005-06-15 11:03:17 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -84,6 +84,9 @@ position_t;
 typedef void (deallocator_t) (void *);
 /* Comparison function pointer type */
 typedef int (compare_t) (const void *, const void *);
+/* Magic number data type */
+typedef int ga_magic_t;
+
 
 GAENDDECLS
 #endif /* GACOMMON_H */
