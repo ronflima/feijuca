@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: ivector.c,v 1.10 2005-07-04 00:34:21 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector.c,v 1.10 2005-07-04 00:34:21 ron_lima Exp $";
 
 /*
  * Local macros
@@ -48,6 +48,7 @@ static char const rcsid [] = "@(#) $Id: ivector.c,v 1.9 2005-02-19 16:47:32 ron_
 static int compare (const void *, const void *);
 static int load_ivector (ivector_t *, size_t);
 static int check_del (ivector_t *, size_t);
+static int check_uninitialized (ivector_t *);
 
 /*
  * Exported functions
@@ -60,6 +61,12 @@ test_ivector (size_t maxelements)
   int *buffer;                  /* Buffer to hold data */
   int key;                      /* Search key */
 
+  rc = check_uninitialized (&ivector);
+  if (rc)
+    {
+      ERROR (TEST, "check_uninitialized", rc);
+      return EFAILED;
+    }
   /* Allocates the whole vector */
   rc = ivector_init (&ivector, compare, NULL, sizeof (int));
   if (rc)
@@ -176,4 +183,54 @@ check_del (ivector_t * ivector, size_t maxelements)
     }
 
   return 0x0;
+}
+
+static int check_uninitialized (ivector_t * ivector)
+{
+  int rc;
+  void * buf = NULL;
+  int test_status = 0x0;
+  rc = ivector_destroy (ivector);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_destroy", rc);
+      test_status = EFAILED;
+    }
+  rc = ivector_get (ivector, &buf, 0x0);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_get", rc);
+      test_status = EFAILED;
+    }
+  rc = ivector_put (ivector, 0x0, buf);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_put", rc);
+      test_status = EFAILED;
+    }
+  rc = ivector_add (ivector, buf);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_add", rc);
+      test_status = EFAILED;
+    }
+  rc = ivector_qsort (ivector);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_qsort", rc);
+      test_status = EFAILED;
+    }
+  rc = ivector_bsearch (ivector, &buf, buf);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_bsearch", rc);
+      test_status = EFAILED;
+    }
+  rc = ivector_del (ivector, 0x0);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "ivector_del", rc);
+      test_status = EFAILED;
+    }
+  return test_status;
 }

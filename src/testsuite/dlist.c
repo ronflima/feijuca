@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.12 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: dlist.c,v 1.13 2005-07-04 00:34:21 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.12 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.13 2005-07-04 00:34:21 ron_lima Exp $";
 
 /*
  * Local macros
@@ -48,6 +48,7 @@ static char const rcsid [] = "@(#) $Id: dlist.c,v 1.12 2005-02-19 16:47:32 ron_l
 static int load_list (dlist_t *, size_t);
 static int check_contents (dlist_t *, size_t);
 static int check_deletion (dlist_t *, size_t);
+static int check_uninitialized (dlist_t *);
 
 int
 test_dlist (size_t maxelements)
@@ -58,7 +59,12 @@ test_dlist (size_t maxelements)
 
   /* Initializations */
   test_status = 0x0;
-
+  rc = check_uninitialized (&list);
+  if (rc)
+    {
+      ERROR (TEST, "check_uninitialized", rc);
+      test_status = EFAILED;
+    }
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
   rc = dlist_init (&list, free);
@@ -263,4 +269,43 @@ check_deletion (dlist_t * list, size_t elements)
       return EFAILED;
     }
   return 0x0;
+}
+
+static int check_uninitialized (dlist_t * dlist)
+{
+  int rc;
+  int test_status = 0x0;
+  void * buf = NULL;
+
+  rc = dlist_destroy (dlist);
+  if (rc != EGAINVAL)
+    {
+      ERROR (TEST, "dlist_destroy", rc);
+      test_status = EFAILED;      
+    }
+  rc = dlist_get (dlist, &buf, POS_HEAD);
+  if (rc != EGAINVAL)
+    {
+      ERROR (TEST, "dlist_get", rc);
+      test_status = EFAILED;      
+    }
+  rc = dlist_insert (dlist, buf, POS_HEAD);
+  if (rc != EGAINVAL)
+    {
+      ERROR (TEST, "dlist_insert", rc);
+      test_status = EFAILED;      
+    }
+  rc = dlist_move (dlist, POS_HEAD);
+  if (rc != EGAINVAL)
+    {
+      ERROR (TEST, "dlist_move", rc);
+      test_status = EFAILED;      
+    }
+  rc = dlist_del (dlist, &buf, POS_HEAD);
+  if (rc != EGAINVAL)
+    {
+      ERROR (TEST, "dlist_del", rc);
+      test_status = EFAILED;      
+    }
+  return test_status;
 }

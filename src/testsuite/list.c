@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.15 2005-02-20 18:05:18 ron_lima Exp $
+ $Id: list.c,v 1.16 2005-07-04 00:34:21 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.15 2005-02-20 18:05:18 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.16 2005-07-04 00:34:21 ron_lima Exp $";
 
 /*
  * Local macros
@@ -49,6 +49,7 @@ static int load_list (list_t *, size_t);
 static int check_contents (list_t *, size_t);
 static int check_deletion (list_t *, size_t);
 static int check_reversal (list_t *);
+static int check_uninitialization (list_t *);
 
 int
 test_list (size_t maxelements)
@@ -60,12 +61,19 @@ test_list (size_t maxelements)
   /* Initializations */
   test_status = 0x0;
 
+  /* Checks the list uninitialized */
+  rc = check_uninitialization (&list);
+  if (rc)
+    {
+      ERROR (TEST, "check_uninitialization", rc);
+      return EFAILED;
+    }
   /* Allocates the list. We are using the free as the deallocator since this
      test will involve only simple allocated data */
   rc = list_init (&list, free);
   if (rc)
     {
-      ERROR (TEST, "list_alloc", rc);
+      ERROR (TEST, "list_init", rc);
       return EFAILED;
     }
   /* Performs the load test */
@@ -320,4 +328,50 @@ check_reversal (list_t * list)
         }
     }
   return 0x0;
+}
+
+static int 
+check_uninitialization (list_t * list)
+{
+  int rc;
+  void * buf = NULL;
+  int test_status = 0x0;
+
+  rc = list_insert (list, &buf, POS_HEAD);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "list_insert", rc);
+      test_status = EFAILED;
+    }
+  rc = list_get (list, &buf, POS_HEAD);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "list_get", rc);
+      test_status = EFAILED;
+    }
+  rc = list_move (list, POS_HEAD);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "list_move", rc);
+      test_status = EFAILED;
+    }
+  rc = list_del (list, &buf);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "list_del", rc);
+      test_status = EFAILED;
+    }
+  rc = list_reverse (list);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "list_reverse", rc);
+      test_status = EFAILED;
+    }
+  rc = list_destroy (list);
+  if (rc != EGAINVAL) 
+    {
+      ERROR (TEST, "list_destroy", rc);
+      test_status = EFAILED;
+    }
+  return test_status;
 }

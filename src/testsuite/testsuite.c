@@ -28,7 +28,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.13 2005-05-15 22:53:08 ron_lima Exp $
+ $Id: testsuite.c,v 1.14 2005-07-04 00:34:21 ron_lima Exp $
 */
 
 /*
@@ -41,7 +41,7 @@
 #include "gatests.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.13 2005-05-15 22:53:08 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.14 2005-07-04 00:34:21 ron_lima Exp $";
 
 /*
  * Local functions prototypes
@@ -126,6 +126,7 @@ main (int argc, char **argv)
     {
       free (cmdline.items);
     }
+  printf ("\nTest suite finished.\n");
   return 0x0;
 }
 
