@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_pop.c,v 1.9 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: queue_pop.c,v 1.10 2005-07-04 00:32:36 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,15 +33,16 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_pop.c,v 1.9 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_pop.c,v 1.10 2005-07-04 00:32:36 ron_lima Exp $";
 
 int
 queue_pop (queue_t * queue, void **data)
 {
   int rc;			/* General purpose error handling variable */
 
-  /* Assertives for debugging purposes */
   assert (queue != NULL);
+  CHECK_SIGNATURE (queue, GA_LIST_SIGNATURE);
+
   /* Moves to the beginning of the list. We need to extract the first element
      entered into the queue */
   rc = list_move ((list_t *) queue, POS_HEAD);

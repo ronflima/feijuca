@@ -25,20 +25,20 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_get.c,v 1.6 2005-01-28 00:11:43 ron_lima Exp $
+ $Id: clist_get.c,v 1.7 2005-07-04 00:30:46 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_get.c,v 1.6 2005-01-28 00:11:43 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_get.c,v 1.7 2005-07-04 00:30:46 ron_lima Exp $";
 
 int
 clist_get (clist_t * clist, void **data, position_t whence)
 {
-  /* Assertives for debugging purposes */
   assert (clist != NULL);
+
   /* Just calls the list getter function */
   return list_get ((list_t *) clist, data, whence);
 }

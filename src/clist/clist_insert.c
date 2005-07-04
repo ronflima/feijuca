@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_insert.c,v 1.9 2005-01-28 00:11:43 ron_lima Exp $
+ $Id: clist_insert.c,v 1.10 2005-07-04 00:30:46 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,15 +32,16 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.9 2005-01-28 00:11:43 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.10 2005-07-04 00:30:46 ron_lima Exp $";
 
 int
 clist_insert (clist_t * clist, const void *data)
 {
   clist_element_t *element;
 
-  /* Assertives for debugging purposes */
   assert (clist != NULL);
+  CHECK_SIGNATURE (clist, GA_LIST_SIGNATURE);
+
   /* Allocates memory for the new element */
   element = (clist_element_t *) malloc (sizeof (clist_element_t));
   assert (element != NULL);

@@ -24,21 +24,21 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: clist_init.c,v 1.2 2005-07-04 00:30:46 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.2 2005-07-04 00:30:46 ron_lima Exp $";
 
 int
 clist_init (clist_t * clist, deallocator_t * dealloc)
 {
-  /* Assertives for debugging purposes */
   assert (clist != NULL);
   assert (dealloc != NULL);
+
   /* Just calls the list allocation function */
   return list_init ((list_t *) clist, dealloc);
 }

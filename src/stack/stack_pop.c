@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_pop.c,v 1.9 2005-01-30 11:28:17 ron_lima Exp $
+ $Id: stack_pop.c,v 1.10 2005-07-04 00:33:04 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,15 +33,16 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_pop.c,v 1.9 2005-01-30 11:28:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack_pop.c,v 1.10 2005-07-04 00:33:04 ron_lima Exp $";
 
 int
 stack_pop (stack_t * stack, void **data)
 {
   int rc;			/* General purpose error handling variable */
 
-  /* Assertives for debugging purposes */
   assert (stack != NULL);
+  CHECK_SIGNATURE (stack, GA_LIST_SIGNATURE);
+
   rc = list_move ((list_t *) stack, POS_HEAD);
   /* Check if there was an error */
   if (rc)

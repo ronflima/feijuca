@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list_reverse.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: list_reverse.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $";
+  "@(#) $Id: list_reverse.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $";
 
 int
 list_reverse (list_t * list)
@@ -40,18 +40,14 @@ list_reverse (list_t * list)
   list_element_t *first;	/* First item of the window */
   list_element_t *middle;	/* Middle item of the window */
 
-  /* Assertives for debugging purposes */
   assert (list != NULL);
-  if (list->signature_ != GA_LIST_SIGNATURE)
-    {
-      return EGAINVAL;
-    }
+  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
-/* Check if the list is empty or have enough information to reverse */
-  if (descriptor_size (list) < 2)
+  /* Check if the list is empty or have enough information to reverse */
+  if (descriptor_size (list) < 2)               
     {
       return EOF;
-    }
+    }           
 
   /* Reverses the tail and the head of the list */
   first = list->tail_;		/* Saves the tail */

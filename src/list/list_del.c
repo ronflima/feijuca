@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.17 2005-06-15 11:03:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.18 2005-07-04 00:32:10 ron_lima Exp $";
 
 int
 list_del (list_t * list, void **data)
@@ -41,16 +41,9 @@ list_del (list_t * list, void **data)
   list_element_t *currelem;	/* Current element being processed */
   void *extracted_data;		/* Data extracted from the list */
 
-  /* Initializations  */
-  currelem = (list_element_t *) NULL;
-
-  /* Assertives for debugging purposes */
   assert (list != NULL);
-
-  if (list->signature_ != GA_LIST_SIGNATURE)
-    {
-      return EGAINVAL;
-    }
+  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);      
+  currelem = (list_element_t *) NULL;
   
   /* Initializations */
   if (data)

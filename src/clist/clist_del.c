@@ -24,21 +24,22 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_del.c,v 1.7 2005-01-28 00:11:43 ron_lima Exp $
+ $Id: clist_del.c,v 1.8 2005-07-04 00:30:46 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.7 2005-01-28 00:11:43 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.8 2005-07-04 00:30:46 ron_lima Exp $";
 
 int
 clist_del (clist_t * clist, void **data)
 {
   int rc;			/* General purpose error handling variable */
-  /* Assertives for debugging purposes */
+
   assert (clist != NULL);
+  CHECK_SIGNATURE (clist, GA_LIST_SIGNATURE);
 
   /* Check if we are deleting the head of the list */
   if (!clist->curr_ || clist->curr_ == clist->head_)

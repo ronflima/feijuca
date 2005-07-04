@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: queue_destroy.c,v 1.2 2005-07-04 00:32:36 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,12 +34,12 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.1 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.2 2005-07-04 00:32:36 ron_lima Exp $";
 
 int
 queue_destroy (queue_t * queue)
 {
-  /* Assertives for debugging purposes */
   assert (queue != NULL);
+
   return list_destroy ((list_t *) queue);
 }

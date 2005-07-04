@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.16 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: dlist_del.c,v 1.17 2005-07-04 00:31:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.16 2005-06-15 11:03:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.17 2005-07-04 00:31:13 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -58,8 +58,8 @@ dlist_del (dlist_t * list, void **data, position_t whence)
   dlist_element_t *currelem;	/* Current element being processed */
   void *extracted_data;		/* Data extracted from the list */
 
-  /* Assertives for debugging purposes */
   assert (list != NULL);
+  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
 
   if (list->signature_ != GA_DLIST_SIGNATURE)
     {

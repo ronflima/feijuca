@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_get.c,v 1.14 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: dlist_get.c,v 1.15 2005-07-04 00:31:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,18 +33,14 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.14 2005-06-15 11:03:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.15 2005-07-04 00:31:13 ron_lima Exp $";
 
 int
 dlist_get (dlist_t * list, void **data, position_t whence)
 {
-  /* Assertives for debugging purposes */
   assert (list != NULL);
   assert (data != NULL);
-  if (list->signature_ != GA_DLIST_SIGNATURE)
-    {
-      return EGAINVAL;
-    }
+  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
   
 /* Checks if the current pointer points to somewhere */
   if (!list->curr_)

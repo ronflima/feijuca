@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.11 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: ivector_add.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.11 2005-06-15 11:03:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $";
 
 int
 ivector_add (ivector_t * vector, const void *data)
@@ -42,11 +42,7 @@ ivector_add (ivector_t * vector, const void *data)
   void *v;			/* New redimensioned vector */
 
   assert (vector != NULL);
-  
-  if (vector->signature_ != GA_IVECTOR_SIGNATURE)
-    {
-      return EGAINVAL;
-    }
+  CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
   v = realloc (vector->data_, vector->datalen_ * (vector->size_ + 1));
   assert (v != NULL);
