@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.20 2005-06-15 11:03:17 ron_lima Exp $
+   $Id: gacommon.h,v 1.21 2005-07-04 00:29:36 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -64,6 +64,10 @@ GABEGINDECLS
 
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_
+
+/* In-line code for signature checking */
+#define CHECK_SIGNATURE(descriptor, signature) \
+if (descriptor->signature_!= signature) return EGAINVAL
 
 /*
  * Datatypes
