@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: list.texi,v 1.7 2005-02-20 18:05:16 ron_lima Exp $
+@c $Id: list.texi,v 1.8 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
 @setfilename list.info
 @settitle    Lists
@@ -52,7 +52,7 @@ must be traversed from the beginning through the end and you don't
 know the amount of data that will be loaded in memory.
 
 Until this release, no thread safety was analyzed or even implemented
-in the algorithms. So, thread safety is not guaranteed.
+in this algorithm. So, thread safety is not guaranteed.
 
 @node data types, functions, algorithm, Top
 @chapter Data types
@@ -85,7 +85,7 @@ Here all possible operations regarding lists are described.
 @c ***** list_init
 @node list_init, list_destroy, functions, functions
 @section int list_init (list_t *list, deallocator_t dealloc)
-Purpose: Allocates a new list descriptor and initializes it
+Purpose: Initializes the list descriptor.
 
 Parameters:
 @itemize @bullet
@@ -100,8 +100,6 @@ Return values:
 @itemize @bullet
 @item 0
 Operation was successful.
-@item EGANOMEM
-No memory could be allocated for the list descriptor.
 @item EGAINVAL
 The deallocator provided is not valid. The validation here is done
 checking if the deallocator is a null pointer or not.
@@ -127,7 +125,7 @@ the @samp{deallocator_t} data type.
 @node list_destroy, list_get, list_init, functions
 @section int list_destroy (list_t * list)
 Purpose: Destroys each element and releases the entire list from
-memory
+memory and makes the descriptor invalid.
 
 Parameters:
 @itemize @bullet
@@ -137,7 +135,10 @@ The list descriptor to destroy
 
 Return values:
 @itemize @bullet
-@item Always returns 0
+@item 0
+Operation was successful
+@item EGAINVAL
+The descriptor provided was not initialized or is invalid.
 @end itemize
 
 @c ***** list_get
@@ -151,7 +152,7 @@ Parameters:
 @item list:
 The list descriptor
 @item data:
-Data to be get. Remain untouched if the function could not retrieve
+Data to get. Remain untouched if the function could not retrieve
 data for some reason.
 @item whence:
 This parameter indicates how to navigate the list after the data is
@@ -172,7 +173,8 @@ Return values:
 @item 0
 The operation was successful
 @item EGAINVAL
-The value provided to @emph{whence} parameter is invalid.
+The value provided to @emph{whence} parameter is invalid or the list
+descriptor was not properly initialized.
 @item EOF
 End of the list reached.
 @end itemize
@@ -221,7 +223,8 @@ Return values:
 @item 0
 Operation was successful
 @item EGAINVAL
-An invalid value was provided to the whence parameter
+An invalid value was provided to the whence parameter or the list
+descriptor is invalid.
 @item EGANOMEM
 No memory available to complete the operation.
 @item EGABADC
@@ -280,7 +283,8 @@ End of list reached
 Error values in errno:
 @itemize @bullet
 @item EINVAL:
-The whence parameter has values not recognized by the function.
+The whence parameter has values not recognized by the function or the
+list descriptor is not valid.
 @end itemize
 
 @emph{Hints}:
@@ -314,7 +318,8 @@ Return values:
 Operation succeded
 @item EGAINVAL
 The @emph{data} parameter is empty and there is no deallocator
-available to clean the data from the list.
+available to clean the data from the list or the list descriptor is
+not valid.
 @item EOF
 The list is empty. No more items to delete from it.
 @end itemize
@@ -347,6 +352,8 @@ Operation succeded
 @item EOF
 The list is empty or there is not enough information to reverse the
 list.
+@item EGAINVAL
+The list descriptor is invalid.
 @end itemize
 
 @c ** Includes the licenses 

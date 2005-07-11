@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: galib.texi,v 1.4 2005-05-13 10:34:17 ron_lima Exp $
+@c $Id: galib.texi,v 1.5 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
 @setfilename galib.info
 @settitle    Generic Algorithms Library
@@ -58,10 +58,10 @@ so on. Also, there is a GNU implementation of such algorithms
 in algorithms. As a programmer, I was always looking for such a
 library. However I wanted to know the algorithms, not only play with
 someone else's library. Then I decided to write a small library with
-all the ideas that I got with my studies.
+all the ideas that I got from my studies.
 
-This library intends to be more general as possible. As a programmer,
-I was always developing some sort of algorithm that is implemented in
+This library intends to be as general as possible. As a programmer, I
+was always developing some sort of algorithm that is implemented in
 this library. Actually, I was always reimplementing those
 algorithms. I believe that all C programmers around the world do
 exactly the same.
@@ -149,7 +149,10 @@ Operates in the previous item.
 Several error constants were introduced in order to inform error
 situations that may happen inside the G.A. Library operations. These
 error constants follow the same naming conventions adopted by the
-errno.h header file.
+errno.h header file. G.A. Library is not using the constants already
+declared in errno.h header file because several of them may not be
+available on different systems. So, G.A. Library declares the
+following constants in order to avoid some sort of system dependency.
 @itemize @bullet
 @item EGAINVAL
 Invalid argument. Some of the arguments provided for the operation is

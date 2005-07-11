@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: clist.texi,v 1.4 2005-02-19 22:13:47 ron_lima Exp $
+@c $Id: clist.texi,v 1.5 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
 @setfilename clist.info
 @settitle    Circular Lists
@@ -80,22 +80,19 @@ information on other data types.
 @c ***** functions
 @node functions, Licenses, data types, Top
 @chapter Functions
-All the functions in the clist.h header file are implemented as macros
-to the list.h functions. The only exception regards the clist_insert
-function that have a different way to link new elements into the
-list. All the other functions are macros that expands to calls to the
-list.h functions. The following table shows each macro and the real
-function that it masks. Refer to the proper list.h documentation for
-reference.
+All the functions in the clist.h header file are implemented as true
+functions, even being wrappers to the list functions. The idea of
+using real functions is to ensure data type checking for the circular
+list data types. Also, 
 
 @c ***** functions menu
 @menu
-* clist_init      :: Initializes the circular list descriptor
-* clist_destroy   :: Destroys the entire circular list
-* clist_del    :: Deletes a single object from the list
-* clist_get    :: Get an item from the list
-* clist_move   :: Moves the current pointer of the list
-* clist_insert :: Inserts a new item to the list
+* clist_init    :: Initializes the circular list descriptor
+* clist_destroy :: Destroys the entire circular list
+* clist_del     :: Deletes a single object from the list
+* clist_get     :: Get an item from the list
+* clist_move    :: Moves the current pointer of the list
+* clist_insert  :: Inserts a new item to the list
 @end menu
 
 @c ***** clist_init

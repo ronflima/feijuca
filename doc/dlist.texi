@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: dlist.texi,v 1.5 2005-02-19 22:13:47 ron_lima Exp $
+@c $Id: dlist.texi,v 1.6 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
 @setfilename dlist.info
 @settitle    Double linked lists
@@ -49,11 +49,11 @@ Revision: @value{VERSION}
 G.A. Library implements double linked lists through the header file
 <dlist.h>. The list descriptor contains always the first and the last
 elements for fast access in the list. Navigation in the list is
-possible only in both ways.
+possible in both ways.
 
 Double linked lists are useful when you have a collection of data that
-must be traversed in two directions in memory and you won't know the
-amount of data that will be stored in memory.
+must be traversed in two directions in memory and you don't know the
+amount of data that it will hold.
 
 The implementation for double linked lists was done from scratch,
 instead of using some of the single-linked lists routines or data
@@ -116,8 +116,6 @@ Operation succeeded
 @item EGAINVAL
 The deallocator provided is not valid. The validation of the
 deallocator, however, is done against its nullity.
-@item EGANOMEM
-Memory could not be allocated for the list descriptor.
 @end itemize
 
 @emph{Hints}:
@@ -150,7 +148,10 @@ The list descriptor
 
 Return values:
 @itemize @bullet
-@item Always returns 0
+@item 0
+when the operation succeeds
+@item EGAINVAL
+The destruction operation was tried on an invalid descriptor.
 @end itemize
 
 @c ***** dlist_get
@@ -188,7 +189,8 @@ Operation succeeded
 @item EOF
 The end of the list was reached
 @item EGAINVAL
-Invalid argument provided to @emph{whence} parameter
+Invalid argument provided to @emph{whence} parameter or the list
+descriptor is invalid.
 @end itemize
 
 @emph{Hints}: 
@@ -241,19 +243,8 @@ No memory available to create the new list element
 Wrong insertion. The operation demanded a valid current position but
 there was none available.
 @item EGAINVAL
-Invalid @samp{whence} parameter provided.
-@end itemize
-
-Error values in errno:
-@itemize @bullet
-@item ENOMEM:
-It was not possible to allocate memory for the element descriptor for
-the list.
-@item EINVAL:
-The @samp{whence} parameter is not valid.
-@item EFAULT:
-The operation in @samp{whence} was selected to be done using the
-current pointer but the current pointer is not set.
+Invalid @samp{whence} parameter provided or the list descriptor is
+invalid.
 @end itemize
 
 @emph{Hints}:
@@ -293,7 +284,8 @@ Return values:
 @item 0
 Operation succeeded
 @item EGAINVAL
-Wrong value provided to the @samp{whence} parameter.
+Wrong value provided to the @samp{whence} parameter or the list
+descriptor is invalid.
 @item EOF
 End of list reached
 @end itemize
@@ -343,6 +335,8 @@ Invalid argument provided. This value is returned if:
 @item The @samp{whence} parameter has invalid value
 @item The @samp{data} parameter is null and no deallocator was provided.
 @end itemize
+This value may be returned, also, if the descriptor provided was
+invalid.
 
 @item EOF
 The list is already empty

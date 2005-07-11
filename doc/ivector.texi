@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: ivector.texi,v 1.4 2005-02-19 22:13:47 ron_lima Exp $
+@c $Id: ivector.texi,v 1.5 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
 @setfilename ivector.info
 @settitle    Infinite Vectors
@@ -66,8 +66,8 @@ involving this algorithm.
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* ivector_init   :: Vector allocation routine
-* ivector_destroy    :: Frees an entire vector from memory
+* ivector_init    :: Vector allocation routine
+* ivector_destroy :: Frees an entire vector from memory
 * ivector_get     :: Gets a single element from a vector
 * ivector_put     :: Overwrites a single location in the vector
 * ivector_add     :: Adds a new entry in the vector
@@ -85,7 +85,7 @@ Purpose: Initializes a new vector descriptor.
 Parameters:
 @itemize @bullet
 @item ivector
-Vector to create (mandatory)
+Vector to initialize (mandatory)
 @item compare
 Compare function to compare individual items of the vector (not
 required).
@@ -102,8 +102,6 @@ The operation suceeded
 @item EGAINVAL
 The data length provided has an invalid value. It must be always
 greater than zero.
-@item EGANOMEM
-The operation could not allocate memory for the descriptor.
 @end itemize
 
 @emph{Hints}:
@@ -128,12 +126,15 @@ Purpose: Deallocates the whole vector from memory.
 Parameters:
 @itemize @bullet
 @item ivector
-Descriptor of the ivector to be initialized
+Descriptor of the ivector to be freed.
 @end itemize
 
 Return values:
 @itemize @bullet
-@item This function always returns zero.
+@item 0
+when the operation succeeds
+@item EGAINVAL
+when you try to operate over an invalid ivector descriptor.
 @end itemize
 
 @c ***** ivector_get
@@ -159,7 +160,8 @@ Return values:
 The operation succeeded
 @item EGAINVAL
 The value of the @samp{idx} parameter is not valid. It may be greater
-than the size of the vector or less than zero.
+than the size of the vector or less than zero. Also, this function may
+return this value when the ivector descriptor is not valid.
 @end itemize
 
 @emph{Hints}:
@@ -194,7 +196,8 @@ Return values:
 Operation suceeded
 @item EGAINVAL
 The idx parameter is not valid or the data arena provided is a NULL
-pointer.
+pointer. This value can be returned, also, when the ivector descriptor
+is not valid.
 @end itemize
 
 @c ***** ivector_add
@@ -217,6 +220,8 @@ Return values:
 Operation succeeded
 @item EGANOMEM
 No memory available to enlarge the vector
+@item EGAINVAL
+When the operation is tried on an invalid ivector descriptor.
 @end itemize
 
 @c ***** ivector_qsort
@@ -236,7 +241,8 @@ Return values:
 @item 0
 Operation suceeded
 @item EGAINVAL
-There is no comparison function available for the sorting function.
+There is no comparison function available for the sorting function or
+the ivector descriptor is not valid.
 @end itemize
 
 @c ***** ivector_bsearch
@@ -263,7 +269,8 @@ Operation succeeded. The item was found.
 No item was found.
 @item EGAINVAL
 The @samp{data} parameter is invalid or the comparison function was
-not provided during the vector initialization.
+not provided during the vector initialization. When the ivector
+descriptor is invalid the function may return this value also.
 @end itemize
 
 @c ***** ivector_del
@@ -285,7 +292,9 @@ Return values:
 @item 0
 Operation succeeded
 @item EGAINVAL
-The @samp{idx} parameter is greater than the size of the vector.
+The @samp{idx} parameter is greater than the size of the vector. When
+the ivector descritptor is invalid the function may return this value
+also.
 @end itemize
 
 @c ** Includes the licenses 
