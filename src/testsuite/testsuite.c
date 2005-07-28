@@ -27,8 +27,8 @@
  is free of bugs. Debugging the library inside a debugger will. :)
 
  CVS Information
- $Author: ron_lima $
- $Id: testsuite.c,v 1.14 2005-07-04 00:34:21 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: testsuite.c,v 1.15 2005-07-28 12:21:11 daniel_csoares Exp $
 */
 
 /*
@@ -41,7 +41,7 @@
 #include "gatests.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.14 2005-07-04 00:34:21 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.15 2005-07-28 12:21:11 daniel_csoares Exp $";
 
 /*
  * Local functions prototypes
@@ -69,7 +69,8 @@ main (int argc, char **argv)
     {"STACK", test_stack},
     {"CLIST", test_clist},
     {"QUEUE", test_queue},
-    {"IVECTOR", test_ivector}
+    {"IVECTOR", test_ivector},
+    {"DEQUE", test_deque}
   };
 
   /* Initializations */

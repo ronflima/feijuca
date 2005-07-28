@@ -23,8 +23,8 @@
  Description: Header file with definitions needed by the test suite
 
  CVS Information
- $Author: ron_lima $
- $Id: gatests.h,v 1.9 2005-01-26 22:42:04 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: gatests.h,v 1.10 2005-07-28 12:21:11 daniel_csoares Exp $
 */
 
 #ifndef GATESTS_H
@@ -85,6 +85,7 @@ int (test_stack) (size_t);
 int (test_clist) (size_t);
 int (test_queue) (size_t);
 int (test_ivector) (size_t);
+int (test_deque) (size_t);
 
 GAENDDECLS
 
