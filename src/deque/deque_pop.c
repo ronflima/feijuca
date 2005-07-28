@@ -23,8 +23,8 @@
  Description: Pops an element from the deque giving a valid position (HEAD or TAIL)
 
  CVS Information
- $Author $
- $Id $
+ $Author: daniel_csoares $
+ $Id: deque_pop.c,v 1.2 2005-07-28 12:57:19 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id $";
+static char const rcsid[] = "@(#) $Id: deque_pop.c,v 1.2 2005-07-28 12:57:19 daniel_csoares Exp $";
 
 int
 deque_pop (deque_t * deque, void **data, position_t whence)

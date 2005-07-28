@@ -24,8 +24,8 @@
  from the memory
 
  CVS Information
- $Author $
- $Id $
+ $Author: daniel_csoares $
+ $Id: deque_destroy.c,v 1.2 2005-07-28 12:57:19 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>

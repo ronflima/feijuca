@@ -23,8 +23,8 @@
  Description: Test suite routines for deques.
 
  CVS Information
- $Author $
- $Id $
+ $Author: daniel_csoares $
+ $Id: deque.c,v 1.2 2005-07-28 12:57:41 daniel_csoares Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "deque.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id $";
+static char const rcsid [] = "@(#) $Id: deque.c,v 1.2 2005-07-28 12:57:41 daniel_csoares Exp $";
 
 /*
  * Local macros
