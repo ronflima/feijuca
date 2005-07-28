@@ -25,8 +25,8 @@
    directly by your application.
 
    CVS Information
-   $Author: ron_lima $
-   $Id: gacommon.h,v 1.21 2005-07-04 00:29:36 ron_lima Exp $
+   $Author: daniel_csoares $
+   $Id: gacommon.h,v 1.22 2005-07-28 12:19:44 daniel_csoares Exp $
 */
 
 #ifndef GACOMMON_H
@@ -45,7 +45,6 @@
 #endif
 
 GABEGINDECLS
-
 /* Prototypation handle - It is used to let K&R compilers to compile
    and use the library */
 #ifndef __P
@@ -55,32 +54,29 @@ GABEGINDECLS
 #define __P(prototype) ()
 #endif
 #endif
-
 /* Error codes: Errors that are returned from G.A. Library
    routines. */
 #define EGAINVAL 2500		/* Invalid argument */
 #define EGANOMEM 2501		/* No memory */
 #define EGABADC  2502		/* Bad current position */
-
+#define EGANOVP  2503		/* Not a valid position */
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_
-
 /* In-line code for signature checking */
 #define CHECK_SIGNATURE(descriptor, signature) \
 if (descriptor->signature_!= signature) return EGAINVAL
-
 /*
  * Datatypes
  */
 /* List iteration types */
-typedef enum
+  typedef enum
 {
-  POS_NONE = 0x0,               /* No position - dummy value */
-  POS_HEAD,                     /* Head */
-  POS_TAIL,                     /* Tail */
-  POS_NEXT,                     /* Next element  */
-  POS_CURR,                     /* Current element */
-  POS_PREV                      /* Previous element */
+  POS_NONE = 0x0,		/* No position - dummy value */
+  POS_HEAD,			/* Head */
+  POS_TAIL,			/* Tail */
+  POS_NEXT,			/* Next element  */
+  POS_CURR,			/* Current element */
+  POS_PREV			/* Previous element */
 }
 position_t;
 
