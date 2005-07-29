@@ -25,8 +25,8 @@
    directly by your application.
 
    CVS Information
-   $Author: daniel_csoares $
-   $Id: gacommon.h,v 1.22 2005-07-28 12:19:44 daniel_csoares Exp $
+   $Author: ron_lima $
+   $Id: gacommon.h,v 1.23 2005-07-29 10:57:28 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -54,22 +54,31 @@ GABEGINDECLS
 #define __P(prototype) ()
 #endif
 #endif
-/* Error codes: Errors that are returned from G.A. Library
-   routines. */
-#define EGAINVAL 2500		/* Invalid argument */
-#define EGANOMEM 2501		/* No memory */
-#define EGABADC  2502		/* Bad current position */
-#define EGANOVP  2503		/* Not a valid position */
+
 /* Simple information getters */
 #define descriptor_size(list) (list)->size_
 /* In-line code for signature checking */
 #define CHECK_SIGNATURE(descriptor, signature) \
 if (descriptor->signature_!= signature) return EGAINVAL
+
+/*
+ * Constants
+ */
+/* Error codes: Errors that are returned from G.A. Library
+   routines. */
+enum 
+{
+  EGAINVAL = 2500,		/* Invalid argument */
+  EGANOMEM = 2501,		/* No memory */
+  EGABADC  = 2502,		/* Bad current position */
+  EGANOVP  = 2503		/* Not a valid position */
+};
+
 /*
  * Datatypes
  */
 /* List iteration types */
-  typedef enum
+typedef enum
 {
   POS_NONE = 0x0,		/* No position - dummy value */
   POS_HEAD,			/* Head */
@@ -85,7 +94,7 @@ typedef void (deallocator_t) (void *);
 /* Comparison function pointer type */
 typedef int (compare_t) (const void *, const void *);
 /* Magic number data type */
-typedef int ga_magic_t;
+typedef unsigned int ga_magic_t;
 
 
 GAENDDECLS
