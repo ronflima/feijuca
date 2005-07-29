@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.17 2005-07-04 00:31:13 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.18 2005-07-29 02:31:36 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.17 2005-07-04 00:31:13 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.18 2005-07-29 02:31:36 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -51,22 +51,18 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
   assert (data != NULL);
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
   
-  /* Allocates memory for the new element */
   element = (dlist_element_t *) malloc (sizeof (dlist_element_t));
   assert (element != NULL);
-  if (!element)
+  if (element == NULL)
     {
       return EGANOMEM;
     }
-  /* Initializes all inner data of the descriptor */
   element->data_ = (void *) data;
   element->next_ = (dlist_element_t *) NULL;
   element->prev_ = (dlist_element_t *) NULL;
 
-  /* Check the size of the list */
-  if (!list->size_)
+  if (list->size_ == 0x0)
     {
-      /* This is the head of the list */
       list->head_ = element;
       list->tail_ = element;
     }
@@ -74,17 +70,22 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
     {
       int rc;                   /* General error handling variable */
 
-      /* Relinks the list based on whence parameter */
-      rc = relink_list (list, element, whence);
-      if (rc)
+      /* Effectively inserts the new element into the list */
+      if ((rc = relink_list (list, element, whence)) != 0x0)
         {
-          /* Could not insert the new element. Return an error to the
-             caller */
           free (element);
           return rc;
         }
+      if (element->prev_ == NULL)
+        {
+          list->head_ = element;
+        }
+      else if (element->next_ == NULL)
+        {
+          list->tail_ = element;
+        }
     }
-  ++(list->size_);
+  list->size_++;
   return 0x0;
 }
 
@@ -97,60 +98,54 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
 static int
 relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
 {
-  switch (whence)
+  if (whence == POS_CURR || whence == POS_NONE || whence == POS_PREV) 
     {
-    case POS_CURR:  /* Inserts at the current position, if possible */
-    case POS_NONE:
-      if (list->curr_)
-        {
+      /* It was conventioned that all of these positions have the same
+       * behavior */
+      if (list->curr_ != NULL)  
+        {       
           element->next_ = list->curr_;
           element->prev_ = list->curr_->prev_;
-          list->curr_->prev_->next_ = element;
-          list->curr_->prev_ = element;
+          if (list->curr_->prev_ != NULL)
+            {
+              list->curr_->prev_->next_ = element;
+            }
+          list->curr_->prev_ = element;     
         }
       else
         {
           return EGABADC;
         }
-      break;
-    case POS_NEXT:             /* Inserts after the current pointer */
-      assert (list->curr_ != NULL);
-      if (list->curr_)
+    }
+  else if (whence == POS_NEXT) 
+    {
+      if (list->curr_ != NULL)
         {
           element->next_ = list->curr_->next_;
           element->prev_ = list->curr_;
+          if (element->next_ != NULL)
+            {
+              element->next_->prev_ = element;
+            }
           list->curr_->next_ = element;
-          list->tail_ = element;
         }
       else
         {
           return EGABADC;
         }
-      break;
-    case POS_PREV:            /* Inserts before the current pointer */
-      assert (list->curr_ != NULL);
-      if (list->curr_)
-        {
-          element->next_ = list->curr_;
-          element->prev_ = list->curr_->prev_;
-          list->curr_->prev_ = element;
-        }
-      else
-        {
-          return EGABADC;
-        }
-      break;
-    case POS_HEAD:              /* Inserts at the head of the list */
-      element->next_ = list->head_->next_;
+    }
+  else if (whence == POS_HEAD)
+    {
+      element->next_ = list->head_;
       list->head_->prev_ = element;
-      list->head_ = element;
-      break;
-    case POS_TAIL:              /* Inserts at the tail of the list */
+    }
+  else if (whence == POS_TAIL)
+    {
       element->prev_ = list->tail_;
       list->tail_->next_ = element;
-      list->tail_ = element;
-      break;
-    default:			/* Invalid parameter provided */
+    }
+  else 
+    {
       return EGAINVAL;
     }
   return 0x0;
