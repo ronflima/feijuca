@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.h,v 1.19 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: list.h,v 1.20 2005-07-29 10:56:23 ron_lima Exp $
 */
 
 #ifndef LIST_H
@@ -35,9 +35,12 @@
 
 GABEGINDECLS
 /*
- * Macros
+ * Constants
  */
-#define GA_LIST_SIGNATURE (ga_magic_t)0xFADEBAD1
+enum
+{
+  GA_LIST_SIGNATURE=(ga_magic_t)0xFADEBAD1u
+};
 
 /*
  * Datatypes
