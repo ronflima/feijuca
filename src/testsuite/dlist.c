@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist.c,v 1.13 2005-07-04 00:34:21 ron_lima Exp $
+ $Id: dlist.c,v 1.14 2005-07-29 02:35:19 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.13 2005-07-04 00:34:21 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.14 2005-07-29 02:35:19 ron_lima Exp $";
 
 /*
  * Local macros
@@ -49,6 +49,7 @@ static int load_list (dlist_t *, size_t);
 static int check_contents (dlist_t *, size_t);
 static int check_deletion (dlist_t *, size_t);
 static int check_uninitialized (dlist_t *);
+static position_t next_position (position_t);
 
 int
 test_dlist (size_t maxelements)
@@ -57,38 +58,29 @@ test_dlist (size_t maxelements)
   int rc;                       /* Error handling variable */
   int test_status;              /* Test status variable */
 
-  /* Initializations */
   test_status = 0x0;
-  rc = check_uninitialized (&list);
-  if (rc)
+  if ((rc = check_uninitialized (&list)) != 0)
     {
       ERROR (TEST, "check_uninitialized", rc);
       test_status = EFAILED;
     }
-  /* Allocates the list. We are using the free as the deallocator since this
-     test will involve only simple allocated data */
-  rc = dlist_init (&list, free);
-  if (rc)
+  /* We are using the free as the deallocator since this test will
+     involve only simple allocated data */
+  if ((rc = dlist_init (&list, free)) != 0)
     {
       ERROR (TEST, "dlist_alloc", rc);
       test_status = EFAILED;
     }
   else
     {
-      /* Performs the load test */
-      rc = load_list (&list, maxelements);
-      if (!rc)
+      if ((rc = load_list (&list, maxelements)) == 0)
         {
-          /* Performs the navigation test */
-          rc = check_contents (&list, maxelements);
-          if (rc)
+          if ((rc = check_contents (&list, maxelements)) != 0)
             {
               ERROR (TEST, "check_contents", rc);
               test_status = EFAILED;
             }
-          /* Performs the deletion test */
-          rc = check_deletion (&list, maxelements);
-          if (rc)
+          if ((rc = check_deletion (&list, maxelements)) != 0)
             {
               ERROR (TEST, "check_deletion", rc);
               test_status = EFAILED;
@@ -99,11 +91,8 @@ test_dlist (size_t maxelements)
           ERROR (TEST, "dload_list", rc);
           test_status = EFAILED;
         }
-
-      /* Frees the list only if it was already allocated */
-      rc = dlist_destroy (&list);
-      if (rc)
-        {
+      if ((rc = dlist_destroy (&list)) != 0)
+        {   
           ERROR (TEST, "dlist_free", rc);
           test_status = EFAILED;
         }
@@ -119,30 +108,34 @@ static int
 load_list (dlist_t * list, size_t elements)
 {
   register int i;		/* General purpose iterator */
+  position_t position;          /* Position to test */
+  
+  position = POS_NONE;
 
-  /* Loads the list */
+  /* Loads the list */    
   for (i = 0x0; (i < elements); ++i)
     {
       int *item;		/* Item to insert */
       int rc;			/* General purpose error handling variable */
-
-      /* Allocates memory for a single item */
+      
       item = (int *) malloc (sizeof (int));
-      if (!item)
+      if (item == NULL)
         {
           ERROR (TEST, "malloc", ECKFAIL);
           return ENOMEM;
         }
-      /* Builds the item data */
       *item = i + 1;
-
-      /* Inserts the item in the list */
-      rc = dlist_insert (list, item, POS_TAIL);
-      if (rc)
+      if (position == POS_NEXT || position == POS_PREV || position == POS_CURR)
+        {
+          dlist_move (list, POS_HEAD);
+          dlist_move (list, POS_NEXT);
+        }
+      if ((rc = dlist_insert (list, item, position)) != 0x0)
         {
           ERROR (TEST, "dlist_insert", rc);
           return EFAILED;
         }
+       position = next_position (position);      
     }
   return 0x0;
 }
@@ -153,42 +146,54 @@ load_list (dlist_t * list, size_t elements)
 static int
 check_contents (dlist_t * list, size_t elements)
 {
-  int *item;			/* Item to grab from the list */
-  int rc;			/* General error checking variable */
-  register int i;		/* General iterator */
+  int *item;			    /* Item to grab from the list */
+  int rc;			    /* General error checking variable */
+  position_t position = POS_HEAD;
+  unsigned cksum [2]= {0x0u, 0x0u}; /* Checksum for data validation */
+  int c=0x0;
 
-  /* Gets the data from the list, iterating it and checking the contents */
-  rc = dlist_move (list, POS_HEAD);
-  if (rc)
+  while (position != POS_PREV)
     {
-      ERROR (TEST, "dlist_move", rc);
-      return EFAILED;
-    }
-  i = 0x0;
-  while (!rc)
-    {
-      /* Gets the current item of the list and goes to the next */
-      rc = dlist_get (list, (void **) &item, POS_NEXT);
-      if (rc > 0x0)
+      register int i = 0x0;		    /* General iterator */
+
+      /* Gets the data from the list, iterating it and checking the contents */
+      if((rc = dlist_move (list, position)) != 0x0)
         {
-          ERROR (TEST, "dlist_get", rc);
+          ERROR (TEST, "dlist_move", rc);
           return EFAILED;
         }
-      if (rc < 0x0)
+      position = position == POS_HEAD ? POS_NEXT : POS_PREV;
+      while (rc == 0x0)
         {
-          /* EOF */
-          break;
+          /* Gets the current item of the list and goes to the next */
+          rc = dlist_get (list, (void **) &item, position);
+          if (rc > 0x0)
+            {
+              ERROR (TEST, "dlist_get", rc);
+              return EFAILED;
+            }
+          if (rc < 0x0)
+            {
+              /* EOF */
+              break;
+            }
+          cksum[c] |= *item;
+          ++i;
         }
-      if (*item != (i + 1))
+      if (i != elements)
         {
-          ERROR (TEST, "Data mismatch", ECKFAIL);
+          ERROR (TEST, "Number of elements mismatch", ECKFAIL);
           return EFAILED;
         }
-      ++i;
+      ++c;
+      if (position == POS_NEXT)
+        {
+          position = POS_TAIL;
+        }
     }
-  if (i != elements)
+  if (cksum[0] != cksum [1])
     {
-      ERROR (TEST, "Number of elements mismatch", ECKFAIL);
+      ERROR (TEST, "Corrupt data found.", ECKFAIL);
       return EFAILED;
     }
   return 0x0;
@@ -308,4 +313,24 @@ static int check_uninitialized (dlist_t * dlist)
       test_status = EFAILED;      
     }
   return test_status;
+}
+
+/* Increments the position represented by whence */
+static position_t next_position (position_t whence)
+{
+  switch (whence)
+    {
+        case POS_NONE:
+          return POS_HEAD;
+        case POS_HEAD:
+          return POS_TAIL;
+        case POS_TAIL:
+          return POS_NEXT;
+        case POS_NEXT:
+          return POS_CURR;
+        case POS_CURR:
+          return POS_PREV;
+    }
+  /* Cycles the position */
+  return POS_NONE;
 }
