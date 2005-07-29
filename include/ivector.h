@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.16 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: ivector.h,v 1.17 2005-07-29 10:55:12 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -35,9 +35,13 @@
 
 GABEGINDECLS
 /*
- * Macros
+ * Constants
  */
-#define GA_IVECTOR_SIGNATURE (ga_magic_t)0xFADEBAD4
+enum
+{ 
+  GA_IVECTOR_SIGNATURE=(ga_magic_t)0xFADEBAD4u
+};
+
 /*
  * Datatypes
  */
