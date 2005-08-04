@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.18 2005-07-28 00:59:14 ron_lima Exp $
+ $Id: dlist_del.c,v 1.19 2005-08-04 00:53:13 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,22 +32,12 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.18 2005-07-28 00:59:14 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.19 2005-08-04 00:53:13 ron_lima Exp $";
 
 /*
  * Local prototypes
  */
-static void relink_list __P((dlist_t *, dlist_element_t *));
-
-static dlist_element_t *delete_head __P((dlist_t *));
-
-static dlist_element_t *delete_tail __P((dlist_t *));
-
-static dlist_element_t *delete_current __P((dlist_t *));
-
-static dlist_element_t *delete_next __P((dlist_t *));
-
-static dlist_element_t *delete_prev __P((dlist_t *));
+static int relink_list __P((dlist_t *, dlist_element_t *));
 
 /*
  * Exported functions
@@ -57,7 +47,8 @@ dlist_del (dlist_t * list, void **data, position_t whence)
 {
   dlist_element_t *currelem;	/* Current element being processed */
   void *extracted_data;		/* Data extracted from the list */
-
+  int rc;
+  
   assert (list != NULL);
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
 
@@ -67,53 +58,56 @@ dlist_del (dlist_t * list, void **data, position_t whence)
     {
       *data = (void *) NULL;
     }
-  /* Sanity check: Will not delete an element if the list is empty */
-  if (!list->size_)
+  if (0x0 == list->size_)
     {
       return EOF;
     }
-  /* Sanity check: check if the data storage and the deallocator were
-     provided. If not, there is a problem in the list initialization */
-  if (!data && !list->deallocator_)
+  if (NULL == data && NULL == list->deallocator_)
     {
       return EGAINVAL;
     }
-  /* Deletes the correct element based on the whence parameter, relinking the
-     list elements */
-  switch (whence)
+  if (whence == POS_HEAD)
     {
-    case POS_HEAD:			/* Deletes from the head of the list */
-      currelem = delete_head (list);
-      break;
-    case POS_TAIL:			/* Deletes from the tail of the list */
-      currelem = delete_tail (list);
-      break;
-    case POS_CURR:			/* Deletes the current element  */
-    case POS_NONE:
-      currelem = delete_current (list);
-      break;
-    case POS_NEXT:			/* Deletes the next element */
-      currelem = delete_next (list);
-      break;
-    case POS_PREV:			/* Deletes the previous element */
-      currelem = delete_prev (list);
-      break;
-    default:			/* Error: wrong parameter provided */
+      currelem = list->head_;
+    }
+  else if (whence == POS_TAIL)
+    {
+      currelem = list->tail_;
+    }
+  else if (whence == POS_CURR || whence == POS_NONE)
+    {
+      currelem = list->curr_;
+      list->curr_ = NULL;
+    }
+  else if (whence == POS_NEXT)
+    {
+      if (list->curr_ != NULL)
+        {
+          currelem = list->curr_->next_;
+        }
+    }
+  else if (whence == POS_PREV)
+    {
+      if (list->curr_ != NULL)
+        { 
+          currelem = list->curr_->prev_;
+        }
+    }
+  else
+    {
       return EGAINVAL;
     }
-  /* The current element to be deleted was not determined. It means that the
-     function have reached the end of the list or the operation was not
-     possible */
-  if (!currelem)
+  if ((rc = relink_list (list, currelem)) != 0x0)
     {
-      return EOF;
+      return rc;
     }
   /* Free resources and updates the list descriptor */
   extracted_data = currelem->data_;
   free (currelem);
   list->size_--;
+
   /* If data storage is provided, puts the extracted data in there */
-  if (data)
+  if (data != NULL)
     {
       *data = extracted_data;
     }
@@ -129,99 +123,28 @@ dlist_del (dlist_t * list, void **data, position_t whence)
  * Internal functions definitions
  */
 /* Relinks the list popping the element out from the list */
-static void
+static int
 relink_list (dlist_t * list, dlist_element_t * element)
 {
-  /* If the element is not valid, simply return. Nothing to do */
-  if (!element)
+  if (element == NULL)
     {
-      return;
+      return EOF;
     }
-  /* Rebuilds the list links based on the popped element */
-  if (element->prev_)
+  if (element->prev_ != NULL)
     {
       element->prev_->next_ = element->next_;
     }
   else
     {
-      /* Element is the head */
       list->head_ = element->next_;
     }
-  if (element->next_)
+  if (element->next_ != NULL)
     {
       element->next_->prev_ = element->prev_;
     }
   else
     {
-      /* Element is the tail */
       list->tail_ = element->prev_;
     }
-}
-
-/* Deletes the head of the list */
-static dlist_element_t *
-delete_head (dlist_t * list)
-{
-  dlist_element_t *element;	/* Element to be popped out from the list */
-
-  element = list->head_;
-  relink_list (list, element);
-  return element;
-}
-
-/* Deletes the tail of the list */
-static dlist_element_t *
-delete_tail (dlist_t * list)
-{
-  dlist_element_t *element;	/* Element to be popped out from the list */
-  element = list->tail_;
-  relink_list (list, element);
-  return element;
-}
-
-/* Deletes the current element of the list by rebuilding the list
-   links based on the current element */
-static dlist_element_t *
-delete_current (dlist_t * list)
-{
-  dlist_element_t *element;	/* Element deleted from the list */
-  element = list->curr_;
-  relink_list (list, element);
-  list->curr_ = (dlist_element_t *) NULL;
-  return element;
-}
-
-/* Deletes the next element of the list by rebuilding the list links
-   based on current element */
-static dlist_element_t *
-delete_next (dlist_t * list)
-{
-  dlist_element_t *element;	/* Element to be popped from the list */
-  /* curr_ pointer will be dereferenced later. This check avoids coredumps :) */
-  if (!list->curr_)
-    {
-      return (dlist_element_t *) NULL;
-    }
-  /* Pops the element to be deleted */
-  element = list->curr_->next_;
-  /* Relinks the list, deleting the selected element */
-  relink_list (list, element);
-  return element;
-}
-
-/* Deletes the previous element based on the current pointer of the
-   list descriptor */
-static dlist_element_t *
-delete_prev (dlist_t * list)
-{
-  dlist_element_t *element;	/* Element to be popped from the list */
-  /* curr_ pointer will be dereferenced later. This check avoids coredumps :) */
-  if (!list->curr_)
-    {
-      return (dlist_element_t *) NULL;
-    }
-  element = list->curr_->prev_;
-  /* Relinks the list, deleting the selected element */
-  relink_list (list, element);
-  return element;
+  return 0x0;
 }
