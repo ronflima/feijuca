@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.19 2005-08-04 00:53:13 ron_lima Exp $
+ $Id: dlist_del.c,v 1.20 2005-08-05 21:07:25 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.19 2005-08-04 00:53:13 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.20 2005-08-05 21:07:25 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -137,6 +137,10 @@ relink_list (dlist_t * list, dlist_element_t * element)
   else
     {
       list->head_ = element->next_;
+      if (list->head_ != NULL)
+        {
+          list->head_->prev_ = NULL;
+        }
     }
   if (element->next_ != NULL)
     {
@@ -145,6 +149,10 @@ relink_list (dlist_t * list, dlist_element_t * element)
   else
     {
       list->tail_ = element->prev_;
+      if (list->tail_ != NULL)
+        {
+          list->tail_->next_ = NULL;
+        }
     }
   return 0x0;
 }
