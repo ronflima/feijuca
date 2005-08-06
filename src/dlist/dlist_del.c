@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.20 2005-08-05 21:07:25 ron_lima Exp $
+ $Id: dlist_del.c,v 1.21 2005-08-06 15:17:12 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.20 2005-08-05 21:07:25 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.21 2005-08-06 15:17:12 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -45,77 +45,73 @@ static int relink_list __P((dlist_t *, dlist_element_t *));
 int
 dlist_del (dlist_t * list, void **data, position_t whence)
 {
-  dlist_element_t *currelem;	/* Current element being processed */
-  void *extracted_data;		/* Data extracted from the list */
+  dlist_element_t *element;	/* Current element being processed */
   int rc;
   
   assert (list != NULL);
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
 
   /* Initializations */
-  currelem = (dlist_element_t *) NULL;
+  element = (dlist_element_t *) NULL;
   if (data)
     {
       *data = (void *) NULL;
     }
-  if (0x0 == list->size_)
+  if (list->size_ == 0x0)
     {
       return EOF;
     }
-  if (NULL == data && NULL == list->deallocator_)
+  if ((data == NULL) && (list->deallocator_ == NULL))
     {
       return EGAINVAL;
     }
   if (whence == POS_HEAD)
     {
-      currelem = list->head_;
+      element = list->head_;
     }
   else if (whence == POS_TAIL)
     {
-      currelem = list->tail_;
+      element = list->tail_;
     }
-  else if (whence == POS_CURR || whence == POS_NONE)
+  else if ((whence == POS_CURR) || (whence == POS_NONE))
     {
-      currelem = list->curr_;
+      element = list->curr_;
       list->curr_ = NULL;
     }
   else if (whence == POS_NEXT)
     {
       if (list->curr_ != NULL)
         {
-          currelem = list->curr_->next_;
+          element = list->curr_->next_;
         }
     }
   else if (whence == POS_PREV)
     {
       if (list->curr_ != NULL)
         { 
-          currelem = list->curr_->prev_;
+          element = list->curr_->prev_;
         }
     }
   else
     {
       return EGAINVAL;
     }
-  if ((rc = relink_list (list, currelem)) != 0x0)
+  if ((rc = relink_list (list, element)) != 0x0)
     {
       return rc;
     }
-  /* Free resources and updates the list descriptor */
-  extracted_data = currelem->data_;
-  free (currelem);
-  list->size_--;
-
   /* If data storage is provided, puts the extracted data in there */
   if (data != NULL)
     {
-      *data = extracted_data;
+      *data = element->data_;
     }
   else
     {
       /* Data storage was not provided. Deletes the data */
-      list->deallocator_ (extracted_data);
+      list->deallocator_ (element->data_);
     }
+  free (element);
+  list->size_--;
   return 0x0;
 }
 
