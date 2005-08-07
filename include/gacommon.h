@@ -26,7 +26,7 @@
 
    CVS Information
    $Author: ron_lima $
-   $Id: gacommon.h,v 1.23 2005-07-29 10:57:28 ron_lima Exp $
+   $Id: gacommon.h,v 1.24 2005-08-07 12:21:58 ron_lima Exp $
 */
 
 #ifndef GACOMMON_H
@@ -70,8 +70,7 @@ enum
 {
   EGAINVAL = 2500,		/* Invalid argument */
   EGANOMEM = 2501,		/* No memory */
-  EGABADC  = 2502,		/* Bad current position */
-  EGANOVP  = 2503		/* Not a valid position */
+  EGABADC  = 2502		/* Bad current position */
 };
 
 /*
