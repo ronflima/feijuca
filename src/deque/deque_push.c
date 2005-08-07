@@ -24,8 +24,8 @@
  (HEAD or TAIL)
 
  CVS Information
- $Author: daniel_csoares $
- $Id: deque_push.c,v 1.2 2005-07-28 12:57:19 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: deque_push.c,v 1.3 2005-08-07 12:22:35 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,7 +35,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: deque_push.c,v 1.2 2005-07-28 12:57:19 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: deque_push.c,v 1.3 2005-08-07 12:22:35 ron_lima Exp $";
 
 int
 deque_push (deque_t * deque, const void *data, position_t whence)
@@ -43,9 +43,9 @@ deque_push (deque_t * deque, const void *data, position_t whence)
   assert (deque != NULL);
 
   /* Check if giving a valid position (HEAD or TAIL) */
-  if (whence != POS_HEAD && whence != POS_TAIL)
+  if ((whence != POS_HEAD) && (whence != POS_TAIL))
     {
-      return EGANOVP;
+      return EGAINVAL;
     }
 
   /* Calls the dlist insert function */
