@@ -2,7 +2,7 @@
 # Autoconf script for the project
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: configure.ac,v 1.16 2005-08-06 11:01:30 ron_lima Exp $
+# $Id: configure.ac,v 1.17 2005-08-07 12:27:29 ron_lima Exp $
 
 AC_PREREQ(2.57)
 AC_INIT([ga-lib], [1.0.0], [ronaldo@ronaldolima.eti.br])
@@ -67,8 +67,7 @@ AC_CONFIG_FILES([Makefile
                  src/stack/Makefile
                  src/queue/Makefile
                  src/deque/Makefile
-                 doc/Makefile
-                 src/testsuite/Makefile])
+                 doc/Makefile])
 
 # Checks if the test suite exists in the source tree. If yes, create
 # its makefile. Otherwise, just let it go.
