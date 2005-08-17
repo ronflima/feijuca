@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_del.c,v 1.21 2005-08-06 15:17:12 ron_lima Exp $
+ $Id: dlist_del.c,v 1.22 2005-08-17 10:35:37 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.21 2005-08-06 15:17:12 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.22 2005-08-17 10:35:37 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -130,7 +130,13 @@ relink_list (dlist_t * list, dlist_element_t * element)
     {
       element->prev_->next_ = element->next_;
     }
-  else
+  if (element->next_ != NULL)
+    {
+      element->next_->prev_ = element->prev_;
+    }
+  /* Checks if element is the head of the tail. This is needed for
+   * operations on curr_ where it points to the head or tail */
+  if (element == list->head_)
     {
       list->head_ = element->next_;
       if (list->head_ != NULL)
@@ -138,11 +144,7 @@ relink_list (dlist_t * list, dlist_element_t * element)
           list->head_->prev_ = NULL;
         }
     }
-  if (element->next_ != NULL)
-    {
-      element->next_->prev_ = element->prev_;
-    }
-  else
+  if (element == list->tail_)
     {
       list->tail_ = element->prev_;
       if (list->tail_ != NULL)
