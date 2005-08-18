@@ -1,0 +1,175 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: deque.texi,v 1.1 2005-08-18 14:21:10 daniel_csoares Exp $
+@c %**start of header
+@setfilename deque.info
+@settitle    Deque routines
+@c %**end of header
+
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2005 - Daniel Costa Soares - All rights reserved
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title G.A. Library
+@subtitle Deque interfaces
+@author Daniel Costa Soares
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top, algorithm, (dir), (dir)
+@top Deque
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* algorithm :: Algorithm implemented by G.A. Library
+* data types:: Data types
+* functions :: Description of all available functions
+* Licenses  :: Licenses and other information
+@end menu
+
+@c ***** algorithm
+@node algorithm, data types, Top, Top
+@chapter Deque implementation in G.A. Library
+
+The deque algorithm is a data structure in which items may be added 
+to or deleted from the head or the tail. Library uses the double 
+linked lists algorithm as the deque implementation basis.
+
+To add deque algorithms to your program, simply include the deque.h
+header file. All needed declarations and functions are there.
+
+@c ***** data types
+@node data types, functions, algorithm, Top
+@chapter Data types
+
+In order to implement the deques, the following data types are
+defined:
+
+@itemize @bullet
+@item deque_t
+Deque descriptor. Describes the entire deque.
+@end itemize
+
+@c ***** functions
+@node functions, Licenses , data types, Top
+@chapter Functions
+
+@c ***** functions menu
+@menu
+* deque_init    :: Initializes a deque descriptor
+* deque_destroy :: Destroys the deque descriptor
+* deque_pop     :: Gets (head or tail) an item from the deque  
+* deque_push    :: Adds (head or tail) an item into the deque
+@end menu
+
+@c ***** deque_init
+@node deque_init, deque_destroy, functions, functions
+@section int deque_init (deque_t *deque, deallocator_t *dealloc)
+
+Purpose: Initializes a deque descriptor and makes it available for
+usage.
+
+Parameters:
+@itemize @bullet
+@item deque
+Deque descriptor to initialize
+@item dealloc
+Deallocator to use to clean up memory when each element of the deque
+is popped.
+@end itemize
+
+@emph{Hints}:
+@itemize @bullet
+@item
+The deallocator is used effectively only by the deque_destroy and 
+deque_pop routine. Even though, you have to provide it in order 
+to avoid memory leaks when deleting the deque or its items from memory.
+@end itemize
+
+@inforef{dlist_init, Double List initialization routine, dlist.info}, for more
+information.
+
+@c ***** deque_destroy
+@node deque_destroy, deque_pop, deque_init, functions
+@section int deque_destroy (deque_t *deque)
+
+Purpose: Deletes the entire deque from the memory
+
+Parameters:
+@itemize @bullet
+@item deque
+Deque descriptor to destroy
+@end itemize
+
+@inforef{dlist_destroy, Double List destruction routine, dlist.info}, for more
+information.
+
+@c ***** deque_pop
+@node deque_pop, deque_push, deque_destroy, functions
+@section int deque_pop (deque_t *deque, void **data, position_t whence)
+
+Purpose: Gets (pops) an element from the deque giving a valid position (HEAD or TAIL)
+
+Parameters:
+@itemize @bullet
+@item deque
+Deque descriptor
+@item data
+Data popped from the deque
+@item whence
+Side of the deque where data will be poped (HEAD or TAIL)
+@end itemize
+
+@emph{Hints}:
+@itemize @bullet
+@item
+Even though position_t enumeration has other valid values, the deque structure
+only accept the values POS_HEAD and POS_TAIL. All other values will return an
+error EGAINVAL.
+
+@inforef{dlist_del, Double List deletion routine, dlist.info}, for more
+information.
+
+@c ***** deque_push
+@node deque_push, deque_pop, functions
+@section int deque_push (deque_t *deque, const void *data, position_t whence)
+
+Purpose: Adds (pushes) a new element to the deque giving a valid position (HEAD or TAIL)
+
+Parameters:
+@itemize @bullet
+@item deque
+deque descriptor
+@item data
+Data to push into the deque
+@item whence
+Side of the deque where data will be pushed (HEAD or TAIL)
+@end itemize
+
+@emph{Hints}:
+@itemize @bullet
+@item
+Even though position_t enumeration has other valid values, the deque structure
+only accept the values POS_HEAD and POS_TAIL. All other values will return an
+error EGAINVAL.
+
+@inforef{dlist_insert, Double List insertion routine, dlist.info}, for more
+information.
+
+@c ** Includes the licenses 
+@node Licenses, ,functions, Top
+@include licenses.texi
+
+@bye

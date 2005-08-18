@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: galib.texi,v 1.5 2005-07-11 08:37:32 ron_lima Exp $
+@c $Id: galib.texi,v 1.6 2005-08-18 14:20:32 daniel_csoares Exp $
 @c %**start of header
 @setfilename galib.info
 @settitle    Generic Algorithms Library
@@ -44,6 +44,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 * IVector:(ivector). :: Infinite vectors
 * Stack:(stack).     :: Stacks 
 * Queue:(queue).     :: Queues
+* Deque:(deque).     :: Deques
 * Licenses :: Licenses and other information
 @end menu
 
