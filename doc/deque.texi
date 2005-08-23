@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: deque.texi,v 1.1 2005-08-18 14:21:10 daniel_csoares Exp $
+@c $Id: deque.texi,v 1.2 2005-08-23 12:58:53 daniel_csoares Exp $
 @c %**start of header
 @setfilename deque.info
 @settitle    Deque routines
@@ -7,7 +7,7 @@
 
 @copying
 @c ** Copyrght
-Copyright @copyright{} 2005 - Daniel Costa Soares - All rights reserved
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @end copying
 
 @titlepage

@@ -1,6 +1,6 @@
 /* -*-c-*-
- Copyright Daniel Costa Soares (C) 2005 - All rights reserved
- Feel free to contact the author in <daniel_csoares@yahoo.com.br>
+ Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
+ Feel free to contact the author in <ronaldo@ronaldolima.eti.br>
 
  This file is part of G.A. Lib.
 
@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: daniel_csoares $
- $Id: deque_destroy.c,v 1.2 2005-07-28 12:57:19 daniel_csoares Exp $
+ $Id: deque_destroy.c,v 1.3 2005-08-23 12:58:36 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,5 +1,5 @@
 /* -*-c-*-
- Copyright Daniel Costa Soares (C) 2005 - All rights reserved
+ Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
  Feel free to contact the author in <ronaldo@ronaldolima.eti.br>
 
  This file is part of G.A. Lib.
@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: daniel_csoares $
- $Id: deque.c,v 1.2 2005-07-28 12:57:41 daniel_csoares Exp $
+ $Id: deque.c,v 1.3 2005-08-23 13:00:53 daniel_csoares Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "deque.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: deque.c,v 1.2 2005-07-28 12:57:41 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: deque.c,v 1.3 2005-08-23 13:00:53 daniel_csoares Exp $";
 
 /*
  * Local macros

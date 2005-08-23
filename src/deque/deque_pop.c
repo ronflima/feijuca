@@ -1,6 +1,6 @@
 /* -*-c-*-
- Copyright Daniel Costa Soares (C) 2005 - All rights reserved
- Feel free to contact the author in <daniel_csoares@yahoo.com.br>
+ Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
+ Feel free to contact the author in <ronaldo@ronaldolima.eti.br>
 
  This file is part of G.A. Lib.
 
@@ -23,8 +23,8 @@
  Description: Pops an element from the deque giving a valid position (HEAD or TAIL)
 
  CVS Information
- $Author: ron_lima $
- $Id: deque_pop.c,v 1.3 2005-08-07 12:22:27 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: deque_pop.c,v 1.4 2005-08-23 12:58:36 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: deque_pop.c,v 1.3 2005-08-07 12:22:27 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: deque_pop.c,v 1.4 2005-08-23 12:58:36 daniel_csoares Exp $";
 
 int
 deque_pop (deque_t * deque, void **data, position_t whence)
