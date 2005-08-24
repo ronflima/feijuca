@@ -23,8 +23,8 @@
  Description: Inserts a new element in the list
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist_insert.c,v 1.19 2005-08-04 00:56:03 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: dlist_insert.c,v 1.20 2005-08-24 12:30:03 daniel_csoares Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.19 2005-08-04 00:56:03 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.20 2005-08-24 12:30:03 daniel_csoares Exp $";
 
 /*
  * Local prototypes
@@ -76,14 +76,6 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
           free (element);
           return rc;
         }
-      if (element->prev_ == NULL)
-        {
-          list->head_ = element;
-        }
-      else if (element->next_ == NULL)
-        {
-          list->tail_ = element;
-        }
     }
   list->size_++;
   return 0x0;
@@ -106,9 +98,14 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
         {       
           element->next_ = list->curr_;
           element->prev_ = list->curr_->prev_;
-          if (list->curr_->prev_ != NULL)
+          if (list->curr_ != list->head_)
             {
               list->curr_->prev_->next_ = element;
+            }
+          else
+            {
+              /* Change head if curr pointer is the head itself */
+              list->head_ = element;
             }
           list->curr_->prev_ = element;     
         }
@@ -123,9 +120,14 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
         {
           element->next_ = list->curr_->next_;
           element->prev_ = list->curr_;
-          if (element->next_ != NULL)
+          if (list->curr_ != list->tail_)
             {
               element->next_->prev_ = element;
+            }
+          else
+            {
+              /* Change tail if curr pointer is the tail itself */
+              list->tail_ = element;
             }
           list->curr_->next_ = element;
         }
@@ -137,13 +139,14 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
   else if (whence == POS_HEAD)
     {
       element->next_ = list->head_;
+      element->prev_ = list->head_->prev_;
       list->head_->prev_ = element;
       list->head_ = element;
-      
     }
   else if (whence == POS_TAIL)
     {
       element->prev_ = list->tail_;
+      element->next_ = list->tail_->next_;
       list->tail_->next_ = element;
       list->tail_ = element;
     }
