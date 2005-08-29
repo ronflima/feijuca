@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_del.c,v 1.13 2005-07-04 00:31:34 ron_lima Exp $
+ $Id: ivector_del.c,v 1.14 2005-08-29 10:41:31 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,20 +35,21 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_del.c,v 1.13 2005-07-04 00:31:34 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_del.c,v 1.14 2005-08-29 10:41:31 ron_lima Exp $";
 
 int
 ivector_del (ivector_t * vector, size_t idx)
 {
   void *dest;			/* Destination address */
   void *orig;			/* Origin address */
-  void *newplace;		/* New reallocated place for vector->data_ */
-  size_t newsize;		/* New size of the vector in bytes */
 
   assert (vector != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
-  
-  /* Sanity tests */
+
+  if (vector->size_ == 0x0)
+    {
+      return EOF;
+    }
   if (idx > vector->size_)
     {
       return EGAINVAL;
@@ -65,22 +66,15 @@ ivector_del (ivector_t * vector, size_t idx)
       orig_index = (idx + 1) * vector->datalen_;
       dest = (void *) (((char *) vector->data_) + dest_index);
       orig = (void *) (((char *) vector->data_) + orig_index);
-
-      /* Overwrites the element pointed to by idx, moving all other elements
-         one element to the right within the vector */
       block_size = (vector->size_ - idx - 1) * vector->datalen_;
       memcpy (dest, orig, block_size);
     }
-  /* Calculates, in bytes, the new size of the vector */
-  newsize = (vector->size_ - 1) * vector->datalen_;
-  /* Deletes the last element of the vector and resizes it accordingly */
-  newplace = realloc (vector->data_, newsize);
-  /* Updates the vector descriptor accordingly */
-  if (newplace != vector->data_ && newplace)
-    {
-      vector->data_ = newplace;
-    }
   vector->size_--;
-
+  vector->elemused_--;
+  if (vector->elemused_ == 0x0)
+    {
+      vector->elemused_ = vector->chunksize_;
+      vector->chunksused_--;
+    }
   return 0x0;
 }
