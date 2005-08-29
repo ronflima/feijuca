@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $
+ $Id: ivector_add.c,v 1.13 2005-08-29 10:39:19 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.13 2005-08-29 10:39:19 ron_lima Exp $";
 
 int
 ivector_add (ivector_t * vector, const void *data)
@@ -44,18 +44,28 @@ ivector_add (ivector_t * vector, const void *data)
   assert (vector != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
-  v = realloc (vector->data_, vector->datalen_ * (vector->size_ + 1));
-  assert (v != NULL);
-  if (!v)
+  if ((vector->elemused_ == vector->chunksize_) || (vector->size_ == 0x0))
     {
-      return EGANOMEM;
+      /* If this chunk is fully used, allocates a new one */
+      v = realloc (vector->data_, vector->datalen_ 
+                   * (vector->size_  + vector->chunksize_));
+      assert (v != NULL);
+      if (!v)
+        {
+          return EGANOMEM;
+        }
+      vector->elemused_ = 0x1;
+      vector->chunksused_++;
+      vector->data_ = v;
     }
-  vector->data_ = v;
-  /* Moves v to the newly created entry */
-  v = (void *) ((char *) v + vector->size_ * vector->datalen_);
-  /* Copies data into the new element */
-  memcpy (v, data, vector->datalen_);
+  else
+    {
+      v = vector->data_;
+      vector->elemused_++;
+    }
   vector->size_++;
+  v = (void *) ((char *)(v + vector->size_ * vector->datalen_));
+  memcpy (v, data, vector->datalen_);
 
   return 0x0;
 }
