@@ -23,8 +23,8 @@
  Description: Inserts a new element in the list
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dlist_insert.c,v 1.20 2005-08-24 12:30:03 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dlist_insert.c,v 1.21 2005-08-29 09:19:39 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.20 2005-08-24 12:30:03 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.21 2005-08-29 09:19:39 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -57,9 +57,9 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
     {
       return EGANOMEM;
     }
-  element->data_ = (void *) data;
-  element->next_ = (dlist_element_t *) NULL;
-  element->prev_ = (dlist_element_t *) NULL;
+  element->data_ =  data;
+  element->next_ =  NULL;
+  element->prev_ =  NULL;
 
   if (list->size_ == 0x0)
     {
@@ -104,7 +104,6 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
             }
           else
             {
-              /* Change head if curr pointer is the head itself */
               list->head_ = element;
             }
           list->curr_->prev_ = element;     
@@ -126,7 +125,6 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
             }
           else
             {
-              /* Change tail if curr pointer is the tail itself */
               list->tail_ = element;
             }
           list->curr_->next_ = element;
@@ -138,17 +136,17 @@ relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
     }
   else if (whence == POS_HEAD)
     {
-      element->next_ = list->head_;
-      element->prev_ = list->head_->prev_;
+      element->next_     = list->head_;
+      element->prev_     = list->head_->prev_;
       list->head_->prev_ = element;
-      list->head_ = element;
+      list->head_        = element;
     }
   else if (whence == POS_TAIL)
     {
-      element->prev_ = list->tail_;
-      element->next_ = list->tail_->next_;
+      element->prev_     = list->tail_;
+      element->next_     = list->tail_->next_;
       list->tail_->next_ = element;
-      list->tail_ = element;
+      list->tail_        = element;
     }
   else 
     {
