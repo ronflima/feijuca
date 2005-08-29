@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_put.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $
+ $Id: ivector_put.c,v 1.13 2005-08-29 10:42:37 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.13 2005-08-29 10:42:37 ron_lima Exp $";
 
 int
 ivector_put (ivector_t * vector, size_t idx, const void *data)
@@ -45,14 +45,11 @@ ivector_put (ivector_t * vector, size_t idx, const void *data)
   assert (data != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
-  /* Sanity tests */
-  if (idx >= vector->size_ || !data)
+  if ((idx >= vector->size_) || (data == NULL))
     {
       return EGAINVAL;
     }
-  /* Calculates the place where we want to overwrite data */
   i = (void *) ((char *) vector->data_ + idx * vector->datalen_);
-  /* Overwrite data */
   memcpy (i, data, vector->datalen_);
 
   return 0x0;

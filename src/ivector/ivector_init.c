@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_init.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $
+ $Id: ivector_init.c,v 1.3 2005-08-29 10:42:37 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,30 +33,29 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_init.c,v 1.2 2005-06-15 11:03:17 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_init.c,v 1.3 2005-08-29 10:42:37 ron_lima Exp $";
 
 int
 ivector_init (ivector_t * vector, compare_t * comp, deallocator_t * dealloc,
               size_t datalen)
 {
-  /* Assertives for debugging purposes */
   assert (vector != NULL);
   assert (comp != NULL);
   assert (datalen != 0);
 
-  /* Sanity tests */
   if (!datalen)
     {
       return EGAINVAL;
     }
-
-  /* Initializes each vector descriptor field */
-  vector->size_ = 0x0;
-  vector->datalen_ = datalen;
-  vector->comp_ = comp;
-  vector->dealloc_ = dealloc;
-  vector->data_ = (void *) NULL;
-  vector->signature_ = GA_IVECTOR_SIGNATURE;
+  vector->size_       = 0x0;
+  vector->datalen_    = datalen;
+  vector->chunksize_  = IVECTOR_CHUNKSIZE;
+  vector->elemused_   = 0x0;
+  vector->chunksused_ = 0x0;
+  vector->comp_       = comp;
+  vector->dealloc_    = dealloc;
+  vector->data_       = (void *) NULL;
+  vector->signature_  = GA_IVECTOR_SIGNATURE;
 
   return 0x0;
 }

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_destroy.c,v 1.3 2005-07-04 00:31:34 ron_lima Exp $
+ $Id: ivector_destroy.c,v 1.4 2005-08-29 10:42:14 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_destroy.c,v 1.3 2005-07-04 00:31:34 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_destroy.c,v 1.4 2005-08-29 10:42:14 ron_lima Exp $";
 
 int
 ivector_destroy (ivector_t * vector)
@@ -40,12 +40,10 @@ ivector_destroy (ivector_t * vector)
   assert (vector != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
-  /* Checks if the deallocator is a valid one */
-  if (vector->dealloc_)
+  if (vector->dealloc_ != NULL)
     {
       void *item;		/* Item of the vector list */
 
-      /* Deallocates each vector element */
       item = vector->data_;
 
       while ((char *) item - (char *) vector->data_ < vector->size_)
@@ -54,8 +52,6 @@ ivector_destroy (ivector_t * vector)
           item = (void *) ((char *) item + vector->datalen_);
         }
     }
-  
-  /* Just frees whatever was allocated */
   free (vector->data_);
   vector->signature_ = (ga_magic_t) 0x0;
   

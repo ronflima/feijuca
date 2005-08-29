@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_qsort.c,v 1.10 2005-07-04 00:31:34 ron_lima Exp $
+ $Id: ivector_qsort.c,v 1.11 2005-08-29 10:42:37 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_qsort.c,v 1.10 2005-07-04 00:31:34 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_qsort.c,v 1.11 2005-08-29 10:42:37 ron_lima Exp $";
 
 int
 ivector_qsort (ivector_t * vector)
@@ -41,15 +41,16 @@ ivector_qsort (ivector_t * vector)
   assert (vector != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
-  /* Checks if the compare function was set */
-  if (!vector->comp_)
+  if (vector->comp_ == NULL)
     {
       return EGAINVAL;
     }
   
   /* Do not try to sort a vector with only one element. It coredumps! */
   if (vector->size_ > 1)
-    qsort (vector->data_, vector->size_, vector->datalen_, vector->comp_);
+    {
+      qsort (vector->data_, vector->size_, vector->datalen_, vector->comp_);
+    }
 
   return 0x0;
 }
