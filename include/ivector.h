@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.17 2005-07-29 10:55:12 ron_lima Exp $
+ $Id: ivector.h,v 1.18 2005-08-29 10:36:42 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -39,7 +39,8 @@ GABEGINDECLS
  */
 enum
 { 
-  GA_IVECTOR_SIGNATURE=(ga_magic_t)0xFADEBAD4u
+  GA_IVECTOR_SIGNATURE = (ga_magic_t) 0xFADEBAD4u, /* Signature */
+  IVECTOR_CHUNKSIZE    = (size_t) 10 /* Default chunk size = 10 elements */
 };
 
 /*
@@ -51,6 +52,9 @@ typedef struct ivector_t
   void *data_;			/* Vector data */
   size_t size_;			/* Vector size */
   size_t datalen_;		/* Size of each vector element */
+  size_t chunksize_;            /* Size of memory chunk to allocate */
+  size_t chunksused_;           /* Chunks used */
+  size_t elemused_;             /* Elements used in chunk */
   compare_t *comp_;		/* Comparison function */
   deallocator_t *dealloc_;	/* Deallocation function */
   ga_magic_t signature_;        /* Signature of the descriptor */
