@@ -23,8 +23,8 @@
  Description: Header file with definitions needed by the test suite
 
  CVS Information
- $Author: daniel_csoares $
- $Id: gatests.h,v 1.10 2005-07-28 12:21:11 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: gatests.h,v 1.11 2005-08-29 10:44:50 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -44,24 +44,36 @@ GABEGINDECLS
 #define MAX_ELEMENTS 10000U	/* Maximum number of elements  */
 
 /* Errors */
-#define EFAILED      50001u	/* Test failed */
-#define ENOTIMP      50002u	/* Test not implemented yet :"> */
-#define ECKFAIL      50003u	/* Check failed  */
+enum 
+{
+  EFAILED= 50001u,	/* Test failed */
+  ENOTIMP= 50002u,	/* Test not implemented yet :"> */
+  ECKFAIL= 50003u	/* Check failed  */
+};
+
 
 /* Error reporting and handling */
-#define ERROR(test, function, status) printf ("\t[%-7s] error %d - %s "\
-"@ %s:%d\n", test, status, function, __FILE__, __LINE__);
+#define ERROR(test, function, status) fprintf (stderr, "\t[%-7s] error %d " \
+"- %s @ %s:%d\n", test, status, function, __FILE__, __LINE__);
+
 /*
  * Datatypes
  */
 /* Test procedures data types */
-typedef int (test_proc_t) (size_t); /* Test procedure entry */
+typedef int (test_proc_t) (size_t);             /* Test procedure */
+typedef int (test_scenario_t) (void *, size_t); /* Test scenario  */
 
 typedef struct
 {
   char *test_name;
   test_proc_t *test_routine;
 } test_t;                       /* Test procedure descriptor */
+
+typedef struct
+{
+  char *name;
+  test_scenario_t *routine;
+} scenario_t;                   /* Test scenario to execute */
 
 /* Command line parsing support structures */
 typedef struct
