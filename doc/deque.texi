@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: deque.texi,v 1.2 2005-08-23 12:58:53 daniel_csoares Exp $
+@c $Id: deque.texi,v 1.3 2005-08-29 10:35:23 ron_lima Exp $
 @c %**start of header
 @setfilename deque.info
 @settitle    Deque routines
@@ -138,12 +138,13 @@ Side of the deque where data will be poped (HEAD or TAIL)
 Even though position_t enumeration has other valid values, the deque structure
 only accept the values POS_HEAD and POS_TAIL. All other values will return an
 error EGAINVAL.
+@end itemize
 
 @inforef{dlist_del, Double List deletion routine, dlist.info}, for more
 information.
 
 @c ***** deque_push
-@node deque_push, deque_pop, functions
+@node deque_push,  , deque_pop, functions
 @section int deque_push (deque_t *deque, const void *data, position_t whence)
 
 Purpose: Adds (pushes) a new element to the deque giving a valid position (HEAD or TAIL)
@@ -164,12 +165,13 @@ Side of the deque where data will be pushed (HEAD or TAIL)
 Even though position_t enumeration has other valid values, the deque structure
 only accept the values POS_HEAD and POS_TAIL. All other values will return an
 error EGAINVAL.
+@end itemize
 
 @inforef{dlist_insert, Double List insertion routine, dlist.info}, for more
 information.
 
 @c ** Includes the licenses 
-@node Licenses, ,functions, Top
+@node Licenses, , functions, Top
 @include licenses.texi
 
 @bye
