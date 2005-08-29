@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: dlist_insert.c,v 1.21 2005-08-29 09:19:39 ron_lima Exp $
+ $Id: dlist_insert.c,v 1.22 2005-08-29 10:37:35 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.21 2005-08-29 09:19:39 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.22 2005-08-29 10:37:35 ron_lima Exp $";
 
 /*
  * Local prototypes
@@ -57,7 +57,7 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
     {
       return EGANOMEM;
     }
-  element->data_ =  data;
+  element->data_ =  (void *)data;
   element->next_ =  NULL;
   element->prev_ =  NULL;
 
