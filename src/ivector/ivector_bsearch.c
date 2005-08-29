@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $
+ $Id: ivector_bsearch.c,v 1.13 2005-08-29 10:40:07 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_bsearch.c,v 1.12 2005-07-04 00:31:34 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_bsearch.c,v 1.13 2005-08-29 10:40:07 ron_lima Exp $";
 
 int
 ivector_bsearch (ivector_t * vector, void **found, const void *data)
@@ -43,15 +43,12 @@ ivector_bsearch (ivector_t * vector, void **found, const void *data)
   assert (data != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
-  /* Initializations */
   *found = (void *) NULL;
 
-  /* Sanity tests */
   if ((!vector->comp_) || (!data))
     {
       return EGAINVAL;
     }
-  /* Searchs only if the vector has something */
   if (vector->size_)
     {
       *found = bsearch (data, vector->data_, vector->size_,
