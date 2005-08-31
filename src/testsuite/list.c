@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.16 2005-07-04 00:34:21 ron_lima Exp $
+ $Id: list.c,v 1.17 2005-08-31 00:56:24 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.16 2005-07-04 00:34:21 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.17 2005-08-31 00:56:24 ron_lima Exp $";
 
 /*
  * Local macros
@@ -43,159 +43,126 @@ static char const rcsid [] = "@(#) $Id: list.c,v 1.16 2005-07-04 00:34:21 ron_li
 #define TEST "LIST"
 
 /*
+ * Local constants
+ */
+enum 
+{
+  PATTERN = 0xDEADBEEFu
+};
+
+/*
  * Local prototypes
  */
-static int load_list (list_t *, size_t);
-static int check_contents (list_t *, size_t);
-static int check_deletion (list_t *, size_t);
-static int check_reversal (list_t *);
-static int check_uninitialization (list_t *);
+static int load_list (list_t *, size_t, unsigned char);
+static int check_contents (size_t);
+static int check_deletion (size_t);
+static int check_reversal (size_t);
+static int check_uninitialization (size_t);
 
 int
 test_list (size_t maxelements)
 {
-  list_t list;                  /* List descriptor */
-  int rc;                       /* Error handling variable */
-  int test_status;              /* Test status control variable  */
+  int rc = 0x0;
+  register int i;
+  scenario_t scenarios [] = {
+    {"Check uninitialized descriptor", check_uninitialization},
+    {"Contents checking", check_contents},
+    {"Deletion checking", check_deletion},
+    {"Reversal checking", check_reversal}
+  };
 
-  /* Initializations */
-  test_status = 0x0;
-
-  /* Checks the list uninitialized */
-  rc = check_uninitialization (&list);
-  if (rc)
+  for (i=0; i < (sizeof (scenarios)/sizeof (scenario_t)); ++i) 
     {
-      ERROR (TEST, "check_uninitialization", rc);
-      return EFAILED;
-    }
-  /* Allocates the list. We are using the free as the deallocator since this
-     test will involve only simple allocated data */
-  rc = list_init (&list, free);
-  if (rc)
-    {
-      ERROR (TEST, "list_init", rc);
-      return EFAILED;
-    }
-  /* Performs the load test */
-  rc = load_list (&list, maxelements);
-  if (!rc)
-    {
-      /* Performs the navigation test */
-      rc = check_contents (&list, maxelements);
-      if (rc)
+      rc = scenarios[i].routine (maxelements);
+      if (rc != 0x0)
         {
-          ERROR (TEST, "check_contents", rc);
-          test_status = EFAILED;
-        }
-      /* Performs the reversal of the list */
-      rc = check_reversal (&list);
-      if (rc)
-        {
-          ERROR (TEST, "check_reversal", rc);
-          test_status = EFAILED;
-        }
-      /* Performs the deletion test */
-      rc = check_deletion (&list, maxelements);
-      if (rc)
-        {
-          ERROR (TEST, "check_deletion", rc);
-          test_status = EFAILED;
+          ERROR (TEST, scenarios[i].name, rc);
+          break;
         }
     }
-  else
-    {
-      ERROR (TEST, "load_list", rc);
-      test_status = EFAILED;
-    }
-  /* Frees the list only if it was already allocated */
-  rc = list_destroy (&list);
-  if (rc)
-    {
-      ERROR (TEST, "list_free", rc);
-      test_status = EFAILED;
-    }
-
-  return test_status;
+  return rc;
 }
 
 /*
- * Loads data into the list
+ * Utility function: loads data into the list
  */
 static int
-load_list (list_t * list, size_t elements)
+load_list (list_t * list, size_t elements, unsigned char use_pattern)
 {
   register int i;		/* General purpose iterator */
-  int test_status;		/* Test status variable  */
-  int rc;			/* General purpose error handling variable */
 
-  /* Initializations */
-  test_status = 0x0;
-
-  /* Loads the list */
-  for (i = 0x0; (i < elements); ++i)
+  for (i = 0x0; i < elements; ++i)
     {
-      int *item;		/* Item to insert */
+      unsigned int *item;       /* Item to insert */
+      int rc;
 
-      /* Allocates memory for a single item */
-      item = (int *) malloc (sizeof (int));
-      if (!item)
+      item = (int *) malloc (sizeof (unsigned int));
+      if (item == NULL)
         {
           ERROR (TEST, "malloc", ECKFAIL);
-          test_status = ENOMEM;
-          break;
+          return ENOMEM;
         }
-      /* Builds the item data */
-      *item = i + 1;
-      /* Inserts the item into the list */
-      rc = list_insert (list, item, POS_TAIL);
-      if (rc)
+      if (use_pattern == '\x1')
+        {
+          *item = PATTERN;
+        }
+      else 
+        {
+          *item = i + 1;
+        }
+      if ((rc = list_insert (list, item, POS_TAIL)) != 0x0)
         {
           ERROR (TEST, "list_insert", rc);
-          test_status = EFAILED;
-          break;
+          return EFAILED;
         }
     }
 
-  return test_status;
+  return 0x0;
 }
 
 /*
- * Check list contents
+ * Test scenario: Check list contents for consistency
  */
 static int
-check_contents (list_t * list, size_t elements)
+check_contents (size_t elements)
 {
   int *item;			/* Item to grab from the list */
   int rc;			/* General error checking variable */
   int test_status;		/* Test status */
   register int i;		/* General iterator */
+  list_t list;
 
-  /* Initializations */
   test_status = 0x0;
   i = 0x0;
 
-  /* Gets the data from the list, iterating it and checking the contents */
-  rc = list_move (list, POS_HEAD);
-  if (rc)
+  if ((rc = list_init (&list, free)) != 0x0)
+    {
+      ERROR (TEST, "list_init", rc);
+      return rc;
+    }
+  if ((rc = load_list (&list, elements, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_list", rc);
+      test_status = EFAILED;
+    }
+  else if ((rc = list_move (&list, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "list_move", rc);
       test_status = EFAILED;
     }
-  while (!rc)
+  while (test_status == 0x0)
     {
-      /* Gets the current item of the list and goes to the next */
-      rc = list_get (list, (void **) &item, POS_NEXT);
+      if ((rc = list_get (&list, (void **) &item, POS_NEXT)) == EOF)
+        {
+          break;
+        }
       if (rc > 0x0)
         {
           ERROR (TEST, "list_get", rc);
           test_status = EFAILED;
-        }
-      if (rc == EOF)
-        {
-          /* EOF */
           break;
         }
-      if (*item != (i + 1))
+      if (*item != PATTERN)
         {
           ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
           test_status = EFAILED;
@@ -203,115 +170,144 @@ check_contents (list_t * list, size_t elements)
         }
       ++i;
     }
-  if (i != elements)
+  if ((i != elements) && test_status == 0x0)
     {
       ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
+      test_status = EFAILED;
+    }
+  if ((rc = list_destroy (&list)) != 0x0)
+    {
+      ERROR (TEST, "list_destroy", ECKFAIL);
       test_status = EFAILED;
     }
   return test_status;
 }
 
 /*
- * Checks the deletion of items of the list in different positions
+ * Test scenario: Checks the deletion of items of the list in
+ * different positions
  */
 static int
-check_deletion (list_t * list, size_t elements)
+check_deletion (size_t elements)
 {
-  int deleted;			/* Number of elements deleted */
+  int deleted = 0x0;            /* Number of elements deleted */
   int *item;			/* Item deleted from the list */
   int rc;			/* General purpose error handling variable */
-  register int i;		/* A simple iterator */
+  int test_status = 0x0;        /* Test status */
+  register int i = 0x0;		/* A simple iterator */
+  list_t list;
 
-  /* Initializations */
-  deleted = 0x0;
-  i = 0x0;
-
-  /* Deletes the head of the list */
-  rc = list_move (list, POS_HEAD);
-  if (rc)
+  if ((rc = list_init (&list, free)) != 0x0)
+    {
+      ERROR (TEST, "list_init", rc);
+      test_status = EFAILED;
+    }
+  else if ((rc = load_list (&list, elements, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_list", rc);
+      test_status = EFAILED;
+    }
+  else if ((rc = list_move (&list, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "list_move", rc);
-      return EFAILED;
+      test_status = EFAILED;
     }
-  rc = list_del (list, (void **) &item);
-  if (rc)
+  else if ((rc = list_del (&list, (void **) &item)) != 0x0)
     {
       ERROR (TEST, "list_del", rc);
-      return EFAILED;
+      test_status = EFAILED;
     }
-  free (item);
-  ++deleted;
-  /* Moves to somewhere in the middle of the list */
-  for (i = 0; i < elements / 2; ++i)
+  else
     {
-      rc = list_move (list, POS_NEXT);
-      if (rc)
+      free (item);
+      ++deleted;
+    }
+  for (i = 0; (i < (elements / 2)) && (test_status == 0x0); ++i)
+    {
+      if ((rc = list_move (&list, POS_NEXT)) != 0x0)
         {
           ERROR (TEST, "list_move", rc);
-          return EFAILED;
+          test_status = EFAILED;
         }
     }
-  /* Deletes an item at somewhere in the middle of the list */
-  rc = list_del (list, (void **) &item);
-  if (rc)
+  if ((rc = list_del (&list, (void **) &item)) != 0x0)
     {
       ERROR (TEST, "list_del", rc);
       return EFAILED;
     }
-  free (item);
-  ++deleted;
-  /* Deletes the tail of the list */
-  rc = list_move (list, POS_TAIL);
-  if (rc)
+  else
     {
-      ERROR (TEST, "list_move", rc);
-      return EFAILED;
+      free (item);
+      ++deleted;
+      if ((rc = list_move (&list, POS_TAIL)) != 0x0)
+        {
+          ERROR (TEST, "list_move", rc);
+          test_status = EFAILED;
+        }
+      else if ((rc = list_del (&list, (void **) NULL)) == 0x0)
+        {
+          /* The tail was deleted. This is a serious bug, since it is not possible
+             to delete the tail of a single linked list */
+          ERROR (TEST, "list_del - tail deletion", rc);
+          test_status = EFAILED;
+        }
+      else if ((elements - deleted) != descriptor_size (&list))
+        {
+          ERROR (TEST, "Number of elements mismatch", ECKFAIL);
+          test_status = EFAILED;
+        }
     }
-
-  /* Try to get the tail out */
-  rc = list_del (list, (void **) NULL);
-  if (!rc)
+  if ((rc = list_destroy (&list)) != 0x0)
     {
-      /* The tail was deleted. This is a serious bug, since it is not possible
-         to delete the tail of a single linked list */
-      ERROR (TEST, "list_del - tail deletion", rc);
-      return EFAILED;
+      ERROR (TEST, "list_destroy", ECKFAIL);
+      test_status = EFAILED;
     }
-  /* Check for inconsistencies */
-  if (elements - deleted != descriptor_size (list))
-    {
-      ERROR (TEST, "Number of elements mismatch", ECKFAIL);
-      return EFAILED;
-    }
-
   return 0x0;
 }
 
+/*
+ * Test scenario: Checks the reversal of the list
+ */
 static int
-check_reversal (list_t * list)
+check_reversal (size_t elements)
 {
   int rc;                       /* General return code */
-  int bigger;                   /* Bigger item */
-  size_t curr_item;             /* Current item counter */
+  int bigger = 0x0;             /* Bigger item */
+  size_t curr_item = 0x0u;      /* Current item counter */
+  list_t list;                 
+  int test_status = 0x0;
 
-  /* Initializations */
-  rc = 0x0;
-  bigger = 0x0;
-  curr_item = 0x0u;
-
-  /* Reverses the list  */
-  if (list_reverse (list))
+  if ((rc = list_init (&list, free)) != 0x0)
     {
-      ERROR (TEST, "Error reversing the list", ECKFAIL);
-      return EFAILED;
+      ERROR (TEST, "list_init", rc);
+      return rc;
     }
-  /* Navigates the list to check the contents */
-  list_move (list, POS_HEAD);
-  while (! rc)
+  if ((rc = load_list (&list, elements, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_list", rc);
+      test_status = EFAILED;
+    }
+  else if ((rc = list_reverse (&list)) != 0x0)
+    {
+      ERROR (TEST, "Error reversing the list", rc);
+      test_status = EFAILED;
+    }
+  else 
+    {
+      if ((rc = list_move (&list, POS_HEAD)) != 0x0)
+        {
+          ERROR (TEST, "list_move", rc);
+          test_status = EFAILED;
+        }
+    }
+  while (test_status == 0x0)
     {
       int * data;
-      rc = list_get (list, (void **) &data, POS_NEXT);
-      if (rc == 0)
+      if ((rc = list_get (&list, (void **) &data, POS_NEXT)) == EOF)
+        {
+          break;
+        }
+      else if (rc == 0)
         {
           if (bigger < *data)
             if (! curr_item)
@@ -326,49 +322,58 @@ check_reversal (list_t * list)
               }
           ++curr_item;
         }
+      else
+        {
+          ERROR (TEST, "list_get", rc);
+          test_status = EFAILED;
+        }
     }
-  return 0x0;
+  if ((rc = list_destroy (&list)) != 0x0)
+    {
+      ERROR (TEST, "list_destroy", ECKFAIL);
+      test_status = EFAILED;
+    }
+  return test_status;
 }
 
+/*
+ * Test scenario: Checks the signature checking 
+ */
 static int 
-check_uninitialization (list_t * list)
+check_uninitialization (size_t elements)
 {
   int rc;
   void * buf = NULL;
   int test_status = 0x0;
+  list_t list;
+  elements;
 
-  rc = list_insert (list, &buf, POS_HEAD);
-  if (rc != EGAINVAL) 
+  if ((rc = list_insert (&list, &buf, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "list_insert", rc);
       test_status = EFAILED;
     }
-  rc = list_get (list, &buf, POS_HEAD);
-  if (rc != EGAINVAL) 
+  else if (( rc = list_get (&list, &buf, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "list_get", rc);
       test_status = EFAILED;
     }
-  rc = list_move (list, POS_HEAD);
-  if (rc != EGAINVAL) 
+  else if ((rc = list_move (&list, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "list_move", rc);
       test_status = EFAILED;
     }
-  rc = list_del (list, &buf);
-  if (rc != EGAINVAL) 
+  else if ((rc = list_del (&list, &buf)) != EGAINVAL)
     {
       ERROR (TEST, "list_del", rc);
       test_status = EFAILED;
     }
-  rc = list_reverse (list);
-  if (rc != EGAINVAL) 
+  else if ((rc = list_reverse (&list)) != EGAINVAL)
     {
       ERROR (TEST, "list_reverse", rc);
       test_status = EFAILED;
     }
-  rc = list_destroy (list);
-  if (rc != EGAINVAL) 
+  else if ((rc = list_destroy (&list)) != EGAINVAL)
     {
       ERROR (TEST, "list_destroy", rc);
       test_status = EFAILED;
