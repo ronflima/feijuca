@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.11 2005-08-29 10:44:50 ron_lima Exp $
+ $Id: gatests.h,v 1.12 2005-08-31 00:55:47 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -60,8 +60,8 @@ enum
  * Datatypes
  */
 /* Test procedures data types */
-typedef int (test_proc_t) (size_t);             /* Test procedure */
-typedef int (test_scenario_t) (void *, size_t); /* Test scenario  */
+typedef int (test_proc_t) (size_t); /* Test procedure */
+typedef int (test_scenario_t) (size_t); /* Test scenario  */
 
 typedef struct
 {
