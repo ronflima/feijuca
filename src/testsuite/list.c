@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.19 2005-09-01 10:47:56 ron_lima Exp $
+ $Id: list.c,v 1.20 2005-09-01 10:52:01 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.19 2005-09-01 10:47:56 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.20 2005-09-01 10:52:01 ron_lima Exp $";
 
 /*
  * Local macros
@@ -71,7 +71,7 @@ test_list (size_t maxelements)
     {"Reversal checking", check_reversal}
   };
 
-  return execute_scenarios (TEST, maxelements, scenarios);
+  return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
 }
 
 /*

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: gatests.h,v 1.13 2005-09-01 10:47:31 ron_lima Exp $
+ $Id: gatests.h,v 1.14 2005-09-01 10:52:01 ron_lima Exp $
 */
 
 #ifndef GATESTS_H
@@ -97,7 +97,7 @@ int (test_clist) (size_t);
 int (test_queue) (size_t);
 int (test_ivector) (size_t);
 int (test_deque) (size_t);
-int (execute_scenarios) (const char *, size_t, scenario_t []);
+int (execute_scenarios) (const char *, size_t, scenario_t [], size_t);
 
 GAENDDECLS
 

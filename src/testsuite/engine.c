@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: engine.c,v 1.1 2005-09-01 10:47:10 ron_lima Exp $
+ $Id: engine.c,v 1.2 2005-09-01 10:52:01 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,16 +35,16 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: engine.c,v 1.1 2005-09-01 10:47:10 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: engine.c,v 1.2 2005-09-01 10:52:01 ron_lima Exp $";
 
 int
 execute_scenarios (const char * test_name, size_t maxelements, 
-                   scenario_t scenarios [])
+                   scenario_t scenarios [], size_t size)
 {
   int rc = 0x0;
   register int i;
 
-  for (i=0; i < (sizeof (scenarios)/sizeof (scenario_t)); ++i) 
+  for (i=0; i < (size/sizeof (scenario_t)); ++i) 
     {
       rc = scenarios[i].routine (maxelements);
       if (rc != 0x0)
