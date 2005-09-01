@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: list.c,v 1.17 2005-08-31 00:56:24 ron_lima Exp $
+ $Id: list.c,v 1.18 2005-09-01 02:07:10 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.17 2005-08-31 00:56:24 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.18 2005-09-01 02:07:10 ron_lima Exp $";
 
 /*
  * Local macros
@@ -246,8 +246,9 @@ check_deletion (size_t elements)
         }
       else if ((rc = list_del (&list, (void **) NULL)) == 0x0)
         {
-          /* The tail was deleted. This is a serious bug, since it is not possible
-             to delete the tail of a single linked list */
+          /* The tail was deleted. This is a serious bug, since it is
+             not possible to delete the tail of a single linked
+             list */
           ERROR (TEST, "list_del - tail deletion", rc);
           test_status = EFAILED;
         }
