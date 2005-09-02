@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: stack.c,v 1.10 2005-09-02 10:36:42 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "stack.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack.c,v 1.9 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack.c,v 1.10 2005-09-02 10:36:42 ron_lima Exp $";
 
 /*
  * Local macros
@@ -44,8 +44,8 @@ static char const rcsid [] = "@(#) $Id: stack.c,v 1.9 2005-02-19 16:47:32 ron_li
 /*
  * Local prototypes
  */
-static int test_stack_push (stack_t *, size_t);
-static int test_stack_pop (stack_t *, size_t);
+static int test_stack_push (size_t);
+static int test_stack_pop (size_t);
 
 /*
  * Exported function definitions
@@ -53,130 +53,128 @@ static int test_stack_pop (stack_t *, size_t);
 int
 test_stack (size_t maxelements)
 {
-  stack_t stack;                /* Descriptor for stacks */
-  int rc;                       /* General return code for errors */
-  int test_status;              /* Status of the test */
+  int rc;
+  scenario_t scenarios [] = {
+    {"Stack push test", test_stack_push},
+    {"Stack pop test" , test_stack_pop }
+  };
 
-  /* Initializations */
-  test_status = 0x0;
+  return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
 
-  /* Allocates memory for the stack - use the free function as deallocator */
-  rc = stack_init (&stack, free);
-  if (rc)
-    {
-      ERROR (TEST, "stack_alloc", rc);
-      return EFAILED;
-    }
-
-  /* Test the stack normal operations */
-  /* Push stuff to the stack */
-  rc = test_stack_push (&stack, maxelements);
-  if (!rc)
-    {
-      /* Pop stuff from the stack */
-      rc = test_stack_pop (&stack, maxelements);
-      if (rc)
-        {
-          /* Pop test has failed */
-          ERROR (TEST, "Stack POP operation", rc);
-          test_status = EFAILED;
-        }
-    }
-  else
-    {
-      /* The push into the stack has failed */
-      ERROR (TEST, "Stack push operation", rc);
-      test_status = EFAILED;
-    }
-
-  /* Frees the entire stack */
-  rc = stack_destroy (&stack);
-  if (rc)
-    {
-      ERROR (TEST, "stack_free", rc);
-      test_status = EFAILED;
-    }
-
-  return test_status;
 }
 
 /*
  * Local function definitions
  */
 
-/* Loads data into the stack */
+/*
+ * Utility function: Loads data into the stack
+ */
 static int
-test_stack_push (stack_t * stack, size_t nitems)
+load_stack (stack_t * stack, size_t nelements)
 {
-  register int i;		/* General iterator */
-
-  /* Pushes stuff to the stack */
-  for (i = 0; i < nitems; ++i)
+  register size_t i;
+  for (i=0x0; i<nelements; ++i)
     {
-      int *data;		/* Data to push into the stack */
-      int rc;			/* General error handling variable */
+      int *data;
+      int rc;
 
       data = (int *) malloc (sizeof (int));
-
-      if (data)
+      if (data == NULL)
         {
-          /* Puts some value inside the data pointer */
-          *data = i;
-
-          /* Pushes the data into the stack */
-          rc = stack_push (stack, data);
-          if (rc)
-            {
-              ERROR (TEST, "stack_push", rc);
-              return rc;
-            }
+          ERROR (TEST, "Available memory exhausted", ECKFAIL);
+          return ECKFAIL;
+        }
+      *data = i;
+      if ((rc = stack_push (stack, (const void *) data)) != 0x0)
+        {
+          ERROR (TEST, "stack_push", rc);
+          return ECKFAIL;
         }
     }
-
   return 0x0;
 }
 
-/* Pops data from the stack */
+/* 
+ * Scenario 1: Loads data into the stack 
+ */
 static int
-test_stack_pop (stack_t * stack, size_t nitems)
+test_stack_push (size_t nitems)
 {
-  register int i;		/* General iterator */
-  unsigned char loop;		/* Loop control variable */
+  register int i; 
+  stack_t stack;
+  int rc;
+  int test_status;
 
-  /* Initializations */
-  i = 0x0;
-  loop = '\x1';
+  test_status = 0x0;
 
-  /* Gets all the pushed data from the stack */
-  while (loop)
+  if ((rc = stack_init (&stack, free))!= 0x0)
     {
-      int *data;		/* Buffer to hold the created data */
-      int rc;			/* General error handling variable */
-      /* pops data from the stack */
-      rc = stack_pop (stack, (void *) &data);
-      switch (rc)
-        {
-        case 0x0:		/* Normal operation  */
-          ++i;
-          break;
-
-        case EOF:		/* End of file - no more items to get */
-          loop = '\x0';
-          break;
-
-        default:		/* Error situation  */
-          ERROR (TEST, "stack_pop", rc);
-          loop = '\x0';
-          break;
-        }
-    }
-  /* Check if everything was pushed from the stack */
-  if (i != nitems)
-    {
-      /* Not everything was pushed from the stack */
-      ERROR (TEST, "Number of elements mismatch in data retrieval", ECKFAIL);
+      ERROR (TEST, "stack_init", rc);
       return EFAILED;
     }
+  if ((rc = load_stack (&stack, nitems)) != 0x0)
+    {
+      ERROR (TEST,"Stack load procedure", rc);
+      test_status = EFAILED;
+    }
+  if ((rc = stack_destroy (&stack)) != 0x0)
+    {
+      ERROR (TEST, "stack_destroy", rc);
+      test_status = EFAILED;
+    }
 
-  return 0x0;
+  return test_status;
+}
+
+/* 
+ * Scenario 2: Pops data from the stack and check the contents
+ */
+static int
+test_stack_pop (size_t nitems)
+{
+  stack_t stack;
+  int test_status;
+  int rc;
+
+  test_status = 0x0;
+
+  if ((rc = stack_init (&stack, free))!= 0x0)
+    {
+      ERROR (TEST, "stack_init", rc);
+      return EFAILED;
+    }
+  if ((rc = load_stack (&stack, nitems)) != 0x0)
+    {
+      ERROR (TEST,"Stack load procedure", rc);
+      test_status = EFAILED;
+    }
+  else
+    {
+      int * data;
+      size_t pushed_elements;
+
+      pushed_elements = 0x0ul;
+      while ((rc = stack_pop (&stack, (void **)&data)) == 0x0)
+        {
+          pushed_elements++;
+        }
+      if (rc != EOF)
+        {
+          ERROR (TEST, "stack_push", rc);
+          test_status = EFAILED;
+        }
+      else if (pushed_elements != nitems)
+        {
+          ERROR (TEST, "Pushed elements mismatch", rc);
+          test_status = EFAILED;
+        }
+    }
+  if ((rc = stack_destroy (&stack)) != 0x0)
+    {
+      ERROR (TEST, "stack_destroy", rc);
+      test_status = EFAILED;
+    }
+
+  return test_status;
 }
