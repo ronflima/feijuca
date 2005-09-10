@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: queue.c,v 1.8 2005-09-10 17:10:00 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "queue.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.8 2005-09-10 17:10:00 ron_lima Exp $";
 
 /*
  * Local macros
@@ -44,8 +44,9 @@ static char const rcsid [] = "@(#) $Id: queue.c,v 1.7 2005-02-19 16:47:32 ron_li
 /*
  * Local prototypes
  */
-static int check_push (queue_t *, size_t);
-static int check_pop (queue_t *, size_t);
+static int load_queue (queue_t *, size_t);
+static int test_queue_push (size_t);
+static int test_queue_pop  (size_t);
 
 /*
  * Exported functions
@@ -53,114 +54,108 @@ static int check_pop (queue_t *, size_t);
 int
 test_queue (size_t maxelements)
 {
-  queue_t queue;		/* Queue descriptor */
-  int rc;			/* General error handle variable */
+  scenario_t scenarios [] = {
+    {"Queue push test", test_queue_push},
+    {"Queue pop test" , test_queue_pop }
+  };
 
-  /* Check the queue allocation */
-  rc = queue_init (&queue, free);
-  if (rc)
+  return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
+}
+
+/*
+ * Static functions implementations
+ */
+
+/* Utility function: Loads a queue */
+static int 
+load_queue (queue_t * queue, size_t maxelem)
+{
+  size_t i;
+  for (i=0x0; i<maxelem; ++i)
     {
-      ERROR (TEST, "queue_alloc", rc);
-      return EFAILED;
+      int * data;
+      int rc;
+      
+      data = (int *) malloc (sizeof (int));
+      if (data == NULL)
+        {
+          ERROR (TEST, "Data allocation failed: no more memory", ENOMEM);
+          return -1;
+        }
+      if (rc = (queue_push (queue, (const void *) data)) != 0x0)
+        {
+          ERROR (TEST, "Error pushing data into the queue", rc);
+          return rc;
+        }
     }
-
-  /* Loads data into the queue */
-  rc = check_push (&queue, maxelements);
-  if (rc)
-    {
-      ERROR (TEST, "check_push", rc);
-      return EFAILED;
-    }
-
-  /* Checks the pop of data from the queue */
-  rc = check_pop (&queue, maxelements);
-  if (rc)
-    {
-      ERROR (TEST, "check_pop", rc);
-      return EFAILED;
-    }
-
-  /* Frees the queue */
-  rc = queue_destroy (&queue);
-  if (rc)
-    {
-      ERROR (TEST, "queue_free", rc);
-      return EFAILED;
-    }
-
   return 0x0;
 }
 
-/* Loads data into the circular list */
+/* Test scenario 1: Tests queue push operations */
 static int
-check_push (queue_t * queue, size_t elements)
+test_queue_push (size_t maxelem)
 {
-  register int i;		/* General purpose iterator */
-  int test_status;		/* Test status variable  */
-  int rc;			/* General purpose error handling variable */
+  int rc;
+  int test_result = 0x0;
+  queue_t queue;
 
-  /* Initializations */
-  test_status = 0x0;
-
-  /* Loads the list */
-  for (i = 0x0; (i < elements); ++i)
+  if ((rc = queue_init (&queue, free)) != 0x0)
     {
-      int *item;		/* Item to insert */
-
-      /* Allocates memory for a single item */
-      item = (int *) malloc (sizeof (int));
-      if (!item)
-        {
-          ERROR (TEST, "malloc", ECKFAIL);
-          test_status = ENOMEM;
-          break;
-        }
-      /* Builds the item data */
-      *item = i + 1;
-      /* Inserts the item in the list */
-      rc = queue_push (queue, item);
-      if (rc)
-        {
-          ERROR (TEST, "queue_push", rc);
-          test_status = EFAILED;
-          break;
-        }
+      ERROR (TEST, "queue_init", rc);
+      return rc;
     }
-
-  return test_status;
+  if ((rc = load_queue (&queue, maxelem)) != 0x0)
+    {
+      ERROR (TEST, "load_queue", rc);
+      test_result = EFAILED;
+    }
+  if (descriptor_size(&queue) != maxelem)
+    {
+      ERROR (TEST, "# of queued elements mismatch", ECKFAIL);
+      test_result = EFAILED;
+    }
+  if ((rc = queue_destroy (&queue)) != 0x0)
+    {
+      ERROR (TEST, "queue_destroy", rc);
+      test_result = EFAILED;
+    }
+  return test_result;
 }
 
-/* Checks the pop of data from the queue */
+/* Test scenario 2: Tests queue pop operations */
 static int
-check_pop (queue_t * queue, size_t elements)
+test_queue_pop (size_t maxelem)
 {
-  register int i;		/* General iterator */
+  int rc;
+  int test_result = 0x0;
+  queue_t queue;
+  size_t i;
 
-  for (i = 0; i < elements; ++i)
+  if ((rc = queue_init (&queue, free)) != 0x0)
     {
-      int *buffer;		/* Buffer to hold popped data from the queue */
-      int rc;			/* General error handling variable */
-
-      /* Pops data from the queue */
-      rc = queue_pop (queue, (void **) &buffer);
-      if (rc)
+      ERROR (TEST, "queue_init", rc);
+      return rc;
+    }
+  if ((rc = load_queue (&queue, maxelem)) != 0x0)
+    {
+      ERROR (TEST, "load_queue", rc);
+      test_result = EFAILED;
+    }
+  for (i=maxelem; (i>0x0) && (test_result==0x0); --i)
+    {
+      int * data;
+      if ((rc = queue_pop (&queue, (void **)&data)) > 0x0)
         {
           ERROR (TEST, "queue_pop", rc);
-          return EFAILED;
+          test_result = EFAILED;
+          break;
         }
-      /* Checks popped data */
-      if (!buffer)
-        {
-          ERROR (TEST, "Null popped data found", ECKFAIL);
-          return EFAILED;
-        }
-      if (*buffer != i + 1)
-        {
-          ERROR (TEST, "Popped data mismatch", ECKFAIL);
-          return EFAILED;
-        }
-      /* Frees popped data */
-      free ((void *) buffer);
+      free (data);
     }
-  return 0x0;
+  if ((rc = queue_destroy (&queue)) != 0x0)
+    {
+      ERROR (TEST, "queue_destroy", rc);
+      test_result = EFAILED;
+    }
+  return test_result;
 }
