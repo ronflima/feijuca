@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.c,v 1.10 2005-09-02 10:36:42 ron_lima Exp $
+ $Id: stack.c,v 1.11 2005-09-10 17:08:24 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "stack.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack.c,v 1.10 2005-09-02 10:36:42 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack.c,v 1.11 2005-09-10 17:08:24 ron_lima Exp $";
 
 /*
  * Local macros
@@ -53,14 +53,12 @@ static int test_stack_pop (size_t);
 int
 test_stack (size_t maxelements)
 {
-  int rc;
   scenario_t scenarios [] = {
     {"Stack push test", test_stack_push},
     {"Stack pop test" , test_stack_pop }
   };
 
   return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
-
 }
 
 /*
