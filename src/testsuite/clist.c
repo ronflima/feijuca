@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $
+ $Id: clist.c,v 1.8 2005-09-17 13:13:38 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.7 2005-02-19 16:47:32 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.8 2005-09-17 13:13:38 ron_lima Exp $";
 
 /*
  * Local macros
@@ -43,67 +43,39 @@ static char const rcsid [] = "@(#) $Id: clist.c,v 1.7 2005-02-19 16:47:32 ron_li
 #define TEST "CLIST"
 
 /*
+ * Local constants
+ */
+enum 
+{
+  PATTERN = 0xDEADBEEFu
+};
+
+
+/*
  * Local prototypes
  */
-static int load_data (clist_t *, size_t);
-static int check_navigation (clist_t *);
-static int check_deletion (clist_t *);
+static int load_clist (clist_t *, size_t, unsigned char);
+static int check_navigation (size_t);
 
 /*
  * Exported functions
  */
+
 int
 test_clist (size_t maxelements)
 {
-  clist_t clist;                /* Circular list descriptor */
-  int rc;                       /* General error handle variable */
+  int rc = 0x0;
+  register int i;
+  scenario_t scenarios [] = {
+    {"Navigation checking", check_navigation}
+  };
 
-  /* Check the list allocation */
-  rc = clist_init (&clist, free);
-  if (rc)
-    {
-      ERROR (TEST, "clist_alloc", rc);
-      return EFAILED;
-    }
-
-  /* Loads data into the list */
-  rc = load_data (&clist, maxelements);
-  if (rc)
-    {
-      ERROR (TEST, "load_clist", rc);
-      return EFAILED;
-    }
-
-  /* Checks the navigation and data retrieval from the list */
-  rc = check_navigation (&clist);
-  if (rc)
-    {
-      ERROR (TEST, "check_navigation", rc);
-      return EFAILED;
-    }
-
-  /* Checks the deletion of elements */
-  rc = check_deletion (&clist);
-  if (rc)
-    {
-      ERROR (TEST, "check_deletion", rc);
-      return EFAILED;
-    }
-
-  /* Frees the list */
-  rc = clist_destroy (&clist);
-  if (rc)
-    {
-      ERROR (TEST, "clist_free", rc);
-      return EFAILED;
-    }
-
-  return 0x0;
+  return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
 }
 
-/* Loads data into the circular list */
+/* Utility function: Loads data into the circular list */
 static int
-load_data (clist_t * clist, size_t elements)
+load_clist (clist_t * clist, size_t elements, unsigned char use_pattern)
 {
   register int i;		/* General purpose iterator */
   int test_status;		/* Test status variable  */
@@ -119,17 +91,25 @@ load_data (clist_t * clist, size_t elements)
 
       /* Allocates memory for a single item */
       item = (int *) malloc (sizeof (int));
-      if (!item)
+      if (item == NULL)
         {
           ERROR (TEST, "malloc", 0);
           test_status = ENOMEM;
           break;
         }
+
       /* Builds the item data */
-      *item = i + 1;
+      if (use_pattern == '\x1') 
+        {
+          *item = PATTERN;
+        }
+      else 
+        {
+          *item = i + 1;
+        }
+
       /* Inserts the item in the list */
-      rc = clist_insert (clist, item);
-      if (rc)
+      if ((rc = clist_insert (clist, item)) != 0x0)
         {
           ERROR (TEST, "clist_insert", rc);
           test_status = EFAILED;
@@ -140,114 +120,58 @@ load_data (clist_t * clist, size_t elements)
   return test_status;
 }
 
-/* Checks the navigation and data retrieval from the list */
+/* Scenario 1: checks the list navigation */
 static int
-check_navigation (clist_t * clist)
+check_navigation (size_t maxelem)
 {
-  int rc;			/* General error handling variable */
-  register int i;		/* General purpose iterator */
-  register int j;		/* General purpose iterator */
+  clist_t clist;
+  int rc;
+  int test_result;
 
-  /* Try to go to the first element of the list */
-  rc = clist_move (clist, POS_HEAD);
-  if (rc)
+  test_result = 0x0;
+
+  if ((rc = clist_init (&clist, free)) != 0x0)
+    {
+      ERROR (TEST, "clist_init", rc);
+      test_result = EFAILED;
+    }
+  else if ((rc = load_clist (&clist, maxelem, '\x0')) != 0x0)
+    {
+      ERROR (TEST, "load_clist", rc);
+      test_result = EFAILED;
+    }
+  else if ((rc = clist_move (&clist, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "clist_move", rc);
-      return EFAILED;
+      test_result = EFAILED;
     }
-
-  /* Try to go to the last element of the list */
-  rc = clist_move (clist, POS_TAIL);
-  if (rc)
+  else
     {
-      ERROR (TEST, "clist_move", rc);
-      return EFAILED;
-    }
-
-  /* Runs the list 3 times to check the circularity */
-  for (i = 0x0; i < descriptor_size (clist) * 3; ++i)
-    {
-      rc = clist_move (clist, POS_NEXT);
-      if (rc)
+      int i = 0x1;
+      do 
         {
-          ERROR (TEST, "clist_move", rc);
-          return EFAILED;
+          if (clist.curr_ == clist.tail_)
+            {
+              break;
+            }
+          ++i;
+        }
+      while ((rc = clist_move (&clist, POS_NEXT)) == 0x0);
+      if (rc > 0x0)
+        {
+          ERROR (TEST, "CList navigation failed", rc);
+          test_result = EFAILED;
+        }
+      if (i != descriptor_size (&clist))
+        {
+          ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
+          test_result = EFAILED;
         }
     }
-
-  /* Moves to the beginning of the list again */
-  rc = clist_move (clist, POS_HEAD);
-  if (rc)
+  if ((rc = clist_destroy (&clist)) != 0x0)
     {
-      ERROR (TEST, "clist_move", rc);
-      return EFAILED;
+      ERROR (TEST, "clist_destroy", rc);
+      test_result = EFAILED;
     }
-
-  /* Executes a loop for 3 times again, but now getting data */
-  for (j = 0x0; j < 3; ++j)
-    {
-      for (i = 0x0; i < descriptor_size (clist); ++i)
-        {
-          int *buffer;		/* Buffer data  */
-
-          rc = clist_get (clist, (void *) &buffer, POS_NEXT);
-          if (rc)
-            {
-              ERROR (TEST, "clist_move", rc);
-              return EFAILED;
-            }
-          if (*buffer != i + 1)
-            {
-              ERROR (TEST, "Data mismatch in clist_get", ECKFAIL);
-              return EFAILED;
-            }
-        }
-    }
-
-  return 0x0;
-}
-
-/* Checks deletion */
-static int
-check_deletion (clist_t * clist)
-{
-  int rc;			/* General purpose error handling variable */
-  int *buffer;			/* Buffer to save data */
-
-  /* Goes to the beginning of the list */
-  rc = clist_move (clist, POS_HEAD);
-  if (rc)
-    {
-      ERROR (TEST, "clist_move", rc);
-      return EFAILED;
-    }
-
-  /* Deletes the HEAD of the list */
-  rc = clist_del (clist, NULL);
-  if (rc)
-    {
-      ERROR (TEST, "clist_del", rc);
-      return EFAILED;
-    }
-
-  /* Move to the tail */
-  rc = clist_move (clist, POS_TAIL);
-  if (rc)
-    {
-      ERROR (TEST, "clist_move", rc);
-      return EFAILED;
-    }
-
-  /* Deletes the TAIL of the list */
-  rc = clist_del (clist, (void **) &buffer);
-  if (rc)
-    {
-      ERROR (TEST, "clist_del", rc);
-      return EFAILED;
-    }
-
-  /* Frees the buffer */
-  free (buffer);
-
-  return 0x0;
+  return test_result;
 }
