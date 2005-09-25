@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.10 2005-07-04 00:34:21 ron_lima Exp $
+ $Id: ivector.c,v 1.11 2005-09-25 20:37:27 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,15 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector.c,v 1.10 2005-07-04 00:34:21 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector.c,v 1.11 2005-09-25 20:37:27 ron_lima Exp $";
+
+/*
+ * Local constants
+ */
+enum 
+{
+  PATTERN = 0xDEADBEEFu
+};
 
 /*
  * Local macros
@@ -46,78 +54,24 @@ static char const rcsid [] = "@(#) $Id: ivector.c,v 1.10 2005-07-04 00:34:21 ron
  * Local prototypes
  */
 static int compare (const void *, const void *);
-static int load_ivector (ivector_t *, size_t);
-static int check_del (ivector_t *, size_t);
-static int check_uninitialized (ivector_t *);
+static int load_ivector (ivector_t *, size_t, unsigned char);
+static int check_del (size_t);
+static int check_uninitialized (size_t);
 
 /*
  * Exported functions
  */
-int
-test_ivector (size_t maxelements)
+int 
+test_ivector (size_t maxelem)
 {
-  ivector_t ivector;            /* Infinite vector descriptor */
-  int rc;                       /* General error handling variable */
-  int *buffer;                  /* Buffer to hold data */
-  int key;                      /* Search key */
+  int rc = 0x0;
+  register int i;
+  scenario_t scenarios [] = {
+    {"Check uninitialized descriptor", check_uninitialized},
+    {"Deletion checking"             , check_del          }
+  };
 
-  rc = check_uninitialized (&ivector);
-  if (rc)
-    {
-      ERROR (TEST, "check_uninitialized", rc);
-      return EFAILED;
-    }
-  /* Allocates the whole vector */
-  rc = ivector_init (&ivector, compare, NULL, sizeof (int));
-  if (rc)
-    {
-      ERROR (TEST, "ivector_alloc", rc);
-      return EFAILED;
-    }
-  rc = load_ivector (&ivector, maxelements);
-  if (rc)
-    {
-      ERROR (TEST, "ivector load error", ECKFAIL);
-      return EFAILED;
-    }
-  /* Re-orders the list */
-  rc = ivector_qsort (&ivector);
-  if (rc)
-    {
-      ERROR (TEST, "ivector_qsort", rc);
-      return EFAILED;
-    }
-  /* Searches for something */
-  key = maxelements / 2;
-  rc = ivector_bsearch (&ivector, (void **) &buffer, &key);
-  if (rc)
-    {
-      ERROR (TEST, "ivector_bsearch", rc);
-      return EFAILED;
-    }
-  /* Puts something using an index */
-  key /= 2;
-  rc = ivector_put (&ivector, maxelements / 2, &key);
-  if (rc)
-    {
-      ERROR (TEST, "ivector_put", rc);
-      return EFAILED;
-    }
-  /* Check deletions */
-  rc = check_del (&ivector, maxelements);
-  if (rc)
-    {
-      ERROR (TEST, "check_del", ECKFAIL);
-      return EFAILED;
-    }
-  /* Deallocates the vector */
-  rc = ivector_destroy (&ivector);
-  if (rc)
-    {
-      ERROR (TEST, "ivector_free", rc);
-      return EFAILED;
-    }
-  return 0x0;
+  return execute_scenarios (TEST, maxelem, scenarios, sizeof (scenarios));
 }
 
 /* Compare function for the infinite vector */
@@ -130,22 +84,26 @@ compare (const void *arg1, const void *arg2)
   return *v1 > *v2;
 }
 
-/* Loads data into the infinite vector */
+/* Utility function: Loads data into the infinite vector */
 static int
-load_ivector (ivector_t * ivector, size_t elements)
+load_ivector (ivector_t * ivector, size_t maxelem, unsigned char use_pattern)
 {
   register int i;		/* General iterator */
 
-  for (i = elements - 1; i > -1; --i)
+  for (i=0; i<maxelem; ++i)
     {
-      int buffer;		/* Data buffer to load into the vector */
+      int buf;
       int rc;			/* General error handling variable */
 
-      /* Loads data into the buffer */
-      buffer = i + 1;
-      /* Adds data to the vector */
-      rc = ivector_add (ivector, (void *) &buffer);
-      if (rc)
+      if (use_pattern) 
+        {
+          buf = PATTERN;
+        }
+      else
+        {
+          buf = i;
+        }
+      if ((rc = ivector_add (ivector, (void *) &buf)) != 0x0)
         {
           ERROR (TEST, "ivector_add", rc);
           return EFAILED;
@@ -154,80 +112,90 @@ load_ivector (ivector_t * ivector, size_t elements)
   return 0x0;
 }
 
-/* Checks deletions */
+/* Scenario 1: Checks deletions */
 static int
-check_del (ivector_t * ivector, size_t maxelements)
+check_del (size_t maxelem)
 {
-  int rc;			/* General error handling variable */
+  int rc;
+  int status;
+  ivector_t ivector;
 
-  /* Deletes something */
-  rc = ivector_del (ivector, maxelements / 2);
-  if (rc)
-    {
-      ERROR (TEST, "ivector_del", rc);
-      return EFAILED;
-    }
-  /* Deletes the first element */
-  rc = ivector_del (ivector, 0x0);
-  if (rc)
-    {
-      ERROR (TEST, "ivector_del", rc);
-      return EFAILED;
-    }
-  /* Deletes the last element */
-  rc = ivector_del (ivector, descriptor_size (ivector));
-  if (rc)
-    {
-      ERROR (TEST, "ivector_del", rc);
-      return EFAILED;
-    }
+  status = 0x0;
 
+  if ((rc = ivector_init (&ivector, compare, NULL, sizeof (int))) != 0x0)
+    {
+      ERROR (TEST, "ivector_init", rc);
+      status = EFAILED;
+    }
+  else if ((rc = load_ivector (&ivector, maxelem, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_ivector (utility function)", rc);
+      status = EFAILED;
+    }
+  else 
+    {
+      register size_t i;
+      for (i = 0; (i < maxelem / 2) && (status != EFAILED); ++i)
+        {
+          if ((rc = ivector_del (&ivector, i)) != 0x0)
+            {
+              ERROR (TEST, "ivector_del", rc);
+              status = EFAILED;
+            }
+        }
+      if (descriptor_size (&ivector) != (maxelem / 2))
+        {
+          ERROR (TEST, "number of elements mismatch", ECKFAIL);
+          status = EFAILED;
+        }
+    }
+  if ((rc = ivector_destroy (&ivector)) != 0x0)
+    {
+      ERROR (TEST, "ivector_destroy", rc);
+      status = EFAILED;
+    }
   return 0x0;
 }
 
-static int check_uninitialized (ivector_t * ivector)
+/* Scenario 2: Checks signature validation */
+static int check_uninitialized (size_t maxelem)
 {
   int rc;
   void * buf = NULL;
   int test_status = 0x0;
-  rc = ivector_destroy (ivector);
-  if (rc != EGAINVAL) 
+  ivector_t ivector;
+
+  if ((rc = ivector_destroy (&ivector)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_destroy", rc);
       test_status = EFAILED;
     }
-  rc = ivector_get (ivector, &buf, 0x0);
-  if (rc != EGAINVAL) 
+  else if ((rc = ivector_get (&ivector, &buf, 0x0)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_get", rc);
       test_status = EFAILED;
     }
-  rc = ivector_put (ivector, 0x0, buf);
-  if (rc != EGAINVAL) 
+  else if ((rc = ivector_put (&ivector, 0x0, buf)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_put", rc);
       test_status = EFAILED;
     }
-  rc = ivector_add (ivector, buf);
-  if (rc != EGAINVAL) 
+  else if ((rc = ivector_add (&ivector, buf)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_add", rc);
       test_status = EFAILED;
     }
-  rc = ivector_qsort (ivector);
-  if (rc != EGAINVAL) 
+  else if ((rc = ivector_qsort (&ivector)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_qsort", rc);
       test_status = EFAILED;
     }
-  rc = ivector_bsearch (ivector, &buf, buf);
-  if (rc != EGAINVAL) 
+  else if ((rc = ivector_bsearch (&ivector, &buf, buf)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_bsearch", rc);
       test_status = EFAILED;
     }
-  rc = ivector_del (ivector, 0x0);
-  if (rc != EGAINVAL) 
+  else if ((rc = ivector_del (&ivector, 0x0)) != EGAINVAL)
     {
       ERROR (TEST, "ivector_del", rc);
       test_status = EFAILED;
