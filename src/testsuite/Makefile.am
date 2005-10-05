@@ -13,6 +13,7 @@ gatest_SOURCES = gatests.h						\
                  ivector.c						\
 				 deque.c						\
                  engine.c						\
+				 dclist.c						\
                  testsuite.c
 AM_CPPFLAGS=-I./ -I../../include
 AM_CFLAGS=$(CFLAGS)

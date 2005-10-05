@@ -27,8 +27,8 @@
  is free of bugs. Debugging the library inside a debugger will. :)
 
  CVS Information
- $Author: ron_lima $
- $Id: testsuite.c,v 1.17 2005-07-29 02:44:43 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: testsuite.c,v 1.18 2005-10-05 12:20:20 daniel_csoares Exp $
 */
 
 /*
@@ -41,15 +41,16 @@
 #include "gatests.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: testsuite.c,v 1.17 2005-07-29 02:44:43 ron_lima Exp $";
+static char const rcsid[] =
+  "@(#) $Id: testsuite.c,v 1.18 2005-10-05 12:20:20 daniel_csoares Exp $";
 
 /*
  * Local functions prototypes
  */
-static int cmdline_parse __P((cmdline_t *, const int, const char **));
-static int cmdline_value_getint __P((int *, cmdline_t *, const char *));
-static int cmdline_parameter_provided __P((const cmdline_t *, const char *));
-static void help __P((void));
+static int cmdline_parse __P ((cmdline_t *, const int, const char **));
+static int cmdline_value_getint __P ((int *, cmdline_t *, const char *));
+static int cmdline_parameter_provided __P ((const cmdline_t *, const char *));
+static void help __P ((void));
 
 /*
  * Exported functions definitions
@@ -57,12 +58,12 @@ static void help __P((void));
 int
 main (int argc, char **argv)
 {
-  register int i;               /* Simple iterator */
-  size_t maxelements;           /* Maximum number of elements to load */
-  cmdline_t cmdline;            /* Command line parsed arguments */
-  int rc;                       /* General return code */
-  char do_test;                 /* Flag to avoid test execution */
-  test_t tests[] =        /* Vector containing all tests to be done */
+  register int i;		/* Simple iterator */
+  size_t maxelements;		/* Maximum number of elements to load */
+  cmdline_t cmdline;		/* Command line parsed arguments */
+  int rc;			/* General return code */
+  char do_test;			/* Flag to avoid test execution */
+  test_t tests[] =		/* Vector containing all tests to be done */
   {
     {"LIST", test_list},
     {"DLIST", test_dlist},
@@ -70,7 +71,8 @@ main (int argc, char **argv)
     {"CLIST", test_clist},
     {"QUEUE", test_queue},
     {"IVECTOR", test_ivector},
-    {"DEQUE", test_deque}
+    {"DEQUE", test_deque},
+    {"DCLIST", test_dclist}
   };
 
   /* Initializations */
@@ -78,7 +80,8 @@ main (int argc, char **argv)
   do_test = '\x1';
 
   /* Prints a small friendly message */
-  printf ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
+  printf
+    ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
   printf ("Several parts written by Daniel Costa Soares\n");
   printf ("This software is licensed under the Gnu Public License\n\n");
 
@@ -139,29 +142,29 @@ main (int argc, char **argv)
    stuff. The command line parsing was written this way in order to
    make it available to all possible platforms, since the getopts is
    available only in unix systems.  */
-static int 
+static int
 cmdline_parse (cmdline_t * cmdline, const int argc, const char **argv)
 {
-  register int i;               /* Iterator for the command line parsing */
+  register int i;		/* Iterator for the command line parsing */
 
   /* Initializations */
   cmdline->items = (cmdline_item_t *) NULL;
   cmdline->size = 0x0ul;
 
   /* Parses the command line in a portable way */
-  for (i=1; i<argc; ++i)
+  for (i = 1; i < argc; ++i)
     {
       /* Check if the current one is a parameter */
-      if (* argv[i] == '-')
+      if (*argv[i] == '-')
         {
-          cmdline_item_t * newcmdline; /* Temporary buffer */
-          unsigned int j;       /* Iterator for the items list */
+          cmdline_item_t *newcmdline;	/* Temporary buffer */
+          unsigned int j;	/* Iterator for the items list */
 
           cmdline->size++;
-          newcmdline = (cmdline_item_t *) realloc ((void *) cmdline->items, 
-                                                   cmdline->size 
-                                                   * sizeof (cmdline_item_t));
-          if (! newcmdline)
+          newcmdline = (cmdline_item_t *) realloc ((void *) cmdline->items,
+        					   cmdline->size
+        					   * sizeof (cmdline_item_t));
+          if (!newcmdline)
             {
               /* No memory !! */
               return ENOMEM;
@@ -178,9 +181,9 @@ cmdline_parse (cmdline_t * cmdline, const int argc, const char **argv)
 
           /* Check if there is an argument for the parameter */
           cmdline->items[j].value = (char *) NULL;
-          if (argv[++i] && *argv [i] != '-')
+          if (argv[++i] && *argv[i] != '-')
             {
-              cmdline->items[j].value = (char *)argv[i];
+              cmdline->items[j].value = (char *) argv[i];
             }
         }
     }
@@ -189,20 +192,20 @@ cmdline_parse (cmdline_t * cmdline, const int argc, const char **argv)
 
 /* Gets and int value from the command line parameter. If nothing
    could be found. the value remains untouched. */
-static int 
-cmdline_value_getint (int *value, cmdline_t *cmdline, const char *parm)
+static int
+cmdline_value_getint (int *value, cmdline_t * cmdline, const char *parm)
 {
-  register size_t i;            /* Iterator for the list */
+  register size_t i;		/* Iterator for the list */
 
   /* Do a linear search in the list */
-  for (i=0; i<cmdline->size; ++i)
+  for (i = 0; i < cmdline->size; ++i)
     {
       if (cmdline->items[i].option[0] == *parm)
         {
           int newvalue;
           /* We have found the parameter. Lets check if the parameter
              has a value */
-          if (! cmdline->items[i].value)
+          if (!cmdline->items[i].value)
             {
               return EOF;
             }
@@ -222,12 +225,12 @@ cmdline_value_getint (int *value, cmdline_t *cmdline, const char *parm)
 }
 
 /* Checks if a parameter was really provided */
-static int 
+static int
 cmdline_parameter_provided (const cmdline_t * cmdline, const char *param)
 {
-  register size_t i;            /* Iterator for the list of parameters */
+  register size_t i;		/* Iterator for the list of parameters */
 
-  for (i=0x0u; i<cmdline->size; ++i)
+  for (i = 0x0u; i < cmdline->size; ++i)
     {
       if (cmdline->items[i].option[0] == *param)
         {
@@ -241,7 +244,7 @@ cmdline_parameter_provided (const cmdline_t * cmdline, const char *param)
 static void
 help (void)
 {
-  printf ("Usage:\n"\
-          "\t-m n: Number of elements to use on each test\n" \
-          "\t-h  : This help screen\n\n"); 
+  printf ("Usage:\n"
+          "\t-m n: Number of elements to use on each test\n"
+          "\t-h  : This help screen\n\n");
 }

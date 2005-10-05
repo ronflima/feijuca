@@ -23,8 +23,8 @@
  Description: Header file with definitions needed by the test suite
 
  CVS Information
- $Author: ron_lima $
- $Id: gatests.h,v 1.14 2005-09-01 10:52:01 ron_lima Exp $
+ $Author: daniel_csoares $
+ $Id: gatests.h,v 1.15 2005-10-05 12:20:20 daniel_csoares Exp $
 */
 
 #ifndef GATESTS_H
@@ -42,13 +42,12 @@ GABEGINDECLS
 /* Constants */
 #define MAX_TESTS    1		/* Maximum number of tests */
 #define MAX_ELEMENTS 10000U	/* Maximum number of elements  */
-
 /* Errors */
-enum 
+  enum
 {
-  EFAILED= 50001u,	/* Test failed */
-  ENOTIMP= 50002u,	/* Test not implemented yet :"> */
-  ECKFAIL= 50003u	/* Check failed  */
+  EFAILED = 50001u,		/* Test failed */
+  ENOTIMP = 50002u,		/* Test not implemented yet :"> */
+  ECKFAIL = 50003u		/* Check failed  */
 };
 
 
@@ -60,33 +59,37 @@ enum
  * Datatypes
  */
 /* Test procedures data types */
-typedef int (test_proc_t) (size_t); /* Test procedure */
-typedef int (test_scenario_t) (size_t); /* Test scenario  */
+typedef int (test_proc_t) (size_t);	/* Test procedure */
+typedef int (test_scenario_t) (size_t);	/* Test scenario  */
 
 typedef struct
 {
   char *test_name;
   test_proc_t *test_routine;
-} test_t;                       /* Test procedure descriptor */
+}
+test_t;				/* Test procedure descriptor */
 
 typedef struct
 {
   char *name;
   test_scenario_t *routine;
-} scenario_t;                   /* Test scenario to execute */
+}
+scenario_t;			/* Test scenario to execute */
 
 /* Command line parsing support structures */
 typedef struct
 {
-  char *option;                 /* Option */
-  char *value;                  /* Value of the parameter */
-} cmdline_item_t;               /* Command line item */
+  char *option;			/* Option */
+  char *value;			/* Value of the parameter */
+}
+cmdline_item_t;			/* Command line item */
 
 typedef struct
 {
-  cmdline_item_t * items;       /* List of items */
-  size_t size;                  /* Size of the list */
-} cmdline_t;                    /* Command line descriptor */
+  cmdline_item_t *items;	/* List of items */
+  size_t size;			/* Size of the list */
+}
+cmdline_t;			/* Command line descriptor */
 /*
  * Prototypes
  */
@@ -97,8 +100,8 @@ int (test_clist) (size_t);
 int (test_queue) (size_t);
 int (test_ivector) (size_t);
 int (test_deque) (size_t);
-int (execute_scenarios) (const char *, size_t, scenario_t [], size_t);
+int (test_dclist) (size_t);
+int (execute_scenarios) (const char *, size_t, scenario_t[], size_t);
 
 GAENDDECLS
-
 #endif /* GATESTS_H */
