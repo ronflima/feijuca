@@ -23,8 +23,8 @@
  Description: Test suite routines for deques.
 
  CVS Information
- $Author: daniel_csoares $
- $Id: deque.c,v 1.3 2005-08-23 13:00:53 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: deque.c,v 1.4 2005-10-05 01:00:30 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "deque.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: deque.c,v 1.3 2005-08-23 13:00:53 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: deque.c,v 1.4 2005-10-05 01:00:30 ron_lima Exp $";
 
 /*
  * Local macros
@@ -43,10 +43,18 @@ static char const rcsid [] = "@(#) $Id: deque.c,v 1.3 2005-08-23 13:00:53 daniel
 #define TEST "DEQUE"
 
 /*
+ * Local constants
+ */
+enum 
+{
+  PATTERN = 0xDEADBEEFu
+};
+
+/*
  * Local prototypes
  */
-static int check_deque_push (deque_t *, size_t, position_t);
-static int check_deque_pop (deque_t *, size_t, position_t);
+static int check_deque_push (size_t);
+static int check_deque_pop (size_t);
 
 /*
  * Exported functions
@@ -54,130 +62,142 @@ static int check_deque_pop (deque_t *, size_t, position_t);
 int
 test_deque (size_t maxelements)
 {
-  deque_t deque;		/* Deque descriptor */
-  int rc;			/* General error handle variable */
+  int rc = 0x0;
+  register int i;
+  scenario_t scenarios [] = {
+    {"Deque pushing test", check_deque_push},
+    {"Deque popping test", check_deque_pop }
+  };
 
-  /* Check the deque allocation */
-  rc = deque_init (&deque, free);
-  if (rc)
+  return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
+}
+
+/* 
+ * Utility function: loads a deque 
+ */
+static int
+load_deque (deque_t * deque, size_t elements, unsigned char use_pattern, position_t whence)
+{
+  register int i;		/* General purpose iterator */
+
+  for (i = 0x0; i < elements; ++i)
     {
-      ERROR (TEST, "deque_alloc", rc);
-      return EFAILED;
-    }
+      unsigned int *item;       /* Item to insert */
+      int rc;
 
-  /* Loads data into the deque */
-  rc = check_deque_push (&deque, maxelements,POS_HEAD);
-  if (rc)
-    {
-      ERROR (TEST, "check_push_head", rc);
-      return EFAILED;
-    }
-
-  /* Checks the pop of data from the deque */
-  rc = check_deque_pop (&deque, maxelements,POS_TAIL);
-  if (rc)
-    {
-      ERROR (TEST, "check_pop_head", rc);
-      return EFAILED;
-    }
-
-  /* Loads data into the deque */
-  rc = check_deque_push (&deque, maxelements,POS_TAIL);
-  if (rc)
-  {
-      ERROR (TEST, "check_push_tail", rc);
-      return EFAILED;
-  }
-
-  /* Checks the pop of data from the deque */
-  rc = check_deque_pop (&deque, maxelements,POS_HEAD);
-  if (rc)
-  {
-      ERROR (TEST, "check_pop_tail", rc);
-      return EFAILED;
-  }
-  
-  /* Frees the deque */
-  rc = deque_destroy (&deque);
-  if (rc)
-    {
-      ERROR (TEST, "deque_free", rc);
-      return EFAILED;
+      item = (int *) malloc (sizeof (unsigned int));
+      if (item == NULL)
+        {
+          ERROR (TEST, "malloc", ECKFAIL);
+          return ENOMEM;
+        }
+      if (use_pattern == '\x1')
+        {
+          *item = PATTERN;
+        }
+      else 
+        {
+          *item = i + 1;
+        }
+      if ((rc = deque_push (deque, item, whence)) != 0x0)
+        {
+          ERROR (TEST, "deque_push", rc);
+          return EFAILED;
+        }
     }
 
   return 0x0;
 }
 
-/* Loads data into the circular list */
+/*
+ * Scenario 1: Checks deque pushing
+ */
 static int
-check_deque_push (deque_t * deque, size_t elements, position_t whence)
+check_deque_push (size_t elements)
 {
-  register int i;		/* General purpose iterator */
-  int test_status;		/* Test status variable  */
-  int rc;			/* General purpose error handling variable */
+  int status;
+  int rc;
+  deque_t deque;
 
-  /* Initializations */
-  test_status = 0x0;
+  status = 0x0;
 
-  /* Loads the list */
-  for (i = 0x0; (i < elements); ++i)
+  if ((rc = deque_init (&deque, free)) != 0x0)
     {
-      int *item;		/* Item to insert */
-
-      /* Allocates memory for a single item */
-      item = (int *) malloc (sizeof (int));
-      if (!item)
-        {
-          ERROR (TEST, "malloc", ECKFAIL);
-          test_status = ENOMEM;
-          break;
-        }
-      /* Builds the item data */
-      *item = i + 1;
-      /* Inserts the item in the list */
-      rc = deque_push (deque, item, whence);
-      if (rc)
-        {
-          ERROR (TEST, "deque_push", rc);
-          test_status = EFAILED;
-          break;
-        }
+      ERROR (TEST, "deque_init", rc);
+      status = EFAILED;
+    }
+  else if ((rc = load_deque (&deque, elements, POS_HEAD, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_deque", rc);
+      status = EFAILED;
+    }
+  else if ((rc = load_deque (&deque, elements, POS_TAIL, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_deque", rc);
+      status = EFAILED;
+    }
+  if ((rc = deque_destroy (&deque)) != 0x0)
+    {
+      ERROR (TEST, "deque_destroy", rc);
+      status = EFAILED;
     }
 
-  return test_status;
+  return status;
 }
 
-/* Checks the pop of data from the deque */
+/* 
+ * Scenario 2: Checks the pop operation from the deque 
+ */
 static int
-check_deque_pop (deque_t * deque, size_t elements, position_t whence)
+check_deque_pop (size_t elements)
 {
-  register int i;		/* General iterator */
+  int rc;
+  int status;
+  deque_t deque;
 
-  for (i = 0; i < elements; ++i)
+  status = 0x0;
+  if ((rc = deque_init (&deque, free)) != 0x0)
     {
-      int *buffer;		/* Buffer to hold popped data from the deque */
-      int rc;			/* General error handling variable */
+      ERROR (TEST, "deque_init", rc);
+      status = EFAILED;
+    }
+  else if ((rc = load_deque (&deque, elements, POS_HEAD, '\x1')) != 0x0)
+    {
+      ERROR (TEST, "load_deque", rc);
+      status = EFAILED;
+    }
+  else 
+    {
+      int * buf;
+      position_t pos;
 
-      /* Pops data from the deque */
-      rc = deque_pop (deque, (void **) &buffer, whence);
-      if (rc)
+      pos = POS_HEAD;
+      while ((rc = deque_pop (&deque, (void **) &buf, pos)) == 0x0)
         {
-          ERROR (TEST, "deque_pop", rc);
-          return EFAILED;
+          if (buf == NULL)
+            {
+              ERROR (TEST, "Null popped data found", ECKFAIL);
+              status = EFAILED;
+              break;
+            }
+          else 
+            {
+              free (buf);
+              if (pos == POS_HEAD)
+                {
+                  pos = POS_TAIL;
+                }
+              else
+                {
+                  pos = POS_HEAD;
+                }
+            }
         }
-      /* Checks popped data */
-      if (!buffer)
-        {
-          ERROR (TEST, "Null popped data found", ECKFAIL);
-          return EFAILED;
-        }
-      if (*buffer != i + 1)
-        {
-          ERROR (TEST, "Popped data mismatch", ECKFAIL);
-          return EFAILED;
-        }
-      /* Frees popped data */
-      free ((void *) buffer);
+    }
+  if ((rc = deque_destroy (&deque)) != 0x0)
+    {
+      ERROR (TEST, "deque_destroy", rc);
+      status = EFAILED;
     }
   return 0x0;
 
