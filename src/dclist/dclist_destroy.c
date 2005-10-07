@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: daniel_csoares $
- $Id: dclist_destroy.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $
+ $Id: dclist_destroy.c,v 1.2 2005-10-07 17:52:38 daniel_csoares Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,13 +35,14 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.2 2005-10-07 17:52:38 daniel_csoares Exp $";
 
 int
 dclist_destroy (dclist_t * list)
 {
   assert (list != NULL);
-
+  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
+  
   /* Redefine last pointer to work with dlist_destroy algorithm */
   if (descriptor_size (list))
     {
