@@ -1,5 +1,5 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: galib.texi,v 1.6 2005-08-18 14:20:32 daniel_csoares Exp $
+@c $Id: galib.texi,v 1.7 2005-10-07 19:06:51 daniel_csoares Exp $
 @c %**start of header
 @setfilename galib.info
 @settitle    Generic Algorithms Library
@@ -45,6 +45,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 * Stack:(stack).     :: Stacks 
 * Queue:(queue).     :: Queues
 * Deque:(deque).     :: Deques
+* DCList:(dclist).   :: Double-linked circular lists
 * Licenses :: Licenses and other information
 @end menu
 

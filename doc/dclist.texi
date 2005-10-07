@@ -1,0 +1,345 @@
+\input texinfo @c -*-texinfo-*-
+@c $Id: dclist.texi,v 1.1 2005-10-07 19:06:51 daniel_csoares Exp $
+@c %**start of header
+@setfilename dclist.info
+@settitle    Double linked circular lists
+@c %**end of header
+
+@copying
+@c ** Copyrght
+Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
+
+Last update: @value{UPDATED}
+
+Revision: @value{VERSION}
+@end copying
+
+@titlepage
+@c ** Title page
+
+@title G.A. Library
+@subtitle Double linked circular lists interface
+@author Ronaldo Faria Lima
+
+@c ** Copyright page
+@page
+@insertcopying
+@end titlepage
+
+@c ** Table of contents
+@contents
+
+@c ** The top node
+@ifnottex
+@node Top
+@top DCList
+@end ifnottex
+
+@c ** Main Menu
+@menu
+* algorithm :: Algorithm implemented by G.A. Library
+* data types:: Data types
+* functions :: Description of all available functions
+* Licenses  :: Licenses and other information
+@end menu
+
+@c ***** algorithm
+@node algorithm, data types, Top, Top
+@chapter Double linked circular lists in G.A. Library
+G.A. Library implements double linked circular lists through the header 
+file <dclist.h>. The list descriptor contains always the first and the 
+last elements for fast access in the list. The tail is linked to the 
+beginning and beginning is linked to the tail make it circular and
+navigable in both ways.  
+
+Double linked circular lists are useful when you have a collection of 
+data that must be traversed in two directions in memory (circularly) 
+and you don't know the amount of data that it will hold. The implementation 
+for double linked circular lists was done based on the double linked lists.
+
+Until this release, no thread safety was analyzed or even implemented
+in the algorithms. So, thread safety is not guaranteed.
+
+@c ***** Data types
+@node data types, functions, algorithm, Top
+@chapter Data types
+The following data types are defined for dclist implementation.
+@itemize @bullet
+@item dclist_t:
+Data structure that decribes the list descriptor. This is used to hold
+all needed data to implement the list. There is no need to access
+directly any element of this structure since they are manipulated by
+the functions of the library. This is implemented based on dlist_t.
+@end itemize
+
+@c ***** functions
+@node functions, Licenses, data types, Top
+@chapter Functions
+@menu
+* dclist_init    :: List initialization function
+* dclist_destroy :: List destruction function
+* dclist_get     :: Element getter
+* dclist_insert  :: Inserts a new element
+* dclist_move    :: Iterates the list
+* dclist_del     :: Deletes a single element of the list
+@end menu
+
+@c ***** dclist_init
+@node dclist_init, dclist_destroy, functions, functions
+@section int dclist_init (dclist_t *list, deallocator_t dealloc)
+Purpose: Initializes the list descriptor
+
+Parameters:
+@itemize @bullet
+@item list:
+List descriptor to initialize.
+@item dealloc:
+Deallocator pointer function for the user-defined deallocation
+function (required)
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded
+@item EGAINVAL
+The deallocator provided is not valid. The validation of the
+deallocator, however, is done against its nullity.
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+The deallocator function is a user-defined function that will handle
+the deallocation of the data stored in the list. Since this set of
+functions were designed to work over any kind of user-defined data, so
+the deallocation will be responsibility of the user, since the library
+has no way to know how to handle deallocations of generic data. This
+function must have the following prototype:
+@example
+void deallocator (void *data);
+@end example
+You will note that this prototype is exactly the same definition of
+the @samp{deallocator_t} data type.
+@end itemize
+
+@c ***** dclist_destroy
+@node dclist_destroy, dclist_get, dclist_init, functions
+@section int dclist_destroy (dclist_t *list)
+Purpose: Deallocates each element and releases the entire list from
+memory
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+when the operation succeeds
+@item EGAINVAL
+The destruction operation was tried on an invalid descriptor.
+@end itemize
+
+@c ***** dclist_get
+@node dclist_get, dclist_insert, dclist_destroy, functions
+@section int dclist_get (dclist_t * list, void **data, int whence)
+Purpose: Gets an element data from the list and make it possible to
+navigate the list after getting the data. 
+
+Parameters:
+@itemize @bullet
+@item list:
+The list descriptor
+@item data:
+Data to be get. Remain untouched if the function could not retrieve
+data for some reason.
+@item whence:
+This parameter indicates how to navigate the list after the data is
+retrieved.
+@itemize @bullet
+@item POS_CURR: 
+Gets the current element data and do not update the current pointer.
+@item POS_NEXT:
+Gets the current element data and makes the current pointer point to the
+next element (moves the list)
+@item POS_PREV:
+Gets the current element data and makes the current pointer point to
+the previous element (moves the list).
+@end itemize
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded
+@item EGAINVAL
+Invalid argument provided to @emph{whence} parameter or the list
+descriptor is invalid.
+@end itemize
+
+@emph{Hints}: 
+@itemize
+@item
+To get the first element, use dclist_move function (@xref{dclist_move}.)
+with whence=POS_HEAD and then use this function with whence=POS_CURR.
+@item
+This function was designed, basically, to retrieve data from the list
+by iterating it from the current position. The data is
+retrieved and not deleted from the list.
+@item 
+This function will return, always, the data from the current position
+of the list. The @samp{whence} parameter says how the list will be
+navigated after the current element is returned.
+@end itemize
+
+@c ***** dclist_insert
+@node dclist_insert, dclist_move, dclist_get, functions
+@section int dclist_insert (dclist_t * list, const void *data, int whence)
+Purpose: Inserts a new element in the list
+
+Parameters:
+@itemize @bullet
+@item list:
+List descriptor
+@item data:
+Data pointer to be inserted in the list
+@item whence:
+Where to insert the new element:
+@itemize @bullet
+@item POS_NEXT: 
+As the next element based on the current position.
+@item POS_PREV:
+As the previous element, based on the current position.
+@item POS_HEAD:
+As the list head.
+@item POS_TAIL:
+As the list tail.
+@end itemize
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded
+@item EGANOMEM
+No memory available to create the new list element
+@item EGABADC
+Wrong insertion. The operation demanded a valid current position but
+there was none available.
+@item EGAINVAL
+Invalid @samp{whence} parameter provided or the list descriptor is
+invalid.
+@end itemize
+
+@c ***** dclist_move
+@node dclist_move, dclist_del, dclist_insert, functions
+@section int dclist_move (dclist_t * list, int whence)
+Purpose: Moves the current pointer to a specific location within the
+list
+
+Parameters:
+@itemize @bullet
+@item list
+The list descriptor
+@item whence
+How to move the pointer:
+@itemize @bullet
+@item POS_HEAD
+Moves the pointer to the beginning of the list
+@item POS_TAIL
+Moves the pointer to the end of the list
+@item POS_NEXT
+Moves the pointer to the next item of the list
+@item POS_NONE
+No effect in the navigation point. The current pointer is not updated.
+@end itemize
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded
+@item EGAINVAL
+Wrong value provided to the @samp{whence} parameter or the list
+descriptor is invalid.
+@item EOF
+End of list reached
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+If the list was never moved, the current pointer points to
+nowhere. Any try to move the pointer to anywhere that is not the
+beginning or the end of the list will return EOF.
+@end itemize
+
+@c ***** dclist_del
+@node dclist_del, , dclist_move, functions
+@section int dclist_del (dclist_t * list, void **data, int whence)
+Purpose: Deletes a single element from the list
+
+Parameters:
+@itemize @bullet
+@item list
+The list descriptor
+@item data
+Data storage arena to store the data extracted from the list
+@item whence
+Where to delete the item:
+@itemize @bullet
+@item POS_HEAD
+Deletes the head of the list
+@item POS_CURR
+Deletes the current item
+@item POS_NEXT
+Deletes the next item based on the current pointer
+@item POS_PREV
+Deletes the previous item based on the current pointer
+@item POS_TAIL
+Deletes the tail of the list
+@end itemize
+@end itemize
+
+Return values:
+@itemize @bullet
+@item 0
+Operation succeeded.
+@item EGAINVAL
+Invalid argument provided. This value is returned if:
+@itemize @bullet
+@item The @samp{whence} parameter has invalid value
+@item The @samp{data} parameter is null and no deallocator was provided.
+@end itemize
+This value may be returned, also, if the descriptor provided was
+invalid.
+
+@item EOF
+The list is already empty
+@end itemize
+
+@emph{Hints}:
+@itemize
+@item
+If the list was never iterated, the current position points to
+nowhere. No deletion will take place for operations using
+whence=POS_CURR, POS_NEXT or POS_PREV.
+@item 
+If you provide NULL for the data storage, the function will call the
+deallocator provided to free the data memory instead of extracting the
+data from the list and return it to you.
+@item
+If you delete the current element (whence=POS_CURR), the current
+pointer will be reset to NULL and if you issue again the same
+operation, it will fail by returning to the caller EOF, since the
+current pointer was reset due to the previous operation.
+@end itemize
+
+@c ** Includes the licenses 
+@node Licenses, , functions, Top
+@include licenses.texi
+
+@bye
