@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: daniel_csoares $
- $Id: dclist.c,v 1.1 2005-10-05 12:20:20 daniel_csoares Exp $
+ $Id: dclist.c,v 1.2 2005-10-07 17:54:26 daniel_csoares Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dclist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist.c,v 1.1 2005-10-05 12:20:20 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist.c,v 1.2 2005-10-07 17:54:26 daniel_csoares Exp $";
 
 /*
  * Local macros
@@ -46,10 +46,12 @@ static char const rcsid[] = "@(#) $Id: dclist.c,v 1.1 2005-10-05 12:20:20 daniel
  * Local prototypes
  */
 static int load_list (dclist_t *, size_t);
-/*static int check_contents (size_t);
-  static int check_deletion (size_t);*/
-static int check_uninitialized (size_t);
-static void print_list (dclist_t *);	/* Debug purpose */
+static int scenario_check_contents (size_t);
+static int scenario_check_deletion (size_t);
+static int scenario_check_uninitialized (size_t);
+
+/* Debug purpose */
+static void print_list (dclist_t *);
 
 int
 test_dclist (size_t maxelements)
@@ -57,9 +59,9 @@ test_dclist (size_t maxelements)
   int rc = 0x0;
   register int i;
   scenario_t scenarios[] = {
-      /*{"Check uninitialized descriptor", check_uninitialized}	,
-        							   {"Contents checking", check_contents},
-        							   {"Deletion checking", check_deletion} */
+      {"Check uninitialized descriptor", scenario_check_uninitialized}/*	,
+        							   {"Contents checking", scenario_check_contents},
+        							   {"Deletion checking", scenario_check_deletion} */
   };
 
   return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
@@ -103,7 +105,7 @@ load_list (dclist_t * list, size_t elements)
  * Check lists contents
  */
 static int
-check_contents (size_t elements)
+scenario_check_contents (size_t elements)
 {
     /* THIS FUNCTION IS NOT FINISHED YET */
   int *item;			/* Item to grab from the list */
@@ -159,7 +161,7 @@ check_contents (size_t elements)
  * Checks the deletion of items of the list
  */
 static int
-check_deletion (size_t elements)
+scenario_check_deletion (size_t elements)
 {
     /* THIS FUNCTION IS NOT FINISHED YET */
     
@@ -230,7 +232,7 @@ check_deletion (size_t elements)
 }
 
 static int
-check_uninitialized (size_t elements)
+scenario_check_uninitialized (size_t elements)
 {
   int rc;
   int test_status = 0x0;
