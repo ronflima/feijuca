@@ -23,8 +23,8 @@
  Description: Interfaces and datatypes for deques (Double Ended QUEue)
 
  CVS Information
- $Author: daniel_csoares $
- $Id: deque.h,v 1.1 2005-07-28 12:19:44 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: deque.h,v 1.2 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #ifndef DEQUE_H
@@ -36,9 +36,21 @@
 
 GABEGINDECLS
 /*
+ * Constants
+ */
+enum 
+{
+  GA_DEQUE_SIGNATURE = 0xD00DBEEFu
+};
+
+/*
  * Datatypes
  */
-typedef dlist_t deque_t;
+typedef struct deque_t 
+{ 
+  ga_magic_t signature_;
+  dlist_t list_;
+} deque_t;
 
 /*
  * Prototypes

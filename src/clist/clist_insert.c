@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_insert.c,v 1.10 2005-07-04 00:30:46 ron_lima Exp $
+ $Id: clist_insert.c,v 1.11 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,42 +32,42 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.10 2005-07-04 00:30:46 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.11 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 clist_insert (clist_t * clist, const void *data)
 {
-  clist_element_t *element;
+  list_element_t *element;
 
   assert (clist != NULL);
-  CHECK_SIGNATURE (clist, GA_LIST_SIGNATURE);
+  CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
 
   /* Allocates memory for the new element */
-  element = (clist_element_t *) malloc (sizeof (clist_element_t));
+  element = (list_element_t *) malloc (sizeof (list_element_t));
   assert (element != NULL);
-  if (!element)
+  if (element == NULL)
     {
       return EGANOMEM;
     }
   element->data_ = (void *) data;
-  element->next_ = (clist_element_t *) NULL;
+  element->next_ = (list_element_t *) NULL;
   /* Check the size of the list */
-  if (!clist->size_)
+  if (clist->list_.size_ == 0x0)
     {
       /* This is the head of the list */
-      clist->head_ = element;
-      clist->tail_ = element;
+      clist->list_.head_ = element;
+      clist->list_.tail_ = element;
     }
   else
     {
       /* Insert at the end */
-      clist->tail_->next_ = element;
-      clist->tail_ = element;
+      clist->list_.tail_->next_ = element;
+      clist->list_.tail_ = element;
     }
   /* Makes the circular link in the list */
-  clist->tail_->next_ = clist->head_;
-  clist->curr_ = element;
-  clist->size_++;
+  clist->list_.tail_->next_ = clist->list_.head_;
+  clist->list_.curr_ = element;
+  clist->list_.size_++;
 
   return 0x0;
 }

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.h,v 1.11 2005-02-19 16:47:30 ron_lima Exp $
+ $Id: clist.h,v 1.12 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #ifndef CLIST_H
@@ -36,11 +36,22 @@
 
 GABEGINDECLS
 /*
+ * Constants
+ */
+enum
+{
+  GA_CLIST_SIGNATURE=(ga_magic_t)0xB00BD00Du
+};
+
+/*
  * Datatypes
  */
 /* Abstraction for the list descriptor */
-typedef list_element_t clist_element_t;	/* List element */
-typedef list_t clist_t;         /* List descriptor */
+typedef struct clist_t
+{
+  ga_magic_t signature_;
+  list_t list_;
+} clist_t;
 
 /*
  * Prototypes

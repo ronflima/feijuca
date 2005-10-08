@@ -25,20 +25,20 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_destroy.c,v 1.2 2005-07-04 00:30:46 ron_lima Exp $
+ $Id: clist_destroy.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.2 2005-07-04 00:30:46 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 clist_destroy (clist_t * clist)
 {
   assert (clist != NULL);
 
-  /* Just calls the list free function */
-  return list_destroy ((list_t *) clist);
+  CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
+  return list_destroy (&clist->list_);
 }

@@ -24,14 +24,14 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_init.c,v 1.2 2005-07-04 00:30:46 ron_lima Exp $
+ $Id: clist_init.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.2 2005-07-04 00:30:46 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 clist_init (clist_t * clist, deallocator_t * dealloc)
@@ -39,6 +39,6 @@ clist_init (clist_t * clist, deallocator_t * dealloc)
   assert (clist != NULL);
   assert (dealloc != NULL);
 
-  /* Just calls the list allocation function */
-  return list_init ((list_t *) clist, dealloc);
+  clist->signature_ = GA_CLIST_SIGNATURE;
+  return list_init (&clist->list_, dealloc);
 }

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_push.c,v 1.10 2005-07-04 00:32:36 ron_lima Exp $
+ $Id: queue_push.c,v 1.11 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,13 +33,13 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.10 2005-07-04 00:32:36 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.11 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 queue_push (queue_t * queue, const void *data)
 {
   assert (queue != NULL);
+  CHECK_SIGNATURE (queue, GA_QUEUE_SIGNATURE);
 
-  /* Calls the list insert function */
-  return list_insert ((list_t *) queue, data, POS_TAIL);
+  return list_insert (&queue->list_, data, POS_TAIL);
 }

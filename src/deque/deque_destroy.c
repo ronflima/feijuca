@@ -24,8 +24,8 @@
  from the memory
 
  CVS Information
- $Author: daniel_csoares $
- $Id: deque_destroy.c,v 1.3 2005-08-23 12:58:36 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: deque_destroy.c,v 1.4 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -40,6 +40,6 @@ int
 deque_destroy (deque_t * deque)
 {
   assert (deque != NULL);
-
-  return dlist_destroy ((dlist_t *) deque);
+  CHECK_SIGNATURE (deque, GA_DEQUE_SIGNATURE);
+  return dlist_destroy (&deque->list_);
 }

@@ -23,8 +23,8 @@
  Description: Deletes an element given a position
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist_del.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dclist_del.c,v 1.2 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,36 +34,35 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_del.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_del.c,v 1.2 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
-dclist_del (dclist_t * list, void **data, position_t whence)
+dclist_del (dclist_t * dclist, void **data, position_t whence)
 {
   int rc;
-  assert (list != NULL);
+  assert (dclist != NULL);
 
-  if (list->size_ == (size_t) 0x1)
+  CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
+  if (dclist->list_.size_ == (size_t) 0x1)
     {
       /* Make list linear for deletion */
-      list->head_->prev_ = NULL;
-      list->tail_->next_ = NULL;
+      dclist->list_.head_->prev_ = NULL;
+      dclist->list_.tail_->next_ = NULL;
     }
 
-  /* Delete element at a given position */
-  rc = dlist_del ((dlist_t *) list, data, whence);
-  if (rc)
+  if ((rc = dlist_del (&dclist->list_, data, whence)) != 0x0)
     {
       return rc;
     }
 
   /* Make circular if deleted element is the head or tail */
-  if ((list->head_ != NULL) && (list->head_->prev_ == NULL))
+  if ((dclist->list_.head_ != NULL) && (dclist->list_.head_->prev_ == NULL))
     {
-      list->head_->prev_ = list->tail_;
+      dclist->list_.head_->prev_ = dclist->list_.tail_;
     }
-  if ((list->tail_ != NULL) && (list->tail_->next_ == NULL))
+  if ((dclist->list_.tail_ != NULL) && (dclist->list_.tail_->next_ == NULL))
     {
-      list->tail_->next_ = list->head_;
+      dclist->list_.tail_->next_ = dclist->list_.head_;
     }
 
   return 0x0;

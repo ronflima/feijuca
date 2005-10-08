@@ -24,37 +24,34 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_del.c,v 1.8 2005-07-04 00:30:46 ron_lima Exp $
+ $Id: clist_del.c,v 1.9 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.8 2005-07-04 00:30:46 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.9 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 clist_del (clist_t * clist, void **data)
 {
-  int rc;			/* General purpose error handling variable */
-
   assert (clist != NULL);
-  CHECK_SIGNATURE (clist, GA_LIST_SIGNATURE);
+  CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
 
   /* Check if we are deleting the head of the list */
-  if (!clist->curr_ || clist->curr_ == clist->head_)
+  if (!clist->list_.curr_ || clist->list_.curr_ == clist->list_.head_)
     {
       /* Adjusts the tail to point to the next item pass the head */
-      clist->tail_->next_ = clist->head_->next_;
+      clist->list_.tail_->next_ = clist->list_.head_->next_;
     }
   /* Check if we are currently in the tail of the list */
-  if (clist->curr_ == clist->tail_)
+  if (clist->list_.curr_ == clist->list_.tail_)
     {
       /* Adjusts the head, since the tail has as its next the head of
        * the list */
-      clist->head_ = clist->head_->next_;
+      clist->list_.head_ = clist->list_.head_->next_;
     }
 
-  rc = list_del ((list_t *) clist, data);
-  return rc;
+  return list_del (&clist->list_, data);
 }

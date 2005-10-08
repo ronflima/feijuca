@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.h,v 1.8 2005-02-19 16:47:30 ron_lima Exp $
+ $Id: queue.h,v 1.9 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #ifndef QUEUE_H
@@ -36,9 +36,21 @@
 
 GABEGINDECLS
 /*
+ * Constants
+ */
+enum
+{
+  GA_QUEUE_SIGNATURE=(ga_magic_t)0xFADEDEADu
+};
+
+/*
  * Datatypes
  */
-typedef list_t queue_t;
+typedef struct queue_t
+{
+  ga_magic_t signature_;
+  list_t list_;
+} queue_t;
 
 /*
  * Prototypes

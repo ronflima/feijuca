@@ -25,8 +25,8 @@
  circular list)
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist_init.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dclist_init.c,v 1.2 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,14 +36,14 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_init.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_init.c,v 1.2 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
-dclist_init (dclist_t * list, deallocator_t * dealloc)
+dclist_init (dclist_t * dclist, deallocator_t * dealloc)
 {
   /* Assertives for debugging purposes */
-  assert (list != NULL);
+  assert (dclist != NULL);
   assert (dealloc != NULL);
-
-  return dlist_init ((dlist_t *) list, dealloc);
+  CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
+  return dlist_init (&dclist->list_, dealloc);
 }

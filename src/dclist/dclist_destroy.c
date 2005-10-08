@@ -24,8 +24,8 @@
  from memory
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist_destroy.c,v 1.2 2005-10-07 17:52:38 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dclist_destroy.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -35,19 +35,19 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.2 2005-10-07 17:52:38 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
-dclist_destroy (dclist_t * list)
+dclist_destroy (dclist_t * dclist)
 {
-  assert (list != NULL);
-  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
+  assert (dclist != NULL);
+  CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
   
   /* Redefine last pointer to work with dlist_destroy algorithm */
-  if (descriptor_size (list))
+  if (descriptor_size (&dclist->list_))
     {
-      list->tail_->next_ = NULL;
+      dclist->list_.tail_->next_ = NULL;
     }
 
-  return dlist_destroy ((dlist_t *) list);
+  return dlist_destroy (&dclist->list_);
 }

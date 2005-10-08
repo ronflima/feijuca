@@ -23,8 +23,8 @@
  Description: Interfaces and datatypes for double-linked circular lists.
  
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist.h,v 1.1 2005-10-05 12:17:51 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dclist.h,v 1.2 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #ifndef DCLIST_H
@@ -36,9 +36,21 @@
 
 GABEGINDECLS
 /*
+ * Constants
+ */
+enum 
+{
+  GA_DCLIST_SIGNATURE = 0x5EEDDEAFu
+};
+
+/*
  * Datatypes
  */
-typedef dlist_t dclist_t;
+typedef struct dclist_t
+{
+  ga_magic_t signature_;
+  dlist_t list_;
+}dclist_t;
 
 /*
  * Prototypes

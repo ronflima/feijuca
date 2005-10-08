@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_destroy.c,v 1.2 2005-07-04 00:33:04 ron_lima Exp $
+ $Id: stack_destroy.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,12 +34,13 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_destroy.c,v 1.2 2005-07-04 00:33:04 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack_destroy.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 stack_destroy (stack_t * stack)
 {
   assert (stack != NULL);
-
-  return list_destroy ((list_t *) stack);
+  CHECK_SIGNATURE (stack, GA_STACK_SIGNATURE);
+  stack->signature_ = 0x0;
+  return list_destroy (&stack->list_);
 }

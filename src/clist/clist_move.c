@@ -25,20 +25,20 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist_move.c,v 1.6 2005-07-04 00:30:46 ron_lima Exp $
+ $Id: clist_move.c,v 1.7 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_move.c,v 1.6 2005-07-04 00:30:46 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_move.c,v 1.7 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 clist_move (clist_t * clist, position_t whence)
 {
   assert (clist != NULL);
 
-  /* Just calls the linked list move function */
-  return list_move ((list_t *) clist, whence);
+  CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
+  return list_move (&clist->list_, whence);
 }

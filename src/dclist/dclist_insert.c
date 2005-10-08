@@ -23,8 +23,8 @@
  Description: Inserts a new element in the dclist given a position
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist_insert.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dclist_insert.c,v 1.2 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -34,29 +34,28 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.1 2005-10-05 12:19:19 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.2 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
-dclist_insert (dclist_t * list, const void *data, position_t whence)
+dclist_insert (dclist_t * dclist, const void *data, position_t whence)
 {
   int rc;
-  assert (list != NULL);
+  assert (dclist != NULL);
 
   /* Insert a element at a given position */
-  rc = dlist_insert ((dlist_t *) list, data, whence);
-  if (rc)
+  if ((rc = dlist_insert (&dclist->list_, data, whence)) != 0x0)
     {
       return rc;
     }
 
   /* Make list circular if insertion was done one head or tail */
-  if (list->head_->prev_ != list->tail_)
+  if (dclist->list_.head_->prev_ != dclist->list_.tail_)
     {
-      list->head_->prev_ = list->tail_;
+      dclist->list_.head_->prev_ = dclist->list_.tail_;
     }
-  if (list->tail_->next_ != list->head_)
+  if (dclist->list_.tail_->next_ != dclist->list_.head_)
     {
-      list->tail_->next_ = list->head_;
+      dclist->list_.tail_->next_ = dclist->list_.head_;
     }
 
   return 0x0;

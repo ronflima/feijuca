@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack_init.c,v 1.2 2005-07-04 00:33:04 ron_lima Exp $
+ $Id: stack_init.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,13 +33,13 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_init.c,v 1.2 2005-07-04 00:33:04 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack_init.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 stack_init (stack_t * stack, deallocator_t * dealloc)
 {
   assert (stack != NULL);
   assert (dealloc != NULL);
-
-  return list_init ((list_t *) stack, dealloc);
+  stack->signature_ = GA_STACK_SIGNATURE;
+  return list_init (&stack->list_, dealloc);
 }

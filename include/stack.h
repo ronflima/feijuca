@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: stack.h,v 1.9 2005-02-19 16:47:30 ron_lima Exp $
+ $Id: stack.h,v 1.10 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #ifndef STACK_H
@@ -35,10 +35,23 @@
 #include "list.h"
 
 GABEGINDECLS
+
+/*
+ * Constants
+ */
+enum
+{
+  GA_STACK_SIGNATURE=(ga_magic_t)0xFADEBAD5u
+};
+
 /*
  * Datatypes
  */
-typedef list_t stack_t;
+typedef struct stack_t
+{
+  ga_magic_t signature_;
+  list_t list_;
+} stack_t;
 
 /*
  * Prototypes

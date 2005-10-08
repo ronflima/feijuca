@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue_init.c,v 1.2 2005-07-04 00:32:36 ron_lima Exp $
+ $Id: queue_init.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,13 +33,13 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.2 2005-07-04 00:32:36 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.3 2005-10-08 20:25:00 ron_lima Exp $";
 
 int
 queue_init (queue_t * queue, deallocator_t * dealloc)
 {
   assert (queue != NULL);
   assert (dealloc != NULL);
-
-  return list_init ((list_t *) queue, dealloc);
+  queue->signature_ = GA_QUEUE_SIGNATURE;
+  return list_init (&queue->list_, dealloc);
 }

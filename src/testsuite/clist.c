@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: clist.c,v 1.8 2005-09-17 13:13:38 ron_lima Exp $
+ $Id: clist.c,v 1.9 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.8 2005-09-17 13:13:38 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.9 2005-10-08 20:25:00 ron_lima Exp $";
 
 /*
  * Local macros
@@ -150,7 +150,7 @@ check_navigation (size_t maxelem)
       int i = 0x1;
       do 
         {
-          if (clist.curr_ == clist.tail_)
+          if (clist.list_.curr_ == clist.list_.tail_)
             {
               break;
             }
@@ -162,7 +162,7 @@ check_navigation (size_t maxelem)
           ERROR (TEST, "CList navigation failed", rc);
           test_result = EFAILED;
         }
-      if (i != descriptor_size (&clist))
+      if (i != descriptor_size (&clist.list_))
         {
           ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
           test_result = EFAILED;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: queue.c,v 1.8 2005-09-10 17:10:00 ron_lima Exp $
+ $Id: queue.c,v 1.9 2005-10-08 20:25:00 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "queue.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue.c,v 1.8 2005-09-10 17:10:00 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.9 2005-10-08 20:25:00 ron_lima Exp $";
 
 /*
  * Local macros
@@ -109,7 +109,7 @@ test_queue_push (size_t maxelem)
       ERROR (TEST, "load_queue", rc);
       test_result = EFAILED;
     }
-  if (descriptor_size(&queue) != maxelem)
+  if (descriptor_size(&queue.list_) != maxelem)
     {
       ERROR (TEST, "# of queued elements mismatch", ECKFAIL);
       test_result = EFAILED;
