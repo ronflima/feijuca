@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.h,v 1.18 2005-08-29 10:36:42 ron_lima Exp $
+ $Id: ivector.h,v 1.19 2005-10-14 09:51:49 ron_lima Exp $
 */
 
 #ifndef IVECTOR_H
@@ -56,7 +56,6 @@ typedef struct ivector_t
   size_t chunksused_;           /* Chunks used */
   size_t elemused_;             /* Elements used in chunk */
   compare_t *comp_;		/* Comparison function */
-  deallocator_t *dealloc_;	/* Deallocation function */
   ga_magic_t signature_;        /* Signature of the descriptor */
 }
 ivector_t;
@@ -64,7 +63,7 @@ ivector_t;
 /*
  * Prototypes
  */
-int (ivector_init) __P ((ivector_t *, compare_t *, deallocator_t *, size_t));
+int (ivector_init) __P ((ivector_t *, compare_t *, size_t));
 int (ivector_destroy) __P ((ivector_t *));
 int (ivector_get) __P ((ivector_t *, void **, size_t));
 int (ivector_put) __P ((ivector_t *, size_t, const void *));
