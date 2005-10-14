@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_destroy.c,v 1.4 2005-08-29 10:42:14 ron_lima Exp $
+ $Id: ivector_destroy.c,v 1.5 2005-10-14 09:56:17 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,26 +32,13 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_destroy.c,v 1.4 2005-08-29 10:42:14 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_destroy.c,v 1.5 2005-10-14 09:56:17 ron_lima Exp $";
 
 int
 ivector_destroy (ivector_t * vector)
 {
   assert (vector != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
-  
-  if (vector->dealloc_ != NULL)
-    {
-      void *item;		/* Item of the vector list */
-
-      item = vector->data_;
-
-      while ((char *) item - (char *) vector->data_ < vector->size_)
-        {
-          vector->dealloc_ (item);
-          item = (void *) ((char *) item + vector->datalen_);
-        }
-    }
   free (vector->data_);
   vector->signature_ = (ga_magic_t) 0x0;
   
