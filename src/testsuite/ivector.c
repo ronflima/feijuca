@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector.c,v 1.11 2005-09-25 20:37:27 ron_lima Exp $
+ $Id: ivector.c,v 1.12 2005-10-14 09:59:36 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector.c,v 1.11 2005-09-25 20:37:27 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector.c,v 1.12 2005-10-14 09:59:36 ron_lima Exp $";
 
 /*
  * Local constants
@@ -122,7 +122,7 @@ check_del (size_t maxelem)
 
   status = 0x0;
 
-  if ((rc = ivector_init (&ivector, compare, NULL, sizeof (int))) != 0x0)
+  if ((rc = ivector_init (&ivector, compare, sizeof (int))) != 0x0)
     {
       ERROR (TEST, "ivector_init", rc);
       status = EFAILED;
