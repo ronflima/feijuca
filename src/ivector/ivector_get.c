@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_get.c,v 1.12 2005-08-29 10:42:37 ron_lima Exp $
+ $Id: ivector_get.c,v 1.13 2005-10-14 09:57:23 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,14 +33,18 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_get.c,v 1.12 2005-08-29 10:42:37 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_get.c,v 1.13 2005-10-14 09:57:23 ron_lima Exp $";
 
 int
 ivector_get (ivector_t * vector, void **data, size_t idx)
 {
   assert (vector != NULL);
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);  
-  
+
+  if (data == NULL) 
+    {
+      return EGAINVAL;
+    }  
   if ((idx < 0x0u) || (idx >= vector->size_))
     {
       *data = NULL;
