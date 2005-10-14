@@ -24,8 +24,8 @@
               example on how to use the dclists routines
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist.c,v 1.2 2005-10-07 17:54:26 daniel_csoares Exp $
+ $Author: ron_lima $
+ $Id: dclist.c,v 1.3 2005-10-14 10:00:24 ron_lima Exp $
 */
 
 #include <stdio.h>
@@ -35,7 +35,7 @@
 #include "dclist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist.c,v 1.2 2005-10-07 17:54:26 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist.c,v 1.3 2005-10-14 10:00:24 ron_lima Exp $";
 
 /*
  * Local macros
@@ -125,7 +125,7 @@ scenario_check_contents (size_t elements)
           return EFAILED;
         }
       position = position == POS_HEAD ? POS_NEXT : POS_PREV;
-      while (rc == 0x0 && i != descriptor_size (list))
+      while (rc == 0x0 && i != descriptor_size (&list->list_))
         {
           /* Gets the current item of the list and goes to the next */
           rc = dclist_get (list, (void **) &item, position);
@@ -223,7 +223,7 @@ scenario_check_deletion (size_t elements)
       return EFAILED;
     }
   ++deleted;
-  if ((elements - deleted) != descriptor_size (list))
+  if ((elements - deleted) != descriptor_size (&list->list_))
     {
       ERROR (TEST, "Number of elements mismatch for deletion", ECKFAIL);
       return EFAILED;
@@ -284,7 +284,7 @@ print_list (dclist_t * list)
     {
       return;
     }
-  for (i = 0; i < descriptor_size (list); i++)
+  for (i = 0; i < descriptor_size (&list->list_); i++)
     {
       rc = dclist_get (list, (void **)&item, POS_CURR);
       if (rc)
