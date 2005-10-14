@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: ivector_add.c,v 1.13 2005-08-29 10:39:19 ron_lima Exp $
+ $Id: ivector_add.c,v 1.14 2005-10-14 09:54:07 ron_lima Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.13 2005-08-29 10:39:19 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.14 2005-10-14 09:54:07 ron_lima Exp $";
 
 int
 ivector_add (ivector_t * vector, const void *data)
@@ -50,7 +50,7 @@ ivector_add (ivector_t * vector, const void *data)
       v = realloc (vector->data_, vector->datalen_ 
                    * (vector->size_  + vector->chunksize_));
       assert (v != NULL);
-      if (!v)
+      if (v == NULL)
         {
           return EGANOMEM;
         }
