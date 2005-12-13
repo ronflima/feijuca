@@ -27,7 +27,7 @@
 
  CVS Information
  $Author: ron_lima $
- $Id: testsuite.c,v 1.19 2005-12-13 10:18:53 ron_lima Exp $
+ $Id: testsuite.c,v 1.20 2005-12-13 10:25:57 ron_lima Exp $
 */
 
 /*
@@ -41,7 +41,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: testsuite.c,v 1.19 2005-12-13 10:18:53 ron_lima Exp $";
+  "@(#) $Id: testsuite.c,v 1.20 2005-12-13 10:25:57 ron_lima Exp $";
 
 /*
  * Local functions prototypes
@@ -82,7 +82,7 @@ main (int argc, char **argv)
   printf
     ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
   printf ("Several parts written by Daniel Costa Soares\n");
-  printf ("This software is licensed under the Gnu Public License\n\n");
+  printf ("This software is licensed under the Gnu Lesser Public License\n\n");
 
   /* Parses the command line */
   if (rc = cmdline_parse (&cmdline, argc, (const char **) argv))
