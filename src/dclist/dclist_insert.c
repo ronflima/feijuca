@@ -25,8 +25,8 @@
  Description: Inserts a new element in the dclist given a position
 
  CVS Information
- $Author: ron_lima $
- $Id: dclist_insert.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dclist_insert.c,v 1.4 2006-01-11 10:18:21 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
@@ -36,13 +36,20 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.4 2006-01-11 10:18:21 harq_al_ada Exp $";
 
 int
 dclist_insert (dclist_t * dclist, const void *data, position_t whence)
 {
   int rc;
+
   assert (dclist != NULL);
+  if (dclist == NULL)
+    {
+      return EGAINVAL;
+    }
+
+  CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
 
   /* Insert a element at a given position */
   if ((rc = dlist_insert (&dclist->list_, data, whence)) != 0x0)
