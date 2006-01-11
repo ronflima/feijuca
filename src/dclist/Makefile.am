@@ -22,13 +22,14 @@
 # library
 # Project: G.A. Library
 # Author: Daniel Costa Soares <daniel_csoares@yahoo.com.br>
-# $Id: Makefile.am,v 1.2 2005-12-13 10:18:52 ron_lima Exp $
+# $Id: Makefile.am,v 1.3 2006-01-11 10:15:56 harq_al_ada Exp $
 noinst_LTLIBRARIES = libdclist.la
-libdclist_la_SOURCES = dclist_init.c				\
-                      dclist_del.c					\
-                      dclist_destroy.c				\
-                      dclist_get.c					\
-                      dclist_insert.c				\
-                      dclist_move.c					\
+libdclist_la_SOURCES = dclist_init.c			\
+                      dclist_del.c				\
+                      dclist_destroy.c			\
+                      dclist_get.c				\
+                      dclist_insert.c			\
+                      dclist_move.c				\
+	                  dclist_size.c				\
 			          ../../include/dclist.h
 INCLUDES=-I../../include/
