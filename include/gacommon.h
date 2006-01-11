@@ -24,8 +24,8 @@
  directly by your application.
 
  CVS Information
- $Author: ron_lima $
- $Id: gacommon.h,v 1.25 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: gacommon.h,v 1.26 2006-01-11 10:09:42 harq_al_ada Exp $
 */
 
 #ifndef GACOMMON_H
@@ -54,8 +54,6 @@ GABEGINDECLS
 #endif
 #endif
 
-/* Simple information getters */
-#define descriptor_size(list) (list)->size_
 /* In-line code for signature checking */
 #define CHECK_SIGNATURE(descriptor, signature) \
 if (descriptor->signature_!= signature) return EGAINVAL
