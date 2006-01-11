@@ -26,8 +26,8 @@
  next one
 
  CVS Information
- $Author: ron_lima $
- $Id: dclist_get.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dclist_get.c,v 1.4 2006-01-11 10:17:21 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -37,13 +37,17 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_get.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_get.c,v 1.4 2006-01-11 10:17:21 harq_al_ada Exp $";
 
 int
 dclist_get (dclist_t * dclist, void **data, position_t whence)
 {
   assert (dclist != NULL);
   assert (data != NULL);
+  if (dclist == NULL || data == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
   return dlist_get (&dclist->list_, data, whence);
 }
