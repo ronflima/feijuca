@@ -22,7 +22,7 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.4 2005-12-13 10:18:52 ron_lima Exp $
+# $Id: Makefile.am,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
 noinst_LTLIBRARIES = libivector.la
 libivector_la_SOURCES = ../../include/ivector.h	\
                         ivector_add.c			\
@@ -32,5 +32,6 @@ libivector_la_SOURCES = ../../include/ivector.h	\
                         ivector_get.c			\
                         ivector_put.c			\
                         ivector_qsort.c			\
+	                    ivector_size.c 			\
                         ivector_del.c
 INCLUDES=-I../../include/

@@ -22,8 +22,8 @@
  Description: Test suite routines for queues.
 
  CVS Information
- $Author: ron_lima $
- $Id: queue.c,v 1.10 2005-12-13 10:18:53 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: queue.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "queue.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue.c,v 1.10 2005-12-13 10:18:53 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -97,6 +97,7 @@ test_queue_push (size_t maxelem)
   int rc;
   int test_result = 0x0;
   queue_t queue;
+  size_t size;
 
   if ((rc = queue_init (&queue, free)) != 0x0)
     {
@@ -108,7 +109,12 @@ test_queue_push (size_t maxelem)
       ERROR (TEST, "load_queue", rc);
       test_result = EFAILED;
     }
-  if (descriptor_size(&queue.list_) != maxelem)
+  if ((rc = queue_size (&queue, &size)) != 0x0)
+    {
+      ERROR (TEST, "queue_size", ECKFAIL);
+      test_result = EFAILED;
+    }
+  if (size != maxelem)
     {
       ERROR (TEST, "# of queued elements mismatch", ECKFAIL);
       test_result = EFAILED;

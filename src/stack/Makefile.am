@@ -22,11 +22,12 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.4 2005-12-13 10:18:52 ron_lima Exp $
+# $Id: Makefile.am,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
 noinst_LTLIBRARIES = libstack.la
 libstack_la_SOURCES = stack_init.c				\
                       stack_pop.c				\
                       stack_destroy.c			\
                       stack_push.c				\
+	                  stack_size.c				\
                       ../../include/stack.h
 INCLUDES=-I../../include/

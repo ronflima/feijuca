@@ -24,8 +24,8 @@
  next one
 
  CVS Information
- $Author: ron_lima $
- $Id: list_get.c,v 1.15 2005-07-04 00:32:10 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list_get.c,v 1.16 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.15 2005-07-04 00:32:10 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.16 2006-01-11 10:21:39 harq_al_ada Exp $"; 
 
 int
 list_get (list_t * list, void **data, position_t whence)
@@ -43,7 +43,7 @@ list_get (list_t * list, void **data, position_t whence)
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
   /* Checks if the current element points to a valid address */
-  if (!list->curr_)
+  if (list->curr_ == NULL)
     {
       return EOF;
     }

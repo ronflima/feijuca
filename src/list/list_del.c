@@ -24,7 +24,7 @@
 
   Description: Deletes the next element pointed by element
 
- CVS Information $Author: ron_lima $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
+ CVS Information $Author: harq_al_ada $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
  ron_lima Exp $
  */
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.18 2005-07-04 00:32:10 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.19 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 int
 list_del (list_t * list, void **data)
@@ -51,7 +51,7 @@ list_del (list_t * list, void **data)
       *data = (void *) NULL;
     }
   /* Sanity check: Will not delete an element if the list is empty */
-  if (!list->size_)
+  if (list->size_ == 0x0u)
     {
       return EOF;
     }

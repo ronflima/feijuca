@@ -23,8 +23,8 @@
               an example on how to use the lists routines
 
  CVS Information
- $Author: ron_lima $
- $Id: clist.c,v 1.10 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: clist.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.10 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -126,6 +126,7 @@ check_navigation (size_t maxelem)
   clist_t clist;
   int rc;
   int test_result;
+  size_t size;
 
   test_result = 0x0;
 
@@ -161,7 +162,8 @@ check_navigation (size_t maxelem)
           ERROR (TEST, "CList navigation failed", rc);
           test_result = EFAILED;
         }
-      if (i != descriptor_size (&clist.list_))
+      clist_size (&clist, &size);
+      if (i != size)
         {
           ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
           test_result = EFAILED;

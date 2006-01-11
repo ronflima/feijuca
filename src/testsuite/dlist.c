@@ -23,8 +23,8 @@
               example on how to use the lists routines
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist.c,v 1.17 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist.c,v 1.18 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.17 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.18 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -149,6 +149,7 @@ scenario_check_forward_nav (size_t maxelem)
   else 
     {
       register int i;
+      size_t size;
 
       i = 0x0;
       do
@@ -165,7 +166,12 @@ scenario_check_forward_nav (size_t maxelem)
             }
         }
       while (rc == 0x0);
-      if (i != descriptor_size (&dlist))
+      if ((rc = dlist_size (&dlist, &size)) != 0x0)
+        {
+          ERROR (TEST, "dlist_size", ECKFAIL);
+          status = EFAILED;
+        }
+      if (i != size)
         {
           ERROR (TEST, "# of elements mismatch", ECKFAIL);
           status = EFAILED;
@@ -228,7 +234,6 @@ scenario_check_deletions (size_t maxelem)
   int status;
   dlist_t dlist;
 
-
   status = 0x0;
   if ((rc = dlist_init (&dlist, free)) != 0x0)
     {
@@ -260,12 +265,19 @@ scenario_check_deletions (size_t maxelem)
       else 
         {
           register int i;
+          size_t size;
+
           i = 0x0;
           while ((rc = dlist_move (&dlist, POS_NEXT)) == 0x0)
             {
               ++i;
             }
-          if (i != descriptor_size (&dlist))
+          if ((rc = dlist_size (&dlist, &size)) != 0x0)
+            {
+              ERROR (TEST, "dlist_size", ECKFAIL);
+              status = EFAILED;
+            }
+          if (i != size)
             {
               ERROR (TEST, "Number of items mismatch", ECKFAIL);
               status = EFAILED;
@@ -307,12 +319,19 @@ scenario_check_back_nav (size_t maxelem)
   else 
     {
       register int i;
+      size_t size;
+
       i = 0x0;
       while ((rc = dlist_move (&dlist, POS_PREV)) == 0x0)
         {
           ++i;
         }
-      if (i != descriptor_size (&dlist))
+      if ((rc = dlist_size (&dlist, &size)) != 0x0)
+        {
+          ERROR (TEST, "dlist_size", ECKFAIL);
+          status = EFAILED;
+        }
+      if (i != size)
         {
           ERROR (TEST, "Number of items mismatch", ECKFAIL);
           status = EFAILED;

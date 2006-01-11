@@ -23,8 +23,8 @@
               example on how to use the lists routines
 
  CVS Information
- $Author: ron_lima $
- $Id: list.c,v 1.21 2005-12-13 10:18:53 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list.c,v 1.22 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.21 2005-12-13 10:18:53 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.22 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -242,10 +242,20 @@ check_deletion (size_t elements)
           ERROR (TEST, "list_del - tail deletion", rc);
           test_status = EFAILED;
         }
-      else if ((elements - deleted) != descriptor_size (&list))
+      else 
         {
-          ERROR (TEST, "Number of elements mismatch", ECKFAIL);
-          test_status = EFAILED;
+          size_t size;
+
+          if ((rc = list_size (&list, &size)) != 0x0)
+            {
+              ERROR (TEST, "list_size", ECKFAIL);
+              test_status = EFAILED;
+            }
+          if ((elements - deleted) != size)
+            {
+              ERROR (TEST, "Number of elements mismatch", ECKFAIL);
+              test_status = EFAILED;
+            }
         }
     }
   if ((rc = list_destroy (&list)) != 0x0)

@@ -24,15 +24,15 @@
  the list
 
  CVS Information
- $Author: ron_lima $
- $Id: list_move.c,v 1.16 2005-07-04 00:32:10 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list_move.c,v 1.17 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.16 2005-07-04 00:32:10 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.17 2006-01-11 10:21:39 harq_al_ada Exp $"; 
 
 int
 list_move (list_t * list, position_t whence)
@@ -50,7 +50,7 @@ list_move (list_t * list, position_t whence)
       list->curr_ = list->tail_;
       break;
     case POS_NEXT:              /* Goes to the next element */
-      if (list->curr_)
+      if (list->curr_ != NULL)
         {
           list->curr_ = list->curr_->next_;
         }

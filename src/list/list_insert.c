@@ -23,8 +23,8 @@
  Description: Inserts a new element in the list
 
  CVS Information
- $Author: ron_lima $
- $Id: list_insert.c,v 1.17 2005-07-04 00:32:10 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list_insert.c,v 1.18 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.17 2005-07-04 00:32:10 ron_lima Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.18 2006-01-11 10:21:39 harq_al_ada Exp $"; 
 
 int
 list_insert (list_t * list, const void *data, position_t whence)
@@ -43,6 +43,11 @@ list_insert (list_t * list, const void *data, position_t whence)
   assert (data != NULL);
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
+  /* Simple sanity check */
+  if (list == NULL)
+    {
+      return EGAINVAL;
+    }
   /* Check if the whence argument is acceptable */
   if (whence != POS_HEAD && whence != POS_CURR && whence != POS_TAIL)
     {
@@ -60,7 +65,7 @@ list_insert (list_t * list, const void *data, position_t whence)
   element->data_ = (void *) data;
   element->next_ = (list_element_t *) NULL;
   /* Check the size of the list */
-  if (!list->size_)
+  if (list->size_ == 0x0u)
     {
       /* The list is empty. Sets the head and tail to point to the
          element */
@@ -76,7 +81,7 @@ list_insert (list_t * list, const void *data, position_t whence)
           list->head_ = element;
           break;
         case POS_NEXT: /* Insert at the current position */
-          if (list->curr_)
+          if (list->curr_ != NULL)
             {
               /* Adds the new item after the current element */
               element->next_ = list->curr_->next_;

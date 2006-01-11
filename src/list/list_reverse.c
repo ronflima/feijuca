@@ -23,8 +23,8 @@
  Description: Reverses the list using a moving window algorithm
 
  CVS Information
- $Author: ron_lima $
- $Id: list_reverse.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list_reverse.c,v 1.4 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $";
+  "@(#) $Id: list_reverse.c,v 1.4 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 int
 list_reverse (list_t * list)
@@ -44,7 +44,7 @@ list_reverse (list_t * list)
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
   /* Check if the list is empty or have enough information to reverse */
-  if (descriptor_size (list) < 2)               
+  if (list->size_ < 0x2u)               
     {
       return EOF;
     }           
@@ -71,7 +71,7 @@ list_reverse (list_t * list)
       first = middle;
       middle = last;
     }
-  while (middle);
+  while (middle != NULL);
   /* Adjusts the tail of the list */
   list->tail_->next_ = NULL;
 

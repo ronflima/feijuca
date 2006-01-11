@@ -24,8 +24,8 @@
  from memory
 
  CVS Information
- $Author: ron_lima $
- $Id: list_destroy.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list_destroy.c,v 1.4 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.4 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 int
 list_destroy (list_t * list)
@@ -44,11 +44,11 @@ list_destroy (list_t * list)
   /* Makes the current pointer pointing to nowhere. It will force list_del to
      delete always from the head of the list */
   list->curr_ = NULL;
+
   /* Proceeds with the deletion */
-  while (descriptor_size (list))
-    {
-      list_del (list, NULL);
-    }
+  while (list_del (list, NULL) == 0x0)
+    ;
+
   /* Invalidates the descriptor signature */
   list->signature_ = (ga_magic_t)0x0;
   

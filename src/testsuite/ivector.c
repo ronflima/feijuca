@@ -23,8 +23,8 @@
               an example on how to use the lists routines
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector.c,v 1.13 2005-12-13 10:18:53 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: ivector.c,v 1.14 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector.c,v 1.13 2005-12-13 10:18:53 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector.c,v 1.14 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 /*
  * Local constants
@@ -134,6 +134,8 @@ check_del (size_t maxelem)
   else 
     {
       register size_t i;
+      size_t size;
+
       for (i = 0; (i < maxelem / 2) && (status != EFAILED); ++i)
         {
           if ((rc = ivector_del (&ivector, i)) != 0x0)
@@ -142,7 +144,12 @@ check_del (size_t maxelem)
               status = EFAILED;
             }
         }
-      if (descriptor_size (&ivector) != (maxelem / 2))
+      if ((rc = ivector_size (&ivector, &size)) != 0x0)
+        {
+          ERROR (TEST, "ivector_size", ECKFAIL);
+          status = EFAILED;
+        }
+      if (size != (maxelem / 2))
         {
           ERROR (TEST, "number of elements mismatch", ECKFAIL);
           status = EFAILED;

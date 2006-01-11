@@ -23,8 +23,8 @@
  Description: Allocates and initializes the list
 
  CVS Information
- $Author: ron_lima $
- $Id: list_init.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list_init.c,v 1.4 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_init.c,v 1.3 2005-07-04 00:32:10 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: list_init.c,v 1.4 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 int
 list_init (list_t * list, deallocator_t * dealloc)
@@ -41,7 +41,7 @@ list_init (list_t * list, deallocator_t * dealloc)
   assert (dealloc != NULL);
 
   /* The deallocator must be always provided */
-  if (!dealloc)
+  if (list == NULL || dealloc == NULL)
     {
       return EGAINVAL;
     }

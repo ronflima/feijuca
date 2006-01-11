@@ -2,6 +2,8 @@
  G.A. Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
+ Contributed code by Daniel Costa Soares <daniel_csoares@yahoo.com.br>
+
  This library is free software; you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as
  published by the Free Software Foundation; either version 2.1 of the
@@ -23,8 +25,8 @@
               example on how to use the dclists routines
 
  CVS Information
- $Author: ron_lima $
- $Id: dclist.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dclist.c,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +36,7 @@
 #include "dclist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: dclist.c,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -113,6 +115,7 @@ scenario_check_contents (size_t elements)
   unsigned cksum[2] = { 0x0u, 0x0u };	/* Checksum for data validation */
   int c = 0x0;
   dclist_t * list;
+  size_t size;
   while (position != POS_PREV)
     {
       register int i = 0x0;	/* General iterator */
@@ -124,8 +127,12 @@ scenario_check_contents (size_t elements)
           return EFAILED;
         }
       position = position == POS_HEAD ? POS_NEXT : POS_PREV;
-      while (rc == 0x0 && i != descriptor_size (&list->list_))
+      while (rc == 0x0)
         {
+          size_t size;
+          dclist_size (list, &size);
+          if (i == size)
+            break;
           /* Gets the current item of the list and goes to the next */
           rc = dclist_get (list, (void **) &item, position);
           if (rc > 0x0)
@@ -169,6 +176,7 @@ scenario_check_deletion (size_t elements)
   int rc;			/* General error handling variable */
   register int i;		/* A simple iterator */
   dclist_t * list;
+  size_t size;
   
   /* Initializations */
   deleted = 0x0;
@@ -222,7 +230,12 @@ scenario_check_deletion (size_t elements)
       return EFAILED;
     }
   ++deleted;
-  if ((elements - deleted) != descriptor_size (&list->list_))
+  if ((rc = dclist_size (list, &size)) != 0x0)
+    {
+      ERROR (TEST, "dclist_size", ECKFAIL);
+      return EFAILED;
+    }
+  if ((elements - deleted) != size)
     {
       ERROR (TEST, "Number of elements mismatch for deletion", ECKFAIL);
       return EFAILED;
@@ -277,13 +290,19 @@ print_list (dclist_t * list)
   int i;
   int rc;
   int *item;
+  size_t size;
   /* Move to the begining */
   rc = dclist_move (list, POS_HEAD);
   if (rc)
     {
       return;
     }
-  for (i = 0; i < descriptor_size (&list->list_); i++)
+  if ((rc = dclist_size (list, &size)) != 0x0)
+    {
+      ERROR (TEST, "dclist_size", ECKFAIL);
+      return;
+    }
+  for (i = 0; i < size; i++)
     {
       rc = dclist_get (list, (void **)&item, POS_CURR);
       if (rc)
