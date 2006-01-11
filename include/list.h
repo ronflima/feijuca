@@ -22,14 +22,14 @@
  Description: Interfaces and datatypes for single linked lists
 
  CVS Information
- $Author: ron_lima $
- $Id: list.h,v 1.21 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: list.h,v 1.22 2006-01-11 10:13:33 harq_al_ada Exp $
 */
 
 #ifndef LIST_H
 #define LIST_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 
 GABEGINDECLS
@@ -74,6 +74,7 @@ int (list_insert) __P ((list_t *, const void *, position_t));
 int (list_move) __P ((list_t *, position_t));
 int (list_del) __P ((list_t *, void **));
 int (list_reverse) __P((list_t *));
+int (list_size) __P((list_t *, size_t *));
 
 GAENDDECLS
 #endif /* LIST_H */
