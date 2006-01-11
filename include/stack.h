@@ -22,14 +22,14 @@
  Description: Interfaces and datatypes for stacks
 
  CVS Information
- $Author: ron_lima $
- $Id: stack.h,v 1.11 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: stack.h,v 1.12 2006-01-11 10:15:01 harq_al_ada Exp $
 */
 
 #ifndef STACK_H
 #define STACK_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 #include "list.h"
 
@@ -59,6 +59,7 @@ int (stack_init) __P ((stack_t *, deallocator_t *));
 int (stack_destroy) __P ((stack_t *));
 int (stack_pop) __P ((stack_t *, void **));
 int (stack_push) __P ((stack_t *, const void *));
+int (stack_size) __P((stack_t *, size_t *));
 
 GAENDDECLS
 #endif /* STACK_H */
