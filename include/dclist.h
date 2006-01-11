@@ -23,14 +23,14 @@
  Description: Interfaces and datatypes for double-linked circular lists.
  
  CVS Information
- $Author: ron_lima $
- $Id: dclist.h,v 1.3 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dclist.h,v 1.4 2006-01-11 10:05:53 harq_al_ada Exp $
 */
 
 #ifndef DCLIST_H
 #define DCLIST_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 #include "dlist.h"
 
@@ -61,6 +61,7 @@ int (dclist_get) __P ((dclist_t *, void **, position_t));
 int (dclist_insert) __P ((dclist_t *, const void *, position_t));
 int (dclist_move) __P ((dclist_t *, position_t));
 int (dclist_del) __P ((dclist_t *, void **, position_t));
+int (dclist_size) __P ((dclist_t *, size_t *));
 
 GAENDDECLS
 #endif /* DCLIST_H */

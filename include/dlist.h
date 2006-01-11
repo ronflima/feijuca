@@ -24,14 +24,14 @@
  being implemented as a brand new different kind of list.
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist.h,v 1.19 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist.h,v 1.20 2006-01-11 10:07:30 harq_al_ada Exp $
 */
 
 #ifndef DLIST_H
 #define DLIST_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 
 GABEGINDECLS
@@ -76,6 +76,7 @@ int (dlist_get) __P ((dlist_t *, void **, position_t));
 int (dlist_insert) __P ((dlist_t *, const void *, position_t));
 int (dlist_move) __P ((dlist_t *, position_t));
 int (dlist_del) __P ((dlist_t *, void **, position_t));
+int (dlist_size) __P((dlist_t *, size_t *));
 
 GAENDDECLS
 #endif /* LIST_H */
