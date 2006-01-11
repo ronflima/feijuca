@@ -22,8 +22,8 @@
  Description: Deletes the next element pointed by element
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist_del.c,v 1.23 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist_del.c,v 1.24 2006-01-11 10:20:25 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +31,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.23 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.24 2006-01-11 10:20:25 harq_al_ada Exp $";
 
 /*
  * Local prototypes
@@ -50,13 +50,17 @@ dlist_del (dlist_t * list, void **data, position_t whence)
   assert (list != NULL);
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
 
-  /* Initializations */
+  if (list == NULL)
+    {
+      return EGAINVAL;
+    }
+
   element = (dlist_element_t *) NULL;
   if (data)
     {
       *data = (void *) NULL;
     }
-  if (list->size_ == 0x0)
+  if (list->size_ == 0x0u)
     {
       return EOF;
     }
