@@ -24,14 +24,14 @@
  Description: Interfaces and datatypes for deques (Double Ended QUEue)
 
  CVS Information
- $Author: ron_lima $
- $Id: deque.h,v 1.3 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: deque.h,v 1.4 2006-01-11 10:06:47 harq_al_ada Exp $
 */
 
 #ifndef DEQUE_H
 #define DEQUE_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 #include "dlist.h"
 
@@ -60,6 +60,7 @@ int (deque_init) __P ((deque_t *, deallocator_t *));
 int (deque_destroy) __P ((deque_t *));
 int (deque_pop) __P ((deque_t *, void **, position_t));
 int (deque_push) __P ((deque_t *, const void *, position_t));
+int (deque_size) __P ((deque_t *, size_t *));
 
 GAENDDECLS
 #endif /* DEQUE_H */
