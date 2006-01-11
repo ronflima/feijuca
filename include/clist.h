@@ -22,14 +22,14 @@
  Description: Interfaces and datatypes for single linked circular lists
 
  CVS Information
- $Author: ron_lima $
- $Id: clist.h,v 1.13 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: clist.h,v 1.14 2006-01-11 10:04:46 harq_al_ada Exp $
 */
 
 #ifndef CLIST_H
 #define CLIST_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "list.h"
 #include "gacommon.h"
 
@@ -61,6 +61,7 @@ int (clist_del) __P ((clist_t *, void **));
 int (clist_get) __P ((clist_t *, void **, position_t));
 int (clist_move) __P ((clist_t *, position_t));
 int (clist_insert) __P ((clist_t *, const void *));
+int (clist_size) __P ((clist_t *, size_t *));
 
 GAENDDECLS
 #endif /* CLIST_H */
