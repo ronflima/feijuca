@@ -23,8 +23,8 @@
  from memory
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist_destroy.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist_destroy.c,v 1.5 2006-01-11 10:20:55 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_destroy.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_destroy.c,v 1.5 2006-01-11 10:20:55 harq_al_ada Exp $";
 
 int
 dlist_destroy (dlist_t * list)
@@ -41,10 +41,8 @@ dlist_destroy (dlist_t * list)
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
   
    /* Proceeds with the deletion - Deletes the list from the head, always */
-  while (descriptor_size (list))
-    {
-      dlist_del (list, NULL, POS_HEAD);
-    }
+  while (dlist_del (list, NULL, POS_HEAD) == 0x0)
+    ;
   
   list->signature_ = (ga_magic_t) 0x0;
   
