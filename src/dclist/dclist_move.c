@@ -25,8 +25,8 @@
  Description: Moves the curr_ pointer to the location indicated as parameter
 
  CVS Information
- $Author: ron_lima $
- $Id: dclist_move.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dclist_move.c,v 1.4 2006-01-11 10:18:49 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -35,12 +35,16 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_move.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_move.c,v 1.4 2006-01-11 10:18:49 harq_al_ada Exp $";
 
 int
 dclist_move (dclist_t * dclist, position_t whence)
 {
-  assert (list != NULL);
+  assert (dclist != NULL);
+  if (dclist == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
   return dlist_move (&dclist->list_, whence);
 }
