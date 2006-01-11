@@ -22,8 +22,8 @@
  Description: Interfaces and datatypes for infinite vectors
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector.h,v 1.20 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: ivector.h,v 1.21 2006-01-11 10:13:04 harq_al_ada Exp $
 */
 
 #ifndef IVECTOR_H
@@ -70,6 +70,7 @@ int (ivector_add) __P ((ivector_t *, const void *));
 int (ivector_qsort) __P ((ivector_t *));
 int (ivector_bsearch) __P ((ivector_t *, void **, const void *));
 int (ivector_del) __P ((ivector_t *, size_t));
+int (ivector_size) __P ((ivector_t *, size_t *));
 
 GAENDDECLS
 
