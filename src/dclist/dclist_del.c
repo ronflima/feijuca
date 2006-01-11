@@ -25,8 +25,8 @@
  Description: Deletes an element given a position
 
  CVS Information
- $Author: ron_lima $
- $Id: dclist_del.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dclist_del.c,v 1.4 2006-01-11 10:16:26 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -36,7 +36,7 @@
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_del.c,v 1.3 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_del.c,v 1.4 2006-01-11 10:16:26 harq_al_ada Exp $";
 
 int
 dclist_del (dclist_t * dclist, void **data, position_t whence)
@@ -44,6 +44,10 @@ dclist_del (dclist_t * dclist, void **data, position_t whence)
   int rc;
   assert (dclist != NULL);
 
+  if (dclist == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
   if (dclist->list_.size_ == (size_t) 0x1)
     {
