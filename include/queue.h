@@ -22,14 +22,14 @@
  Description: Interfaces and datatypes for queues
 
  CVS Information
- $Author: ron_lima $
- $Id: queue.h,v 1.10 2005-12-13 10:18:50 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: queue.h,v 1.11 2006-01-11 10:14:13 harq_al_ada Exp $
 */
 
 #ifndef QUEUE_H
 #define QUEUE_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 #include "list.h"
 
@@ -58,6 +58,7 @@ int (queue_init) __P ((queue_t *, deallocator_t *));
 int (queue_destroy) __P ((queue_t *));
 int (queue_pop) __P ((queue_t *, void **));
 int (queue_push) __P ((queue_t *, const void *));
+int (queue_size) __P((queue_t *, size_t *));
 
 GAENDDECLS
 #endif /* QUEUE_H */
