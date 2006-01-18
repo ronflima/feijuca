@@ -22,7 +22,7 @@
 # library
 # Project: G.A. Library
 # Author: Daniel Costa Soares <daniel_csoares@yahoo.com.br>
-# $Id: Makefile.am,v 1.3 2006-01-11 10:15:56 harq_al_ada Exp $
+# $Id: Makefile.am,v 1.4 2006-01-18 23:52:27 harq_al_ada Exp $
 noinst_LTLIBRARIES = libdclist.la
 libdclist_la_SOURCES = dclist_init.c			\
                       dclist_del.c				\
@@ -31,5 +31,6 @@ libdclist_la_SOURCES = dclist_init.c			\
                       dclist_insert.c			\
                       dclist_move.c				\
 	                  dclist_size.c				\
+                      dclist_make_circular_.c	\
 			          ../../include/dclist.h
 INCLUDES=-I../../include/
