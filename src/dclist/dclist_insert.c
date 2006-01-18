@@ -26,22 +26,23 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_insert.c,v 1.4 2006-01-11 10:18:21 harq_al_ada Exp $
+ $Id: dclist_insert.c,v 1.5 2006-01-18 23:56:22 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
 #include "dclist.h"
+#include "dclist_.h"
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.4 2006-01-11 10:18:21 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.5 2006-01-18 23:56:22 harq_al_ada Exp $";
 
 int
 dclist_insert (dclist_t * dclist, const void *data, position_t whence)
 {
-  int rc;
+  int rc = 0x0;
 
   assert (dclist != NULL);
   if (dclist == NULL)
@@ -51,21 +52,11 @@ dclist_insert (dclist_t * dclist, const void *data, position_t whence)
 
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
 
-  /* Insert a element at a given position */
-  if ((rc = dlist_insert (&dclist->list_, data, whence)) != 0x0)
+  if ((rc = dlist_insert (&dclist->list_, data, whence)) == 0x0)
     {
-      return rc;
+      /* Makes list circular again, since dlist_insert will ignore
+       * this fact when operation on the head or tail. */
+      dclist_make_circular_ (dclist);
     }
-
-  /* Make list circular if insertion was done one head or tail */
-  if (dclist->list_.head_->prev_ != dclist->list_.tail_)
-    {
-      dclist->list_.head_->prev_ = dclist->list_.tail_;
-    }
-  if (dclist->list_.tail_->next_ != dclist->list_.head_)
-    {
-      dclist->list_.tail_->next_ = dclist->list_.head_;
-    }
-
-  return 0x0;
+  return rc;
 }

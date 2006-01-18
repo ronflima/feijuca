@@ -26,22 +26,23 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_del.c,v 1.4 2006-01-11 10:16:26 harq_al_ada Exp $
+ $Id: dclist_del.c,v 1.5 2006-01-18 23:56:11 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
 #include "dclist.h"
+#include "dclist_.h"
 #include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_del.c,v 1.4 2006-01-11 10:16:26 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_del.c,v 1.5 2006-01-18 23:56:11 harq_al_ada Exp $";
 
 int
 dclist_del (dclist_t * dclist, void **data, position_t whence)
 {
-  int rc;
+  int rc = 0x0;
   assert (dclist != NULL);
 
   if (dclist == NULL)
@@ -49,27 +50,16 @@ dclist_del (dclist_t * dclist, void **data, position_t whence)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
-  if (dclist->list_.size_ == (size_t) 0x1)
+
+  if (dclist->list_.size_ > 0x0)
     {
-      /* Make list linear for deletion */
       dclist->list_.head_->prev_ = NULL;
       dclist->list_.tail_->next_ = NULL;
     }
-
-  if ((rc = dlist_del (&dclist->list_, data, whence)) != 0x0)
+  if ((rc = dlist_del (&dclist->list_, data, whence)) == 0x0)
     {
-      return rc;
+      dclist_make_circular_ (dclist);
     }
 
-  /* Make circular if deleted element is the head or tail */
-  if ((dclist->list_.head_ != NULL) && (dclist->list_.head_->prev_ == NULL))
-    {
-      dclist->list_.head_->prev_ = dclist->list_.tail_;
-    }
-  if ((dclist->list_.tail_ != NULL) && (dclist->list_.tail_->next_ == NULL))
-    {
-      dclist->list_.tail_->next_ = dclist->list_.head_;
-    }
-
-  return 0x0;
+  return rc;
 }
