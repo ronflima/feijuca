@@ -26,8 +26,8 @@
  is free of bugs. Debugging the library inside a debugger will. :)
 
  CVS Information
- $Author: ron_lima $
- $Id: testsuite.c,v 1.20 2005-12-13 10:25:57 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: testsuite.c,v 1.21 2006-01-18 23:57:33 harq_al_ada Exp $
 */
 
 /*
@@ -41,7 +41,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: testsuite.c,v 1.20 2005-12-13 10:25:57 ron_lima Exp $";
+  "@(#) $Id: testsuite.c,v 1.21 2006-01-18 23:57:33 harq_al_ada Exp $";
 
 /*
  * Local functions prototypes
@@ -79,8 +79,7 @@ main (int argc, char **argv)
   do_test = '\x1';
 
   /* Prints a small friendly message */
-  printf
-    ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
+  printf ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
   printf ("Several parts written by Daniel Costa Soares\n");
   printf ("This software is licensed under the Gnu Lesser Public License\n\n");
 
@@ -244,6 +243,6 @@ static void
 help (void)
 {
   printf ("Usage:\n"
-          "\t-m n: Number of elements to use on each test\n"
-          "\t-h  : This help screen\n\n");
+          "\t-m n: Number of elements to use on each test (it defaults to %d)\n"
+          "\t-h  : This help screen\n\n", MAX_ELEMENTS);
 }
