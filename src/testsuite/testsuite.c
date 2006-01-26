@@ -27,7 +27,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: testsuite.c,v 1.21 2006-01-18 23:57:33 harq_al_ada Exp $
+ $Id: testsuite.c,v 1.22 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 
 /*
@@ -39,9 +39,17 @@
 #include "gacommon.h"
 #include "gatests.h"
 
+/*
+ * Local macros
+ */
+#define BANNER "\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n"  \
+               "Several parts written by Daniel Costa Soares\n"                     \
+               "This software is licensed under the Gnu Lesser Public License\n"    \
+               "Use -? for command line options\n\n"
+
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: testsuite.c,v 1.21 2006-01-18 23:57:33 harq_al_ada Exp $";
+  "@(#) $Id: testsuite.c,v 1.22 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 /*
  * Local functions prototypes
@@ -79,9 +87,7 @@ main (int argc, char **argv)
   do_test = '\x1';
 
   /* Prints a small friendly message */
-  printf ("\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n");
-  printf ("Several parts written by Daniel Costa Soares\n");
-  printf ("This software is licensed under the Gnu Lesser Public License\n\n");
+  printf (BANNER);
 
   /* Parses the command line */
   if (rc = cmdline_parse (&cmdline, argc, (const char **) argv))

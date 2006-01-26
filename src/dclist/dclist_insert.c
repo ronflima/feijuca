@@ -26,18 +26,16 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_insert.c,v 1.5 2006-01-18 23:56:22 harq_al_ada Exp $
+ $Id: dclist_insert.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdlib.h>
-#include <stdio.h>
 #include <assert.h>
-#include "dlist.h"
 #include "dclist.h"
 #include "dclist_.h"
 #include "gacommon.h"
+#include "gainternal_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.5 2006-01-18 23:56:22 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_insert.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 dclist_insert (dclist_t * dclist, const void *data, position_t whence)

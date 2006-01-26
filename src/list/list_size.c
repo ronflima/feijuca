@@ -24,15 +24,15 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_size.c,v 1.1 2006-01-10 09:53:23 harq_al_ada Exp $
+ $Id: list_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
+#include "gainternal_.h"
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_size.c,v 1.1 2006-01-10 09:53:23 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 list_size (list_t * list, size_t * size)

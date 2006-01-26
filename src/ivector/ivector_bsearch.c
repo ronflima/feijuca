@@ -22,17 +22,17 @@
  Description: Adds a new element at the end of the vector
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_bsearch.c,v 1.15 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: ivector_bsearch.c,v 1.16 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "gacommon.h"
+#include "gainternal_.h"
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_bsearch.c,v 1.15 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_bsearch.c,v 1.16 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 ivector_bsearch (ivector_t * vector, void **found, const void *data)

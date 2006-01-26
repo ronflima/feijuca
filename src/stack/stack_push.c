@@ -22,17 +22,16 @@
  Description: Pushes a new element into the stack
 
  CVS Information
- $Author: ron_lima $
- $Id: stack_push.c,v 1.12 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: stack_push.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
+#include "gainternal_.h"
 #include "stack.h"
-#include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_push.c,v 1.12 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack_push.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 stack_push (stack_t * stack, const void *data)

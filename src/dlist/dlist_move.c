@@ -23,15 +23,17 @@
  the list
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist_move.c,v 1.17 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist_move.c,v 1.18 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
+#include "gacommon.h"
+#include "gainternal_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.17 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.18 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 dlist_move (dlist_t * list, position_t whence)

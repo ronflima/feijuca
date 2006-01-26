@@ -27,17 +27,15 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_destroy.c,v 1.5 2006-01-11 10:16:50 harq_al_ada Exp $
+ $Id: dclist_destroy.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
-#include "dlist.h"
 #include "dclist.h"
 #include "gacommon.h"
+#include "gainternal_.h" 
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.5 2006-01-11 10:16:50 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 dclist_destroy (dclist_t * dclist)

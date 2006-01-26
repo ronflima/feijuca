@@ -22,17 +22,17 @@
  Description: Gets an item from the list
 
  CVS Information
- $Author: ron_lima $
- $Id: ivector_get.c,v 1.14 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: ivector_get.c,v 1.15 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <stddef.h>
 #include <assert.h>
 #include "gacommon.h"
+#include "gainternal_.h"
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_get.c,v 1.14 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_get.c,v 1.15 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 ivector_get (ivector_t * vector, void **data, size_t idx)

@@ -19,25 +19,27 @@
 
  System: G.A. Lib
 
- Description: Finishes the queue. This routine will delete the stack
- from the memory
+ Description: Iternal declarations used by G.A. Library. This header
+ file is intended to be used to compile the library.
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: gainternal_.h,v 1.1 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <assert.h>
+
+#ifndef GAINTERNAL_H
+#define GAINTERNAL_H
+
 #include "gacommon.h"
-#include "gainternal_.h"
-#include "queue.h"
 
-/* Version info */
-static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+/*
+ * Macros
+ */
 
-int
-queue_destroy (queue_t * queue)
-{
-  assert (queue != NULL);
-  CHECK_SIGNATURE (queue, GA_QUEUE_SIGNATURE);
-  return list_destroy (&queue->list_);
-}
+GABEGINDECLS
+/* In-line code for signature checking */
+#define CHECK_SIGNATURE(descriptor, signature) \
+if (descriptor->signature_!= signature) return EGAINVAL
+
+GAENDDECLS
+#endif /* GACOMMON_H */

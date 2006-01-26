@@ -23,15 +23,16 @@
  from memory
 
  CVS Information
- $Author: ron_lima $
- $Id: clist_destroy.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: clist_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
+#include "gainternal_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 clist_destroy (clist_t * clist)

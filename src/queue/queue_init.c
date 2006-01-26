@@ -22,17 +22,17 @@
  Description: Allocates and initializes a queue
 
  CVS Information
- $Author: ron_lima $
- $Id: queue_init.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: queue_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
+#include "gainternal_.h"
 #include "queue.h"
-#include "list.h"
+
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.4 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 queue_init (queue_t * queue, deallocator_t * dealloc)

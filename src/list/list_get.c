@@ -25,15 +25,16 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get.c,v 1.16 2006-01-11 10:21:39 harq_al_ada Exp $
+ $Id: list_get.c,v 1.17 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
+#include "gacommon.h"
+#include "gainternal_.h"
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.16 2006-01-11 10:21:39 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.17 2006-01-26 10:18:13 harq_al_ada Exp $"; 
 
 int
 list_get (list_t * list, void **data, position_t whence)

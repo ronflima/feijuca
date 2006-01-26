@@ -23,16 +23,17 @@
  next one
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist_get.c,v 1.16 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist_get.c,v 1.17 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
+#include "gacommon.h"
+#include "gainternal_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.16 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.17 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 dlist_get (dlist_t * list, void **data, position_t whence)

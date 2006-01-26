@@ -21,27 +21,28 @@
 # Makefile that handles intermediate libraries generation
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.12 2006-01-18 23:50:56 harq_al_ada Exp $
+# $Id: Makefile.am,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $
 SUBDIRS = list dlist clist ivector stack queue deque dclist
 lib_LTLIBRARIES = libga.la
 libga_la_SOURCES =
-libga_la_LIBADD=list/liblist.la			\
-	   	        dlist/libdlist.la		\
-                clist/libclist.la		\
-                ivector/libivector.la	\
-                stack/libstack.la		\
-				deque/libdeque.la		\
-				dclist/libdclist.la		\
+libga_la_LIBADD=list/liblist.la					\
+	   	        dlist/libdlist.la				\
+                clist/libclist.la				\
+                ivector/libivector.la			\
+                stack/libstack.la				\
+				deque/libdeque.la				\
+				dclist/libdclist.la				\
                 queue/libqueue.la 
-include_HEADERS = ../include/list.h			\
-                  ../include/dlist.h		\
-                  ../include/clist.h		\
-                  ../include/ivector.h		\
-                  ../include/stack.h		\
-                  ../include/queue.h		\
-				  ../include/deque.h		\
-				  ../include/dclist.h		\
+include_HEADERS = ../include/list.h				\
+                  ../include/dlist.h			\
+                  ../include/clist.h			\
+                  ../include/ivector.h			\
+                  ../include/stack.h			\
+                  ../include/queue.h			\
+				  ../include/deque.h			\
+				  ../include/dclist.h			\
                   ../include/gacommon.h
 
-noinst_HEADERS=../include/dclist_.h
+noinst_HEADERS=../include/dclist_.h				\
+	           ../include/gainternal_.h
 

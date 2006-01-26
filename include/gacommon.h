@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: gacommon.h,v 1.26 2006-01-11 10:09:42 harq_al_ada Exp $
+ $Id: gacommon.h,v 1.27 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 
 #ifndef GACOMMON_H
@@ -53,10 +53,6 @@ GABEGINDECLS
 #define __P(prototype) ()
 #endif
 #endif
-
-/* In-line code for signature checking */
-#define CHECK_SIGNATURE(descriptor, signature) \
-if (descriptor->signature_!= signature) return EGAINVAL
 
 /*
  * Constants

@@ -22,16 +22,17 @@
  Description: Inserts a new element in the list
 
  CVS Information
- $Author: ron_lima $
- $Id: dlist_insert.c,v 1.23 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: dlist_insert.c,v 1.24 2006-01-26 10:18:13 harq_al_ada Exp $
 */
 #include <stdlib.h>
-#include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
+#include "gacommon.h"
+#include "gainternal_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.23 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.24 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 /*
  * Local prototypes

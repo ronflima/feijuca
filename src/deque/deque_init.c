@@ -25,17 +25,15 @@
  Description: Allocates and initializes a deque
 
  CVS Information
- $Author: ron_lima $
- $Id: deque_init.c,v 1.5 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: deque_init.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $
 */
-#include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 #include "deque.h"
-#include "dlist.h"
+#include "gacommon.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: deque_init.c,v 1.5 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid[] = "@(#) $Id: deque_init.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $";
 
 int
 deque_init (deque_t * deque, deallocator_t * dealloc)
