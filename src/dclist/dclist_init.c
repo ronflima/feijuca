@@ -27,24 +27,45 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dclist_init.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <assert.h>
+#include <stdlib.h>
+#include "dlist.h"
 #include "dclist.h"
+#include "dclist_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_init.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
 dclist_init (dclist_t * dclist, deallocator_t * dealloc)
 {
-  /* Assertives for debugging purposes */
+  int rc = 0x0;
+
   assert (dclist != NULL);
   assert (dealloc != NULL);
   if (dclist == NULL || dealloc == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  dclist->signature_ = GA_DCLIST_SIGNATURE;
-  return dlist_init (&dclist->list_, dealloc);
+  else
+    {
+      if ((*dclist = (dclist_t) malloc (sizeof (struct dclist_t))) == NULL)
+        {
+          rc = EGANOMEM;
+        }
+      else
+        {
+          if ((rc = dlist_init (&(*dclist)->list_, dealloc)) != 0x0)
+            {
+              free (*dclist);
+            }
+          else
+            {
+              (*dclist)->signature_ = GA_DCLIST_SIGNATURE;
+            }
+        }
+    }
+  return rc;
 }

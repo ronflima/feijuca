@@ -26,19 +26,19 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dclist_size.c,v 1.3 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
+#include "dlist.h"
 #include "dclist.h"
-#include "gainternal_.h"
-#include "gacommon.h"
+#include "dclist_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_size.c,v 1.3 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
-dclist_size (dclist_t * dclist, size_t * size)
+dclist_size (dclist_t dclist, size_t * size)
 {
   assert (dclist != NULL);
   assert (size != NULL);
@@ -47,5 +47,5 @@ dclist_size (dclist_t * dclist, size_t * size)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
-  return dlist_size (&dclist->list_, size);
+  return dlist_size (dclist->list_, size);
 }

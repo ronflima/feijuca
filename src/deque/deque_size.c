@@ -26,19 +26,18 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: deque_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: deque_size.c,v 1.3 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
 #include "deque.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "deque_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: deque_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: deque_size.c,v 1.3 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
-deque_size (deque_t * deque, size_t * size)
+deque_size (deque_t deque, size_t * size)
 {
   assert (deque != NULL);
   assert (size != NULL);
@@ -47,5 +46,5 @@ deque_size (deque_t * deque, size_t * size)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (deque, GA_DEQUE_SIGNATURE);
-  return dlist_size (&deque->list_, size);
+  return dlist_size (deque->list_, size);
 }

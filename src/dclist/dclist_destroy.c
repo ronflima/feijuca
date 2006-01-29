@@ -27,31 +27,37 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_destroy.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dclist_destroy.c,v 1.7 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "dclist.h"
-#include "gacommon.h"
-#include "gainternal_.h" 
+#include "dclist_.h"
+#include "dlist_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.7 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
-dclist_destroy (dclist_t * dclist)
+dclist_destroy (dclist_t dclist)
 {
+  int rc = 0x0;
+
   assert (dclist != NULL);
   if (dclist == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
-  
-  /* Redefine last pointer to work with dlist_destroy algorithm */
-  if (dclist->list_.tail_ != NULL)
+  else
     {
-      dclist->list_.tail_->next_ = NULL;
+      CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
+  
+      /* Makes the list linear in order to use dlist_destroy safely */
+      if (dclist->list_->tail_ != NULL)
+        {
+          dclist->list_->tail_->next_ = NULL;
+        }
+      rc = dlist_destroy (dclist->list_);
+      free (dclist);
     }
-
-  return dlist_destroy (&dclist->list_);
+  return rc;
 }

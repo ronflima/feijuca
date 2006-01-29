@@ -24,7 +24,7 @@
  
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist.h,v 1.4 2006-01-11 10:05:53 harq_al_ada Exp $
+ $Id: dclist.h,v 1.5 2006-01-29 19:24:12 harq_al_ada Exp $
 */
 
 #ifndef DCLIST_H
@@ -35,33 +35,22 @@
 #include "dlist.h"
 
 GABEGINDECLS
-/*
- * Constants
- */
-enum 
-{
-  GA_DCLIST_SIGNATURE = 0x5EEDDEAFu
-};
 
 /*
- * Datatypes
+ * Data types
  */
-typedef struct dclist_t
-{
-  ga_magic_t signature_;
-  dlist_t list_;
-}dclist_t;
+typedef struct dclist_t * dclist_t;
 
 /*
  * Prototypes
  */
 int (dclist_init) __P ((dclist_t *, deallocator_t *));
-int (dclist_destroy) __P ((dclist_t *));
-int (dclist_get) __P ((dclist_t *, void **, position_t));
-int (dclist_insert) __P ((dclist_t *, const void *, position_t));
-int (dclist_move) __P ((dclist_t *, position_t));
-int (dclist_del) __P ((dclist_t *, void **, position_t));
-int (dclist_size) __P ((dclist_t *, size_t *));
+int (dclist_destroy) __P ((dclist_t));
+int (dclist_get) __P ((dclist_t, void **, position_t));
+int (dclist_insert) __P ((dclist_t, const void *, position_t));
+int (dclist_move) __P ((dclist_t, position_t));
+int (dclist_del) __P ((dclist_t, void **, position_t));
+int (dclist_size) __P ((dclist_t, size_t *));
 
 GAENDDECLS
 #endif /* DCLIST_H */

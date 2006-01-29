@@ -23,36 +23,46 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist_init.c,v 1.4 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dlist_init.c,v 1.5 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <assert.h>
+#include <stdlib.h>
 #include "dlist.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_init.c,v 1.4 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_init.c,v 1.5 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
 dlist_init (dlist_t * list, deallocator_t * dealloc)
 {
+  int rc = 0x0;
+
   /* Assertives for debugging purposes */
   assert (list != NULL);
   assert (dealloc != NULL);
 
-  /* The deallocator must be always provided */
-  if (!dealloc)
+  if (list == NULL || dealloc == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  
-  /* Initializes each data member of the list descriptor */
-  list->size_ = 0x0;
-  list->head_ = (dlist_element_t *) NULL;
-  list->tail_ = (dlist_element_t *) NULL;
-  list->curr_ = (dlist_element_t *) NULL;
-  list->deallocator_ = dealloc;
-  list->signature_ = GA_DLIST_SIGNATURE;
-  
-  return 0x0;
+  else
+    {
+      if ((*list = (dlist_t) malloc (sizeof (struct dlist_t))) == NULL)
+        {
+          rc = EGANOMEM;
+        }
+      else
+        {
+          /* Initializes each data member of the list descriptor */
+          (*list)->size_ = 0x0;
+          (*list)->head_ = (dlist_element_t *) NULL;
+          (*list)->tail_ = (dlist_element_t *) NULL;
+          (*list)->curr_ = (dlist_element_t *) NULL;
+          (*list)->deallocator_ = dealloc;
+          (*list)->signature_ = GA_DLIST_SIGNATURE;
+        }
+    }
+      
+  return rc;
 }

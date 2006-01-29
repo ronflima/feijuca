@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist.c,v 1.18 2006-01-11 10:21:39 harq_al_ada Exp $
+ $Id: dlist.c,v 1.19 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.18 2006-01-11 10:21:39 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.19 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -52,12 +52,12 @@ enum
 /*
  * Local prototypes
  */
-static int load_dlist (dlist_t *, size_t, unsigned char);
+static int load_dlist (dlist_t, size_t, unsigned char);
 static int scenario_check_forward_nav (size_t);
 static int scenario_check_uninitialization (size_t);
 static int scenario_check_deletions (size_t);
 static int scenario_check_back_nav (size_t);
-
+
 /*
  * Exported functions
  */
@@ -75,10 +75,10 @@ test_dlist (size_t maxelem)
 
   return execute_scenarios (TEST, maxelem, scenarios, sizeof (scenarios));
 }
-
+
 /* Utility function: loads data into the list */
 static int
-load_dlist (dlist_t * dlist, size_t maxelem, unsigned char use_pattern)
+load_dlist (dlist_t dlist, size_t maxelem, unsigned char use_pattern)
 {
   register size_t i;		/* General purpose iterator */
   int status;
@@ -116,7 +116,7 @@ load_dlist (dlist_t * dlist, size_t maxelem, unsigned char use_pattern)
 
   return status;
 }
-
+
 /*
  * Local functions definitions
  */
@@ -136,12 +136,12 @@ scenario_check_forward_nav (size_t maxelem)
       ERROR (TEST, "dlist_init", rc);
       status = EFAILED;
     }
-  else if ((rc = load_dlist (&dlist, maxelem, '\x0')) != 0x0)
+  else if ((rc = load_dlist (dlist, maxelem, '\x0')) != 0x0)
     {
       ERROR (TEST, "load_dlist", rc);
       status = EFAILED;
     }
-  else if ((rc = dlist_move (&dlist, POS_HEAD)) != 0x0)
+  else if ((rc = dlist_move (dlist, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "dlist_move", rc);
       status = EFAILED;
@@ -154,7 +154,7 @@ scenario_check_forward_nav (size_t maxelem)
       i = 0x0;
       do
         {
-          if ((rc = dlist_move (&dlist, POS_NEXT)) > 0x0)
+          if ((rc = dlist_move (dlist, POS_NEXT)) > 0x0)
             {
               ERROR (TEST, "dlist_move", rc);
               status = EFAILED;
@@ -166,7 +166,7 @@ scenario_check_forward_nav (size_t maxelem)
             }
         }
       while (rc == 0x0);
-      if ((rc = dlist_size (&dlist, &size)) != 0x0)
+      if ((rc = dlist_size (dlist, &size)) != 0x0)
         {
           ERROR (TEST, "dlist_size", ECKFAIL);
           status = EFAILED;
@@ -177,7 +177,7 @@ scenario_check_forward_nav (size_t maxelem)
           status = EFAILED;
         }
     }
-  if ((rc = dlist_destroy (&dlist)) != 0x0)
+  if ((rc = dlist_destroy (dlist)) != 0x0)
     {
       ERROR (TEST, "dlist_destroy", rc);
       status = EFAILED;
@@ -185,7 +185,7 @@ scenario_check_forward_nav (size_t maxelem)
 
   return status;
 }
-
+
 /*
  * Test scenario: Verify the signature checking
  */
@@ -195,37 +195,37 @@ scenario_check_uninitialization (size_t elements)
   int rc;
   void * buf = NULL;
   int test_status = 0x0;
-  dlist_t dlist;
+  dlist_t dlist = NULL;
   elements;
 
-  if ((rc = dlist_insert (&dlist, &buf, POS_HEAD)) != EGAINVAL)
+  if ((rc = dlist_insert (dlist, &buf, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "dlist_insert", rc);
       test_status = EFAILED;
     }
-  else if (( rc = dlist_get (&dlist, &buf, POS_HEAD)) != EGAINVAL)
+  else if (( rc = dlist_get (dlist, &buf, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "dlist_get", rc);
       test_status = EFAILED;
     }
-  else if ((rc = dlist_move (&dlist, POS_HEAD)) != EGAINVAL)
+  else if ((rc = dlist_move (dlist, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "dlist_move", rc);
       test_status = EFAILED;
     }
-  else if ((rc = dlist_del (&dlist, &buf, POS_NONE)) != EGAINVAL)
+  else if ((rc = dlist_del (dlist, &buf, POS_NONE)) != EGAINVAL)
     {
       ERROR (TEST, "dlist_del", rc);
       test_status = EFAILED;
     }
-  else if ((rc = dlist_destroy (&dlist)) != EGAINVAL)
+  else if ((rc = dlist_destroy (dlist)) != EGAINVAL)
     {
       ERROR (TEST, "dlist_destroy", rc);
       test_status = EFAILED;
     }
   return test_status;
 }
-
+
 /* Test scenario: check the items deletions */
 static int
 scenario_check_deletions (size_t maxelem)
@@ -240,24 +240,24 @@ scenario_check_deletions (size_t maxelem)
       ERROR (TEST, "dlist_init", rc);
       status = EFAILED;
     }
-  else if ((rc = load_dlist (&dlist, maxelem, '\x0')) != 0x0)
+  else if ((rc = load_dlist (dlist, maxelem, '\x0')) != 0x0)
     {
       ERROR (TEST, "load_dlist", rc);
       status = EFAILED;
     }
-  else if ((rc = dlist_del (&dlist, NULL, POS_HEAD)) != 0x0)
+  else if ((rc = dlist_del (dlist, NULL, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "dlist_del", rc);
       status = EFAILED;
     }
-  else  if ((rc = dlist_del (&dlist, NULL, POS_TAIL)) != 0x0)
+  else  if ((rc = dlist_del (dlist, NULL, POS_TAIL)) != 0x0)
     {
       ERROR (TEST, "dlist_del", rc);
       status = EFAILED;
     }
   else
     {
-      if ((rc = dlist_move (&dlist, POS_HEAD)) != 0x0)
+      if ((rc = dlist_move (dlist, POS_HEAD)) != 0x0)
         {
           ERROR (TEST, "dlist_move", rc);
           status = EFAILED;
@@ -268,11 +268,11 @@ scenario_check_deletions (size_t maxelem)
           size_t size;
 
           i = 0x0;
-          while ((rc = dlist_move (&dlist, POS_NEXT)) == 0x0)
+          while ((rc = dlist_move (dlist, POS_NEXT)) == 0x0)
             {
               ++i;
             }
-          if ((rc = dlist_size (&dlist, &size)) != 0x0)
+          if ((rc = dlist_size (dlist, &size)) != 0x0)
             {
               ERROR (TEST, "dlist_size", ECKFAIL);
               status = EFAILED;
@@ -284,14 +284,14 @@ scenario_check_deletions (size_t maxelem)
             }
         }
     }
-  if ((rc = dlist_destroy (&dlist)) != 0x0)
+  if ((rc = dlist_destroy (dlist)) != 0x0)
     {
       ERROR (TEST, "dlist_destroy", rc);
       status = EFAILED;
     }
   return status;
 }
-
+
 /* Test scenario: check backward navigation */
 static int
 scenario_check_back_nav (size_t maxelem)
@@ -306,12 +306,12 @@ scenario_check_back_nav (size_t maxelem)
       ERROR (TEST, "dlist_init", rc);
       status = EFAILED;
     }
-  else if ((rc = load_dlist (&dlist, maxelem, '\x0')) != 0x0)
+  else if ((rc = load_dlist (dlist, maxelem, '\x0')) != 0x0)
     {
       ERROR (TEST, "load_dlist", rc);
       status = EFAILED;
     }
-  else if ((rc = dlist_move (&dlist, POS_TAIL)) != 0x0)
+  else if ((rc = dlist_move (dlist, POS_TAIL)) != 0x0)
     {
       ERROR (TEST, "dlist_move", rc);
       status = EFAILED;
@@ -322,11 +322,11 @@ scenario_check_back_nav (size_t maxelem)
       size_t size;
 
       i = 0x0;
-      while ((rc = dlist_move (&dlist, POS_PREV)) == 0x0)
+      while ((rc = dlist_move (dlist, POS_PREV)) == 0x0)
         {
           ++i;
         }
-      if ((rc = dlist_size (&dlist, &size)) != 0x0)
+      if ((rc = dlist_size (dlist, &size)) != 0x0)
         {
           ERROR (TEST, "dlist_size", ECKFAIL);
           status = EFAILED;
@@ -342,7 +342,7 @@ scenario_check_back_nav (size_t maxelem)
           status = EFAILED;
         }
     }
-  if ((rc = dlist_destroy (&dlist)) != 0x0)
+  if ((rc = dlist_destroy (dlist)) != 0x0)
     {
       ERROR (TEST, "dlist_destroy", rc);
       status = EFAILED;

@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: deque.h,v 1.4 2006-01-11 10:06:47 harq_al_ada Exp $
+ $Id: deque.h,v 1.5 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
 #ifndef DEQUE_H
@@ -37,30 +37,18 @@
 
 GABEGINDECLS
 /*
- * Constants
- */
-enum 
-{
-  GA_DEQUE_SIGNATURE = 0xD00DBEEFu
-};
-
-/*
  * Datatypes
  */
-typedef struct deque_t 
-{ 
-  ga_magic_t signature_;
-  dlist_t list_;
-} deque_t;
+typedef struct deque_t * deque_t;
 
 /*
  * Prototypes
  */
 int (deque_init) __P ((deque_t *, deallocator_t *));
-int (deque_destroy) __P ((deque_t *));
-int (deque_pop) __P ((deque_t *, void **, position_t));
-int (deque_push) __P ((deque_t *, const void *, position_t));
-int (deque_size) __P ((deque_t *, size_t *));
+int (deque_destroy) __P ((deque_t));
+int (deque_pop) __P ((deque_t, void **, position_t));
+int (deque_push) __P ((deque_t, const void *, position_t));
+int (deque_size) __P ((deque_t, size_t *));
 
 GAENDDECLS
 #endif /* DEQUE_H */

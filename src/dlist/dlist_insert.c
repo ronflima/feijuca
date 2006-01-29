@@ -23,62 +23,70 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist_insert.c,v 1.24 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dlist_insert.c,v 1.25 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.24 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_insert.c,v 1.25 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 /*
  * Local prototypes
  */
-static int relink_list (dlist_t *, dlist_element_t *, position_t);
+static int relink_list (dlist_t, dlist_element_t *, position_t);
 
 /*
  * Exported functions
  */
 int
-dlist_insert (dlist_t * list, const void *data, position_t whence)
+dlist_insert (dlist_t list, const void *data, position_t whence)
 {
-  dlist_element_t *element;	/* New element to be inserted */
+  int rc = 0x0;
+  dlist_element_t * element;
 
   assert (list != NULL);
   assert (data != NULL);
-  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
-  
-  element = (dlist_element_t *) malloc (sizeof (dlist_element_t));
-  assert (element != NULL);
-  if (element == NULL)
+  if (list == NULL || data == NULL)
     {
-      return EGANOMEM;
-    }
-  element->data_ =  (void *)data;
-  element->next_ =  NULL;
-  element->prev_ =  NULL;
-
-  if (list->size_ == 0x0)
-    {
-      list->head_ = element;
-      list->tail_ = element;
+      rc = EGAINVAL;
     }
   else
     {
-      int rc;                   /* General error handling variable */
-
-      /* Effectively inserts the new element into the list */
-      if ((rc = relink_list (list, element, whence)) != 0x0)
+      CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
+      
+      if ((element = (dlist_element_t *) malloc (sizeof (dlist_element_t))) == NULL)
         {
-          free (element);
-          return rc;
+          rc = EGANOMEM;
+        }
+      else
+        {
+          element->data_ =  (void *) data;
+          element->next_ =  NULL;
+          element->prev_ =  NULL;
+      
+          if (list->size_ == 0x0)
+            {
+              list->head_ = element;
+              list->tail_ = element;
+            }
+          else
+            {
+              /* Effectively inserts the new element into the list */
+              if ((rc = relink_list (list, element, whence)) != 0x0)
+                {
+                  free (element);
+                }
+            }
+          if (rc == 0x0)
+            {
+              list->size_++;
+            }
         }
     }
-  list->size_++;
-  return 0x0;
+  return rc;
 }
 
 /*
@@ -88,7 +96,7 @@ dlist_insert (dlist_t * list, const void *data, position_t whence)
 /* Helper function: will relink the list based on the selected
    insertions position */
 static int
-relink_list (dlist_t * list, dlist_element_t * element, position_t whence)
+relink_list (dlist_t list, dlist_element_t * element, position_t whence)
 {
   if (whence == POS_CURR || whence == POS_NONE || whence == POS_PREV) 
     {

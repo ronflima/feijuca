@@ -27,17 +27,18 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_make_circular_.c,v 1.1 2006-01-18 23:56:39 harq_al_ada Exp $
+ $Id: dclist_make_circular_.c,v 1.2 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "dclist.h"
 #include "dclist_.h"
+#include "dlist_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_make_circular_.c,v 1.1 2006-01-18 23:56:39 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_make_circular_.c,v 1.2 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
-dclist_make_circular_ (dclist_t * dclist)
+dclist_make_circular_ (dclist_t dclist)
 {
   int rc = 0x0;
   assert (dclist != NULL);
@@ -48,13 +49,13 @@ dclist_make_circular_ (dclist_t * dclist)
     }
   else 
     {
-      if ((dclist->list_.head_ != NULL) && (dclist->list_.head_->prev_ == NULL))
+      if ((dclist->list_->head_ != NULL) && (dclist->list_->head_->prev_ == NULL))
         {
-          dclist->list_.head_->prev_ = dclist->list_.tail_;
+          dclist->list_->head_->prev_ = dclist->list_->tail_;
         }
-      if ((dclist->list_.tail_ != NULL) && (dclist->list_.tail_->next_ == NULL))
+      if ((dclist->list_->tail_ != NULL) && (dclist->list_->tail_->next_ == NULL))
         {
-          dclist->list_.tail_->next_ = dclist->list_.head_;
+          dclist->list_->tail_->next_ = dclist->list_->head_;
         }
     }
 

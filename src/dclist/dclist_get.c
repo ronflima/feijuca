@@ -27,17 +27,17 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_get.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dclist_get.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "dclist.h"
-#include "gainternal_.h"
+#include "dclist_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_get.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_get.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
-dclist_get (dclist_t * dclist, void **data, position_t whence)
+dclist_get (dclist_t dclist, void **data, position_t whence)
 {
   assert (dclist != NULL);
   assert (data != NULL);
@@ -46,5 +46,5 @@ dclist_get (dclist_t * dclist, void **data, position_t whence)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
-  return dlist_get (&dclist->list_, data, whence);
+  return dlist_get (dclist->list_, data, whence);
 }

@@ -26,20 +26,39 @@
  
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_.h,v 1.1 2006-01-18 23:45:36 harq_al_ada Exp $
+ $Id: dclist_.h,v 1.2 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
 #ifndef DCLIST__H
 #define DCLIST__H
 
+#include "gacommon.h"
+#include "gainternal_.h"
+#include "dlist.h"
 #include "dclist.h"
 
 GABEGINDECLS
+/*
+ * Constants
+ */
+enum 
+{
+  GA_DCLIST_SIGNATURE = 0x5EEDDEAFu
+};
+
+/*
+ * Datatypes
+ */
+struct dclist_t
+{
+  ga_magic_t signature_;
+  dlist_t list_;
+};
 
 /*
  * Prototypes
  */
-int (dclist_make_circular_) (dclist_t *);
+int (dclist_make_circular_) (dclist_t);
 
 GAENDDECLS
 #endif /* DCLIST__H */

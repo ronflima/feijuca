@@ -23,40 +23,37 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist_del.c,v 1.25 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dlist_del.c,v 1.26 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
 #include "dlist.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.25 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.26 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 /*
  * Local prototypes
  */
-static int relink_list __P((dlist_t *, dlist_element_t *));
+static int relink_list __P((dlist_t, dlist_element_t *));
 
 /*
  * Exported functions
  */
 int
-dlist_del (dlist_t * list, void **data, position_t whence)
+dlist_del (dlist_t list, void **data, position_t whence)
 {
   dlist_element_t *element;	/* Current element being processed */
   int rc;
   
   assert (list != NULL);
-  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
-
   if (list == NULL)
     {
       return EGAINVAL;
     }
-
+  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
   element = (dlist_element_t *) NULL;
   if (data)
     {
@@ -125,7 +122,7 @@ dlist_del (dlist_t * list, void **data, position_t whence)
  */
 /* Relinks the list popping the element out from the list */
 static int
-relink_list (dlist_t * list, dlist_element_t * element)
+relink_list (dlist_t list, dlist_element_t * element)
 {
   if (element == NULL)
     {

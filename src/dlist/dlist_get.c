@@ -24,26 +24,29 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist_get.c,v 1.17 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: dlist_get.c,v 1.18 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
 #include "dlist.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.17 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.18 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 int
-dlist_get (dlist_t * list, void **data, position_t whence)
+dlist_get (dlist_t list, void **data, position_t whence)
 {
   assert (list != NULL);
   assert (data != NULL);
+  if (list == NULL || data == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
   
-/* Checks if the current pointer points to somewhere */
-  if (!list->curr_)
+  /* Checks if the current pointer points to somewhere */
+  if (list->curr_ == NULL)
     {
       return EOF;
     }

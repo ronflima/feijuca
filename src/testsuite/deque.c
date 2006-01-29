@@ -22,8 +22,8 @@
  Description: Test suite routines for deques.
 
  CVS Information
- $Author: ron_lima $
- $Id: deque.c,v 1.5 2005-12-13 10:18:52 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: deque.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "deque.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: deque.c,v 1.5 2005-12-13 10:18:52 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: deque.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -75,7 +75,7 @@ test_deque (size_t maxelements)
  * Utility function: loads a deque 
  */
 static int
-load_deque (deque_t * deque, size_t elements, unsigned char use_pattern, position_t whence)
+load_deque (deque_t deque, size_t elements, unsigned char use_pattern, position_t whence)
 {
   register int i;		/* General purpose iterator */
 
@@ -125,17 +125,17 @@ check_deque_push (size_t elements)
       ERROR (TEST, "deque_init", rc);
       status = EFAILED;
     }
-  else if ((rc = load_deque (&deque, elements, POS_HEAD, '\x1')) != 0x0)
+  else if ((rc = load_deque (deque, elements, POS_HEAD, '\x1')) != 0x0)
     {
       ERROR (TEST, "load_deque", rc);
       status = EFAILED;
     }
-  else if ((rc = load_deque (&deque, elements, POS_TAIL, '\x1')) != 0x0)
+  else if ((rc = load_deque (deque, elements, POS_TAIL, '\x1')) != 0x0)
     {
       ERROR (TEST, "load_deque", rc);
       status = EFAILED;
     }
-  if ((rc = deque_destroy (&deque)) != 0x0)
+  if ((rc = deque_destroy (deque)) != 0x0)
     {
       ERROR (TEST, "deque_destroy", rc);
       status = EFAILED;
@@ -160,7 +160,7 @@ check_deque_pop (size_t elements)
       ERROR (TEST, "deque_init", rc);
       status = EFAILED;
     }
-  else if ((rc = load_deque (&deque, elements, POS_HEAD, '\x1')) != 0x0)
+  else if ((rc = load_deque (deque, elements, POS_HEAD, '\x1')) != 0x0)
     {
       ERROR (TEST, "load_deque", rc);
       status = EFAILED;
@@ -171,7 +171,7 @@ check_deque_pop (size_t elements)
       position_t pos;
 
       pos = POS_HEAD;
-      while ((rc = deque_pop (&deque, (void **) &buf, pos)) == 0x0)
+      while ((rc = deque_pop (deque, (void **) &buf, pos)) == 0x0)
         {
           if (buf == NULL)
             {
@@ -193,7 +193,7 @@ check_deque_pop (size_t elements)
             }
         }
     }
-  if ((rc = deque_destroy (&deque)) != 0x0)
+  if ((rc = deque_destroy (deque)) != 0x0)
     {
       ERROR (TEST, "deque_destroy", rc);
       status = EFAILED;

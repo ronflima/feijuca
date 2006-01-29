@@ -25,30 +25,47 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist.h,v 1.21 2006-01-29 19:24:13 harq_al_ada Exp $
+ $Id: dlist_.h,v 1.1 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
-#ifndef DLIST_H
-#define DLIST_H
+#ifndef DLIST__H
+#define DLIST__H
 
 #include <stddef.h>
 #include "gacommon.h"
+#include "gainternal_.h"
 
 GABEGINDECLS
-
-/* Abstraction for the list descriptor */
-typedef struct dlist_t * dlist_t;
+/*
+ * Constants
+ */
+enum 
+{
+  GA_DLIST_SIGNATURE = (ga_magic_t)0xFADEBAD2u
+};
 
 /*
- * Prototypes
+ * Datatypes
  */
-int (dlist_init) __P ((dlist_t *, deallocator_t *));
-int (dlist_destroy) __P ((dlist_t));
-int (dlist_get) __P ((dlist_t, void **, position_t));
-int (dlist_insert) __P ((dlist_t, const void *, position_t));
-int (dlist_move) __P ((dlist_t, position_t));
-int (dlist_del) __P ((dlist_t, void **, position_t));
-int (dlist_size) __P((dlist_t, size_t *));
+/* Abstraction for a single list element */
+typedef struct dlist_element_t
+{
+  void *data_;
+  struct dlist_element_t *next_;
+  struct dlist_element_t *prev_;
+}
+dlist_element_t;
+
+/* Abstraction for the list descriptor */
+struct dlist_t
+{
+  size_t size_;                 /* List size */
+  dlist_element_t *curr_;       /* Current navigation point */
+  dlist_element_t *head_;       /* List head */
+  dlist_element_t *tail_;       /* List tail */
+  deallocator_t *deallocator_;  /* Deallocator routine for elements */
+  ga_magic_t signature_;        /* Descriptor signature */
+};
 
 GAENDDECLS
-#endif /* LIST_H */
+#endif /* DLIST__H */

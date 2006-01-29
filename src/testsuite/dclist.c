@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist.c,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
+ $Id: dclist.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -36,7 +36,7 @@
 #include "dclist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist.c,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id: dclist.c,v 1.6 2006-01-29 19:24:13 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -46,7 +46,7 @@ static char const rcsid[] = "@(#) $Id: dclist.c,v 1.5 2006-01-11 10:21:39 harq_a
 /*
  * Local prototypes
  */
-static int load_list (dclist_t *, size_t);
+static int load_list (dclist_t, size_t);
 static int scenario_check_contents (size_t);
 static int scenario_check_deletion (size_t);
 static int scenario_check_uninitialized (size_t);
@@ -60,187 +60,11 @@ test_dclist (size_t maxelements)
   int rc = 0x0;
   register int i;
   scenario_t scenarios[] = {
-      {"Check uninitialized descriptor", scenario_check_uninitialized}/*	,
-                                                                   {"Contents checking", scenario_check_contents},
-        							   {"Deletion checking", scenario_check_deletion} */
+      {"Check uninitialized descriptor", scenario_check_uninitialized}
   };
 
   return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
 
-}
-
-/*
- * Loads data into the list
- */
-static int
-load_list (dclist_t * list, size_t elements)
-{
-
-  register int i;		/* General purpose iterator */
-
-  for (i = 0x0; i < elements; ++i)
-    {
-      unsigned int *item;	/* Item to insert */
-      int rc;
-
-      item = (int *) malloc (sizeof (unsigned int));
-      if (item == NULL)
-        {
-          ERROR (TEST, "malloc", ECKFAIL);
-          return ENOMEM;
-        }
-
-      *item = i + 1;
-
-      if ((rc = dclist_insert (list, item, POS_TAIL)) != 0x0)
-        {
-          ERROR (TEST, "dclist_insert", rc);
-          return EFAILED;
-        }
-    }
-
-  return 0x0;
-}
-
-/*
- * Check lists contents
- */
-static int
-scenario_check_contents (size_t elements)
-{
-    /* THIS FUNCTION IS NOT FINISHED YET */
-  int *item;			/* Item to grab from the list */
-  int rc;			/* General error checking variable */
-  position_t position = POS_HEAD;
-  unsigned cksum[2] = { 0x0u, 0x0u };	/* Checksum for data validation */
-  int c = 0x0;
-  dclist_t * list;
-  size_t size;
-  while (position != POS_PREV)
-    {
-      register int i = 0x0;	/* General iterator */
-
-      /* Gets the data from the list, iterating it and checking the contents */
-      if ((rc = dclist_move (list, position)) != 0x0)
-        {
-          ERROR (TEST, "dclist_move", rc);
-          return EFAILED;
-        }
-      position = position == POS_HEAD ? POS_NEXT : POS_PREV;
-      while (rc == 0x0)
-        {
-          size_t size;
-          dclist_size (list, &size);
-          if (i == size)
-            break;
-          /* Gets the current item of the list and goes to the next */
-          rc = dclist_get (list, (void **) &item, position);
-          if (rc > 0x0)
-            {
-              ERROR (TEST, "dclist_get", rc);
-              return EFAILED;
-            }
-          /* ARRUMAR */
-          cksum[c] |= *item;
-          ++i;
-        }
-      if (i != elements)
-        {
-          ERROR (TEST, "Number of elements mismatch", ECKFAIL);
-          return EFAILED;
-        }
-      ++c;
-      if (position == POS_NEXT)
-        {
-          position = POS_TAIL;
-        }
-    }
-  if (cksum[0] != cksum[1])
-    {
-      ERROR (TEST, "Corrupt data found.", ECKFAIL);
-      return EFAILED;
-    }
-  return 0x0;
-}
-
-/*
- * Checks the deletion of items of the list
- */
-static int
-scenario_check_deletion (size_t elements)
-{
-    /* THIS FUNCTION IS NOT FINISHED YET */
-    
-  int deleted;			/* Number of elements deleted */
-  int *item;			/* Item deleted from the list */
-  int rc;			/* General error handling variable */
-  register int i;		/* A simple iterator */
-  dclist_t * list;
-  size_t size;
-  
-  /* Initializations */
-  deleted = 0x0;
-  i = 0x0;
-
-  if ((rc = dclist_del (list, (void **) &item, POS_HEAD)) != 0x0)
-    {
-      ERROR (TEST, "dclist_del", rc);
-      return EFAILED;
-    }
-
-  ++deleted;
-  if ((rc = dclist_del (list, (void **) &item, POS_TAIL)) != 0x0)
-    {
-      ERROR (TEST, "dclist_del", rc);
-      return EFAILED;
-    }
-
-  ++deleted;
-  if ((rc = dclist_move (list, POS_HEAD)) != 0x0)
-    {
-      ERROR (TEST, "dclist_move", rc);
-      return EFAILED;
-    }
-  if ((rc = dclist_del (list, (void **) &item, POS_CURR)) != 0x0)
-    {
-      ERROR (TEST, "dclist_del", rc);
-      return EFAILED;
-    }
-
-  ++deleted;
-  if ((rc = dclist_move (list, POS_HEAD)) != 0x0)
-    {
-      ERROR (TEST, "dclist_move", rc);
-      return EFAILED;
-    }
-  if ((rc = dclist_del (list, (void **) NULL, POS_NEXT)) != 0x0)
-    {
-      ERROR (TEST, "dclist_del", rc);
-      return EFAILED;
-    }
-  ++deleted;
-  if ((rc = dclist_move (list, POS_TAIL)) != 0x0)
-    {
-      ERROR (TEST, "dclist_move", rc);
-      return EFAILED;
-    }
-  if ((rc = dclist_del (list, (void **) NULL, POS_CURR)) != 0x0)
-    {
-      ERROR (TEST, "dclist_del", rc);
-      return EFAILED;
-    }
-  ++deleted;
-  if ((rc = dclist_size (list, &size)) != 0x0)
-    {
-      ERROR (TEST, "dclist_size", ECKFAIL);
-      return EFAILED;
-    }
-  if ((elements - deleted) != size)
-    {
-      ERROR (TEST, "Number of elements mismatch for deletion", ECKFAIL);
-      return EFAILED;
-    }
-  return 0x0;
 }
 
 static int
@@ -249,104 +73,37 @@ scenario_check_uninitialized (size_t elements)
   int rc;
   int test_status = 0x0;
   void *buf = NULL;
-  dclist_t dclist;
+  dclist_t dclist = NULL;
 
-  rc = dclist_destroy (&dclist);
+  rc = dclist_destroy (dclist);
   if (rc != EGAINVAL)
     {
       ERROR (TEST, "dclist_destroy", rc);
       test_status = EFAILED;
     }
-  rc = dclist_get (&dclist, &buf, POS_HEAD);
+  rc = dclist_get (dclist, &buf, POS_HEAD);
   if (rc != EGAINVAL)
     {
       ERROR (TEST, "dclist_get", rc);
       test_status = EFAILED;
     }
-  rc = dclist_insert (&dclist, buf, POS_HEAD);
+  rc = dclist_insert (dclist, buf, POS_HEAD);
   if (rc != EGAINVAL)
     {
       ERROR (TEST, "dclist_insert", rc);
       test_status = EFAILED;
     }
-  rc = dclist_move (&dclist, POS_HEAD);
+  rc = dclist_move (dclist, POS_HEAD);
   if (rc != EGAINVAL)
     {
       ERROR (TEST, "dclist_move", rc);
       test_status = EFAILED;
     }
-  rc = dclist_del (&dclist, &buf, POS_HEAD);
+  rc = dclist_del (dclist, &buf, POS_HEAD);
   if (rc != EGAINVAL)
     {
       ERROR (TEST, "dclist_del", rc);
       test_status = EFAILED;
     }
   return test_status;
-}
-
-static void
-print_list (dclist_t * list)
-{
-  int i;
-  int rc;
-  int *item;
-  size_t size;
-  /* Move to the begining */
-  rc = dclist_move (list, POS_HEAD);
-  if (rc)
-    {
-      return;
-    }
-  if ((rc = dclist_size (list, &size)) != 0x0)
-    {
-      ERROR (TEST, "dclist_size", ECKFAIL);
-      return;
-    }
-  for (i = 0; i < size; i++)
-    {
-      rc = dclist_get (list, (void **)&item, POS_CURR);
-      if (rc)
-        {
-          return;
-        }
-      fprintf (stderr, "<%d> ", *item);
-      rc = dclist_move (list, POS_NEXT);
-      if (rc)
-        {
-          return;
-        }
-    }
-  rc = dclist_move (list, POS_HEAD);
-  if (rc)
-    {
-      return;
-    }
-  rc = dclist_get (list, (void **)&item, POS_CURR);
-  if (rc)
-    {
-      return;
-    }
-  fprintf (stderr, "h<%d> ", *item);
-  rc = dclist_move (list, POS_PREV);
-  if (rc)
-    {
-      return;
-    }
-  rc = dclist_get (list, (void **)&item, POS_CURR);
-  if (rc)
-    {
-      return;
-    }
-  fprintf (stderr, "t<%d> ", *item);
-  rc = dclist_move (list, POS_NEXT);
-  if (rc)
-    {
-      return;
-    }
-  rc = dclist_get (list, (void **)&item, POS_CURR);
-  if (rc)
-    {
-      return;
-    }
-  fprintf (stderr, "h<%d>\n", *item);
 }

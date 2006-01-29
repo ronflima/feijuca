@@ -2,8 +2,7 @@
  G.A. Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
- This is contributed code by Daniel Costa Soares
- <daniel_csoares@yahoo.com.br>
+ Contributed code by Daniel Costa Soares <daniel_csoares@yahoo.com.br>
 
  This library is free software; you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as
@@ -22,32 +21,38 @@
 
  System: G.A. Lib
 
- Description: Pops an element from the deque giving a valid position (HEAD or TAIL)
+ Description: Interfaces and datatypes for deques (Double Ended QUEue)
 
  CVS Information
  $Author: harq_al_ada $
- $Id: deque_pop.c,v 1.8 2006-01-29 19:24:13 harq_al_ada Exp $
+ $Id: deque_.h,v 1.1 2006-01-29 19:24:13 harq_al_ada Exp $
 */
-#include <assert.h>
+
+#ifndef DEQUE__H
+#define DEQUE__H
+
+#include <stddef.h>
+#include "gacommon.h"
+#include "gainternal_.h"
 #include "dlist.h"
-#include "deque.h"
-#include "deque_.h"
 
-/* Version info */
-static char const rcsid[] = "@(#) $Id: deque_pop.c,v 1.8 2006-01-29 19:24:13 harq_al_ada Exp $";
-
-int
-deque_pop (deque_t deque, void **data, position_t whence)
+GABEGINDECLS
+/*
+ * Constants
+ */
+enum 
 {
-  assert (deque != NULL);
-  if (deque == NULL)
-    {
-      return EGAINVAL;
-    }
-  CHECK_SIGNATURE (deque, GA_DEQUE_SIGNATURE);
-  if ((whence != POS_HEAD) && (whence != POS_TAIL))
-    {
-      return EGAINVAL;
-    }
-  return dlist_del (deque->list_, data, whence);
-}
+  GA_DEQUE_SIGNATURE = 0xD00DBEEFu
+};
+
+/*
+ * Datatypes
+ */
+struct deque_t 
+{ 
+  ga_magic_t signature_;
+  dlist_t list_;
+};
+
+GAENDDECLS
+#endif /* DEQUE_H */
