@@ -23,19 +23,18 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: ivector_size.c,v 1.3 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "ivector.h"
+#include "ivector_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_size.c,v 1.2 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_size.c,v 1.3 2006-01-29 20:03:12 harq_al_ada Exp $";
 
 int
-ivector_size (ivector_t * vector, size_t * size)
+ivector_size (ivector_t vector, size_t * size)
 {
   assert (vector != NULL);
   assert (size != NULL);

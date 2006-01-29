@@ -23,54 +23,34 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector.h,v 1.21 2006-01-11 10:13:04 harq_al_ada Exp $
+ $Id: ivector.h,v 1.22 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 
 #ifndef IVECTOR_H
 #define IVECTOR_H
 
-#include <stdio.h>
+#include <stddef.h>
 #include "gacommon.h"
 
 GABEGINDECLS
 /*
- * Constants
- */
-enum
-{ 
-  GA_IVECTOR_SIGNATURE = (ga_magic_t) 0xFADEBAD4u, /* Signature */
-  IVECTOR_CHUNKSIZE    = (size_t) 10 /* Default chunk size = 10 elements */
-};
-
-/*
  * Datatypes
  */
 /* Infinite vector descriptor */
-typedef struct ivector_t
-{
-  void *data_;			/* Vector data */
-  size_t size_;			/* Vector size */
-  size_t datalen_;		/* Size of each vector element */
-  size_t chunksize_;            /* Size of memory chunk to allocate */
-  size_t chunksused_;           /* Chunks used */
-  size_t elemused_;             /* Elements used in chunk */
-  compare_t *comp_;		/* Comparison function */
-  ga_magic_t signature_;        /* Signature of the descriptor */
-}
-ivector_t;
+typedef struct ivector_t * ivector_t;
 
 /*
  * Prototypes
  */
 int (ivector_init) __P ((ivector_t *, compare_t *, size_t));
-int (ivector_destroy) __P ((ivector_t *));
-int (ivector_get) __P ((ivector_t *, void **, size_t));
-int (ivector_put) __P ((ivector_t *, size_t, const void *));
-int (ivector_add) __P ((ivector_t *, const void *));
-int (ivector_qsort) __P ((ivector_t *));
-int (ivector_bsearch) __P ((ivector_t *, void **, const void *));
-int (ivector_del) __P ((ivector_t *, size_t));
-int (ivector_size) __P ((ivector_t *, size_t *));
+int (ivector_destroy) __P ((ivector_t));
+int (ivector_get) __P ((ivector_t, void **, size_t));
+int (ivector_put) __P ((ivector_t, size_t, const void *));
+int (ivector_add) __P ((ivector_t, const void *));
+int (ivector_qsort) __P ((ivector_t));
+int (ivector_bsearch) __P ((ivector_t, void **, const void *));
+int (ivector_del) __P ((ivector_t, size_t));
+int (ivector_size) __P ((ivector_t, size_t *));
 
 GAENDDECLS
 

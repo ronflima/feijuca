@@ -23,28 +23,32 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_bsearch.c,v 1.16 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: ivector_bsearch.c,v 1.17 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "ivector.h"
+#include "ivector_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_bsearch.c,v 1.16 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_bsearch.c,v 1.17 2006-01-29 20:03:12 harq_al_ada Exp $";
 
 int
-ivector_bsearch (ivector_t * vector, void **found, const void *data)
+ivector_bsearch (ivector_t vector, void **found, const void *data)
 {
   /* Assertives for debugging purposes */
   assert (vector != NULL);
   assert (data != NULL);
+  if (vector == NULL || data == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
   *found = (void *) NULL;
 
-  if ((vector->comp_ == NULL) || (data == NULL))
+  if (vector->comp_ == NULL)
     {
       return EGAINVAL;
     }

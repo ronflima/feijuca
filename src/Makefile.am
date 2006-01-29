@@ -21,7 +21,7 @@
 # Makefile that handles intermediate libraries generation
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.15 2006-01-29 19:24:13 harq_al_ada Exp $
+# $Id: Makefile.am,v 1.16 2006-01-29 20:03:12 harq_al_ada Exp $
 SUBDIRS = list dlist clist ivector stack queue deque dclist
 lib_LTLIBRARIES = libga.la
 libga_la_SOURCES =
@@ -43,13 +43,14 @@ include_HEADERS = ../include/list.h				\
 				  ../include/dclist.h			\
                   ../include/gacommon.h
 
-noinst_HEADERS=../include/clist_.h  			\
-               ../include/dclist_.h  			\
-               ../include/deque_.h  			\
-               ../include/dlist_.h  			\
+noinst_HEADERS=../include/clist_.h				\
+               ../include/dclist_.h				\
+               ../include/deque_.h				\
+               ../include/dlist_.h				\
                ../include/gainternal_.h			\
-               ../include/list_.h  				\
-               ../include/queue_.h  			\
+			   ../include/ivector_.h			\
+               ../include/list_.h				\
+               ../include/queue_.h				\
                ../include/stack_.h
 
 

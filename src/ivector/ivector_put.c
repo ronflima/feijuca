@@ -23,25 +23,28 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_put.c,v 1.15 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: ivector_put.c,v 1.16 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <string.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "ivector.h"
+#include "ivector_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.15 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_put.c,v 1.16 2006-01-29 20:03:12 harq_al_ada Exp $";
 
 int
-ivector_put (ivector_t * vector, size_t idx, const void *data)
+ivector_put (ivector_t vector, size_t idx, const void *data)
 {
   void *i;			/* Indexer for the vector */
 
   assert (vector != NULL);
   assert (data != NULL);
+  if (vector == NULL || data == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
   if ((idx >= vector->size_) || (data == NULL))

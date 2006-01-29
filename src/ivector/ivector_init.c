@@ -23,36 +23,43 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_init.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: ivector_init.c,v 1.7 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 #include <stddef.h>
+#include <stdlib.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "ivector.h"
+#include "ivector_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_init.c,v 1.6 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_init.c,v 1.7 2006-01-29 20:03:12 harq_al_ada Exp $";
 
 int
 ivector_init (ivector_t * vector, compare_t * comp, size_t datalen)
 {
+  int rc = 0x0;
+
   assert (vector != NULL);
-  assert (comp != NULL);
-  assert (datalen != 0);
-
-  if (datalen == 0x0)
+  assert (datalen > 0);
+  if (datalen == 0x0 || vector == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  vector->size_       = 0x0;
-  vector->datalen_    = datalen;
-  vector->chunksize_  = IVECTOR_CHUNKSIZE;
-  vector->elemused_   = 0x0;
-  vector->chunksused_ = 0x0;
-  vector->comp_       = comp;
-  vector->data_       = (void *) NULL;
-  vector->signature_  = GA_IVECTOR_SIGNATURE;
+  else if ((*vector = (ivector_t) malloc (sizeof (struct ivector_t))) != NULL)
+    {
+      (*vector)->size_       = 0x0;
+      (*vector)->datalen_    = datalen;
+      (*vector)->chunksize_  = IVECTOR_CHUNKSIZE;
+      (*vector)->elemused_   = 0x0;
+      (*vector)->chunksused_ = 0x0;
+      (*vector)->comp_       = comp;
+      (*vector)->data_       = (void *) NULL;
+      (*vector)->signature_  = GA_IVECTOR_SIGNATURE;
+    }
+  else
+    {
+      rc = EGANOMEM;
+    }
 
-  return 0x0;
+  return rc;
 }

@@ -18,10 +18,10 @@
 # USA
 #
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: configure.ac,v 1.19 2005-12-13 10:18:48 ron_lima Exp $
+# $Id: configure.ac,v 1.20 2006-01-29 20:03:12 harq_al_ada Exp $
 
 AC_PREREQ(2.57)
-AC_INIT([ga-lib], [1.0.0], [ronaldo@ronaldolima.eti.br])
+AC_INIT([ga-lib], [1.0.0], [harq_al_ada@terra.com.br])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([include/list.h])
 
@@ -54,8 +54,21 @@ AC_ARG_ENABLE(debug,
 esac], [debug=false])
 AM_CONDITIONAL(DEBUG, test x$debug = xtrue)
 if test x$debug = xtrue; then
-  AC_SUBST([CFLAGS], [-g])
+  AC_SUBST([AM_CFLAGS], [-g])
 else
+  AC_SUBST([AM_CFLAGS], [-DNDEBUG])
+fi
+
+# Disable assertions for debugging purposes
+AC_ARG_ENABLE(assertions,
+[  --disable-assertions    Disable assertions in the code],
+[case "${enableval}" in
+  no) assertions=true;;
+  yes) assertions=false;;
+  *) AC_MSG_ERROR(bad value ${enableval} for --disable-assertions);;
+esac], [assertions=false])
+AM_CONDITIONAL(DEBUG, test x$assertions = xtrue)
+if test x$assertions = xtrue; then
   AC_SUBST([AM_CFLAGS], [-DNDEBUG])
 fi
 
@@ -69,9 +82,7 @@ AC_ARG_ENABLE(profiling,
 esac], [profiling=false])
 AM_CONDITIONAL(DEBUG, test x$profiling = xtrue)
 if test x$profiling = xtrue; then
-  AC_SUBST([CFLAGS], [-pg])
-else
-  AC_SUBST([AM_CFLAGS], [-DNDEBUG])
+  AC_SUBST([AM_CFLAGS], [-pg])
 fi
 
 AC_CONFIG_FILES([Makefile

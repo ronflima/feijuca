@@ -23,25 +23,28 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_add.c,v 1.16 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: ivector_add.c,v 1.17 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
 #include "ivector.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "ivector_.h"
 
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.16 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: ivector_add.c,v 1.17 2006-01-29 20:03:12 harq_al_ada Exp $";
 
 int
-ivector_add (ivector_t * vector, const void *data)
+ivector_add (ivector_t vector, const void *data)
 {
   void *v;			/* New redimensioned vector */
 
   assert (vector != NULL);
+  if (vector == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (vector, GA_IVECTOR_SIGNATURE);
   
   if ((vector->elemused_ == vector->chunksize_) || (vector->size_ == 0x0))
