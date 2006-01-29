@@ -19,35 +19,40 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Internal header file for queues. This file is intended
+ to be used only for g.a. library compilation and should not be
+ installed on the final target system.
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: queue_.h,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef QUEUE__H
+#define QUEUE__H
 
 #include <stddef.h>
 #include "gacommon.h"
+#include "gainternal_.h"
 #include "list.h"
 
 GABEGINDECLS
+/*
+ * Constants
+ */
+enum
+{
+  GA_QUEUE_SIGNATURE=(ga_magic_t)0xFADEDEADu
+};
 
 /*
  * Datatypes
  */
-typedef struct stack_t * stack_t;
-
-/*
- * Prototypes
- */
-int (stack_init) __P ((stack_t *, deallocator_t *));
-int (stack_destroy) __P ((stack_t));
-int (stack_pop) __P ((stack_t, void **));
-int (stack_push) __P ((stack_t, const void *));
-int (stack_size) __P((stack_t, size_t *));
+struct queue_t
+{
+  ga_magic_t signature_;
+  list_t list_;
+};
 
 GAENDDECLS
-#endif /* STACK_H */
+#endif /* QUEUE__H */

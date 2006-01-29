@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $
+ $Id: clist.c,v 1.12 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.12 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -53,7 +53,7 @@ enum
 /*
  * Local prototypes
  */
-static int load_clist (clist_t *, size_t, unsigned char);
+static int load_clist (clist_t, size_t, unsigned char);
 static int check_navigation (size_t);
 
 /*
@@ -74,7 +74,7 @@ test_clist (size_t maxelements)
 
 /* Utility function: Loads data into the circular list */
 static int
-load_clist (clist_t * clist, size_t elements, unsigned char use_pattern)
+load_clist (clist_t clist, size_t elements, unsigned char use_pattern)
 {
   register int i;		/* General purpose iterator */
   int test_status;		/* Test status variable  */
@@ -135,12 +135,12 @@ check_navigation (size_t maxelem)
       ERROR (TEST, "clist_init", rc);
       test_result = EFAILED;
     }
-  else if ((rc = load_clist (&clist, maxelem, '\x0')) != 0x0)
+  else if ((rc = load_clist (clist, maxelem, '\x0')) != 0x0)
     {
       ERROR (TEST, "load_clist", rc);
       test_result = EFAILED;
     }
-  else if ((rc = clist_move (&clist, POS_HEAD)) != 0x0)
+  else if ((rc = clist_move (clist, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "clist_move", rc);
       test_result = EFAILED;
@@ -150,26 +150,33 @@ check_navigation (size_t maxelem)
       int i = 0x1;
       do 
         {
-          if (clist.list_.curr_ == clist.list_.tail_)
+          position_t whence;
+          if ((rc = clist_getpos (clist, &whence)) != 0x0)
+            {
+              ERROR (TEST, "clist_getpos", rc);
+              test_result = EFAILED;
+              break;
+            }
+          if (whence == POS_TAIL)
             {
               break;
             }
           ++i;
         }
-      while ((rc = clist_move (&clist, POS_NEXT)) == 0x0);
+      while ((rc = clist_move (clist, POS_NEXT)) == 0x0);
       if (rc > 0x0)
         {
           ERROR (TEST, "CList navigation failed", rc);
           test_result = EFAILED;
         }
-      clist_size (&clist, &size);
+      clist_size (clist, &size);
       if (i != size)
         {
           ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
           test_result = EFAILED;
         }
     }
-  if ((rc = clist_destroy (&clist)) != 0x0)
+  if ((rc = clist_destroy (clist)) != 0x0)
     {
       ERROR (TEST, "clist_destroy", rc);
       test_result = EFAILED;

@@ -23,21 +23,25 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_push.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: queue_push.c,v 1.14 2006-01-29 12:37:04 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "list.h"
 #include "queue.h"
+#include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.14 2006-01-29 12:37:04 harq_al_ada Exp $";
 
 int
-queue_push (queue_t * queue, const void *data)
+queue_push (queue_t queue, const void *data)
 {
   assert (queue != NULL);
+  if (queue == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (queue, GA_QUEUE_SIGNATURE);
 
-  return list_insert (&queue->list_, data, POS_TAIL);
+  return list_insert (queue->list_, data, POS_TAIL);
 }

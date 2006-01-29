@@ -22,7 +22,7 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.7 2006-01-11 10:21:39 harq_al_ada Exp $
+# $Id: Makefile.am,v 1.8 2006-01-29 12:37:02 harq_al_ada Exp $
 noinst_LTLIBRARIES = liblist.la
 liblist_la_SOURCES = list_init.c				\
                      list_del.c					\
@@ -32,5 +32,6 @@ liblist_la_SOURCES = list_init.c				\
                      list_move.c				\
                      list_reverse.c				\
                      list_size.c				\
+			         list_getpos.c				\
                      ../../include/list.h
 INCLUDES=-I../../include/

@@ -24,21 +24,32 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: stack_destroy.c,v 1.6 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
+#include <stdlib.h>
+#include "list.h"
 #include "stack.h"
+#include "stack_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: stack_destroy.c,v 1.6 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 int
-stack_destroy (stack_t * stack)
+stack_destroy (stack_t stack)
 {
+  int rc = 0x0;
+
   assert (stack != NULL);
-  CHECK_SIGNATURE (stack, GA_STACK_SIGNATURE);
-  stack->signature_ = 0x0;
-  return list_destroy (&stack->list_);
+  if (stack == NULL)
+    {
+      rc = EGAINVAL;
+    }
+  else
+    {
+      CHECK_SIGNATURE (stack, GA_STACK_SIGNATURE);
+      rc = list_destroy (stack->list_);
+      free (stack);
+    }
+  return rc;
 }

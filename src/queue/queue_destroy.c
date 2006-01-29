@@ -24,20 +24,31 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: queue_destroy.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
+#include <stdlib.h>
+#include "list.h"
 #include "queue.h"
+#include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $";
 
 int
-queue_destroy (queue_t * queue)
+queue_destroy (queue_t queue)
 {
+  int rc = 0x0;
   assert (queue != NULL);
-  CHECK_SIGNATURE (queue, GA_QUEUE_SIGNATURE);
-  return list_destroy (&queue->list_);
+  if (queue == NULL)
+    {
+      rc = EGAINVAL;
+    }
+  else 
+    {
+      CHECK_SIGNATURE (queue, GA_QUEUE_SIGNATURE);
+      rc = list_destroy (queue->list_);
+      free (queue);
+    }
+  return rc;
 }

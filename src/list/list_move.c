@@ -25,21 +25,24 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_move.c,v 1.18 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: list_move.c,v 1.19 2006-01-29 12:37:03 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.18 2006-01-26 10:18:13 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.19 2006-01-29 12:37:03 harq_al_ada Exp $"; 
 
 int
-list_move (list_t * list, position_t whence)
+list_move (list_t list, position_t whence)
 {
   assert (list != NULL);
+  if (list == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
   /* Decides how to navigate the list */

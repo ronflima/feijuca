@@ -23,20 +23,23 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack_push.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: stack_push.c,v 1.14 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "stack.h"
+#include "stack_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_push.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: stack_push.c,v 1.14 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 int
-stack_push (stack_t * stack, const void *data)
+stack_push (stack_t stack, const void *data)
 {
   assert (stack != NULL);
+  if (stack == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (stack, GA_STACK_SIGNATURE);
-  return list_insert (&stack->list_, data, POS_HEAD);
+  return list_insert (stack->list_, data, POS_HEAD);
 }

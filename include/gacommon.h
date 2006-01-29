@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: gacommon.h,v 1.27 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: gacommon.h,v 1.28 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
 #ifndef GACOMMON_H
@@ -77,7 +77,8 @@ typedef enum
   POS_TAIL,			/* Tail */
   POS_NEXT,			/* Next element  */
   POS_CURR,			/* Current element */
-  POS_PREV			/* Previous element */
+  POS_PREV,			/* Previous element */
+  POS_MID                       /* Somewhere between the head or tail */
 }
 position_t;
 

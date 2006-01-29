@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.h,v 1.22 2006-01-11 10:13:33 harq_al_ada Exp $
+ $Id: list.h,v 1.23 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
 #ifndef LIST_H
@@ -33,48 +33,25 @@
 #include "gacommon.h"
 
 GABEGINDECLS
-/*
- * Constants
- */
-enum
-{
-  GA_LIST_SIGNATURE=(ga_magic_t)0xFADEBAD1u
-};
 
 /*
  * Datatypes
  */
-/* Abstraction for a single list element */
-typedef struct list_element_t
-{
-  void *data_;
-  struct list_element_t *next_;
-}
-list_element_t;
+typedef struct list_t * list_t;
 
-/* Abstraction for the list descriptor */
-typedef struct list_t
-{
-  size_t size_;                 /* List size */
-  list_element_t *curr_;        /* Current navigation point */
-  list_element_t *head_;        /* List head */
-  list_element_t *tail_;        /* List tail */
-  deallocator_t  *deallocator_; /* Deallocator function */
-  ga_magic_t signature_;        /* Structure signature */
-}
-list_t;
 
 /*
  * Prototypes
  */
 int (list_init) __P ((list_t *, deallocator_t *));
-int (list_destroy) __P ((list_t *));
-int (list_get) __P ((list_t *, void **, position_t));
-int (list_insert) __P ((list_t *, const void *, position_t));
-int (list_move) __P ((list_t *, position_t));
-int (list_del) __P ((list_t *, void **));
-int (list_reverse) __P((list_t *));
-int (list_size) __P((list_t *, size_t *));
+int (list_destroy) __P ((list_t));
+int (list_get) __P ((list_t, void **, position_t));
+int (list_insert) __P ((list_t, const void *, position_t));
+int (list_move) __P ((list_t, position_t));
+int (list_del) __P ((list_t, void **));
+int (list_reverse) __P((list_t));
+int (list_size) __P((list_t, size_t *));
+int (list_getpos) __P((list_t, position_t *));
 
 GAENDDECLS
 #endif /* LIST_H */

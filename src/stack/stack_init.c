@@ -23,21 +23,39 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: stack_init.c,v 1.6 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
+#include <stdlib.h>
+#include "list.h"
 #include "stack.h"
+#include "stack_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: stack_init.c,v 1.6 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 int
 stack_init (stack_t * stack, deallocator_t * dealloc)
 {
+  int rc = 0x0;
+
   assert (stack != NULL);
   assert (dealloc != NULL);
-  stack->signature_ = GA_STACK_SIGNATURE;
-  return list_init (&stack->list_, dealloc);
+  if (stack == NULL || dealloc == NULL)
+    {
+      rc = EGAINVAL;
+    }
+  else if ((*stack = (stack_t) malloc (sizeof (struct stack_t))) == NULL)
+    {
+      rc = EGANOMEM;
+    }
+  else 
+    {
+      (*stack)->signature_ = GA_STACK_SIGNATURE;
+      if ((rc = list_init (&(*stack)->list_, dealloc)) != 0x0)
+        {
+          free (*stack);
+        }
+    }
+  return rc;
 }

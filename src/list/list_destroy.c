@@ -25,32 +25,34 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: list_destroy.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $";
 
 int
-list_destroy (list_t * list)
+list_destroy (list_t list)
 {
   assert (list != NULL);
+  if (list == NULL) 
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
   /* Makes the current pointer pointing to nowhere. It will force list_del to
      delete always from the head of the list */
   list->curr_ = NULL;
 
-  /* Proceeds with the deletion */
+  /* Deletes each single member of the list */
   while (list_del (list, NULL) == 0x0)
     ;
-
-  /* Invalidates the descriptor signature */
   list->signature_ = (ga_magic_t)0x0;
+  free (list);
   
   return 0x0;
 }

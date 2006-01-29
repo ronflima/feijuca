@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.c,v 1.22 2006-01-11 10:21:39 harq_al_ada Exp $
+ $Id: list.c,v 1.23 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.22 2006-01-11 10:21:39 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.23 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -52,7 +52,7 @@ enum
 /*
  * Local prototypes
  */
-static int load_list (list_t *, size_t, unsigned char);
+static int load_list (list_t, size_t, unsigned char);
 static int check_contents (size_t);
 static int check_deletion (size_t);
 static int check_reversal (size_t);
@@ -77,7 +77,7 @@ test_list (size_t maxelements)
  * Utility function: loads data into the list
  */
 static int
-load_list (list_t * list, size_t elements, unsigned char use_pattern)
+load_list (list_t list, size_t elements, unsigned char use_pattern)
 {
   register int i;		/* General purpose iterator */
 
@@ -130,19 +130,19 @@ check_contents (size_t elements)
       ERROR (TEST, "list_init", rc);
       return rc;
     }
-  if ((rc = load_list (&list, elements, '\x1')) != 0x0)
+  if ((rc = load_list (list, elements, '\x1')) != 0x0)
     {
       ERROR (TEST, "load_list", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_move (&list, POS_HEAD)) != 0x0)
+  else if ((rc = list_move (list, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "list_move", rc);
       test_status = EFAILED;
     }
   while (test_status == 0x0)
     {
-      if ((rc = list_get (&list, (void **) &item, POS_NEXT)) == EOF)
+      if ((rc = list_get (list, (void **) &item, POS_NEXT)) == EOF)
         {
           break;
         }
@@ -165,7 +165,7 @@ check_contents (size_t elements)
       ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
       test_status = EFAILED;
     }
-  if ((rc = list_destroy (&list)) != 0x0)
+  if ((rc = list_destroy (list)) != 0x0)
     {
       ERROR (TEST, "list_destroy", ECKFAIL);
       test_status = EFAILED;
@@ -192,17 +192,17 @@ check_deletion (size_t elements)
       ERROR (TEST, "list_init", rc);
       test_status = EFAILED;
     }
-  else if ((rc = load_list (&list, elements, '\x1')) != 0x0)
+  else if ((rc = load_list (list, elements, '\x1')) != 0x0)
     {
       ERROR (TEST, "load_list", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_move (&list, POS_HEAD)) != 0x0)
+  else if ((rc = list_move (list, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "list_move", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_del (&list, (void **) &item)) != 0x0)
+  else if ((rc = list_del (list, (void **) &item)) != 0x0)
     {
       ERROR (TEST, "list_del", rc);
       test_status = EFAILED;
@@ -214,13 +214,13 @@ check_deletion (size_t elements)
     }
   for (i = 0; (i < (elements / 2)) && (test_status == 0x0); ++i)
     {
-      if ((rc = list_move (&list, POS_NEXT)) != 0x0)
+      if ((rc = list_move (list, POS_NEXT)) != 0x0)
         {
           ERROR (TEST, "list_move", rc);
           test_status = EFAILED;
         }
     }
-  if ((rc = list_del (&list, (void **) &item)) != 0x0)
+  if ((rc = list_del (list, (void **) &item)) != 0x0)
     {
       ERROR (TEST, "list_del", rc);
       return EFAILED;
@@ -229,12 +229,12 @@ check_deletion (size_t elements)
     {
       free (item);
       ++deleted;
-      if ((rc = list_move (&list, POS_TAIL)) != 0x0)
+      if ((rc = list_move (list, POS_TAIL)) != 0x0)
         {
           ERROR (TEST, "list_move", rc);
           test_status = EFAILED;
         }
-      else if ((rc = list_del (&list, (void **) NULL)) == 0x0)
+      else if ((rc = list_del (list, (void **) NULL)) == 0x0)
         {
           /* The tail was deleted. This is a serious bug, since it is
              not possible to delete the tail of a single linked
@@ -246,7 +246,7 @@ check_deletion (size_t elements)
         {
           size_t size;
 
-          if ((rc = list_size (&list, &size)) != 0x0)
+          if ((rc = list_size (list, &size)) != 0x0)
             {
               ERROR (TEST, "list_size", ECKFAIL);
               test_status = EFAILED;
@@ -258,7 +258,7 @@ check_deletion (size_t elements)
             }
         }
     }
-  if ((rc = list_destroy (&list)) != 0x0)
+  if ((rc = list_destroy (list)) != 0x0)
     {
       ERROR (TEST, "list_destroy", ECKFAIL);
       test_status = EFAILED;
@@ -283,19 +283,19 @@ check_reversal (size_t elements)
       ERROR (TEST, "list_init", rc);
       return rc;
     }
-  if ((rc = load_list (&list, elements, '\x1')) != 0x0)
+  if ((rc = load_list (list, elements, '\x1')) != 0x0)
     {
       ERROR (TEST, "load_list", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_reverse (&list)) != 0x0)
+  else if ((rc = list_reverse (list)) != 0x0)
     {
       ERROR (TEST, "Error reversing the list", rc);
       test_status = EFAILED;
     }
   else 
     {
-      if ((rc = list_move (&list, POS_HEAD)) != 0x0)
+      if ((rc = list_move (list, POS_HEAD)) != 0x0)
         {
           ERROR (TEST, "list_move", rc);
           test_status = EFAILED;
@@ -304,7 +304,7 @@ check_reversal (size_t elements)
   while (test_status == 0x0)
     {
       int * data;
-      if ((rc = list_get (&list, (void **) &data, POS_NEXT)) == EOF)
+      if ((rc = list_get (list, (void **) &data, POS_NEXT)) == EOF)
         {
           break;
         }
@@ -329,7 +329,7 @@ check_reversal (size_t elements)
           test_status = EFAILED;
         }
     }
-  if ((rc = list_destroy (&list)) != 0x0)
+  if ((rc = list_destroy (list)) != 0x0)
     {
       ERROR (TEST, "list_destroy", ECKFAIL);
       test_status = EFAILED;
@@ -346,35 +346,35 @@ check_uninitialization (size_t elements)
   int rc;
   void * buf = NULL;
   int test_status = 0x0;
-  list_t list;
+  list_t list = NULL;
   elements;
 
-  if ((rc = list_insert (&list, &buf, POS_HEAD)) != EGAINVAL)
+  if ((rc = list_insert (list, &buf, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "list_insert", rc);
       test_status = EFAILED;
     }
-  else if (( rc = list_get (&list, &buf, POS_HEAD)) != EGAINVAL)
+  else if (( rc = list_get (list, &buf, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "list_get", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_move (&list, POS_HEAD)) != EGAINVAL)
+  else if ((rc = list_move (list, POS_HEAD)) != EGAINVAL)
     {
       ERROR (TEST, "list_move", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_del (&list, &buf)) != EGAINVAL)
+  else if ((rc = list_del (list, &buf)) != EGAINVAL)
     {
       ERROR (TEST, "list_del", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_reverse (&list)) != EGAINVAL)
+  else if ((rc = list_reverse (list)) != EGAINVAL)
     {
       ERROR (TEST, "list_reverse", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_destroy (&list)) != EGAINVAL)
+  else if ((rc = list_destroy (list)) != EGAINVAL)
     {
       ERROR (TEST, "list_destroy", rc);
       test_status = EFAILED;

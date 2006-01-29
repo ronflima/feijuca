@@ -19,35 +19,34 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Gets the current element of the list and iterates to the
+ next one
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: clist_getpos.c,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
 */
-
-#ifndef STACK_H
-#define STACK_H
-
-#include <stddef.h>
-#include "gacommon.h"
+#include <assert.h>
 #include "list.h"
+#include "clist.h"
+#include "clist_.h"
 
-GABEGINDECLS
+/* Version info */
+static char const rcsid [] = "@(#) $Id: clist_getpos.c,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $";
 
-/*
- * Datatypes
- */
-typedef struct stack_t * stack_t;
-
-/*
- * Prototypes
- */
-int (stack_init) __P ((stack_t *, deallocator_t *));
-int (stack_destroy) __P ((stack_t));
-int (stack_pop) __P ((stack_t, void **));
-int (stack_push) __P ((stack_t, const void *));
-int (stack_size) __P((stack_t, size_t *));
-
-GAENDDECLS
-#endif /* STACK_H */
+int 
+clist_getpos (clist_t clist, position_t * whence)
+{
+  int rc = 0x0;
+  assert (clist != NULL);
+  if (clist == NULL)
+    {
+      rc =  EGAINVAL;
+    }
+  else
+    {
+      CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
+      rc = list_getpos (clist->list_, whence);
+    }
+  return rc;
+}

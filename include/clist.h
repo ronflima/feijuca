@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist.h,v 1.14 2006-01-11 10:04:46 harq_al_ada Exp $
+ $Id: clist.h,v 1.15 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
 #ifndef CLIST_H
@@ -34,34 +34,24 @@
 #include "gacommon.h"
 
 GABEGINDECLS
-/*
- * Constants
- */
-enum
-{
-  GA_CLIST_SIGNATURE=(ga_magic_t)0xB00BD00Du
-};
 
 /*
  * Datatypes
  */
 /* Abstraction for the list descriptor */
-typedef struct clist_t
-{
-  ga_magic_t signature_;
-  list_t list_;
-} clist_t;
+typedef struct clist_t * clist_t;
 
 /*
  * Prototypes
  */
 int (clist_init) __P ((clist_t *, deallocator_t *));
-int (clist_destroy) __P ((clist_t *));
-int (clist_del) __P ((clist_t *, void **));
-int (clist_get) __P ((clist_t *, void **, position_t));
-int (clist_move) __P ((clist_t *, position_t));
-int (clist_insert) __P ((clist_t *, const void *));
-int (clist_size) __P ((clist_t *, size_t *));
+int (clist_destroy) __P ((clist_t));
+int (clist_del) __P ((clist_t, void **));
+int (clist_get) __P ((clist_t, void **, position_t));
+int (clist_move) __P ((clist_t, position_t));
+int (clist_insert) __P ((clist_t, const void *));
+int (clist_size) __P ((clist_t, size_t *));
+int (clist_getpos) __P((clist_t, position_t *));
 
 GAENDDECLS
 #endif /* CLIST_H */

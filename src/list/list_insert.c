@@ -24,24 +24,27 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.19 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.20 2006-01-29 12:37:03 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.19 2006-01-26 10:18:13 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.20 2006-01-29 12:37:03 harq_al_ada Exp $"; 
 
 int
-list_insert (list_t * list, const void *data, position_t whence)
+list_insert (list_t list, const void *data, position_t whence)
 {
   list_element_t *element;
 
   assert (list != NULL);
   assert (data != NULL);
+  if (list == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
   /* Simple sanity check */
@@ -57,9 +60,7 @@ list_insert (list_t * list, const void *data, position_t whence)
     }
 
   /* Allocates memory for the new element */
-  element = (list_element_t *) malloc (sizeof (list_element_t));
-  assert (element != NULL);
-  if (!element)
+  if ((element = (list_element_t *) malloc (sizeof (list_element_t))) == NULL)
     {
       return EGANOMEM;
     }

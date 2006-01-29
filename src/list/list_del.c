@@ -30,20 +30,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.20 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.21 2006-01-29 12:37:02 harq_al_ada Exp $";
 
 int
-list_del (list_t * list, void **data)
+list_del (list_t list, void **data)
 {
   list_element_t *currelem;	/* Current element being processed */
   void *extracted_data;		/* Data extracted from the list */
 
   assert (list != NULL);
+  if (list == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);      
   currelem = (list_element_t *) NULL;
   

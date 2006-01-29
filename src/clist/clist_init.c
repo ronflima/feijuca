@@ -23,22 +23,39 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: clist_init.c,v 1.6 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 #include <assert.h>
+#include <stdlib.h>
 #include "list.h"
 #include "clist.h"
-#include "gacommon.h"
+#include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.6 2006-01-29 12:37:02 harq_al_ada Exp $";
 
 int
 clist_init (clist_t * clist, deallocator_t * dealloc)
 {
+  int rc = 0x0;
+
   assert (clist != NULL);
   assert (dealloc != NULL);
-
-  clist->signature_ = GA_CLIST_SIGNATURE;
-  return list_init (&clist->list_, dealloc);
+  if (clist == NULL)
+    {
+      rc = EGAINVAL;
+    }
+  else if ((*clist = (clist_t) malloc (sizeof (struct clist_t))) == NULL)
+    {
+      rc = EGANOMEM;
+    }
+  else
+    {
+      (*clist)->signature_ = GA_CLIST_SIGNATURE;
+      if ((rc = list_init (&(*clist)->list_, dealloc)) != 0x0)
+        {
+          free (*clist);
+        }
+    }
+  return rc;
 }

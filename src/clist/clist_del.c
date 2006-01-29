@@ -23,35 +23,39 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_del.c,v 1.11 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: clist_del.c,v 1.12 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "list.h"
 #include "clist.h"
-#include "gainternal_.h"
+#include "clist_.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.11 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.12 2006-01-29 12:37:02 harq_al_ada Exp $";
 
 int
-clist_del (clist_t * clist, void **data)
+clist_del (clist_t clist, void **data)
 {
   assert (clist != NULL);
+  if (clist == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
 
   /* Check if we are deleting the head of the list */
-  if (!clist->list_.curr_ || clist->list_.curr_ == clist->list_.head_)
+  if (!clist->list_->curr_ || clist->list_->curr_ == clist->list_->head_)
     {
       /* Adjusts the tail to point to the next item pass the head */
-      clist->list_.tail_->next_ = clist->list_.head_->next_;
+      clist->list_->tail_->next_ = clist->list_->head_->next_;
     }
   /* Check if we are currently in the tail of the list */
-  if (clist->list_.curr_ == clist->list_.tail_)
+  if (clist->list_->curr_ == clist->list_->tail_)
     {
       /* Adjusts the head, since the tail has as its next the head of
        * the list */
-      clist->list_.head_ = clist->list_.head_->next_;
+      clist->list_->head_ = clist->list_->head_->next_;
     }
 
-  return list_del (&clist->list_, data);
+  return list_del (clist->list_, data);
 }

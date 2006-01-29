@@ -23,50 +23,53 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_insert.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: clist_insert.c,v 1.14 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 #include <assert.h>
+#include <stdlib.h>
 #include "clist.h"
-#include "gacommon.h"
-#include "gainternal_.h"
+#include "clist_.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.13 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.14 2006-01-29 12:37:02 harq_al_ada Exp $";
 
 int
-clist_insert (clist_t * clist, const void *data)
+clist_insert (clist_t clist, const void *data)
 {
   list_element_t *element;
 
   assert (clist != NULL);
+  if (clist == NULL)
+    {
+      return EGAINVAL;
+    }
   CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
 
   /* Allocates memory for the new element */
-  element = (list_element_t *) malloc (sizeof (list_element_t));
-  assert (element != NULL);
-  if (element == NULL)
+  if ((element = (list_element_t *) malloc (sizeof (list_element_t))) == NULL)
     {
       return EGANOMEM;
     }
   element->data_ = (void *) data;
   element->next_ = (list_element_t *) NULL;
   /* Check the size of the list */
-  if (clist->list_.size_ == 0x0)
+  if (clist->list_->size_ == 0x0)
     {
       /* This is the head of the list */
-      clist->list_.head_ = element;
-      clist->list_.tail_ = element;
+      clist->list_->head_ = element;
+      clist->list_->tail_ = element;
     }
   else
     {
       /* Insert at the end */
-      clist->list_.tail_->next_ = element;
-      clist->list_.tail_ = element;
+      clist->list_->tail_->next_ = element;
+      clist->list_->tail_ = element;
     }
   /* Makes the circular link in the list */
-  clist->list_.tail_->next_ = clist->list_.head_;
-  clist->list_.curr_ = element;
-  clist->list_.size_++;
+  clist->list_->tail_->next_ = clist->list_->head_;
+  clist->list_->curr_ = element;
+  ++(clist->list_->size_);
 
   return 0x0;
 }

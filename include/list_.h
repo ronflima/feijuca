@@ -19,35 +19,52 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Internal header file for lists implementation. This
+ header file is internal and used only for the compilation of the
+ library.
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: list_.h,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef LIST__H
+#define LIST__H
 
 #include <stddef.h>
 #include "gacommon.h"
-#include "list.h"
+#include "gainternal_.h"
 
 GABEGINDECLS
+/*
+ * Constants
+ */
+enum
+{
+  GA_LIST_SIGNATURE=(ga_magic_t)0xFADEBAD1u
+};
 
 /*
  * Datatypes
  */
-typedef struct stack_t * stack_t;
+/* Abstraction for a single list element */
+typedef struct list_element_t
+{
+  void *data_;
+  struct list_element_t *next_;
+}
+list_element_t;
 
-/*
- * Prototypes
- */
-int (stack_init) __P ((stack_t *, deallocator_t *));
-int (stack_destroy) __P ((stack_t));
-int (stack_pop) __P ((stack_t, void **));
-int (stack_push) __P ((stack_t, const void *));
-int (stack_size) __P((stack_t, size_t *));
+/* Abstraction for the list descriptor */
+struct list_t
+{
+  size_t size_;                 /* List size */
+  list_element_t *curr_;        /* Current navigation point */
+  list_element_t *head_;        /* List head */
+  list_element_t *tail_;        /* List tail */
+  deallocator_t  *deallocator_; /* Deallocator function */
+  ga_magic_t signature_;        /* Structure signature */
+};
 
 GAENDDECLS
-#endif /* STACK_H */
+#endif /* LIST__H */

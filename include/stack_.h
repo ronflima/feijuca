@@ -19,35 +19,40 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Internal definitions for stack routines. This header
+ file is intended to be used only for g.a. library compilation.
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: stack_.h,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef STACK__H
+#define STACK__H
 
 #include <stddef.h>
 #include "gacommon.h"
+#include "gainternal_.h"
 #include "list.h"
 
 GABEGINDECLS
 
 /*
- * Datatypes
+ * Constants
  */
-typedef struct stack_t * stack_t;
+enum
+{
+  GA_STACK_SIGNATURE=(ga_magic_t)0xFADEBAD5u
+};
 
 /*
- * Prototypes
+ * Datatypes
  */
-int (stack_init) __P ((stack_t *, deallocator_t *));
-int (stack_destroy) __P ((stack_t));
-int (stack_pop) __P ((stack_t, void **));
-int (stack_push) __P ((stack_t, const void *));
-int (stack_size) __P((stack_t, size_t *));
+struct stack_t
+{
+  ga_magic_t signature_;
+  list_t list_;
+};
 
 GAENDDECLS
-#endif /* STACK_H */
+#endif /* STACK__H */

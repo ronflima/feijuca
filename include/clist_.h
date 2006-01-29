@@ -19,35 +19,42 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Internal header file for circular lists. This is the
+ definition module for circular lists. This header file is used only
+ for g.a. library compilation.
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: clist_.h,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef CLIST__H
+#define CLIST__H
 
 #include <stddef.h>
-#include "gacommon.h"
 #include "list.h"
+#include "gacommon.h"
+#include "gainternal_.h"
 
 GABEGINDECLS
+/*
+ * Constants
+ */
+enum
+{
+  GA_CLIST_SIGNATURE=(ga_magic_t)0xB00BD00Du
+};
 
 /*
  * Datatypes
  */
-typedef struct stack_t * stack_t;
 
-/*
- * Prototypes
- */
-int (stack_init) __P ((stack_t *, deallocator_t *));
-int (stack_destroy) __P ((stack_t));
-int (stack_pop) __P ((stack_t, void **));
-int (stack_push) __P ((stack_t, const void *));
-int (stack_size) __P((stack_t, size_t *));
+/* Abstraction for the list descriptor */
+struct clist_t
+{
+  ga_magic_t signature_;
+  list_t list_;
+};
 
 GAENDDECLS
-#endif /* STACK_H */
+#endif /* CLIST__H */

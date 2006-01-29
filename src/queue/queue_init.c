@@ -23,22 +23,39 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: queue_init.c,v 1.6 2006-01-29 12:37:04 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
+#include <stdlib.h>
+#include "list.h"
 #include "queue.h"
-
+#include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.6 2006-01-29 12:37:04 harq_al_ada Exp $";
 
 int
 queue_init (queue_t * queue, deallocator_t * dealloc)
 {
+  int rc = 0x0;
+
   assert (queue != NULL);
   assert (dealloc != NULL);
-  queue->signature_ = GA_QUEUE_SIGNATURE;
-  return list_init (&queue->list_, dealloc);
+  if (queue == NULL || dealloc == NULL)
+    {
+      rc =  EGAINVAL;
+    }
+  else if ((*queue = (queue_t) malloc (sizeof (struct queue_t))) == NULL)
+    {
+      rc = EGANOMEM;
+    }
+  else
+    {
+      (*queue)->signature_ = GA_QUEUE_SIGNATURE;
+      if ((rc = list_init (&(*queue)->list_, dealloc)) != 0x0)
+        {
+          free (*queue);
+        }
+    }
+  return rc;
 }

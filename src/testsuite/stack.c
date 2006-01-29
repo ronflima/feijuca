@@ -23,8 +23,8 @@
               example on how to use the stacks routines
 
  CVS Information
- $Author: ron_lima $
- $Id: stack.c,v 1.12 2005-12-13 10:18:53 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: stack.c,v 1.13 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "stack.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack.c,v 1.12 2005-12-13 10:18:53 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: stack.c,v 1.13 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -43,8 +43,10 @@ static char const rcsid [] = "@(#) $Id: stack.c,v 1.12 2005-12-13 10:18:53 ron_l
 /*
  * Local prototypes
  */
+static int load_stack (stack_t, size_t);
 static int test_stack_push (size_t);
 static int test_stack_pop (size_t);
+
 
 /*
  * Exported function definitions
@@ -68,7 +70,7 @@ test_stack (size_t maxelements)
  * Utility function: Loads data into the stack
  */
 static int
-load_stack (stack_t * stack, size_t nelements)
+load_stack (stack_t stack, size_t nelements)
 {
   register size_t i;
   for (i=0x0; i<nelements; ++i)
@@ -110,12 +112,12 @@ test_stack_push (size_t nitems)
       ERROR (TEST, "stack_init", rc);
       return EFAILED;
     }
-  if ((rc = load_stack (&stack, nitems)) != 0x0)
+  if ((rc = load_stack (stack, nitems)) != 0x0)
     {
       ERROR (TEST,"Stack load procedure", rc);
       test_status = EFAILED;
     }
-  if ((rc = stack_destroy (&stack)) != 0x0)
+  if ((rc = stack_destroy (stack)) != 0x0)
     {
       ERROR (TEST, "stack_destroy", rc);
       test_status = EFAILED;
@@ -141,7 +143,7 @@ test_stack_pop (size_t nitems)
       ERROR (TEST, "stack_init", rc);
       return EFAILED;
     }
-  if ((rc = load_stack (&stack, nitems)) != 0x0)
+  if ((rc = load_stack (stack, nitems)) != 0x0)
     {
       ERROR (TEST,"Stack load procedure", rc);
       test_status = EFAILED;
@@ -152,7 +154,7 @@ test_stack_pop (size_t nitems)
       size_t pushed_elements;
 
       pushed_elements = 0x0ul;
-      while ((rc = stack_pop (&stack, (void **)&data)) == 0x0)
+      while ((rc = stack_pop (stack, (void **)&data)) == 0x0)
         {
           pushed_elements++;
         }
@@ -167,7 +169,7 @@ test_stack_pop (size_t nitems)
           test_status = EFAILED;
         }
     }
-  if ((rc = stack_destroy (&stack)) != 0x0)
+  if ((rc = stack_destroy (stack)) != 0x0)
     {
       ERROR (TEST, "stack_destroy", rc);
       test_status = EFAILED;

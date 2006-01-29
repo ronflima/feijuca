@@ -24,15 +24,14 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Id: list_init.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $
 */
 #include <assert.h>
-#include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_init.c,v 1.5 2006-01-26 10:18:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_init.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $";
 
 int
 list_init (list_t * list, deallocator_t * dealloc)
@@ -45,12 +44,17 @@ list_init (list_t * list, deallocator_t * dealloc)
     {
       return EGAINVAL;
     }
+  if ((*list = (list_t) malloc (sizeof (struct list_t))) == NULL)
+    {
+      return EGANOMEM;
+    }
+  
   /* Initializes each data member */
-  list->size_ = 0x0;
-  list->head_ = (list_element_t *) NULL;
-  list->tail_ = (list_element_t *) NULL;
-  list->curr_ = (list_element_t *) NULL;
-  list->deallocator_ = dealloc;
-  list->signature_ = GA_LIST_SIGNATURE;
+  (*list)->size_ = 0x0;
+  (*list)->head_ = (list_element_t *) NULL;
+  (*list)->tail_ = (list_element_t *) NULL;
+  (*list)->curr_ = (list_element_t *) NULL;
+  (*list)->deallocator_ = dealloc;
+  (*list)->signature_ = GA_LIST_SIGNATURE;
   return 0x0;
 }

@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $
+ $Id: queue.c,v 1.12 2006-01-29 12:37:05 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "queue.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue.c,v 1.11 2006-01-11 10:21:39 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.12 2006-01-29 12:37:05 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -43,7 +43,7 @@ static char const rcsid [] = "@(#) $Id: queue.c,v 1.11 2006-01-11 10:21:39 harq_
 /*
  * Local prototypes
  */
-static int load_queue (queue_t *, size_t);
+static int load_queue (queue_t, size_t);
 static int test_queue_push (size_t);
 static int test_queue_pop  (size_t);
 
@@ -67,7 +67,7 @@ test_queue (size_t maxelements)
 
 /* Utility function: Loads a queue */
 static int 
-load_queue (queue_t * queue, size_t maxelem)
+load_queue (queue_t queue, size_t maxelem)
 {
   size_t i;
   for (i=0x0; i<maxelem; ++i)
@@ -104,12 +104,12 @@ test_queue_push (size_t maxelem)
       ERROR (TEST, "queue_init", rc);
       return rc;
     }
-  if ((rc = load_queue (&queue, maxelem)) != 0x0)
+  if ((rc = load_queue (queue, maxelem)) != 0x0)
     {
       ERROR (TEST, "load_queue", rc);
       test_result = EFAILED;
     }
-  if ((rc = queue_size (&queue, &size)) != 0x0)
+  if ((rc = queue_size (queue, &size)) != 0x0)
     {
       ERROR (TEST, "queue_size", ECKFAIL);
       test_result = EFAILED;
@@ -119,7 +119,7 @@ test_queue_push (size_t maxelem)
       ERROR (TEST, "# of queued elements mismatch", ECKFAIL);
       test_result = EFAILED;
     }
-  if ((rc = queue_destroy (&queue)) != 0x0)
+  if ((rc = queue_destroy (queue)) != 0x0)
     {
       ERROR (TEST, "queue_destroy", rc);
       test_result = EFAILED;
@@ -141,7 +141,7 @@ test_queue_pop (size_t maxelem)
       ERROR (TEST, "queue_init", rc);
       return rc;
     }
-  if ((rc = load_queue (&queue, maxelem)) != 0x0)
+  if ((rc = load_queue (queue, maxelem)) != 0x0)
     {
       ERROR (TEST, "load_queue", rc);
       test_result = EFAILED;
@@ -149,7 +149,7 @@ test_queue_pop (size_t maxelem)
   for (i=maxelem; (i>0x0) && (test_result==0x0); --i)
     {
       int * data;
-      if ((rc = queue_pop (&queue, (void **)&data)) > 0x0)
+      if ((rc = queue_pop (queue, (void **)&data)) > 0x0)
         {
           ERROR (TEST, "queue_pop", rc);
           test_result = EFAILED;
@@ -157,7 +157,7 @@ test_queue_pop (size_t maxelem)
         }
       free (data);
     }
-  if ((rc = queue_destroy (&queue)) != 0x0)
+  if ((rc = queue_destroy (queue)) != 0x0)
     {
       ERROR (TEST, "queue_destroy", rc);
       test_result = EFAILED;

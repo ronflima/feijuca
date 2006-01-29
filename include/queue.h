@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue.h,v 1.11 2006-01-11 10:14:13 harq_al_ada Exp $
+ $Id: queue.h,v 1.12 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
 #ifndef QUEUE_H
@@ -31,34 +31,21 @@
 
 #include <stddef.h>
 #include "gacommon.h"
-#include "list.h"
 
 GABEGINDECLS
 /*
- * Constants
- */
-enum
-{
-  GA_QUEUE_SIGNATURE=(ga_magic_t)0xFADEDEADu
-};
-
-/*
  * Datatypes
  */
-typedef struct queue_t
-{
-  ga_magic_t signature_;
-  list_t list_;
-} queue_t;
+typedef struct queue_t * queue_t;
 
 /*
  * Prototypes
  */
 int (queue_init) __P ((queue_t *, deallocator_t *));
-int (queue_destroy) __P ((queue_t *));
-int (queue_pop) __P ((queue_t *, void **));
-int (queue_push) __P ((queue_t *, const void *));
-int (queue_size) __P((queue_t *, size_t *));
+int (queue_destroy) __P ((queue_t));
+int (queue_pop) __P ((queue_t, void **));
+int (queue_push) __P ((queue_t, const void *));
+int (queue_size) __P((queue_t, size_t *));
 
 GAENDDECLS
 #endif /* QUEUE_H */
