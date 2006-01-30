@@ -23,8 +23,8 @@
               example on how to use the lists routines
 
  CVS Information
- $Author: harq_al_ada $
- $Id: dlist.c,v 1.19 2006-01-29 19:24:13 harq_al_ada Exp $
+ $Author: daniel_csoares $
+ $Id: dlist.c,v 1.20 2006-01-30 11:56:17 daniel_csoares Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.19 2006-01-29 19:24:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.20 2006-01-30 11:56:17 daniel_csoares Exp $";
 
 /*
  * Local macros
@@ -57,7 +57,7 @@ static int scenario_check_forward_nav (size_t);
 static int scenario_check_uninitialization (size_t);
 static int scenario_check_deletions (size_t);
 static int scenario_check_back_nav (size_t);
-
+
 /*
  * Exported functions
  */
@@ -75,7 +75,7 @@ test_dlist (size_t maxelem)
 
   return execute_scenarios (TEST, maxelem, scenarios, sizeof (scenarios));
 }
-
+
 /* Utility function: loads data into the list */
 static int
 load_dlist (dlist_t dlist, size_t maxelem, unsigned char use_pattern)
@@ -116,7 +116,7 @@ load_dlist (dlist_t dlist, size_t maxelem, unsigned char use_pattern)
 
   return status;
 }
-
+
 /*
  * Local functions definitions
  */
@@ -185,7 +185,7 @@ scenario_check_forward_nav (size_t maxelem)
 
   return status;
 }
-
+
 /*
  * Test scenario: Verify the signature checking
  */
@@ -225,7 +225,7 @@ scenario_check_uninitialization (size_t elements)
     }
   return test_status;
 }
-
+
 /* Test scenario: check the items deletions */
 static int
 scenario_check_deletions (size_t maxelem)
@@ -291,7 +291,7 @@ scenario_check_deletions (size_t maxelem)
     }
   return status;
 }
-
+
 /* Test scenario: check backward navigation */
 static int
 scenario_check_back_nav (size_t maxelem)
