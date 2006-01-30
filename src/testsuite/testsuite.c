@@ -26,8 +26,8 @@
  is free of bugs. Debugging the library inside a debugger will. :)
 
  CVS Information
- $Author: harq_al_ada $
- $Id: testsuite.c,v 1.22 2006-01-26 10:18:13 harq_al_ada Exp $
+ $Author: daniel_csoares $
+ $Id: testsuite.c,v 1.23 2006-01-30 18:12:39 daniel_csoares Exp $
 */
 
 /*
@@ -45,11 +45,11 @@
 #define BANNER "\n\nG.A. Library Test Suite\n(c) 2004-2005 - Ronaldo Faria Lima\n"  \
                "Several parts written by Daniel Costa Soares\n"                     \
                "This software is licensed under the Gnu Lesser Public License\n"    \
-               "Use -? for command line options\n\n"
+               "Use -h for command line options\n\n"
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: testsuite.c,v 1.22 2006-01-26 10:18:13 harq_al_ada Exp $";
+  "@(#) $Id: testsuite.c,v 1.23 2006-01-30 18:12:39 daniel_csoares Exp $";
 
 /*
  * Local functions prototypes
