@@ -27,7 +27,7 @@
 
  CVS Information
  $Author: daniel_csoares $
- $Id: dclist_destroy.c,v 1.8 2006-01-30 11:54:02 daniel_csoares Exp $
+ $Id: dclist_destroy.c,v 1.9 2006-01-30 11:57:08 daniel_csoares Exp $
 */
 #include <assert.h>
 #include "dclist.h"
@@ -35,7 +35,7 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.8 2006-01-30 11:54:02 daniel_csoares Exp $";
+static char const rcsid[] = "@(#) $Id: dclist_destroy.c,v 1.9 2006-01-30 11:57:08 daniel_csoares Exp $";
 
 int
 dclist_destroy (dclist_t dclist)
@@ -53,9 +53,9 @@ dclist_destroy (dclist_t dclist)
   
       /* Makes the list linear in order to use dlist_destroy safely */
       if (dclist->list_->head_ != NULL)
-      {
+        {
           dclist->list_->head_->prev_ = NULL;
-      }
+        }
       if (dclist->list_->tail_ != NULL)
         {
           dclist->list_->tail_->next_ = NULL;
