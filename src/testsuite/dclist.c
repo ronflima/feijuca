@@ -26,7 +26,7 @@
 
  CVS Information
  $Author: daniel_csoares $
- $Id: dclist.c,v 1.7 2006-01-30 18:13:23 daniel_csoares Exp $
+ $Id: dclist.c,v 1.8 2006-02-01 16:15:19 daniel_csoares Exp $
 */
 
 #include <stdio.h>
@@ -36,7 +36,8 @@
 #include "dclist.h"
 
 /* Version info */
-static char const rcsid[] = "@(#) $Id: dclist.c,v 1.7 2006-01-30 18:13:23 daniel_csoares Exp $";
+static char const rcsid[] =
+  "@(#) $Id: dclist.c,v 1.8 2006-02-01 16:15:19 daniel_csoares Exp $";
 
 /*
  * Local macros
@@ -48,7 +49,7 @@ static char const rcsid[] = "@(#) $Id: dclist.c,v 1.7 2006-01-30 18:13:23 daniel
  */
 enum
 {
-    PATTERN = 0xDEADBEEFu
+  PATTERN = 0xDEADBEEFu
 };
 
 /*
@@ -68,9 +69,9 @@ test_dclist (size_t maxelements)
   int rc = 0x0;
   register int i;
   scenario_t scenarios[] = {
-      {"Check uninitialized descriptor", scenario_check_uninitialized},
-      {"Check contents", scenario_check_contents},
-      {"Check deletion", scenario_check_deletion}
+    {"Check uninitialized descriptor", scenario_check_uninitialized},
+    {"Check contents", scenario_check_contents},
+    {"Check deletion", scenario_check_deletion}
   };
 
   return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
@@ -90,7 +91,7 @@ load_dclist (dclist_t dclist, size_t maxelem, unsigned char use_pattern)
   for (i = 0x0; (i < maxelem) && (status == 0x0); ++i)
     {
       int rc;
-      int * elem;
+      int *elem;
 
       elem = (int *) malloc (sizeof (int));
       if (elem == NULL)
@@ -98,13 +99,13 @@ load_dclist (dclist_t dclist, size_t maxelem, unsigned char use_pattern)
           ERROR (TEST, "malloc", ENOMEM);
           status = EFAILED;
         }
-      else 
+      else
         {
           if (use_pattern)
             {
-              * elem = PATTERN;
+              *elem = PATTERN;
             }
-          else 
+          else
             {
               *elem = i;
             }
@@ -122,128 +123,128 @@ load_dclist (dclist_t dclist, size_t maxelem, unsigned char use_pattern)
 static int
 scenario_check_contents (size_t maxelem)
 {
-    dclist_t dclist;
-    int rc;
-    int status;
-    register int i;
-  
-    i = 0x0;
-    status = 0x0;
+  dclist_t dclist;
+  int rc;
+  int status;
+  register int i;
 
-    if ((rc = dclist_init (&dclist, free)) != 0x0)
-    {
-        ERROR (TEST, "dclist_init", rc);
-        status = EFAILED;
-    }
-    else if ((rc = load_dclist (dclist, maxelem, '\x0')) != 0x0)
-    {
-        ERROR (TEST, "load_dclist", rc);
-        status = EFAILED;
-    }
-    else if ((rc = dclist_move (dclist, POS_HEAD)) != 0x0)
-    {
-        ERROR (TEST, "dclist_move", rc);
-        status = EFAILED;
-    }
-    else 
-    {
-        int * elem;      
-        size_t size;
+  i = 0x0;
+  status = 0x0;
 
-        while ( i < maxelem && status == 0x0)
+  if ((rc = dclist_init (&dclist, free)) != 0x0)
+    {
+      ERROR (TEST, "dclist_init", rc);
+      status = EFAILED;
+    }
+  else if ((rc = load_dclist (dclist, maxelem, '\x0')) != 0x0)
+    {
+      ERROR (TEST, "load_dclist", rc);
+      status = EFAILED;
+    }
+  else if ((rc = dclist_move (dclist, POS_HEAD)) != 0x0)
+    {
+      ERROR (TEST, "dclist_move", rc);
+      status = EFAILED;
+    }
+  else
+    {
+      int *elem;
+      size_t size;
+
+      while (i < maxelem && status == 0x0)
         {
-            if ((rc = dclist_get(dclist, (void**)&elem, POS_NEXT)) != 0x0)
-            {     
-                ERROR (TEST, "dclist_get", rc);
-                status = EFAILED;
-                break;
-            }
-            if ( *elem != i )
+          if ((rc = dclist_get (dclist, (void **) &elem, POS_NEXT)) != 0x0)
             {
-                ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
-                status = EFAILED;
-                break;
+              ERROR (TEST, "dclist_get", rc);
+              status = EFAILED;
+              break;
             }
-            i++;         
+          if (*elem != i)
+            {
+              ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
+              status = EFAILED;
+              break;
+            }
+          i++;
         }
     }
-    if ((i != maxelem) && status == 0x0)
+  if ((i != maxelem) && status == 0x0)
     {
-        ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
-        status = EFAILED;
-    }
-  
-    if ((rc = dclist_destroy (dclist)) != 0x0)
-    {
-        ERROR (TEST, "dclist_destroy", rc);
-        status = EFAILED;
+      ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
+      status = EFAILED;
     }
 
-    return status;
+  if ((rc = dclist_destroy (dclist)) != 0x0)
+    {
+      ERROR (TEST, "dclist_destroy", rc);
+      status = EFAILED;
+    }
+
+  return status;
 }
 
 /* Check values inserted at dclist*/
 static int
 scenario_check_deletion (size_t maxelem)
 {
-    dclist_t dclist;
-    int rc;
-    int status;
-    register int i;
-  
-    i = 0x0;
-    status = 0x0;
+  dclist_t dclist;
+  int rc;
+  int status;
+  register int i;
 
-    if ((rc = dclist_init (&dclist, free)) != 0x0)
-    {
-        ERROR (TEST, "dclist_init", rc);
-        status = EFAILED;
-    }
-    else if ((rc = load_dclist (dclist, maxelem, '\x0')) != 0x0)
-    {
-        ERROR (TEST, "load_dclist", rc);
-        status = EFAILED;
-    }
-    else if ((rc = dclist_move (dclist, POS_HEAD)) != 0x0)
-    {
-        ERROR (TEST, "dclist_move", rc);
-        status = EFAILED;
-    }
-    else 
-    {
-        int * elem;      
-        size_t size;
+  i = 0x0;
+  status = 0x0;
 
-        while ( i < maxelem && status == 0x0)
+  if ((rc = dclist_init (&dclist, free)) != 0x0)
+    {
+      ERROR (TEST, "dclist_init", rc);
+      status = EFAILED;
+    }
+  else if ((rc = load_dclist (dclist, maxelem, '\x0')) != 0x0)
+    {
+      ERROR (TEST, "load_dclist", rc);
+      status = EFAILED;
+    }
+  else if ((rc = dclist_move (dclist, POS_HEAD)) != 0x0)
+    {
+      ERROR (TEST, "dclist_move", rc);
+      status = EFAILED;
+    }
+  else
+    {
+      int *elem;
+      size_t size;
+
+      while (i < maxelem && status == 0x0)
         {
-            if ((rc = dclist_del(dclist, (void**)&elem, POS_HEAD)) != 0x0)
-            {     
-                ERROR (TEST, "dclist_del", rc);
-                status = EFAILED;
-                break;
-            }
-            if ( *elem != i )
+          if ((rc = dclist_del (dclist, (void **) &elem, POS_HEAD)) != 0x0)
             {
-                ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
-                status = EFAILED;
-                break;
+              ERROR (TEST, "dclist_del", rc);
+              status = EFAILED;
+              break;
             }
-            i++;         
+          if (*elem != i)
+            {
+              ERROR (TEST, "Data mismatch in data retrieval", ECKFAIL);
+              status = EFAILED;
+              break;
+            }
+          i++;
         }
     }
-    if ((i != maxelem) && status == 0x0)
+  if ((i != maxelem) && status == 0x0)
     {
-        ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
-        status = EFAILED;
-    }
-  
-    if ((rc = dclist_destroy (dclist)) != 0x0)
-    {
-        ERROR (TEST, "dclist_destroy", rc);
-        status = EFAILED;
+      ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
+      status = EFAILED;
     }
 
-    return status;
+  if ((rc = dclist_destroy (dclist)) != 0x0)
+    {
+      ERROR (TEST, "dclist_destroy", rc);
+      status = EFAILED;
+    }
+
+  return status;
 }
 
 
