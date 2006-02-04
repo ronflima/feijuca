@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist_del.c,v 1.26 2006-01-29 19:24:13 harq_al_ada Exp $
+ $Id: dlist_del.c,v 1.27 2006-02-04 14:32:12 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,12 +32,12 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.26 2006-01-29 19:24:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.27 2006-02-04 14:32:12 harq_al_ada Exp $";
 
 /*
  * Local prototypes
  */
-static int relink_list __P((dlist_t, dlist_element_t *));
+static int relink_list_ __P((dlist_t, dlist_element_t *));
 
 /*
  * Exported functions
@@ -98,7 +98,7 @@ dlist_del (dlist_t list, void **data, position_t whence)
     {
       return EGAINVAL;
     }
-  if ((rc = relink_list (list, element)) != 0x0)
+  if ((rc = relink_list_ (list, element)) != 0x0)
     {
       return rc;
     }
@@ -122,7 +122,7 @@ dlist_del (dlist_t list, void **data, position_t whence)
  */
 /* Relinks the list popping the element out from the list */
 static int
-relink_list (dlist_t list, dlist_element_t * element)
+relink_list_ (dlist_t list, dlist_element_t * element)
 {
   if (element == NULL)
     {
