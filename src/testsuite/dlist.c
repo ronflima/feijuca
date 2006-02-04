@@ -23,8 +23,8 @@
               example on how to use the lists routines
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dlist.c,v 1.20 2006-01-30 11:56:17 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: dlist.c,v 1.21 2006-02-04 14:36:34 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.20 2006-01-30 11:56:17 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: dlist.c,v 1.21 2006-02-04 14:36:34 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -54,7 +54,6 @@ enum
  */
 static int load_dlist (dlist_t, size_t, unsigned char);
 static int scenario_check_forward_nav (size_t);
-static int scenario_check_uninitialization (size_t);
 static int scenario_check_deletions (size_t);
 static int scenario_check_back_nav (size_t);
 
@@ -68,9 +67,9 @@ test_dlist (size_t maxelem)
   int rc = 0x0;
   register int i;
   scenario_t scenarios [] = {
-    {"Forward navigation check", scenario_check_forward_nav     },
-    {"Unitialization check"    , scenario_check_uninitialization},
-    {"Deletions check"         , scenario_check_deletions       }
+    {"Forward navigation check" , scenario_check_forward_nav },
+    {"Deletions check"          , scenario_check_deletions   },
+    {"Backward navigation check", scenario_check_back_nav    }
   };
 
   return execute_scenarios (TEST, maxelem, scenarios, sizeof (scenarios));
@@ -185,47 +184,7 @@ scenario_check_forward_nav (size_t maxelem)
 
   return status;
 }
-
-/*
- * Test scenario: Verify the signature checking
- */
-static int 
-scenario_check_uninitialization (size_t elements)
-{
-  int rc;
-  void * buf = NULL;
-  int test_status = 0x0;
-  dlist_t dlist = NULL;
-  elements;
-
-  if ((rc = dlist_insert (dlist, &buf, POS_HEAD)) != EGAINVAL)
-    {
-      ERROR (TEST, "dlist_insert", rc);
-      test_status = EFAILED;
-    }
-  else if (( rc = dlist_get (dlist, &buf, POS_HEAD)) != EGAINVAL)
-    {
-      ERROR (TEST, "dlist_get", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = dlist_move (dlist, POS_HEAD)) != EGAINVAL)
-    {
-      ERROR (TEST, "dlist_move", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = dlist_del (dlist, &buf, POS_NONE)) != EGAINVAL)
-    {
-      ERROR (TEST, "dlist_del", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = dlist_destroy (dlist)) != EGAINVAL)
-    {
-      ERROR (TEST, "dlist_destroy", rc);
-      test_status = EFAILED;
-    }
-  return test_status;
-}
-
+
 /* Test scenario: check the items deletions */
 static int
 scenario_check_deletions (size_t maxelem)

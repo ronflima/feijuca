@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.c,v 1.23 2006-01-29 12:37:05 harq_al_ada Exp $
+ $Id: list.c,v 1.24 2006-02-04 14:36:59 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.23 2006-01-29 12:37:05 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.24 2006-02-04 14:36:59 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -56,15 +56,13 @@ static int load_list (list_t, size_t, unsigned char);
 static int check_contents (size_t);
 static int check_deletion (size_t);
 static int check_reversal (size_t);
-static int check_uninitialization (size_t);
-
+
 int
 test_list (size_t maxelements)
 {
   int rc = 0x0;
   register int i;
   scenario_t scenarios [] = {
-    {"Check uninitialized descriptor", check_uninitialization},
     {"Contents checking", check_contents},
     {"Deletion checking", check_deletion},
     {"Reversal checking", check_reversal}
@@ -72,7 +70,7 @@ test_list (size_t maxelements)
 
   return execute_scenarios (TEST, maxelements, scenarios, sizeof (scenarios));
 }
-
+
 /*
  * Utility function: loads data into the list
  */
@@ -109,7 +107,7 @@ load_list (list_t list, size_t elements, unsigned char use_pattern)
 
   return 0x0;
 }
-
+
 /*
  * Test scenario: Check list contents for consistency
  */
@@ -172,7 +170,7 @@ check_contents (size_t elements)
     }
   return test_status;
 }
-
+
 /*
  * Test scenario: Checks the deletion of items of the list in
  * different positions
@@ -265,7 +263,7 @@ check_deletion (size_t elements)
     }
   return 0x0;
 }
-
+
 /*
  * Test scenario: Checks the reversal of the list
  */
@@ -332,51 +330,6 @@ check_reversal (size_t elements)
   if ((rc = list_destroy (list)) != 0x0)
     {
       ERROR (TEST, "list_destroy", ECKFAIL);
-      test_status = EFAILED;
-    }
-  return test_status;
-}
-
-/*
- * Test scenario: Checks the signature checking 
- */
-static int 
-check_uninitialization (size_t elements)
-{
-  int rc;
-  void * buf = NULL;
-  int test_status = 0x0;
-  list_t list = NULL;
-  elements;
-
-  if ((rc = list_insert (list, &buf, POS_HEAD)) != EGAINVAL)
-    {
-      ERROR (TEST, "list_insert", rc);
-      test_status = EFAILED;
-    }
-  else if (( rc = list_get (list, &buf, POS_HEAD)) != EGAINVAL)
-    {
-      ERROR (TEST, "list_get", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = list_move (list, POS_HEAD)) != EGAINVAL)
-    {
-      ERROR (TEST, "list_move", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = list_del (list, &buf)) != EGAINVAL)
-    {
-      ERROR (TEST, "list_del", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = list_reverse (list)) != EGAINVAL)
-    {
-      ERROR (TEST, "list_reverse", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = list_destroy (list)) != EGAINVAL)
-    {
-      ERROR (TEST, "list_destroy", rc);
       test_status = EFAILED;
     }
   return test_status;
