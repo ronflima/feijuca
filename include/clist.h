@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist.h,v 1.15 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: clist.h,v 1.16 2006-02-04 21:23:40 harq_al_ada Exp $
 */
 
 #ifndef CLIST_H
@@ -46,7 +46,7 @@ typedef struct clist_t * clist_t;
  */
 int (clist_init) __P ((clist_t *, deallocator_t *));
 int (clist_destroy) __P ((clist_t));
-int (clist_del) __P ((clist_t, void **));
+int (clist_del) __P ((clist_t, void **, position_t));
 int (clist_get) __P ((clist_t, void **, position_t));
 int (clist_move) __P ((clist_t, position_t));
 int (clist_insert) __P ((clist_t, const void *));
