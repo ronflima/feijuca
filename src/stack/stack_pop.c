@@ -23,14 +23,14 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack_pop.c,v 1.14 2006-01-29 12:37:05 harq_al_ada Exp $
+ $Id: stack_pop.c,v 1.15 2006-02-04 21:26:38 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "stack.h"
 #include "stack_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: stack_pop.c,v 1.14 2006-01-29 12:37:05 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: stack_pop.c,v 1.15 2006-02-04 21:26:38 harq_al_ada Exp $";
 
 int
 stack_pop (stack_t stack, void **data)
@@ -45,11 +45,7 @@ stack_pop (stack_t stack, void **data)
   else 
     {
       CHECK_SIGNATURE (stack, GA_STACK_SIGNATURE);
-
-      if ((rc = list_move (stack->list_, POS_HEAD)) == 0x0)
-        {
-          rc = list_del (stack->list_, data);
-        }
+      rc = list_del (stack->list_, data, POS_HEAD);
     }
   return rc;
 }
