@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.h,v 1.23 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: list.h,v 1.24 2006-02-04 21:24:17 harq_al_ada Exp $
 */
 
 #ifndef LIST_H
@@ -48,7 +48,7 @@ int (list_destroy) __P ((list_t));
 int (list_get) __P ((list_t, void **, position_t));
 int (list_insert) __P ((list_t, const void *, position_t));
 int (list_move) __P ((list_t, position_t));
-int (list_del) __P ((list_t, void **));
+int (list_del) __P ((list_t, void **, position_t));
 int (list_reverse) __P((list_t));
 int (list_size) __P((list_t, size_t *));
 int (list_getpos) __P((list_t, position_t *));
