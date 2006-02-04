@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector.c,v 1.15 2006-01-29 20:03:12 harq_al_ada Exp $
+ $Id: ivector.c,v 1.16 2006-02-04 21:27:50 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "ivector.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: ivector.c,v 1.15 2006-01-29 20:03:12 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: ivector.c,v 1.16 2006-02-04 21:27:50 harq_al_ada Exp $";
 
 /*
  * Local constants
@@ -55,7 +55,6 @@ enum
 static int compare (const void *, const void *);
 static int load_ivector (ivector_t, size_t, unsigned char);
 static int check_del (size_t);
-static int check_uninitialized (size_t);
 
 /*
  * Exported functions
@@ -66,7 +65,6 @@ test_ivector (size_t maxelem)
   int rc = 0x0;
   register int i;
   scenario_t scenarios [] = {
-    {"Check uninitialized descriptor", check_uninitialized},
     {"Deletion checking"             , check_del          }
   };
 
@@ -135,8 +133,10 @@ check_del (size_t maxelem)
     {
       register size_t i;
       size_t size;
+      int to_delete;
 
-      for (i = 0; (i < maxelem / 2) && (status != EFAILED); ++i)
+      to_delete = maxelem / 2;
+      for (i = 0; (i < to_delete) && (status != EFAILED); ++i)
         {
           if ((rc = ivector_del (ivector, i)) != 0x0)
             {
@@ -149,7 +149,7 @@ check_del (size_t maxelem)
           ERROR (TEST, "ivector_size", ECKFAIL);
           status = EFAILED;
         }
-      if (size != (maxelem / 2))
+      if (size != (maxelem - to_delete))
         {
           ERROR (TEST, "number of elements mismatch", ECKFAIL);
           status = EFAILED;
@@ -161,50 +161,4 @@ check_del (size_t maxelem)
       status = EFAILED;
     }
   return 0x0;
-}
-
-/* Scenario 2: Checks signature validation */
-static int check_uninitialized (size_t maxelem)
-{
-  int rc;
-  void * buf = NULL;
-  int test_status = 0x0;
-  ivector_t ivector = NULL;
-
-  if ((rc = ivector_destroy (ivector)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_destroy", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = ivector_get (ivector, &buf, 0x0)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_get", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = ivector_put (ivector, 0x0, buf)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_put", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = ivector_add (ivector, buf)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_add", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = ivector_qsort (ivector)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_qsort", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = ivector_bsearch (ivector, &buf, buf)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_bsearch", rc);
-      test_status = EFAILED;
-    }
-  else if ((rc = ivector_del (ivector, 0x0)) != EGAINVAL)
-    {
-      ERROR (TEST, "ivector_del", rc);
-      test_status = EFAILED;
-    }
-  return test_status;
 }

@@ -25,8 +25,8 @@
               example on how to use the dclists routines
 
  CVS Information
- $Author: daniel_csoares $
- $Id: dclist.c,v 1.8 2006-02-01 16:15:19 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: dclist.c,v 1.9 2006-02-04 21:27:33 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -37,7 +37,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: dclist.c,v 1.8 2006-02-01 16:15:19 daniel_csoares Exp $";
+  "@(#) $Id: dclist.c,v 1.9 2006-02-04 21:27:33 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -58,7 +58,6 @@ enum
 static int load_dclist (dclist_t, size_t, unsigned char);
 static int scenario_check_contents (size_t);
 static int scenario_check_deletion (size_t);
-static int scenario_check_uninitialized (size_t);
 
 /* Debug purpose */
 static void print_list (dclist_t *);
@@ -69,7 +68,6 @@ test_dclist (size_t maxelements)
   int rc = 0x0;
   register int i;
   scenario_t scenarios[] = {
-    {"Check uninitialized descriptor", scenario_check_uninitialized},
     {"Check contents", scenario_check_contents},
     {"Check deletion", scenario_check_deletion}
   };
@@ -248,44 +246,3 @@ scenario_check_deletion (size_t maxelem)
 }
 
 
-/* Check error if call functions to a not initialized dclist*/
-static int
-scenario_check_uninitialized (size_t elements)
-{
-  int rc;
-  int test_status = 0x0;
-  void *buf = NULL;
-  dclist_t dclist = NULL;
-
-  rc = dclist_destroy (dclist);
-  if (rc != EGAINVAL)
-    {
-      ERROR (TEST, "dclist_destroy", rc);
-      test_status = EFAILED;
-    }
-  rc = dclist_get (dclist, &buf, POS_HEAD);
-  if (rc != EGAINVAL)
-    {
-      ERROR (TEST, "dclist_get", rc);
-      test_status = EFAILED;
-    }
-  rc = dclist_insert (dclist, buf, POS_HEAD);
-  if (rc != EGAINVAL)
-    {
-      ERROR (TEST, "dclist_insert", rc);
-      test_status = EFAILED;
-    }
-  rc = dclist_move (dclist, POS_HEAD);
-  if (rc != EGAINVAL)
-    {
-      ERROR (TEST, "dclist_move", rc);
-      test_status = EFAILED;
-    }
-  rc = dclist_del (dclist, &buf, POS_HEAD);
-  if (rc != EGAINVAL)
-    {
-      ERROR (TEST, "dclist_del", rc);
-      test_status = EFAILED;
-    }
-  return test_status;
-}
