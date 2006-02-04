@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.c,v 1.24 2006-02-04 14:36:59 harq_al_ada Exp $
+ $Id: list.c,v 1.25 2006-02-04 21:28:16 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.24 2006-02-04 14:36:59 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.25 2006-02-04 21:28:16 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -46,7 +46,7 @@ static char const rcsid [] = "@(#) $Id: list.c,v 1.24 2006-02-04 14:36:59 harq_a
  */
 enum 
 {
-  PATTERN = 0xDEADBEEFu
+  PATTERN = 0xDEADBEEFu,        /* Pattern for content testing */
 };
 
 /*
@@ -200,7 +200,7 @@ check_deletion (size_t elements)
       ERROR (TEST, "list_move", rc);
       test_status = EFAILED;
     }
-  else if ((rc = list_del (list, (void **) &item)) != 0x0)
+  else if ((rc = list_del (list, (void **) &item, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "list_del", rc);
       test_status = EFAILED;
@@ -209,50 +209,67 @@ check_deletion (size_t elements)
     {
       free (item);
       ++deleted;
-    }
-  for (i = 0; (i < (elements / 2)) && (test_status == 0x0); ++i)
-    {
-      if ((rc = list_move (list, POS_NEXT)) != 0x0)
-        {
-          ERROR (TEST, "list_move", rc);
-          test_status = EFAILED;
-        }
-    }
-  if ((rc = list_del (list, (void **) &item)) != 0x0)
-    {
-      ERROR (TEST, "list_del", rc);
-      return EFAILED;
-    }
-  else
-    {
-      free (item);
-      ++deleted;
-      if ((rc = list_move (list, POS_TAIL)) != 0x0)
-        {
-          ERROR (TEST, "list_move", rc);
-          test_status = EFAILED;
-        }
-      else if ((rc = list_del (list, (void **) NULL)) == 0x0)
-        {
-          /* The tail was deleted. This is a serious bug, since it is
-             not possible to delete the tail of a single linked
-             list */
-          ERROR (TEST, "list_del - tail deletion", rc);
-          test_status = EFAILED;
-        }
-      else 
-        {
-          size_t size;
 
-          if ((rc = list_size (list, &size)) != 0x0)
+      if ((rc = list_move (list, POS_HEAD)) != 0x0)
+        {
+          ERROR (TEST, "list_move", rc);
+          test_status = EFAILED;
+        }
+      else
+        {
+          register int i = 0x0;
+          size_t list_length;
+          
+          if ((rc = list_size (list, &list_length)) != 0x0)
             {
-              ERROR (TEST, "list_size", ECKFAIL);
+              ERROR (TEST, "list_size", rc);
               test_status = EFAILED;
             }
-          if ((elements - deleted) != size)
+          else
             {
-              ERROR (TEST, "Number of elements mismatch", ECKFAIL);
-              test_status = EFAILED;
+              while ((rc = list_move (list, POS_NEXT)) == 0x0)
+                {
+                  ++i;
+                  if (i == (list_length - 2))
+                    {
+                      break;
+                    }
+                }
+              if (rc != EOF && rc != 0x0)
+                {
+                  ERROR (TEST, "list_move", rc);
+                  test_status = EFAILED;               
+                }
+              else if ((rc = list_del (list, NULL, POS_NEXT)) == 0x0)
+                {
+                  ++deleted;
+                  if ((rc = list_size (list, &list_length)) != 0x0)
+                    {
+                      ERROR (TEST, "list_size", rc);
+                      test_status = EFAILED;
+                    }
+                  else if (list_length != (elements - deleted))
+                    {
+                      ERROR (TEST, "list length mismatch", ECKFAIL);
+                      test_status = EFAILED;
+                    }
+                  else if ((rc = list_move (list, POS_HEAD)) != 0x0)
+                    {
+                      ERROR (TEST, "list_move", rc);
+                      test_status = EFAILED;
+                    }
+                  else if ((rc = list_del (list, NULL, POS_NEXT)) != 0x0)
+                    {
+                      ERROR (TEST, "list_del", rc);
+                      test_status = EFAILED;
+                    }
+                }
+              else
+                {
+                  ERROR (TEST, "list_del", rc);
+                  test_status = EFAILED;
+                  
+                }
             }
         }
     }
@@ -261,7 +278,7 @@ check_deletion (size_t elements)
       ERROR (TEST, "list_destroy", ECKFAIL);
       test_status = EFAILED;
     }
-  return 0x0;
+  return test_status;
 }
 
 /*
