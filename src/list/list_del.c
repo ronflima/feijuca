@@ -34,90 +34,106 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.21 2006-01-29 12:37:02 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.22 2006-02-04 21:25:16 harq_al_ada Exp $";
 
 int
-list_del (list_t list, void **data)
+list_del (list_t list, void **data, position_t whence)
 {
-  list_element_t *currelem;	/* Current element being processed */
   void *extracted_data;		/* Data extracted from the list */
+  int rc = 0x0;                 /* General error handling variable */
 
   assert (list != NULL);
   if (list == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);      
-  currelem = (list_element_t *) NULL;
-  
-  /* Initializations */
-  if (data)
+  else 
     {
-      *data = (void *) NULL;
-    }
-  /* Sanity check: Will not delete an element if the list is empty */
-  if (list->size_ == 0x0u)
-    {
-      return EOF;
-    }
-  /* Sanity check: check if the data storage and the deallocator were
-     provided. If not, there is a problem in the list initialization */
-  if (!data && !list->deallocator_)
-    {
-      return EGAINVAL;
-    }
-  /* Check if the current element points to the head of the list or if the
-     curr_ points to nowhere */
-  if (list->curr_ == list->head_ || !list->curr_)
-    {
-      /* Deletes from the head of the list */
-      currelem = list->head_;
-      extracted_data = list->head_->data_;
-      list->head_ = currelem->next_;
-      list->curr_ = list->head_;
-    }
-  else
-    {
-      /* Delete the next item, if the curr_ points to somewhere */
-      if (list->curr_->next_)
+      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);      
+      if (data != NULL)
         {
-          currelem = list->curr_->next_;
-          extracted_data = currelem->data_;
-          list->curr_->next_ = currelem->next_;
+          *data = (void *) NULL;
         }
-      else
+      if (list->size_ == 0x0u)
         {
-          /* Sorry. I can delete only the next element. */
-          return EOF;
+          rc = EOF;
         }
-    }
-  /* Adjusts the tail of the list */
-  if (currelem == list->tail_ && list->curr_)
-    {
-      /* We are about to delete the tail. At this point, if the curr_ points to
-         somewhere, it will be the new tail. If curr_ points to nowhere, we are
-         deleting the head and the tail will be adjusted later only if the list
-         get empty. */
-      list->tail_ = list->curr_;
-    }
-  /* Free resources and updates the list descriptor */
-  free (currelem);
-  --(list->size_);
+      else if ((data == NULL) && (list->deallocator_ == NULL))
+        {
+          rc = EGAINVAL;
+        }
+      else 
+        {
+          list_element_t * element = NULL; /* Element to be deleted */
 
-  /* Adjusts the tail if the list got empty */
-  if (!list->size_)
-    {
-      list->tail_ = (list_element_t *) 0x0;
+          /* Extracts the element from the list and delete it. There
+           * are two valid positions: the head and the next after the
+           * current. Any other position cannot be operated since the
+           * list have not enough information to do so. */
+          if (whence == POS_HEAD)
+            {
+              element = list->head_;
+              list->head_ = element->next_;
+              /* Notifies the current position. If it is pointing to
+               * the old head, updates it to the new head position in
+               * order to avoid inconsistencies  */
+              if ((list->curr_ != NULL)  && (list->curr_ == element))
+                {
+                  list->curr_ = list->head_;
+                }
+              /* If the head became NULL, means that the list was
+               * emptied. Therefore, makes the tail point to nowhere
+               * also. */
+              if (list->head_ == NULL)
+                {
+                  list->tail_ = NULL;
+                }
+            }
+          else if (whence == POS_NEXT)
+            {
+              if (list->curr_ != NULL) 
+                {
+                  if ((element = list->curr_->next_) == NULL)
+                    {
+                      rc = EOF;
+                    }
+                  else if (element == list->tail_)
+                    {
+                      /* If the element to delete is the tail, updates
+                       * the tail to the current, since we are
+                       * deleting the next element. */
+                      list->tail_ = list->curr_;
+                      list->tail_->next_ = NULL;
+                    }
+                  else
+                    {
+                      /* Relinks the list, extracting out the element
+                       * we selected to delete. */
+                      list->curr_->next_ = element->next_;
+                    }
+                }
+            }
+          if (element != NULL)
+            {
+              if (data != NULL)
+                {
+                  *data = element->data_;
+                }
+              else if (list->deallocator_ != NULL)
+                {
+                  list->deallocator_ (element->data_);
+                }
+              free (element);
+              --(list->size_);
+            }
+          else
+            {
+              /* No element to operate on. This is caused by an
+               * invalid situation. Therefore, informs the caller that
+               * something went wrong within the deletion request. */
+              rc = EGAINVAL;
+            }
+        }
     }
-  /* If data storage is provided, puts the extracted data in there */
-  if (data)
-    {
-      *data = extracted_data;
-    }
-  else
-    {
-      /* Data storage was not provided. Deletes the data */
-      list->deallocator_ (extracted_data);
-    }
-  return 0x0;
+  return rc;
 }

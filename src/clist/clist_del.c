@@ -23,39 +23,85 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_del.c,v 1.12 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: clist_del.c,v 1.13 2006-02-04 21:25:01 harq_al_ada Exp $
 */
+#include <stdio.h>
 #include <assert.h>
 #include "clist.h"
 #include "clist_.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.12 2006-01-29 12:37:02 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.13 2006-02-04 21:25:01 harq_al_ada Exp $";
+
+static int
+rebuild_circular_condition_ __P((clist_t, position_t));
 
 int
-clist_del (clist_t clist, void **data)
+clist_del (clist_t clist, void **data, position_t whence)
 {
+  int rc = 0x0;
   assert (clist != NULL);
+
   if (clist == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
-
-  /* Check if we are deleting the head of the list */
-  if (!clist->list_->curr_ || clist->list_->curr_ == clist->list_->head_)
+  else 
     {
-      /* Adjusts the tail to point to the next item pass the head */
-      clist->list_->tail_->next_ = clist->list_->head_->next_;
+      size_t size;                  /* Size of the list */
+      CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
+      if ((rc = clist_size (clist, &size)) == 0x0)
+        {
+          if (size == 0x0)
+            {
+              rc = EOF;
+            }
+          else
+            {
+              if ((rc = list_del (clist->list_, data, whence)) == 0x0)
+                {
+                  rc = rebuild_circular_condition_ (clist, whence);
+                }
+            }
+        }
     }
-  /* Check if we are currently in the tail of the list */
-  if (clist->list_->curr_ == clist->list_->tail_)
-    {
-      /* Adjusts the head, since the tail has as its next the head of
-       * the list */
-      clist->list_->head_ = clist->list_->head_->next_;
-    }
+  return rc;
+}
 
-  return list_del (clist->list_, data);
+/* Internal function. Evaluates the inner linked list in order to make
+ * it circular again. */
+static int
+rebuild_circular_condition_ (clist_t clist, position_t whence)
+{
+  size_t size;
+  int rc = 0x0;
+
+  if ((rc = clist_size (clist, &size)) == 0x0)
+    {
+      if (size != 0x0)
+        {
+          list_t list = clist->list_;
+          
+          if (whence == POS_HEAD)
+            {
+              if (list->tail_->next_ != list->head_)
+                {
+                  list->tail_->next_ = list->head_;
+                }
+            }
+          else if (whence == POS_NEXT)
+            {
+              if (list->tail_->next_ == NULL)
+                {
+                  list->tail_->next_ = list->head_;
+                }
+              else if (list->tail_->next_ != list->head_)
+                {
+                  list->head_ = list->tail_->next_;
+                }
+            }
+        }
+    }
+  return rc;
 }
