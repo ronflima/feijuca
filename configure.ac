@@ -18,7 +18,7 @@
 # USA
 #
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: configure.ac,v 1.20 2006-01-29 20:03:12 harq_al_ada Exp $
+# $Id: configure.ac,v 1.21 2006-02-04 16:06:42 harq_al_ada Exp $
 
 AC_PREREQ(2.57)
 AC_INIT([ga-lib], [1.0.0], [harq_al_ada@terra.com.br])
@@ -54,9 +54,9 @@ AC_ARG_ENABLE(debug,
 esac], [debug=false])
 AM_CONDITIONAL(DEBUG, test x$debug = xtrue)
 if test x$debug = xtrue; then
-  AC_SUBST([AM_CFLAGS], [-g])
+  AC_SUBST([CFLAGS], [-g])
 else
-  AC_SUBST([AM_CFLAGS], [-DNDEBUG])
+  AC_SUBST([CFLAGS], [-DNDEBUG])
 fi
 
 # Disable assertions for debugging purposes
@@ -69,7 +69,7 @@ AC_ARG_ENABLE(assertions,
 esac], [assertions=false])
 AM_CONDITIONAL(DEBUG, test x$assertions = xtrue)
 if test x$assertions = xtrue; then
-  AC_SUBST([AM_CFLAGS], [-DNDEBUG])
+  AC_SUBST([CFLAGS], [-DNDEBUG])
 fi
 
 # Create the ability to profile the library
@@ -82,7 +82,7 @@ AC_ARG_ENABLE(profiling,
 esac], [profiling=false])
 AM_CONDITIONAL(DEBUG, test x$profiling = xtrue)
 if test x$profiling = xtrue; then
-  AC_SUBST([AM_CFLAGS], [-pg])
+  AC_SUBST([CFLAGS], [-pg])
 fi
 
 AC_CONFIG_FILES([Makefile
