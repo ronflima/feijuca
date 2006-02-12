@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: dlist_del.c,v 1.27 2006-02-04 14:32:12 harq_al_ada Exp $
+ $Id: dlist_del.c,v 1.28 2006-02-12 23:08:29 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,13 +32,23 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.27 2006-02-04 14:32:12 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.28 2006-02-12 23:08:29 harq_al_ada Exp $";
 
 /*
  * Local prototypes
  */
-static int relink_list_ __P((dlist_t, dlist_element_t *));
 
+/*
+ * This function relinks the list extracting the element pointed by
+ * the parameter element from the list. This function guarantees that
+ * the list will be linked correctly after the operation.
+ * Return values:
+ * - 0 upon success
+ * - EOF if the element provided is NULL
+ */
+static int 
+relink_list_ __P((dlist_t, dlist_element_t *));
+
 /*
  * Exported functions
  */
@@ -46,7 +56,7 @@ int
 dlist_del (dlist_t list, void **data, position_t whence)
 {
   dlist_element_t *element;	/* Current element being processed */
-  int rc;
+  int rc = 0x0;
   
   assert (list != NULL);
   if (list == NULL)
@@ -55,72 +65,74 @@ dlist_del (dlist_t list, void **data, position_t whence)
     }
   CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
   element = (dlist_element_t *) NULL;
-  if (data)
+  if (data != NULL)
     {
       *data = (void *) NULL;
     }
   if (list->size_ == 0x0u)
     {
-      return EOF;
+      rc = EOF;
     }
-  if ((data == NULL) && (list->deallocator_ == NULL))
+  else if ((data == NULL) && (list->deallocator_ == NULL))
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  if (whence == POS_HEAD)
+  else
     {
-      element = list->head_;
-    }
-  else if (whence == POS_TAIL)
-    {
-      element = list->tail_;
-    }
-  else if ((whence == POS_CURR) || (whence == POS_NONE))
-    {
-      element = list->curr_;
-      list->curr_ = NULL;
-    }
-  else if (whence == POS_NEXT)
-    {
-      if (list->curr_ != NULL)
+      if (whence == POS_HEAD)
         {
-          element = list->curr_->next_;
+          element = list->head_;
+        }
+      else if (whence == POS_TAIL)
+        {
+          element = list->tail_;
+        }
+      else if ((whence == POS_CURR) || (whence == POS_NONE))
+        {
+          element = list->curr_;
+          list->curr_ = NULL;
+        }
+      else if (whence == POS_NEXT)
+        {
+          if (list->curr_ != NULL)
+            {
+              element = list->curr_->next_;
+            }
+        }
+      else if (whence == POS_PREV)
+        {
+          if (list->curr_ != NULL)
+            { 
+              element = list->curr_->prev_;
+            }
+        }
+      else
+        {
+          rc = EGAINVAL;
         }
     }
-  else if (whence == POS_PREV)
+  if (rc == 0x0)
     {
-      if (list->curr_ != NULL)
-        { 
-          element = list->curr_->prev_;
+      if ((rc = relink_list_ (list, element)) == 0x0)
+        {
+          if (data != NULL)
+            {
+              *data = element->data_;
+            }
+          else
+            {
+              list->deallocator_ (element->data_);
+            }
+          free (element);
+          --(list->size_);
         }
     }
-  else
-    {
-      return EGAINVAL;
-    }
-  if ((rc = relink_list_ (list, element)) != 0x0)
-    {
-      return rc;
-    }
-  /* If data storage is provided, puts the extracted data in there */
-  if (data != NULL)
-    {
-      *data = element->data_;
-    }
-  else
-    {
-      /* Data storage was not provided. Deletes the data */
-      list->deallocator_ (element->data_);
-    }
-  free (element);
-  list->size_--;
-  return 0x0;
+  return rc;
 }
-
+
 /*
  * Internal functions definitions
  */
-/* Relinks the list popping the element out from the list */
 static int
 relink_list_ (dlist_t list, dlist_element_t * element)
 {
