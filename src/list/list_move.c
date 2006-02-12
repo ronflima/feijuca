@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_move.c,v 1.19 2006-01-29 12:37:03 harq_al_ada Exp $
+ $Id: list_move.c,v 1.20 2006-02-12 23:30:51 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,41 +33,43 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.19 2006-01-29 12:37:03 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.20 2006-02-12 23:30:51 harq_al_ada Exp $"; 
 
 int
 list_move (list_t list, position_t whence)
 {
+  int rc = 0x0;
   assert (list != NULL);
   if (list == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
-  
-  /* Decides how to navigate the list */
-  switch (whence)
+  else
     {
-    case POS_HEAD:              /* Goes to the head */
-      list->curr_ = list->head_;
-      break;
-    case POS_TAIL:              /* Goes to the tail */
-      list->curr_ = list->tail_;
-      break;
-    case POS_NEXT:              /* Goes to the next element */
-      if (list->curr_ != NULL)
+      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
+      if (whence == POS_HEAD)
         {
-          list->curr_ = list->curr_->next_;
+          list->curr_ = list->head_;
+        }
+      else if (whence == POS_TAIL)
+        {
+          list->curr_ = list->tail_;
+        }
+      else if (whence == POS_NEXT)
+        {
+          if (list->curr_ != NULL)
+            {
+              list->curr_ = list->curr_->next_;
+            }
+          else
+            {
+              rc = EOF;
+            }
         }
       else
         {
-          return EOF;
+          rc = EGAINVAL;
         }
-      break;
-    case POS_NONE:              /* Does nothing: ignored */
-      break;
-    default:                    /* Invalid option */
-      return EGAINVAL;
     }
-  return 0x0;
+  return rc;
 }

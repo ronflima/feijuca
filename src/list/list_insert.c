@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.20 2006-01-29 12:37:03 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.21 2006-02-12 23:28:08 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,79 +32,176 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.20 2006-01-29 12:37:03 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.21 2006-02-12 23:28:08 harq_al_ada Exp $"; 
 
+/* Local prototypes */
+
+/*
+ * Inserts an element on head and tail of the list. This is used when
+ * the list is empty and the head and tail must point to the same
+ * element.
+ * Return values:
+ * - 0 on success
+ * - EGAINVAL if the new element could not be inserted.
+ */
+static int
+insert_element_on_both_ends_ __P((list_t, list_element_t *));
+
+/*
+ * Inserts an element on the head of the list. This function
+ * guarantess the integrity of the resulting list.
+ * Return values:
+ * - 0 on sucess
+ * - EGAINVAL if the new element could not be inserted into the list
+ */
+static int 
+insert_element_on_head_ __P((list_t, list_element_t *));
+
+/*
+ * Inserts an element after the next element. This function guarantees
+ * the integrity of the resulting list.
+ * Return values:
+ * - 0 on success
+ * - EGABADC if the current pointer points to nowhere
+ */
+static int
+insert_element_on_next_ __P((list_t, list_element_t *));
+
+/*
+ * Inserts an element into the tail of the list. This function
+ * guaratees the integrity of the resulting list
+ * Return values:
+ * - 0 on success
+ * - EGAINVAL if the element could not be inserted for some reason.
+ */
+static int
+insert_element_on_tail_ __P((list_t, list_element_t *));
+
+/* Exported function definition */
 int
 list_insert (list_t list, const void *data, position_t whence)
 {
   list_element_t *element;
+  int rc = 0x0;
 
   assert (list != NULL);
   assert (data != NULL);
   if (list == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
+  else
+    {
+      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
-  /* Simple sanity check */
-  if (list == NULL)
-    {
-      return EGAINVAL;
-    }
-  /* Check if the whence argument is acceptable */
-  if (whence != POS_HEAD && whence != POS_CURR && whence != POS_TAIL)
-    {
-      /* Invalid argument provided */
-      return EGAINVAL;
+      if ((element = (list_element_t *) malloc (sizeof (list_element_t))) == NULL)
+        {
+          rc = EGANOMEM;
+        }
+      else
+        {
+          element->data_ = (void *) data;
+          element->next_ = (list_element_t *) NULL;
+
+          if (list->size_ == 0x0u)
+            {
+              rc = insert_element_on_both_ends_ (list, element);
+            }
+          else
+            {
+              if (whence == POS_HEAD)
+                {
+                  rc = insert_element_on_head_ (list, element);
+                }
+              else if (whence == POS_NEXT)
+                {
+                  rc = insert_element_on_next_ (list, element);
+                }
+              else if (whence == POS_TAIL)
+                {
+                  rc = insert_element_on_tail_ (list, element);
+                }
+              else 
+                {
+                  rc = EGAINVAL;
+                }
+            }
+          if (rc == 0x0)
+            {
+              ++(list->size_);
+            }
+          else if (element != NULL)
+            {
+              free (element);
+            }
+        }
     }
 
-  /* Allocates memory for the new element */
-  if ((element = (list_element_t *) malloc (sizeof (list_element_t))) == NULL)
+  return 0x0;
+}
+
+/* Local functions definitions */
+static int
+insert_element_on_both_ends_ (list_t list, list_element_t * element)
+{
+  int rc = 0x0;
+  if (element != NULL)
     {
-      return EGANOMEM;
-    }
-  element->data_ = (void *) data;
-  element->next_ = (list_element_t *) NULL;
-  /* Check the size of the list */
-  if (list->size_ == 0x0u)
-    {
-      /* The list is empty. Sets the head and tail to point to the
-         element */
       list->head_ = element;
       list->tail_ = element;
     }
   else
     {
-      switch (whence)
-        {
-        case POS_HEAD: /* Insert at the head */
-          element->next_ = list->head_;
-          list->head_ = element;
-          break;
-        case POS_NEXT: /* Insert at the current position */
-          if (list->curr_ != NULL)
-            {
-              /* Adds the new item after the current element */
-              element->next_ = list->curr_->next_;
-              list->curr_->next_ = element;
-            }
-          else
-            {
-              /* There is no valid current elemen. We cannot just
-                 insert anything into the list */
-              free (element);
-              return EGABADC;
-            }
-          break;
-        case POS_TAIL:          /* Insert at the end */
-          list->tail_->next_ = element;
-          list->tail_ = element;
-          break;
-        }
+      rc = EGAINVAL;
     }
-  /* Updates the list size */
-  ++(list->size_);
+  return rc;
+}
+
+static int 
+insert_element_on_head_ (list_t list, list_element_t * element)
+{
+  int rc = 0x0;
 
-  return 0x0;
+  if (element != NULL)
+    {
+      element->next_ = list->head_;
+      list->head_ = element;
+    }
+  else
+    {
+      rc = EGAINVAL;
+    }
+  return rc;
+}
+
+static int
+insert_element_on_next_ (list_t list, list_element_t * element)
+{
+  int rc = 0x0;
+  if (list->curr_ != NULL)
+    {
+      element->next_ = list->curr_->next_;
+      list->curr_->next_ = element;
+    }
+  else
+    {
+      rc = EGABADC;
+    }
+  return rc;
+}
+
+static int
+insert_element_on_tail_ (list_t list, list_element_t * element)
+{
+  int rc = 0x0;
+  if (element != NULL)
+    {
+      list->tail_->next_ = element;
+      list->tail_ = element;
+    }
+  else
+    {
+      rc = EGAINVAL;
+    }
+  return rc;
 }
