@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.23 2006-02-12 22:59:04 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.24 2006-02-12 23:08:59 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -47,7 +47,7 @@ static char const rcsid [] = "@(#) $Id: list_del.c,v 1.23 2006-02-12 22:59:04 ha
  * - NULL if the element could not be deleted
  */
 static list_element_t *
-extract_element_from_head_ (list_t);
+extract_element_from_head_ __P((list_t));
 
 /*
  * This function extracts the next element from the list. It
