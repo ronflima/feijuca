@@ -34,7 +34,33 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.22 2006-02-04 21:25:16 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.23 2006-02-12 22:59:04 harq_al_ada Exp $";
+
+/* Local prototypes */
+
+/*  
+ * Deletes an element from the head of the list. This function
+ * guarantees that the list is correctly linked after the extraction
+ * of the head element.
+ * Return values:
+ * - pointer to the head if the element could be deleted.
+ * - NULL if the element could not be deleted
+ */
+static list_element_t *
+extract_element_from_head_ (list_t);
+
+/*
+ * This function extracts the next element from the list. It
+ * guarantees that the list will be correctly linked after the
+ * operation completes.
+ * Return values:
+ * - A pointer to the element extracted from the list
+ * - NULL if the element could not be extracted
+ */
+static list_element_t *
+extract_element_from_next_ (list_t);
+
+/* Exported function definitions */
 
 int
 list_del (list_t list, void **data, position_t whence)
@@ -54,7 +80,7 @@ list_del (list_t list, void **data, position_t whence)
         {
           *data = (void *) NULL;
         }
-      if (list->size_ == 0x0u)
+      if (list->size_ == 0x0) 
         {
           rc = EOF;
         }
@@ -72,46 +98,11 @@ list_del (list_t list, void **data, position_t whence)
            * list have not enough information to do so. */
           if (whence == POS_HEAD)
             {
-              element = list->head_;
-              list->head_ = element->next_;
-              /* Notifies the current position. If it is pointing to
-               * the old head, updates it to the new head position in
-               * order to avoid inconsistencies  */
-              if ((list->curr_ != NULL)  && (list->curr_ == element))
-                {
-                  list->curr_ = list->head_;
-                }
-              /* If the head became NULL, means that the list was
-               * emptied. Therefore, makes the tail point to nowhere
-               * also. */
-              if (list->head_ == NULL)
-                {
-                  list->tail_ = NULL;
-                }
+              element = extract_element_from_head_ (list);
             }
           else if (whence == POS_NEXT)
             {
-              if (list->curr_ != NULL) 
-                {
-                  if ((element = list->curr_->next_) == NULL)
-                    {
-                      rc = EOF;
-                    }
-                  else if (element == list->tail_)
-                    {
-                      /* If the element to delete is the tail, updates
-                       * the tail to the current, since we are
-                       * deleting the next element. */
-                      list->tail_ = list->curr_;
-                      list->tail_->next_ = NULL;
-                    }
-                  else
-                    {
-                      /* Relinks the list, extracting out the element
-                       * we selected to delete. */
-                      list->curr_->next_ = element->next_;
-                    }
-                }
+              element = extract_element_from_next_ (list);
             }
           if (element != NULL)
             {
@@ -128,12 +119,73 @@ list_del (list_t list, void **data, position_t whence)
             }
           else
             {
-              /* No element to operate on. This is caused by an
-               * invalid situation. Therefore, informs the caller that
-               * something went wrong within the deletion request. */
+              /*
+               * The routine could not extract and delete the
+               * element succesfully. This can be caused by two
+               * possibilities: the list became inconsistent or
+               * the current pointer was pointing to the tail and,
+               * therefore, makes it impossible to delete the
+               * element.
+               */
               rc = EGAINVAL;
             }
         }
     }
   return rc;
+}
+
+/* Local function definitions */
+
+static list_element_t *
+extract_element_from_head_ (list_t list)
+{
+  list_element_t * element = NULL;
+
+  element = list->head_;
+  list->head_ = element->next_;
+  /* Notifies the current position. If it is pointing to
+   * the old head, updates it to the new head position in
+   * order to avoid inconsistencies  */
+  if ((list->curr_ != NULL)  && (list->curr_ == element))
+    {
+      list->curr_ = list->head_;
+    }
+  /* If the head became NULL, means that the list was
+   * emptied. Therefore, makes the tail point to nowhere
+   * also. */
+  if (list->head_ == NULL)
+    {
+      list->tail_ = NULL;
+    }
+
+  return element;
+}
+
+static list_element_t *
+extract_element_from_next_ (list_t list)
+{
+  list_element_t * element = NULL;
+
+  if (list->curr_ != NULL) 
+    {
+      if ((element = list->curr_->next_) != NULL)
+        {
+          if (element == list->tail_)
+            {
+              /* If the element to delete is the tail, updates
+               * the tail to the current, since we are
+               * deleting the next element. */
+              list->tail_ = list->curr_;
+              list->tail_->next_ = NULL;
+            }
+          else
+            {
+              /* Relinks the list, extracting out the element
+               * we selected to delete. */
+              list->curr_->next_ = element->next_;
+            }
+        }
+    }
+
+  return element;
 }
