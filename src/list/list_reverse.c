@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.7 2006-02-12 23:38:44 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,52 +33,60 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.6 2006-01-29 12:37:03 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.7 2006-02-12 23:38:44 harq_al_ada Exp $";
 
 int
 list_reverse (list_t list)
 {
-  list_element_t *first;	/* First item of the window */
-  list_element_t *middle;	/* Middle item of the window */
+  int rc = 0x0;
 
   assert (list != NULL);
   if (list == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
+  else
+    {
+      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
-  /* Check if the list is empty or have enough information to reverse */
-  if (list->size_ < 0x2u)               
-    {
-      return EOF;
-    }           
+      /* Check if the list is empty or have enough information to reverse */
+      if (list->size_ < 0x2u)               
+        {
+          rc = EOF;
+        }
+      else
+        {           
+          list_element_t *first;	/* First item of the window */
+          list_element_t *middle;	/* Middle item of the window */
 
-  /* Reverses the tail and the head of the list */
-  first = list->tail_;		/* Saves the tail */
-  list->tail_ = list->head_;
-  list->head_ = first;
+          first       = list->tail_;
+          list->tail_ = list->head_;
+          list->head_ = first;
 
-  /* Initializes the window. At this point we had already reversed the
-     head and tail positions. At this point, the tail has the old head
-     and since no relinking was done, the links still the same. */
-  first = list->tail_;
-  middle = list->tail_->next_;
-  do
-    {
-      list_element_t *last;	/* Last item of the window */
+          /* Initializes the window. At this point we had already
+             reversed the head and tail positions. The tail has the
+             old head and since no relinking was done, the links still
+             the same. */
+          first = list->tail_;
+          middle = list->tail_->next_;
+          do
+            {
+              list_element_t *last;	/* Last item of the window */
 
-      /* Sets the last item of the window */
-      last = middle->next_;
-      /* Relinks the item, reversing its position */
-      middle->next_ = first;
-      /* Moves the window */
-      first = middle;
-      middle = last;
+              /* Sets the last item of the window */
+              last = middle->next_;
+              /* Relinks the item, reversing its position */
+              middle->next_ = first;
+              /* Moves the window */
+              first = middle;
+              middle = last;
+            }
+          while (middle != NULL);
+
+          /* Adjusts the tail of the list */
+          list->tail_->next_ = NULL;
+        }
     }
-  while (middle != NULL);
-  /* Adjusts the tail of the list */
-  list->tail_->next_ = NULL;
 
-  return 0x0;
+  return rc;
 }
