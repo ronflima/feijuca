@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_.h,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: list_.h,v 1.2 2006-02-21 01:06:01 harq_al_ada Exp $
 */
 
 #ifndef LIST__H
@@ -65,6 +65,14 @@ struct list_t
   deallocator_t  *deallocator_; /* Deallocator function */
   ga_magic_t signature_;        /* Structure signature */
 };
+
+/*
+ * Prototypes
+ */
+int (list_element_get_data_) __P((list_element_t *, void **));
+int (list_element_set_data_) (list_element_t *, void * data);
+int (list_element_get_next_) (list_element_t *, list_element_t **);
+int (list_element_set_next_) (list_element_t *, list_element_t *);
 
 GAENDDECLS
 #endif /* LIST__H */
