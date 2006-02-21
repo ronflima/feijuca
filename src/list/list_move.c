@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_move.c,v 1.20 2006-02-12 23:30:51 harq_al_ada Exp $
+ $Id: list_move.c,v 1.21 2006-02-21 01:07:54 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.20 2006-02-12 23:30:51 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.21 2006-02-21 01:07:54 harq_al_ada Exp $"; 
 
 int
 list_move (list_t list, position_t whence)
@@ -59,7 +59,7 @@ list_move (list_t list, position_t whence)
         {
           if (list->curr_ != NULL)
             {
-              list->curr_ = list->curr_->next_;
+              rc = list_element_get_next_ (list->curr_, &list->curr_);
             }
           else
             {

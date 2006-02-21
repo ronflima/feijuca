@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.7 2006-02-12 23:38:44 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.8 2006-02-21 01:07:54 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.7 2006-02-12 23:38:44 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.8 2006-02-21 01:07:54 harq_al_ada Exp $";
 
 int
 list_reverse (list_t list)
@@ -68,23 +68,31 @@ list_reverse (list_t list)
              old head and since no relinking was done, the links still
              the same. */
           first = list->tail_;
-          middle = list->tail_->next_;
-          do
+          if ((rc = list_element_get_next_ (list->tail_, &middle)) == 0x0)
             {
-              list_element_t *last;	/* Last item of the window */
+              do
+                {
+                  list_element_t *last;	/* Last item of the window */
 
-              /* Sets the last item of the window */
-              last = middle->next_;
-              /* Relinks the item, reversing its position */
-              middle->next_ = first;
-              /* Moves the window */
-              first = middle;
-              middle = last;
+                  /* Sets the last item of the window */
+                  if ((rc = list_element_get_next_ (middle, &last)) != 0x0)
+                    {
+                      break;
+                    }
+                  /* Relinks the item, reversing its position */
+                  if ((rc = list_element_set_next_ (middle, first)) != 0x0)
+                    {
+                      break;
+                    }
+                  /* Moves the window */
+                  first = middle;
+                  middle = last;
+                }
+              while (middle != NULL);
+
+              /* Adjusts the tail of the list */
+              rc = list_element_set_next_ (list->tail_, NULL);
             }
-          while (middle != NULL);
-
-          /* Adjusts the tail of the list */
-          list->tail_->next_ = NULL;
         }
     }
 

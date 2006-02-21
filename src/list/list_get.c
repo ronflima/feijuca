@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get.c,v 1.18 2006-01-29 12:37:03 harq_al_ada Exp $
+ $Id: list_get.c,v 1.19 2006-02-21 01:07:54 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,36 +33,41 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.18 2006-01-29 12:37:03 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.19 2006-02-21 01:07:54 harq_al_ada Exp $"; 
 
 int
 list_get (list_t list, void **data, position_t whence)
 {
+  int rc = 0x0;
+
   assert (list != NULL);
   assert (data != NULL);
-  if (list == NULL)
+  if ((list == NULL) || (data == NULL))
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
+  else
+    {
+      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
-  /* Checks if the current element points to a valid address */
-  if (list->curr_ == NULL)
-    {
-      return EOF;
+      if (list->curr_ == NULL)
+        {
+          rc = EOF;
+        }
+      else if ((rc = list_element_get_data_ (list->curr_, data)) == 0x0)
+        {
+          switch (whence)
+            {
+                case POS_CURR:              /* Does nothing: ignored */
+                case POS_NONE:              /* Does nothing: ignored */
+                  break;
+                case POS_NEXT:         /* Moves to the next element of the list */
+                  return list_move (list, whence);
+                  break;
+                default:                    /* Wrong navigation mode provided */
+                  return EGAINVAL;
+            }
+        }
     }
-  /* Grabs the data from the list element */
-  *data = list->curr_->data_;
-  switch (whence)
-    {
-    case POS_CURR:              /* Does nothing: ignored */
-    case POS_NONE:              /* Does nothing: ignored */
-      break;
-    case POS_NEXT:         /* Moves to the next element of the list */
-      return list_move (list, whence);
-      break;
-    default:                    /* Wrong navigation mode provided */
-      return EGAINVAL;
-    }
-  return 0x0;
+  return rc;
 }

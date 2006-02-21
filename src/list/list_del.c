@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.24 2006-02-12 23:08:59 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.25 2006-02-21 01:07:36 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -168,7 +168,7 @@ extract_element_from_next_ (list_t list)
 
   if (list->curr_ != NULL) 
     {
-      if ((element = list->curr_->next_) != NULL)
+      if (list_element_get_next_ (list->curr_, &element) == 0x0)
         {
           if (element == list->tail_)
             {
@@ -176,13 +176,17 @@ extract_element_from_next_ (list_t list)
                * the tail to the current, since we are
                * deleting the next element. */
               list->tail_ = list->curr_;
-              list->tail_->next_ = NULL;
+              list_element_set_next_ (list->tail_, NULL);
             }
           else
             {
+              list_element_t * next;
               /* Relinks the list, extracting out the element
                * we selected to delete. */
-              list->curr_->next_ = element->next_;
+              if (list_element_get_next_ (element, &next) == 0x0)
+                {
+                  list_element_set_next_ (list->curr_, next);
+                }
             }
         }
     }

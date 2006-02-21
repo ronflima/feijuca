@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.21 2006-02-12 23:28:08 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.22 2006-02-21 01:07:54 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.21 2006-02-12 23:28:08 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.22 2006-02-21 01:07:54 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -180,8 +180,14 @@ insert_element_on_next_ (list_t list, list_element_t * element)
   int rc = 0x0;
   if (list->curr_ != NULL)
     {
-      element->next_ = list->curr_->next_;
-      list->curr_->next_ = element;
+      list_element_t * next;
+      if ((rc = list_element_get_next_ (list->curr_, &next)) == 0x0)
+        {
+          if ((rc == list_element_set_next_ (element, next)) == 0x0)
+            {
+              rc = list_element_set_next_ (list->curr_, element);
+            }
+        }
     }
   else
     {
@@ -196,8 +202,10 @@ insert_element_on_tail_ (list_t list, list_element_t * element)
   int rc = 0x0;
   if (element != NULL)
     {
-      list->tail_->next_ = element;
-      list->tail_ = element;
+      if ((rc = list_element_set_next_ (list->tail_, element)) == 0x0)
+        {
+          list->tail_ = element;
+        }
     }
   else
     {
