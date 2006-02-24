@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.8 2006-02-21 01:07:54 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.9 2006-02-24 10:45:52 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.8 2006-02-21 01:07:54 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.9 2006-02-24 10:45:52 harq_al_ada Exp $";
 
 int
 list_reverse (list_t list)
@@ -56,8 +56,8 @@ list_reverse (list_t list)
         }
       else
         {           
-          list_element_t *first;	/* First item of the window */
-          list_element_t *middle;	/* Middle item of the window */
+          list_element_t first;	/* First item of the window */
+          list_element_t middle;	/* Middle item of the window */
 
           first       = list->tail_;
           list->tail_ = list->head_;
@@ -72,7 +72,7 @@ list_reverse (list_t list)
             {
               do
                 {
-                  list_element_t *last;	/* Last item of the window */
+                  list_element_t last;	/* Last item of the window */
 
                   /* Sets the last item of the window */
                   if ((rc = list_element_get_next_ (middle, &last)) != 0x0)
