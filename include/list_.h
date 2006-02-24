@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_.h,v 1.4 2006-02-21 01:10:31 harq_al_ada Exp $
+ $Id: list_.h,v 1.5 2006-02-24 10:30:49 harq_al_ada Exp $
 */
 
 #ifndef LIST__H
@@ -48,20 +48,21 @@ enum
  * Datatypes
  */
 /* Abstraction for a single list element */
-typedef struct list_element_t
+struct list_element_t
 {
-  void *data_;
-  struct list_element_t *next_;
-}
-list_element_t;
+  const void *data_;            /* Encapsulated data inside the list element */
+  struct list_element_t *next_; /* Pointer to the next element of the list */
+  deallocator_t *deallocator_;  /* Deallocator used to free the data member */
+};
+typedef struct list_element_t * list_element_t;
 
 /* Abstraction for the list descriptor */
 struct list_t
 {
   size_t size_;                 /* List size */
-  list_element_t *curr_;        /* Current navigation point */
-  list_element_t *head_;        /* List head */
-  list_element_t *tail_;        /* List tail */
+  list_element_t curr_;         /* Current navigation point */
+  list_element_t head_;         /* List head */
+  list_element_t tail_;         /* List tail */
   deallocator_t  *deallocator_; /* Deallocator function */
   ga_magic_t signature_;        /* Structure signature */
 };
@@ -69,10 +70,12 @@ struct list_t
 /*
  * Prototypes
  */
-int (list_element_get_data_) __P((list_element_t *, void **));
-int (list_element_set_data_) __P((list_element_t *, void * data));
-int (list_element_get_next_) __P((list_element_t *, list_element_t **));
-int (list_element_set_next_) __P((list_element_t *, list_element_t *));
+int (list_element_init_)     __P((list_element_t *, const void *, deallocator_t *));
+int (list_element_destroy_)  __P((list_element_t));
+int (list_element_get_data_) __P((list_element_t, void **));
+int (list_element_set_data_) __P((list_element_t, void * data));
+int (list_element_get_next_) __P((list_element_t, list_element_t *));
+int (list_element_set_next_) __P((list_element_t, list_element_t));
 
 GAENDDECLS
 #endif /* LIST__H */
