@@ -23,8 +23,8 @@
  Description: Inserts a new element in the list
 
  CVS Information
- $Author: harq_al_ada $
- $Id: list_insert.c,v 1.23 2006-02-24 10:40:31 harq_al_ada Exp $
+ $Author: daniel_csoares $
+ $Id: list_insert.c,v 1.24 2006-02-24 13:54:53 daniel_csoares Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.23 2006-02-24 10:40:31 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.24 2006-02-24 13:54:53 daniel_csoares Exp $"; 
 
 /* Local prototypes */
 
@@ -86,7 +86,7 @@ list_insert (list_t list, const void *data, position_t whence)
 
   assert (list != NULL);
   assert (data != NULL);
-  if ((list == NULL) || ((whence != POS_HEAD) || (whence != POS_NEXT) || (whence != POS_TAIL)))
+  if ((list == NULL) || ((whence != POS_HEAD) && (whence != POS_NEXT) && (whence != POS_TAIL)))
     {
       rc = EGAINVAL;
     }

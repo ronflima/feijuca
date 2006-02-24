@@ -24,21 +24,20 @@
 
   Description: Deletes the next element pointed by element
 
- CVS Information $Author: harq_al_ada $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
+ CVS Information $Author: daniel_csoares $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
  ron_lima Exp $
  */
 #include <assert.h>
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_set_data_.c,v 1.2 2006-02-24 10:48:22 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_set_data_.c,v 1.3 2006-02-24 13:54:36 daniel_csoares Exp $";
 
 int
 list_element_set_data_ (list_element_t element, void * data)
 {
   assert (element != NULL);
-  assert (data != NULL);
-  if ((element == NULL) || (data == NULL))
+  if (element == NULL)
     {
       return EGAINVAL;
     }
