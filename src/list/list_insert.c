@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.22 2006-02-21 01:07:54 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.23 2006-02-24 10:40:31 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.22 2006-02-21 01:07:54 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.23 2006-02-24 10:40:31 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -45,7 +45,7 @@ static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.22 2006-02-21 01:07:54
  * - EGAINVAL if the new element could not be inserted.
  */
 static int
-insert_element_on_both_ends_ __P((list_t, list_element_t *));
+list_insert_element_on_both_ends_ __P((list_t, list_element_t));
 
 /*
  * Inserts an element on the head of the list. This function
@@ -55,7 +55,7 @@ insert_element_on_both_ends_ __P((list_t, list_element_t *));
  * - EGAINVAL if the new element could not be inserted into the list
  */
 static int 
-insert_element_on_head_ __P((list_t, list_element_t *));
+list_insert_element_on_head_ __P((list_t, list_element_t));
 
 /*
  * Inserts an element after the next element. This function guarantees
@@ -65,7 +65,7 @@ insert_element_on_head_ __P((list_t, list_element_t *));
  * - EGABADC if the current pointer points to nowhere
  */
 static int
-insert_element_on_next_ __P((list_t, list_element_t *));
+list_insert_element_on_next_ __P((list_t, list_element_t));
 
 /*
  * Inserts an element into the tail of the list. This function
@@ -75,18 +75,18 @@ insert_element_on_next_ __P((list_t, list_element_t *));
  * - EGAINVAL if the element could not be inserted for some reason.
  */
 static int
-insert_element_on_tail_ __P((list_t, list_element_t *));
+list_insert_element_on_tail_ __P((list_t, list_element_t));
 
 /* Exported function definition */
 int
 list_insert (list_t list, const void *data, position_t whence)
 {
-  list_element_t *element;
+  list_element_t element;
   int rc = 0x0;
 
   assert (list != NULL);
   assert (data != NULL);
-  if (list == NULL)
+  if ((list == NULL) || ((whence != POS_HEAD) || (whence != POS_NEXT) || (whence != POS_TAIL)))
     {
       rc = EGAINVAL;
     }
@@ -94,32 +94,25 @@ list_insert (list_t list, const void *data, position_t whence)
     {
       CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
   
-      if ((element = (list_element_t *) malloc (sizeof (list_element_t))) == NULL)
+      if ((rc = list_element_init_ (&element, data, list->deallocator_)) == 0x0)
         {
-          rc = EGANOMEM;
-        }
-      else
-        {
-          element->data_ = (void *) data;
-          element->next_ = (list_element_t *) NULL;
-
           if (list->size_ == 0x0u)
             {
-              rc = insert_element_on_both_ends_ (list, element);
+              rc = list_insert_element_on_both_ends_ (list, element);
             }
           else
             {
               if (whence == POS_HEAD)
                 {
-                  rc = insert_element_on_head_ (list, element);
+                  rc = list_insert_element_on_head_ (list, element);
                 }
               else if (whence == POS_NEXT)
                 {
-                  rc = insert_element_on_next_ (list, element);
+                  rc = list_insert_element_on_next_ (list, element);
                 }
               else if (whence == POS_TAIL)
                 {
-                  rc = insert_element_on_tail_ (list, element);
+                  rc = list_insert_element_on_tail_ (list, element);
                 }
               else 
                 {
@@ -130,19 +123,23 @@ list_insert (list_t list, const void *data, position_t whence)
             {
               ++(list->size_);
             }
-          else if (element != NULL)
-            {
-              free (element);
+          else
+            { 
+              /* Resets the data in order to preserve the data member */
+              if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
+                {
+                  rc = list_element_destroy_ (element);
+                }
             }
         }
     }
 
-  return 0x0;
+  return rc;
 }
 
 /* Local functions definitions */
 static int
-insert_element_on_both_ends_ (list_t list, list_element_t * element)
+list_insert_element_on_both_ends_ (list_t list, list_element_t element)
 {
   int rc = 0x0;
   if (element != NULL)
@@ -158,29 +155,24 @@ insert_element_on_both_ends_ (list_t list, list_element_t * element)
 }
 
 static int 
-insert_element_on_head_ (list_t list, list_element_t * element)
+list_insert_element_on_head_ (list_t list, list_element_t element)
 {
   int rc = 0x0;
 
-  if (element != NULL)
+  if ((rc = list_element_set_next_ (element, list->head_)) == 0x0)
     {
-      element->next_ = list->head_;
       list->head_ = element;
-    }
-  else
-    {
-      rc = EGAINVAL;
     }
   return rc;
 }
 
 static int
-insert_element_on_next_ (list_t list, list_element_t * element)
+list_insert_element_on_next_ (list_t list, list_element_t element)
 {
   int rc = 0x0;
   if (list->curr_ != NULL)
     {
-      list_element_t * next;
+      list_element_t next;
       if ((rc = list_element_get_next_ (list->curr_, &next)) == 0x0)
         {
           if ((rc == list_element_set_next_ (element, next)) == 0x0)
@@ -197,7 +189,7 @@ insert_element_on_next_ (list_t list, list_element_t * element)
 }
 
 static int
-insert_element_on_tail_ (list_t list, list_element_t * element)
+list_insert_element_on_tail_ (list_t list, list_element_t element)
 {
   int rc = 0x0;
   if (element != NULL)
