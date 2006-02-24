@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.25 2006-02-21 01:07:36 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.26 2006-02-24 10:38:01 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -46,7 +46,7 @@ static char const rcsid [] = "@(#) $Id: list_del.c,v 1.25 2006-02-21 01:07:36 ha
  * - pointer to the head if the element could be deleted.
  * - NULL if the element could not be deleted
  */
-static list_element_t *
+static list_element_t 
 extract_element_from_head_ __P((list_t));
 
 /*
@@ -57,7 +57,7 @@ extract_element_from_head_ __P((list_t));
  * - A pointer to the element extracted from the list
  * - NULL if the element could not be extracted
  */
-static list_element_t *
+static list_element_t 
 extract_element_from_next_ (list_t);
 
 /* Exported function definitions */
@@ -65,7 +65,6 @@ extract_element_from_next_ (list_t);
 int
 list_del (list_t list, void **data, position_t whence)
 {
-  void *extracted_data;		/* Data extracted from the list */
   int rc = 0x0;                 /* General error handling variable */
 
   assert (list != NULL);
@@ -90,7 +89,8 @@ list_del (list_t list, void **data, position_t whence)
         }
       else 
         {
-          list_element_t * element = NULL; /* Element to be deleted */
+          list_element_t element = NULL; /* Element to be deleted */
+          void * got_data;               /* Data got from the element of the list */
 
           /* Extracts the element from the list and delete it. There
            * are two valid positions: the head and the next after the
@@ -104,30 +104,26 @@ list_del (list_t list, void **data, position_t whence)
             {
               element = extract_element_from_next_ (list);
             }
-          if (element != NULL)
+          if ((rc = list_element_get_data_ (element, &got_data)) == 0x0)
             {
               if (data != NULL)
                 {
-                  *data = element->data_;
+                  *data = got_data;
+
+                  /* At this point, it is necessary to set the element
+                   * data to NULL or else the list_element_destroy_
+                   * function will wipe the data we want to restore
+                   * from memory. */
+                  if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
+                    {
+                      rc = list_element_destroy_ (element);
+                    }
                 }
-              else if (list->deallocator_ != NULL)
+              else
                 {
-                  list->deallocator_ (element->data_);
+                  rc = list_element_destroy_ (element);
                 }
-              free (element);
               --(list->size_);
-            }
-          else
-            {
-              /*
-               * The routine could not extract and delete the
-               * element succesfully. This can be caused by two
-               * possibilities: the list became inconsistent or
-               * the current pointer was pointing to the tail and,
-               * therefore, makes it impossible to delete the
-               * element.
-               */
-              rc = EGAINVAL;
             }
         }
     }
@@ -136,13 +132,13 @@ list_del (list_t list, void **data, position_t whence)
 
 /* Local function definitions */
 
-static list_element_t *
+static list_element_t 
 extract_element_from_head_ (list_t list)
 {
-  list_element_t * element = NULL;
+  list_element_t element = list->head_;
 
-  element = list->head_;
-  list->head_ = element->next_;
+  list_element_get_next_ (element, &list->head_);
+
   /* Notifies the current position. If it is pointing to
    * the old head, updates it to the new head position in
    * order to avoid inconsistencies  */
@@ -161,10 +157,10 @@ extract_element_from_head_ (list_t list)
   return element;
 }
 
-static list_element_t *
+static list_element_t 
 extract_element_from_next_ (list_t list)
 {
-  list_element_t * element = NULL;
+  list_element_t element = NULL;
 
   if (list->curr_ != NULL) 
     {
@@ -180,7 +176,7 @@ extract_element_from_next_ (list_t list)
             }
           else
             {
-              list_element_t * next;
+              list_element_t next;
               /* Relinks the list, extracting out the element
                * we selected to delete. */
               if (list_element_get_next_ (element, &next) == 0x0)
