@@ -31,10 +31,10 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_get_next_.c,v 1.1 2006-02-21 01:08:17 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_get_next_.c,v 1.2 2006-02-24 10:48:22 harq_al_ada Exp $";
 
 int
-list_element_get_next_ (list_element_t * element, list_element_t ** got_element)
+list_element_get_next_ (list_element_t element, list_element_t * got_element)
 {
   assert (element != NULL);
   assert (got_element != NULL);
