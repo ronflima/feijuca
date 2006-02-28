@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.c,v 1.25 2006-02-04 21:28:16 harq_al_ada Exp $
+ $Id: list.c,v 1.26 2006-02-28 13:50:09 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.25 2006-02-04 21:28:16 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.26 2006-02-28 13:50:09 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -140,11 +140,7 @@ check_contents (size_t elements)
     }
   while (test_status == 0x0)
     {
-      if ((rc = list_get (list, (void **) &item, POS_NEXT)) == EOF)
-        {
-          break;
-        }
-      if (rc > 0x0)
+      if ((rc = list_get (list, (void **) &item, POS_CURR)) != 0x0)
         {
           ERROR (TEST, "list_get", rc);
           test_status = EFAILED;
@@ -157,6 +153,16 @@ check_contents (size_t elements)
           break;
         }
       ++i;
+      if ((rc = list_move (list, POS_NEXT)) == EOF)
+        {
+          break;
+        }
+      else if (rc > 0x0)
+        {
+          ERROR (TEST, "list_move", rc);
+          test_status = EFAILED;
+          break;
+        }
     }
   if ((i != elements) && test_status == 0x0)
     {
