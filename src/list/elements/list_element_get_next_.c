@@ -28,21 +28,33 @@
  ron_lima Exp $
  */
 #include <assert.h>
+#include <stdio.h>
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_get_next_.c,v 1.2 2006-02-24 10:48:22 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_get_next_.c,v 1.3 2006-02-28 13:48:30 harq_al_ada Exp $";
 
 int
 list_element_get_next_ (list_element_t element, list_element_t * got_element)
 {
+  int rc = 0x0;
+
   assert (element != NULL);
   assert (got_element != NULL);
   if ((element == NULL) || (got_element == NULL))
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  *got_element = element->next_;
-
-  return 0x0;
+  else
+    {
+      if (element->next_ == NULL)
+        {
+          rc = EOF;
+        }
+      else
+        {
+          *got_element = element->next_;
+        }
+    }
+  return rc;
 }
