@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get.c,v 1.20 2006-02-28 13:23:01 harq_al_ada Exp $
+ $Id: list_get.c,v 1.21 2006-02-28 13:49:17 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.20 2006-02-28 13:23:01 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.21 2006-02-28 13:49:17 harq_al_ada Exp $"; 
 
 int
 list_get (list_t list, void **data, position_t whence)
@@ -67,6 +67,10 @@ list_get (list_t list, void **data, position_t whence)
                   rc = list_element_get_data_ (next, data);
                 }
             }
+        }
+      else if (whence == POS_CURR)
+        {
+          rc = list_element_get_data_ (list->curr_, data);
         }
       else
         {
