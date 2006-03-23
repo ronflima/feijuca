@@ -1,5 +1,7 @@
 /* -*-c-*-
+
  Copyright Ronaldo Faria Lima (C) 2004 - All rights reserved
+
  Feel free to contact the author in <ronaldo@ronaldolima.eti.br>
 
  This file is part of G.A. Lib.
@@ -15,39 +17,37 @@
  General Public License for more details.
 
  You should have received a copy of the GNU General Public License
- along with G.A. Lib; if not, write to the Free Software
- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ along with G.A. Lib; if not, write to the Free Software Foundation,
+ Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
 
- System: G.A. Lib
+  System: G.A. Lib
 
- Description: Finishes a list. This routine will delete the whole list
- from memory
+  Description: Sets the current pointer in the list. Internal function.
 
- CVS Information
- $Author: harq_al_ada $
- $Id: list_destroy.c,v 1.8 2006-03-23 10:33:56 harq_al_ada Exp $
-*/
+ CVS Information $Author: harq_al_ada $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
+ ron_lima Exp $
+ */
+#include <stdio.h>
 #include <assert.h>
 #include "list.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.8 2006-03-23 10:33:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_set_curr_.c,v 1.1 2006-03-23 10:33:56 harq_al_ada Exp $";
 
-int
-list_destroy (list_t list)
+int 
+list_set_curr_ (list_t list, list_element_t curr)
 {
+  int rc = 0x0;
+
   assert (list != NULL);
-  if (! list_is_valid_ (list))
+  if ((! list_is_valid_ (list)))
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  
-  /* Deletes each single member of the list */
-  while (list_del (list, NULL, POS_HEAD) == 0x0)
-    ;
-  list->signature_ = (ga_magic_t)0x0;
-  free (list);
-  
-  return 0x0;
+  else
+    {
+      list->curr_ = curr;
+    }
+  return rc;
 }

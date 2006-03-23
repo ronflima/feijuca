@@ -23,8 +23,8 @@
  Description: Inserts a new element in the list
 
  CVS Information
- $Author: daniel_csoares $
- $Id: list_insert.c,v 1.24 2006-02-24 13:54:53 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: list_insert.c,v 1.25 2006-03-23 10:33:56 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.24 2006-02-24 13:54:53 daniel_csoares Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.25 2006-03-23 10:33:56 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -86,53 +86,48 @@ list_insert (list_t list, const void *data, position_t whence)
 
   assert (list != NULL);
   assert (data != NULL);
-  if ((list == NULL) || ((whence != POS_HEAD) && (whence != POS_NEXT) && (whence != POS_TAIL)))
+  if (! list_is_valid_ (list) || ((whence != POS_HEAD) && (whence != POS_NEXT) && (whence != POS_TAIL)))
     {
       rc = EGAINVAL;
     }
-  else
+  else if ((rc = list_element_init_ (&element, data, list->deallocator_)) == 0x0)
     {
-      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
-  
-      if ((rc = list_element_init_ (&element, data, list->deallocator_)) == 0x0)
+      if (list->size_ == 0x0u)
         {
-          if (list->size_ == 0x0u)
+          rc = list_insert_element_on_both_ends_ (list, element);
+        }
+      else
+        {
+          if (whence == POS_HEAD)
             {
-              rc = list_insert_element_on_both_ends_ (list, element);
+              rc = list_insert_element_on_head_ (list, element);
             }
-          else
+          else if (whence == POS_NEXT)
             {
-              if (whence == POS_HEAD)
-                {
-                  rc = list_insert_element_on_head_ (list, element);
-                }
-              else if (whence == POS_NEXT)
-                {
-                  rc = list_insert_element_on_next_ (list, element);
-                }
-              else if (whence == POS_TAIL)
-                {
-                  rc = list_insert_element_on_tail_ (list, element);
-                }
-              else 
-                {
-                  rc = EGAINVAL;
-                }
+              rc = list_insert_element_on_next_ (list, element);
             }
-          if (rc == 0x0)
+          else if (whence == POS_TAIL)
             {
-              ++(list->size_);
+              rc = list_insert_element_on_tail_ (list, element);
             }
-          else
-            { 
-              /* Resets the data in order to preserve the data member */
-              if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
-                {
-                  rc = list_element_destroy_ (element);
-                }
+          else 
+            {
+              rc = EGAINVAL;
             }
         }
-    }
+      if (rc == 0x0)
+        {
+          ++(list->size_);
+        }
+      else
+        { 
+          /* Resets the data in order to preserve the data member */
+          if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
+            {
+              rc = list_element_destroy_ (element);
+            }
+        }
+    } 
 
   return rc;
 }

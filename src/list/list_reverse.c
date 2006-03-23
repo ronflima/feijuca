@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.9 2006-02-24 10:45:52 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.10 2006-03-23 10:33:56 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.9 2006-02-24 10:45:52 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.10 2006-03-23 10:33:56 harq_al_ada Exp $";
 
 int
 list_reverse (list_t list)
@@ -41,14 +41,12 @@ list_reverse (list_t list)
   int rc = 0x0;
 
   assert (list != NULL);
-  if (list == NULL)
+  if (! list_is_valid_ (list))
     {
       rc = EGAINVAL;
     }
   else
     {
-      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
-  
       /* Check if the list is empty or have enough information to reverse */
       if (list->size_ < 0x2u)               
         {

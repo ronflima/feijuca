@@ -34,20 +34,19 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_getpos.c,v 1.1 2006-01-29 12:37:03 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_getpos.c,v 1.2 2006-03-23 10:33:56 harq_al_ada Exp $";
 
 int 
 list_getpos (list_t list, position_t * whence)
 {
   int rc = 0x0;
 
-  if (list == NULL)
+  if (! list_is_valid_ (list))
     {
       rc = EGAINVAL;
     }
   else 
     {
-      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
       if (list->curr_ == NULL || list->size_ == 0x0)
         {
           *whence = POS_NONE;

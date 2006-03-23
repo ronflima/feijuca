@@ -20,34 +20,31 @@
 
  System: G.A. Lib
 
- Description: Finishes a list. This routine will delete the whole list
- from memory
+ Description: Returns the size of a list
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_destroy.c,v 1.8 2006-03-23 10:33:56 harq_al_ada Exp $
+ $Id: list_size.c,v 1.1 2006-03-23 10:33:56 harq_al_ada Exp $
 */
+#include <stdio.h>
 #include <assert.h>
 #include "list.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.8 2006-03-23 10:33:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_size.c,v 1.1 2006-03-23 10:33:56 harq_al_ada Exp $";
 
 int
-list_destroy (list_t list)
+list_size (list_t list, size_t * size)
 {
   assert (list != NULL);
-  if (! list_is_valid_ (list))
+  if (list_is_valid (list))
+    {
+      *size = list->size_;
+    }
+  else 
     {
       return EGAINVAL;
     }
-  
-  /* Deletes each single member of the list */
-  while (list_del (list, NULL, POS_HEAD) == 0x0)
-    ;
-  list->signature_ = (ga_magic_t)0x0;
-  free (list);
-  
   return 0x0;
 }

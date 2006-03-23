@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get.c,v 1.21 2006-02-28 13:49:17 harq_al_ada Exp $
+ $Id: list_get.c,v 1.22 2006-03-23 10:33:56 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.21 2006-02-28 13:49:17 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.22 2006-03-23 10:33:56 harq_al_ada Exp $"; 
 
 int
 list_get (list_t list, void **data, position_t whence)
@@ -42,13 +42,12 @@ list_get (list_t list, void **data, position_t whence)
 
   assert (list != NULL);
   assert (data != NULL);
-  if ((list == NULL) || (data == NULL))
+  if (! list_is_valid_(list) || (data == NULL))
     {
       rc = EGAINVAL;
     }
   else
     {
-      CHECK_SIGNATURE (list, GA_LIST_SIGNATURE);
       if (whence == POS_HEAD)
         {
           rc = list_element_get_data_ (list->head_, data);
