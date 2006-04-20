@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_.h,v 1.5 2006-02-24 10:30:49 harq_al_ada Exp $
+ $Id: list_.h,v 1.6 2006-04-20 00:22:09 harq_al_ada Exp $
 */
 
 #ifndef LIST__H
@@ -34,6 +34,7 @@
 #include <stddef.h>
 #include "gacommon.h"
 #include "gainternal_.h"
+#include "list.h"
 
 GABEGINDECLS
 /*
@@ -70,12 +71,13 @@ struct list_t
 /*
  * Prototypes
  */
-int (list_element_init_)     __P((list_element_t *, const void *, deallocator_t *));
-int (list_element_destroy_)  __P((list_element_t));
+int (list_element_init_)     __P((list_element_t *, const void *));
+int (list_element_destroy_)  __P((list_element_t, deallocator_t *));
 int (list_element_get_data_) __P((list_element_t, void **));
 int (list_element_set_data_) __P((list_element_t, void * data));
 int (list_element_get_next_) __P((list_element_t, list_element_t *));
 int (list_element_set_next_) __P((list_element_t, list_element_t));
+int (list_is_valid_) __P((list_t));
 
 GAENDDECLS
 #endif /* LIST__H */

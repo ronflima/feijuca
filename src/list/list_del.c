@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.28 2006-03-23 10:33:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.29 2006-04-20 00:22:09 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -74,19 +74,18 @@ list_del (list_t list, void **data, position_t whence)
     }
   else 
     {
+      size_t size;
+
+      list_get_size (list, &size);
       if (data != NULL)
         {
           *data = (void *) NULL;
         }
-      if (list->size_ == 0x0) 
+      if ((size == 0x0) || ((size == 0x1) && (whence == POS_NEXT)))
         {
           rc = EOF;
         }
-      else if ((data == NULL) && (list->deallocator_ == NULL))
-        {
-          rc = EGAINVAL;
-        }
-      else if ((list->size_ == 0x1) && ((whence == POS_TAIL) || (whence == POS_NEXT)))
+      else if (whence == POS_TAIL)
         {
           rc = EGAINVAL;
         }
@@ -119,12 +118,17 @@ list_del (list_t list, void **data, position_t whence)
                    * from memory. */
                   if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
                     {
-                      rc = list_element_destroy_ (element);
+                      rc = list_element_destroy_ (element, NULL);
                     }
                 }
               else
                 {
-                  rc = list_element_destroy_ (element);
+                  deallocator_t dealloc;
+                  
+                  if((rc = list_get_deallocator_ (list, &dealloc)) == 0x0)
+                    {
+                      rc = list_element_destroy_ (element, &dealloc);
+                    }
                 }
               --(list->size_);
             }

@@ -31,16 +31,15 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_init_.c,v 1.1 2006-02-24 10:48:08 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_init_.c,v 1.2 2006-04-20 00:22:09 harq_al_ada Exp $";
 
 int
-list_element_init_ (list_element_t * element, const void * data, deallocator_t *dealloc)
+list_element_init_ (list_element_t * element, const void * data)
 {
   int rc = 0x0;
 
   assert (element != NULL);
-  assert (dealloc != NULL);
-  if ((element == NULL) || (dealloc == NULL))
+  if (element == NULL)
     {
       rc = EGAINVAL;
     }
@@ -52,9 +51,8 @@ list_element_init_ (list_element_t * element, const void * data, deallocator_t *
         }
       else
         {
-          (*element)->next_        = NULL;
-          (*element)->data_        = data;
-          (*element)->deallocator_ = dealloc;
+          (*element)->next_ = NULL;
+          (*element)->data_ = data;
         }
     }
   

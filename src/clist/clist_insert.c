@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_insert.c,v 1.15 2006-02-24 10:32:37 harq_al_ada Exp $
+ $Id: clist_insert.c,v 1.16 2006-04-20 00:22:09 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.15 2006-02-24 10:32:37 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.16 2006-04-20 00:22:09 harq_al_ada Exp $";
 
 int
 clist_insert (clist_t clist, const void *data)
@@ -48,7 +48,7 @@ clist_insert (clist_t clist, const void *data)
   CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
 
   /* Allocates memory for the new element */
-  if ((rc = list_element_init_ (&element, data, clist->list_->deallocator_)) == 0x0)
+  if ((rc = list_element_init_ (&element, data)) == 0x0)
     {
       /* Check the size of the list */
       if (clist->list_->size_ == 0x0)
@@ -79,7 +79,7 @@ clist_insert (clist_t clist, const void *data)
     {
       if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
         {
-          rc = list_element_destroy_ (element);
+          rc = list_element_destroy_ (element, NULL);
         }
     }
 

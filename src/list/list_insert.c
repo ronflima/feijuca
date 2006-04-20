@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.25 2006-03-23 10:33:56 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.26 2006-04-20 00:22:09 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.25 2006-03-23 10:33:56 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.26 2006-04-20 00:22:09 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -90,7 +90,7 @@ list_insert (list_t list, const void *data, position_t whence)
     {
       rc = EGAINVAL;
     }
-  else if ((rc = list_element_init_ (&element, data, list->deallocator_)) == 0x0)
+  else if ((rc = list_element_init_ (&element, data)) == 0x0)
     {
       if (list->size_ == 0x0u)
         {
@@ -124,7 +124,12 @@ list_insert (list_t list, const void *data, position_t whence)
           /* Resets the data in order to preserve the data member */
           if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
             {
-              rc = list_element_destroy_ (element);
+              deallocator_t *dealloc;
+
+              if ((rc = list_get_deallocator_ (list, &dealloc)) == 0x0)
+                {
+                  rc = list_element_destroy_ (element, dealloc);
+                }
             }
         }
     } 

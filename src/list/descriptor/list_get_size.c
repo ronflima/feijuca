@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_size.c,v 1.1 2006-03-23 10:33:56 harq_al_ada Exp $
+ $Id: list_get_size.c,v 1.1 2006-04-20 00:22:09 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,10 +32,10 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_size.c,v 1.1 2006-03-23 10:33:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_get_size.c,v 1.1 2006-04-20 00:22:09 harq_al_ada Exp $";
 
 int
-list_size (list_t list, size_t * size)
+list_get_size (list_t list, size_t * size)
 {
   assert (list != NULL);
   if (list_is_valid (list))

@@ -31,10 +31,10 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_destroy_.c,v 1.1 2006-02-24 10:46:18 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_destroy_.c,v 1.2 2006-04-20 00:22:09 harq_al_ada Exp $";
 
 int
-list_element_destroy_ (list_element_t element)
+list_element_destroy_ (list_element_t element, deallocator_t *deallocator)
 {
   int rc = 0x0;
   void * data = NULL;
@@ -44,9 +44,9 @@ list_element_destroy_ (list_element_t element)
     {
       if (data != NULL)
         {
-          if (element->deallocator_ != NULL)
+          if (deallocator != NULL)
             {
-              element->deallocator_ (data);
+              deallocator (data);
             }
           else
             {
