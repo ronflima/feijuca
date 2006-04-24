@@ -22,8 +22,8 @@
  Description: Interfaces and datatypes for queues
 
  CVS Information
- $Author: harq_al_ada $
- $Id: queue.h,v 1.12 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Author: daniel_csoares $
+ $Id: queue.h,v 1.13 2006-04-24 12:36:13 daniel_csoares Exp $
 */
 
 #ifndef QUEUE_H
@@ -45,7 +45,7 @@ int (queue_init) __P ((queue_t *, deallocator_t *));
 int (queue_destroy) __P ((queue_t));
 int (queue_pop) __P ((queue_t, void **));
 int (queue_push) __P ((queue_t, const void *));
-int (queue_size) __P((queue_t, size_t *));
+int (queue_get_size) __P((queue_t, size_t *));
 
 GAENDDECLS
 #endif /* QUEUE_H */

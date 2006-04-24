@@ -22,8 +22,8 @@
  Description: Pops an element from the queue
 
  CVS Information
- $Author: harq_al_ada $
- $Id: queue_pop.c,v 1.15 2006-02-04 21:26:31 harq_al_ada Exp $
+ $Author: daniel_csoares $
+ $Id: queue_pop.c,v 1.16 2006-04-24 12:36:33 daniel_csoares Exp $
 */
 #include <assert.h>
 #include "list.h"
@@ -31,22 +31,23 @@
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_pop.c,v 1.15 2006-02-04 21:26:31 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_pop.c,v 1.16 2006-04-24 12:36:33 daniel_csoares Exp $";
 
 int
 queue_pop (queue_t queue, void **data)
 {
   int rc = 0x0;
-
+  list_t * list = 0x0;
+  
   assert (queue != NULL);
-  if (queue == NULL)
+  if (! queue_is_valid_(queue))
     {
       rc = EGAINVAL;
     }
   else 
     {
-      CHECK_SIGNATURE (queue, GA_QUEUE_SIGNATURE);
-      rc = list_del (queue->list_, data, POS_HEAD);
+      queue_get_list(queue,list);
+      rc = list_del (*list, data, POS_HEAD);
     }
   return rc;
 }

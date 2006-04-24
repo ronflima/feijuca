@@ -22,12 +22,15 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
+# $Id: Makefile.am,v 1.6 2006-04-24 12:36:33 daniel_csoares Exp $
 noinst_LTLIBRARIES = libqueue.la
-libqueue_la_SOURCES = queue_init.c				\
-                      queue_push.c				\
-                      queue_destroy.c			\
-                      queue_pop.c				\
-                      queue_size.c 				\
-                      ../../include/queue.h
+libqueue_la_SOURCES = queue_init.c						\
+                      queue_push.c						\
+                      queue_destroy.c					\
+                      queue_pop.c						\
+                      descriptor/queue_get_size.c		\
+                      descriptor/queue_is_valid_.c		\
+                      descriptor/queue_get_list_.c 		\
+                      ../../include/queue.h				\
+                      ../../include/queue_.h
 INCLUDES=-I../../include/
