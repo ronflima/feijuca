@@ -22,23 +22,23 @@
  Description: Allocates and initializes a queue
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_init.c,v 1.7 2006-04-24 12:36:33 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: queue_init.c,v 1.8 2006-05-14 00:49:29 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "list.h"
 #include "queue.h"
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.7 2006-04-24 12:36:33 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: queue_init.c,v 1.8 2006-05-14 00:49:29 harq_al_ada Exp $";
 
 int
 queue_init (queue_t * queue, deallocator_t * dealloc)
 {
   int rc = 0x0;
-  list_t * list = 0x0;
   
   assert (queue != NULL);
   assert (dealloc != NULL);
@@ -52,11 +52,15 @@ queue_init (queue_t * queue, deallocator_t * dealloc)
     }
   else
     {
-      queue_get_list_(*queue,list);
+      list_t list = NULL;
       (*queue)->signature_ = GA_QUEUE_SIGNATURE;
-      if ((rc = list_init (list, dealloc)) != 0x0)
+      if ((rc = list_init (&list, dealloc)) != 0x0)
         {
           free (*queue);
+        }
+      else 
+        {
+          queue_set_list_(*queue, list);
         }
     }
   return rc;
