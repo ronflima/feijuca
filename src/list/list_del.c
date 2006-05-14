@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.29 2006-04-20 00:22:09 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.30 2006-05-14 18:27:07 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -62,10 +62,10 @@ extract_element_from_next_ (list_t);
 
 /* Exported function definitions */
 
-int
+GAERROR
 list_del (list_t list, void **data, position_t whence)
 {
-  int rc = 0x0;                 /* General error handling variable */
+  GAERROR rc = EGAOK;                 /* General error handling variable */
 
   assert (list != NULL);
   if (! list_is_valid_ (list))
@@ -83,7 +83,7 @@ list_del (list_t list, void **data, position_t whence)
         }
       if ((size == 0x0) || ((size == 0x1) && (whence == POS_NEXT)))
         {
-          rc = EOF;
+          rc = EGAEOF;
         }
       else if (whence == POS_TAIL)
         {

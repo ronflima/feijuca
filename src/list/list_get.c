@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get.c,v 1.22 2006-03-23 10:33:56 harq_al_ada Exp $
+ $Id: list_get.c,v 1.23 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,12 +33,12 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.22 2006-03-23 10:33:56 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.23 2006-05-14 18:27:07 harq_al_ada Exp $"; 
 
-int
+GAERROR
 list_get (list_t list, void **data, position_t whence)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   assert (list != NULL);
   assert (data != NULL);

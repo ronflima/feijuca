@@ -24,16 +24,16 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_init.c,v 1.7 2006-02-24 10:38:55 harq_al_ada Exp $
+ $Id: list_init.c,v 1.8 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_init.c,v 1.7 2006-02-24 10:38:55 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_init.c,v 1.8 2006-05-14 18:27:07 harq_al_ada Exp $";
 
-int
+GAERROR
 list_init (list_t * list, deallocator_t * dealloc)
 {
   assert (list != NULL);
@@ -48,13 +48,11 @@ list_init (list_t * list, deallocator_t * dealloc)
     {
       return EGANOMEM;
     }
-  
-  /* Initializes each data member */
-  (*list)->size_ = 0x0;
-  (*list)->head_ = (list_element_t) NULL;
-  (*list)->tail_ = (list_element_t) NULL;
-  (*list)->curr_ = (list_element_t) NULL;
-  (*list)->deallocator_ = dealloc;
-  (*list)->signature_ = GA_LIST_SIGNATURE;
-  return 0x0;
+  memset(list, 0x0, sizeof(struct list_t));
+  list_set_head_(list, NULL);
+  list_set_tail_(list, NULL);
+  list_set_curr_(list, NULL);
+  list_set_deallocator_(list, dealloc);
+  list_set_signature_(list);
+  return EGAOK;
 }

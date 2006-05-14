@@ -34,12 +34,12 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get_pos.c,v 1.1 2006-04-20 10:48:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_get_pos.c,v 1.2 2006-05-14 18:27:07 harq_al_ada Exp $";
 
-int 
+GAERROR 
 list_get_pos (list_t list, position_t * whence)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   if (! list_is_valid_ (list))
     {

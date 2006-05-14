@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.h,v 1.25 2006-04-20 00:22:09 harq_al_ada Exp $
+ $Id: list.h,v 1.26 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 
 #ifndef LIST_H
@@ -43,15 +43,15 @@ typedef struct list_t * list_t;
 /*
  * Prototypes
  */
-int (list_init) __P ((list_t *, deallocator_t *));
-int (list_destroy) __P ((list_t));
-int (list_get) __P ((list_t, void **, position_t));
-int (list_insert) __P ((list_t, const void *, position_t));
-int (list_move) __P ((list_t, position_t));
-int (list_del) __P ((list_t, void **, position_t));
-int (list_reverse) __P((list_t));
-int (list_get_size) __P((list_t, size_t *));
-int (list_get_pos) __P((list_t, position_t *));
+GAERROR (list_init) __P ((list_t *, deallocator_t *));
+GAERROR (list_destroy) __P ((list_t));
+GAERROR (list_get) __P ((list_t, void **, position_t));
+GAERROR (list_insert) __P ((list_t, const void *, position_t));
+GAERROR (list_move) __P ((list_t, position_t));
+GAERROR (list_del) __P ((list_t, void **, position_t));
+GAERROR (list_reverse) __P((list_t));
+GAERROR (list_get_size) __P((list_t, size_t *));
+GAERROR (list_get_pos) __P((list_t, position_t *));
 
 GAENDDECLS
 #endif /* LIST_H */

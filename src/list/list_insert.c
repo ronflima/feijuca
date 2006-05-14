@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.26 2006-04-20 00:22:09 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.27 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.26 2006-04-20 00:22:09 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.27 2006-05-14 18:27:07 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -44,7 +44,7 @@ static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.26 2006-04-20 00:22:09
  * - 0 on success
  * - EGAINVAL if the new element could not be inserted.
  */
-static int
+static GAERROR
 list_insert_element_on_both_ends_ __P((list_t, list_element_t));
 
 /*
@@ -54,7 +54,7 @@ list_insert_element_on_both_ends_ __P((list_t, list_element_t));
  * - 0 on sucess
  * - EGAINVAL if the new element could not be inserted into the list
  */
-static int 
+static GAERROR
 list_insert_element_on_head_ __P((list_t, list_element_t));
 
 /*
@@ -64,7 +64,7 @@ list_insert_element_on_head_ __P((list_t, list_element_t));
  * - 0 on success
  * - EGABADC if the current pointer points to nowhere
  */
-static int
+static GAERROR
 list_insert_element_on_next_ __P((list_t, list_element_t));
 
 /*
@@ -74,15 +74,15 @@ list_insert_element_on_next_ __P((list_t, list_element_t));
  * - 0 on success
  * - EGAINVAL if the element could not be inserted for some reason.
  */
-static int
+static GAERROR
 list_insert_element_on_tail_ __P((list_t, list_element_t));
 
 /* Exported function definition */
-int
+GAERROR
 list_insert (list_t list, const void *data, position_t whence)
 {
   list_element_t element;
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   assert (list != NULL);
   assert (data != NULL);
@@ -138,10 +138,10 @@ list_insert (list_t list, const void *data, position_t whence)
 }
 
 /* Local functions definitions */
-static int
+static GAERROR
 list_insert_element_on_both_ends_ (list_t list, list_element_t element)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
   if (element != NULL)
     {
       list->head_ = element;
@@ -154,10 +154,10 @@ list_insert_element_on_both_ends_ (list_t list, list_element_t element)
   return rc;
 }
 
-static int 
+static GAERROR
 list_insert_element_on_head_ (list_t list, list_element_t element)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   if ((rc = list_element_set_next_ (element, list->head_)) == 0x0)
     {
@@ -166,10 +166,10 @@ list_insert_element_on_head_ (list_t list, list_element_t element)
   return rc;
 }
 
-static int
+static GAERROR
 list_insert_element_on_next_ (list_t list, list_element_t element)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
   if (list->curr_ != NULL)
     {
       list_element_t next;
@@ -188,10 +188,10 @@ list_insert_element_on_next_ (list_t list, list_element_t element)
   return rc;
 }
 
-static int
+static GAERROR
 list_insert_element_on_tail_ (list_t list, list_element_t element)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
   if (element != NULL)
     {
       if ((rc = list_element_set_next_ (list->tail_, element)) == 0x0)

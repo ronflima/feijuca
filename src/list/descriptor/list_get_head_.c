@@ -33,12 +33,12 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get_head_.c,v 1.1 2006-03-23 10:33:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_get_head_.c,v 1.2 2006-05-14 18:27:08 harq_al_ada Exp $";
 
-int 
+GAERROR 
 list_get_head_ (list_t list, list_element_t * head)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   assert (list != NULL);
   assert (head != NULL);
@@ -51,7 +51,7 @@ list_get_head_ (list_t list, list_element_t * head)
       *head = list->head_;
       if (*head == NULL)
         {
-          rc = EOF;
+          rc = EGAEOF;
         }
     }
   return rc;

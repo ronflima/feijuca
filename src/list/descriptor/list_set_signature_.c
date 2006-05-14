@@ -22,7 +22,7 @@
 
   System: G.A. Lib
 
-  Description: Sets the deallocator for the list. Internal function.
+  Description: Sets a valid signature for the list descriptor
 
  CVS Information $Author: harq_al_ada $ $Id: list_del.c,v 1.7 2004/07/19 00:53:45
  ron_lima Exp $
@@ -33,21 +33,21 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_set_deallocator_.c,v 1.2 2006-05-14 18:27:08 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_set_signature_.c,v 1.1 2006-05-14 18:27:08 harq_al_ada Exp $";
 
 GAERROR 
-list_set_deallocator_ (list_t list, deallocator_t deallocator)
+list_set_signature_ (list_t list)
 {
   GAERROR rc = EGAOK;
 
   assert (list != NULL);
-  if ((! list_is_valid_ (list)) || (deallocator == NULL))
+  if (list == NULL)
     {
       rc = EGAINVAL;
     }
   else
     {
-      list->deallocator_ = deallocator;
+      list->signature_ = GA_LIST_SIGNATURE;
     }
   return rc;
 }

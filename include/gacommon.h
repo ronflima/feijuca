@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: gacommon.h,v 1.28 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: gacommon.h,v 1.29 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 
 #ifndef GACOMMON_H
@@ -59,12 +59,14 @@ GABEGINDECLS
  */
 /* Error codes: Errors that are returned from G.A. Library
    routines. */
-enum 
+typedef enum 
 {
+  EGAOK    = 0x0,               /* No error so far. */
+  EGAEOF   = -0x1,              /* End of file */
   EGAINVAL = 2500,		/* Invalid argument */
   EGANOMEM = 2501,		/* No memory */
   EGABADC  = 2502		/* Bad current position */
-};
+} GAERROR;
 
 /*
  * Datatypes

@@ -25,14 +25,14 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_destroy.c,v 1.8 2006-03-23 10:33:56 harq_al_ada Exp $
+ $Id: list_destroy.c,v 1.9 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.8 2006-03-23 10:33:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_destroy.c,v 1.9 2006-05-14 18:27:07 harq_al_ada Exp $";
 
 int
 list_destroy (list_t list)
@@ -46,8 +46,8 @@ list_destroy (list_t list)
   /* Deletes each single member of the list */
   while (list_del (list, NULL, POS_HEAD) == 0x0)
     ;
-  list->signature_ = (ga_magic_t)0x0;
+  memset(list, 0x0, sizeof(struct list_t));
   free (list);
   
-  return 0x0;
+  return EGAOK;
 }

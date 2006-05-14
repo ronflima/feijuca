@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_.h,v 1.6 2006-04-20 00:22:09 harq_al_ada Exp $
+ $Id: list_.h,v 1.7 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 
 #ifndef LIST__H
@@ -71,12 +71,12 @@ struct list_t
 /*
  * Prototypes
  */
-int (list_element_init_)     __P((list_element_t *, const void *));
-int (list_element_destroy_)  __P((list_element_t, deallocator_t *));
-int (list_element_get_data_) __P((list_element_t, void **));
-int (list_element_set_data_) __P((list_element_t, void * data));
-int (list_element_get_next_) __P((list_element_t, list_element_t *));
-int (list_element_set_next_) __P((list_element_t, list_element_t));
+GAERROR (list_element_init_)     __P((list_element_t *, const void *));
+GAERROR (list_element_destroy_)  __P((list_element_t, deallocator_t *));
+GAERROR (list_element_get_data_) __P((list_element_t, void **));
+GAERROR (list_element_set_data_) __P((list_element_t, void * data));
+GAERROR (list_element_get_next_) __P((list_element_t, list_element_t *));
+GAERROR (list_element_set_next_) __P((list_element_t, list_element_t));
 int (list_is_valid_) __P((list_t));
 
 GAENDDECLS
