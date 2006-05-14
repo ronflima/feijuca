@@ -23,23 +23,24 @@
  from the memory
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_destroy.c,v 1.7 2006-04-24 12:36:33 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: queue_destroy.c,v 1.8 2006-05-14 00:48:55 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include "list.h"
 #include "queue.h"
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.7 2006-04-24 12:36:33 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.8 2006-05-14 00:48:55 harq_al_ada Exp $";
 
 int
 queue_destroy (queue_t queue)
 {
   int rc = 0x0;
-  list_t * list = 0x0;
+  list_t list = NULL;
   
   assert (queue != NULL);
   if (! queue_is_valid(queue))
@@ -48,8 +49,9 @@ queue_destroy (queue_t queue)
     }
   else 
     {
-      queue_get_list_(queue,list);
-      rc = list_destroy (*list);
+      queue_get_list_(queue, &list);
+      rc = list_destroy (list);
+      memset (queue, 0x0, sizeof (struct queue_t));
       free (queue);
     }
   return rc;
