@@ -22,28 +22,29 @@
  Description: Returns the size of a queue
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_get_size.c,v 1.1 2006-04-24 12:39:18 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: queue_get_size.c,v 1.2 2006-05-14 00:50:27 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
+#include <stdio.h>
 #include "list.h"
 #include "queue.h"
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_get_size.c,v 1.1 2006-04-24 12:39:18 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: queue_get_size.c,v 1.2 2006-05-14 00:50:27 harq_al_ada Exp $";
 
 int
 queue_get_size (queue_t queue, size_t * size)
 {
-  list_t * list = 0x0;
+  list_t list = NULL;
 
   assert (queue != NULL);
   if (! queue_is_valid(queue) || size == NULL)
     {
       return EGAINVAL;
     }
-  queue_get_list_(queue,list);
-  return list_get_size (*list, size);
+  queue_get_list_(queue, &list);
+  return list_get_size (list, size);
 }

@@ -22,29 +22,28 @@
  Description: Pushes a new element into the queue
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_push.c,v 1.15 2006-04-24 12:36:33 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: queue_push.c,v 1.16 2006-05-14 00:50:02 harq_al_ada Exp $
 */
 #include <assert.h>
+#include <stdio.h>
 #include "list.h"
 #include "queue.h"
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.15 2006-04-24 12:36:33 daniel_csoares Exp $";
+static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.16 2006-05-14 00:50:02 harq_al_ada Exp $";
 
 int
 queue_push (queue_t queue, const void *data)
 {
-  list_t * list = 0x0;
+  list_t list = NULL;
     
   assert (queue != NULL);
   if (! queue_is_valid(queue))
     {
       return EGAINVAL;
     }
-
-  queue_get_list_(queue,list);
-
-  return list_insert (*list, data, POS_TAIL);
+  queue_get_list_(queue, &list);
+  return list_insert (list, data, POS_TAIL);
 }
