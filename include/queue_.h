@@ -24,8 +24,8 @@
  installed on the final target system.
 
  CVS Information
- $Author: daniel_csoares $
- $Id: queue_.h,v 1.2 2006-04-24 12:36:13 daniel_csoares Exp $
+ $Author: harq_al_ada $
+ $Id: queue_.h,v 1.3 2006-05-14 00:47:38 harq_al_ada Exp $
 */
 
 #ifndef QUEUE__H
@@ -57,8 +57,9 @@ struct queue_t
 /*
  * Methods
  */
-int (queue_is_valid_) __P((queue_t queue));
-int (queue_get_list_) __P((queue_t queue, list_t * list));
+int (queue_is_valid_) __P((queue_t));
+int (queue_get_list_) __P((queue_t, list_t *));
+int (queue_set_list_) (queue_t, list_t);
 
 GAENDDECLS
 #endif /* QUEUE__H */
