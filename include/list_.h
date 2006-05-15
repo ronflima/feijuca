@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_.h,v 1.8 2006-05-15 10:54:12 harq_al_ada Exp $
+ $Id: list_.h,v 1.9 2006-05-15 23:17:34 harq_al_ada Exp $
 */
 
 #ifndef LIST__H
@@ -83,6 +83,7 @@ GAERROR (list_get_curr_) __P((list_t, list_element_t *));
 GAERROR (list_get_deallocator_) __P((list_t, deallocator_t **));
 GAERROR (list_get_head_) __P((list_t, list_element_t *));
 GAERROR (list_get_tail_) __P((list_t, list_element_t *));
+GAERROR (list_increment_size_) __P((list_t, int));
 GAERROR (list_set_curr_) __P((list_t, list_element_t));
 GAERROR (list_set_deallocator_) __P((list_t, deallocator_t));
 GAERROR (list_set_head_) __P((list_t, list_element_t));
