@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_.h,v 1.7 2006-05-14 18:27:07 harq_al_ada Exp $
+ $Id: list_.h,v 1.8 2006-05-15 10:54:12 harq_al_ada Exp $
 */
 
 #ifndef LIST__H
@@ -71,12 +71,23 @@ struct list_t
 /*
  * Prototypes
  */
-GAERROR (list_element_init_)     __P((list_element_t *, const void *));
+/* Element handling */
 GAERROR (list_element_destroy_)  __P((list_element_t, deallocator_t *));
 GAERROR (list_element_get_data_) __P((list_element_t, void **));
-GAERROR (list_element_set_data_) __P((list_element_t, void * data));
 GAERROR (list_element_get_next_) __P((list_element_t, list_element_t *));
+GAERROR (list_element_init_)     __P((list_element_t *, const void *));
+GAERROR (list_element_set_data_) __P((list_element_t, void * data));
 GAERROR (list_element_set_next_) __P((list_element_t, list_element_t));
+/* List descriptor handling */
+GAERROR (list_get_curr_) __P((list_t, list_element_t *));
+GAERROR (list_get_deallocator_) __P((list_t, deallocator_t **));
+GAERROR (list_get_head_) __P((list_t, list_element_t *));
+GAERROR (list_get_tail_) __P((list_t, list_element_t *));
+GAERROR (list_set_curr_) __P((list_t, list_element_t));
+GAERROR (list_set_deallocator_) __P((list_t, deallocator_t));
+GAERROR (list_set_head_) __P((list_t, list_element_t));
+GAERROR (list_set_signature_) __P((list_t));
+GAERROR (list_set_tail_) __P((list_t, list_element_t));
 int (list_is_valid_) __P((list_t));
 
 GAENDDECLS
