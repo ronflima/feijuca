@@ -32,9 +32,9 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_get_data_.c,v 1.2 2006-02-24 10:48:22 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_get_data_.c,v 1.3 2006-05-15 10:56:21 harq_al_ada Exp $";
 
-int
+GAERROR
 list_element_get_data_ (list_element_t element, void ** data)
 {
   assert (element != NULL);
@@ -46,5 +46,5 @@ list_element_get_data_ (list_element_t element, void ** data)
     }
   *data = (void *) element->data_;
 
-  return 0x0;
+  return EGAOK;
 }

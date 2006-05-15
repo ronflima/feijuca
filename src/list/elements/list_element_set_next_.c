@@ -31,9 +31,9 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_set_next_.c,v 1.2 2006-02-24 10:48:22 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_set_next_.c,v 1.3 2006-05-15 10:56:21 harq_al_ada Exp $";
 
-int
+GAERROR
 list_element_set_next_ (list_element_t element, list_element_t next)
 {
   assert (element != NULL);
@@ -43,5 +43,5 @@ list_element_set_next_ (list_element_t element, list_element_t next)
     }
   element->next_ = next;
 
-  return 0x0;
+  return EGAOK;
 }

@@ -31,12 +31,12 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_destroy_.c,v 1.2 2006-04-20 00:22:09 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_destroy_.c,v 1.3 2006-05-15 10:56:21 harq_al_ada Exp $";
 
-int
+GAERROR
 list_element_destroy_ (list_element_t element, deallocator_t *deallocator)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
   void * data = NULL;
 
   assert (element != NULL);
@@ -53,7 +53,7 @@ list_element_destroy_ (list_element_t element, deallocator_t *deallocator)
               rc = EGAINVAL;
             }
         }
-      if (rc == 0x0)
+      if (rc == EGAOK)
         {
           free (element);
         }

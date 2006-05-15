@@ -32,12 +32,12 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_element_get_next_.c,v 1.3 2006-02-28 13:48:30 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_element_get_next_.c,v 1.4 2006-05-15 10:56:21 harq_al_ada Exp $";
 
-int
+GAERROR
 list_element_get_next_ (list_element_t element, list_element_t * got_element)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   assert (element != NULL);
   assert (got_element != NULL);
@@ -49,7 +49,7 @@ list_element_get_next_ (list_element_t element, list_element_t * got_element)
     {
       if (element->next_ == NULL)
         {
-          rc = EOF;
+          rc = EGAEOF;
         }
       else
         {
