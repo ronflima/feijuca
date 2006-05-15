@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_move.c,v 1.23 2006-05-14 18:27:07 harq_al_ada Exp $
+ $Id: list_move.c,v 1.24 2006-05-15 23:19:25 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_move.c,v 1.23 2006-05-14 18:27:07 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_move.c,v 1.24 2006-05-15 23:19:25 harq_al_ada Exp $"; 
 
 GAERROR
 list_move (list_t list, position_t whence)
@@ -46,28 +46,37 @@ list_move (list_t list, position_t whence)
     }
   else
     {
+      list_element_t element = NULL;
+
       if (whence == POS_HEAD)
         {
-          list->curr_ = list->head_;
+          rc = list_get_head_(list, &element);
         }
       else if (whence == POS_TAIL)
         {
-          list->curr_ = list->tail_;
+          rc = list_get_tail_(list, &element);
         }
       else if (whence == POS_NEXT)
         {
-          if (list->curr_ != NULL)
+          if((rc = list_get_curr_(list, &element)) == EGAOK)
             {
-              rc = list_element_get_next_ (list->curr_, &list->curr_);
-            }
-          else
-            {
-              rc = EGAEOF;
+              if (element != NULL)
+                {
+                  rc = list_element_get_next_ (element, &element);
+                }
+              else
+                {
+                  rc = EGAEOF;
+                }
             }
         }
       else
         {
           rc = EGAINVAL;
+        }
+      if (element != NULL && rc == EGAOK)
+        {
+          rc = list_set_curr_(list, element);
         }
     }
   return rc;

@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.11 2006-05-14 18:27:07 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.12 2006-05-15 23:19:25 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.11 2006-05-14 18:27:07 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.12 2006-05-15 23:19:25 harq_al_ada Exp $";
 
 GAERROR
 list_reverse (list_t list)
@@ -54,42 +54,56 @@ list_reverse (list_t list)
         }
       else
         {           
-          list_element_t first;	/* First item of the window */
-          list_element_t middle;	/* Middle item of the window */
+          list_element_t first;	 /* First item of the window */
+          list_element_t middle; /* Middle item of the window */
+          list_element_t head;   /* List head */
+          list_element_t tail;   /* List tail */
 
-          first       = list->tail_;
-          list->tail_ = list->head_;
-          list->head_ = first;
-
-          /* Initializes the window. At this point we had already
-             reversed the head and tail positions. The tail has the
-             old head and since no relinking was done, the links still
-             the same. */
-          first = list->tail_;
-          if ((rc = list_element_get_next_ (list->tail_, &middle)) == 0x0)
+          rc = list_get_head_ (list, &head);
+          if (rc == EGAOK)
             {
-              do
+              rc = list_get_tail_ (list, &tail);
+            }
+          if (rc = EGAOK)
+            {
+              first = head;
+              rc = list_set_tail_ (list, head);
+            }
+          if (rc == EGAOK)
+            {
+              rc = list_set_head_ (list, tail);
+              if ((rc = list_element_get_next_ (head, &middle)) == EGAOK)
                 {
-                  list_element_t last;	/* Last item of the window */
-
-                  /* Sets the last item of the window */
-                  if ((rc = list_element_get_next_ (middle, &last)) != 0x0)
+                  do
                     {
-                      break;
+                      list_element_t last;	/* Last item of the window */
+                      
+                      /* Sets the last item of the window */
+                      if ((rc = list_element_get_next_ (middle, &last)) != EGAOK)
+                        {
+                          break;
+                        }
+                      /* Relinks the item, reversing its position */
+                      if ((rc = list_element_set_next_ (middle, first)) != EGAOK)
+                        {
+                          break;
+                        }
+                      /* Moves the window */
+                      first = middle;
+                      middle = last;
                     }
-                  /* Relinks the item, reversing its position */
-                  if ((rc = list_element_set_next_ (middle, first)) != 0x0)
+                  while (middle != NULL);
+                  
+                  /* Adjusts the tail of the list */
+                  if (rc == EGAOK)
                     {
-                      break;
+                      rc = list_element_get_tail_ (list, &tail);
                     }
-                  /* Moves the window */
-                  first = middle;
-                  middle = last;
+                  if (rc == EGAOK)
+                    {
+                      rc = list_element_set_next_ (tail, NULL);
+                    }
                 }
-              while (middle != NULL);
-
-              /* Adjusts the tail of the list */
-              rc = list_element_set_next_ (list->tail_, NULL);
             }
         }
     }

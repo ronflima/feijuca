@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.30 2006-05-14 18:27:07 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.31 2006-05-15 23:18:39 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -123,14 +123,14 @@ list_del (list_t list, void **data, position_t whence)
                 }
               else
                 {
-                  deallocator_t dealloc;
+                  deallocator_t *dealloc;
                   
                   if((rc = list_get_deallocator_ (list, &dealloc)) == 0x0)
                     {
-                      rc = list_element_destroy_ (element, &dealloc);
+                      rc = list_element_destroy_ (element, dealloc);
                     }
                 }
-              --(list->size_);
+              rc = list_increment_size_(list, -0x1);
             }
         }
     }

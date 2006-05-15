@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.27 2006-05-14 18:27:07 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.28 2006-05-15 23:19:25 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.27 2006-05-14 18:27:07 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.28 2006-05-15 23:19:25 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -117,7 +117,7 @@ list_insert (list_t list, const void *data, position_t whence)
         }
       if (rc == 0x0)
         {
-          ++(list->size_);
+          rc = list_increment_size_ (list, 0x1);
         }
       else
         { 

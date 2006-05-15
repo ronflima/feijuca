@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get_pos.c,v 1.2 2006-05-14 18:27:07 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_get_pos.c,v 1.3 2006-05-15 23:19:25 harq_al_ada Exp $";
 
 GAERROR 
 list_get_pos (list_t list, position_t * whence)
@@ -47,21 +47,46 @@ list_get_pos (list_t list, position_t * whence)
     }
   else 
     {
-      if (list->curr_ == NULL || list->size_ == 0x0)
+      size_t size;
+
+      if((rc = list_get_size(list, &size)) == EGAOK)
         {
-          *whence = POS_NONE;
-        }
-      else if (list->curr_ == list->head_)
-        {
-          *whence = POS_HEAD;
-        }
-      else if (list->curr_ == list->tail_)
-        {
-          *whence = POS_TAIL;
-        }
-      else
-        {
-          *whence = POS_MID;
+          list_element_t curr;
+          list_element_t head;
+          list_element_t tail;
+
+          rc = list_get_curr_(list, &curr);
+          if(rc == EGAOK)
+            {
+              rc = list_get_head_(list, &head);
+            }
+          if (rc == EGAOK)
+            {
+              rc = list_get_tail_(list, &tail);
+            }
+          if (rc == EGAOK)
+            {
+              rc = list_get_curr_(list, &curr);
+            }
+          if (rc == EGAOK)
+            {
+              if (curr == NULL || size == 0x0)
+                {
+                  *whence = POS_NONE;
+                }
+              else if (curr == head)
+                {
+                  *whence = POS_HEAD;
+                }
+              else if (curr == tail)
+                {
+                  *whence = POS_TAIL;
+                }
+              else
+                {
+                  *whence = POS_MID;
+                }
+            }
         }
     }
   return rc;
