@@ -22,16 +22,17 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.7 2006-01-29 12:37:02 harq_al_ada Exp $
+# $Id: Makefile.am,v 1.8 2006-05-17 11:04:48 harq_al_ada Exp $
 noinst_LTLIBRARIES = libclist.la
-libclist_la_SOURCES = clist_insert.c			\
-                      clist_init.c				\
-                      clist_del.c				\
-                      clist_destroy.c			\
-                      clist_get.c				\
-                      clist_move.c				\
-	                  clist_size.c				\
-					  clist_getpos.c			\
+libclist_la_SOURCES = clist_insert.c				\
+                      clist_init.c					\
+                      clist_del.c					\
+                      clist_destroy.c				\
+                      clist_get.c					\
+                      clist_move.c					\
+	                  clist_size.c					\
+					  clist_getpos.c				\
+                      descriptor/clist_is_valid_.c	\
                       ../../include/clist.h
 INCLUDES=-I../../include/
 
