@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_destroy.c,v 1.6 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: clist_destroy.c,v 1.7 2006-05-21 23:15:55 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -33,20 +33,20 @@
 #include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.6 2006-01-29 12:37:02 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.7 2006-05-21 23:15:55 harq_al_ada Exp $";
 
-int
+GAERROR
 clist_destroy (clist_t clist)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
+
   assert (clist != NULL);
-  if (clist == NULL)
+  if (!clist_is_valid(clist))
     {
       rc =  EGAINVAL;
     }
   else
     {
-      CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
       rc = list_destroy (clist->list_);
       free (clist);
     }

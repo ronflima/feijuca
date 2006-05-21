@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_del.c,v 1.13 2006-02-04 21:25:01 harq_al_ada Exp $
+ $Id: clist_del.c,v 1.14 2006-05-21 23:15:18 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,30 +32,30 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.13 2006-02-04 21:25:01 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.14 2006-05-21 23:15:18 harq_al_ada Exp $";
 
-static int
+static GAERROR
 rebuild_circular_condition_ __P((clist_t, position_t));
 
-int
+GAERROR
 clist_del (clist_t clist, void **data, position_t whence)
 {
-  int rc = 0x0;
-  assert (clist != NULL);
+  GAERROR rc = EGAOK;
 
-  if (clist == NULL)
+  assert (clist != NULL);
+  if (! clist_is_valid_(clist))
     {
       rc = EGAINVAL;
     }
   else 
     {
       size_t size;                  /* Size of the list */
-      CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
-      if ((rc = clist_size (clist, &size)) == 0x0)
+
+      if ((rc = clist_get_size (clist, &size)) == EGAOK)
         {
           if (size == 0x0)
             {
-              rc = EOF;
+              rc = EGAEOF;
             }
           else
             {
@@ -71,13 +71,13 @@ clist_del (clist_t clist, void **data, position_t whence)
 
 /* Internal function. Evaluates the inner linked list in order to make
  * it circular again. */
-static int
+static GAERROR
 rebuild_circular_condition_ (clist_t clist, position_t whence)
 {
   size_t size;
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
-  if ((rc = clist_size (clist, &size)) == 0x0)
+  if ((rc = clist_get_size (clist, &size)) == 0x0)
     {
       if (size != 0x0)
         {
