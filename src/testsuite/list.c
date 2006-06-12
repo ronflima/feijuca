@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list.c,v 1.26 2006-02-28 13:50:09 harq_al_ada Exp $
+ $Id: list.c,v 1.27 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list.c,v 1.26 2006-02-28 13:50:09 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list.c,v 1.27 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -226,9 +226,9 @@ check_deletion (size_t elements)
           register int i = 0x0;
           size_t list_length;
           
-          if ((rc = list_size (list, &list_length)) != 0x0)
+          if ((rc = list_get_size (list, &list_length)) != 0x0)
             {
-              ERROR (TEST, "list_size", rc);
+              ERROR (TEST, "list_get_size", rc);
               test_status = EFAILED;
             }
           else
@@ -249,9 +249,9 @@ check_deletion (size_t elements)
               else if ((rc = list_del (list, NULL, POS_NEXT)) == 0x0)
                 {
                   ++deleted;
-                  if ((rc = list_size (list, &list_length)) != 0x0)
+                  if ((rc = list_get_size (list, &list_length)) != 0x0)
                     {
-                      ERROR (TEST, "list_size", rc);
+                      ERROR (TEST, "list_get_size", rc);
                       test_status = EFAILED;
                     }
                   else if (list_length != (elements - deleted))

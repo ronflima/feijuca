@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_increment_size_.c,v 1.1 2006-05-26 00:19:06 harq_al_ada Exp $
+ $Id: list_increment_size_.c,v 1.2 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,13 +32,13 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_increment_size_.c,v 1.1 2006-05-26 00:19:06 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_increment_size_.c,v 1.2 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 GAERROR
 list_increment_size_ (list_t list, int increment)
 {
   assert (list != NULL);
-  if (list_is_valid (list))
+  if (list_is_valid_ (list))
     {
       list->size_ += increment;
     }

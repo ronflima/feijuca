@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_destroy.c,v 1.8 2006-05-14 00:48:55 harq_al_ada Exp $
+ $Id: queue_destroy.c,v 1.9 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.8 2006-05-14 00:48:55 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_destroy.c,v 1.9 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 int
 queue_destroy (queue_t queue)
@@ -43,7 +43,7 @@ queue_destroy (queue_t queue)
   list_t list = NULL;
   
   assert (queue != NULL);
-  if (! queue_is_valid(queue))
+  if (! queue_is_valid_ (queue))
     {
       rc = EGAINVAL;
     }

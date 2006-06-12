@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist.c,v 1.13 2006-02-04 21:27:03 harq_al_ada Exp $
+ $Id: clist.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.13 2006-02-04 21:27:03 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -110,7 +110,7 @@ load_clist (clist_t clist, size_t elements, unsigned char use_pattern)
         }
 
       /* Inserts the item in the list */
-      if ((rc = clist_insert (clist, item)) != 0x0)
+      if ((rc = clist_insert (clist, item, POS_HEAD)) != 0x0)
         {
           ERROR (TEST, "clist_insert", rc);
           test_status = EFAILED;
@@ -153,7 +153,7 @@ check_navigation (size_t maxelem)
       do 
         {
           position_t whence;
-          if ((rc = clist_getpos (clist, &whence)) != 0x0)
+          if ((rc = clist_get_pos (clist, &whence)) != 0x0)
             {
               ERROR (TEST, "clist_getpos", rc);
               test_result = EFAILED;
@@ -171,7 +171,7 @@ check_navigation (size_t maxelem)
           ERROR (TEST, "CList navigation failed", rc);
           test_result = EFAILED;
         }
-      clist_size (clist, &size);
+      clist_get_size (clist, &size);
       if (i != size)
         {
           ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
@@ -231,9 +231,9 @@ check_deletion (size_t elements)
             {
               size_t clist_length;
               /* Test 3: check the deletion of the tail of the list */
-              if ((rc = clist_size (clist, &clist_length)) != 0x0)
+              if ((rc = clist_get_size (clist, &clist_length)) != 0x0)
                 {
-                  ERROR (TEST, "clist_size", rc);
+                  ERROR (TEST, "clist_get_size", rc);
                   test_result = EFAILED;
                 }
               else

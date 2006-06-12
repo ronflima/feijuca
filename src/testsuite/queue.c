@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue.c,v 1.12 2006-01-29 12:37:05 harq_al_ada Exp $
+ $Id: queue.c,v 1.13 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -33,7 +33,7 @@
 #include "queue.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue.c,v 1.12 2006-01-29 12:37:05 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue.c,v 1.13 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -109,7 +109,7 @@ test_queue_push (size_t maxelem)
       ERROR (TEST, "load_queue", rc);
       test_result = EFAILED;
     }
-  if ((rc = queue_size (queue, &size)) != 0x0)
+  if ((rc = queue_get_size (queue, &size)) != 0x0)
     {
       ERROR (TEST, "queue_size", ECKFAIL);
       test_result = EFAILED;

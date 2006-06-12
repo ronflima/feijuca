@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.13 2006-05-16 09:05:02 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.13 2006-05-16 09:05:02 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 GAERROR
 list_reverse (list_t list)
@@ -97,7 +97,7 @@ list_reverse (list_t list)
                   /* Adjusts the tail of the list */
                   if (rc == EGAOK)
                     {
-                      rc = list_element_get_tail_ (list, &tail);
+                      rc = list_get_tail_ (list, &tail);
                     }
                   if (rc == EGAOK)
                     {

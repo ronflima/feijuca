@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.31 2006-05-15 23:18:39 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.32 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -106,7 +106,7 @@ list_del (list_t list, void **data, position_t whence)
             {
               element = extract_element_from_next_ (list);
             }
-          if ((rc = list_element_get_data_ (element, &got_data)) == 0x0)
+          if ((rc = list_element_get_data_ (element, &got_data)) == EGAOK)
             {
               if (data != NULL)
                 {
@@ -116,7 +116,7 @@ list_del (list_t list, void **data, position_t whence)
                    * data to NULL or else the list_element_destroy_
                    * function will wipe the data we want to restore
                    * from memory. */
-                  if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
+                  if ((rc = list_element_set_data_ (element, NULL)) == EGAOK)
                     {
                       rc = list_element_destroy_ (element, NULL);
                     }
@@ -124,8 +124,8 @@ list_del (list_t list, void **data, position_t whence)
               else
                 {
                   deallocator_t *dealloc;
-                  
-                  if((rc = list_get_deallocator_ (list, &dealloc)) == 0x0)
+
+                  if((rc = list_get_deallocator_ (list, &dealloc)) == EGAOK)
                     {
                       rc = list_element_destroy_ (element, dealloc);
                     }
@@ -142,57 +142,80 @@ list_del (list_t list, void **data, position_t whence)
 static list_element_t 
 extract_element_from_head_ (list_t list)
 {
-  list_element_t element = list->head_;
+  GAERROR rc;                   /* Error handling */
+  list_element_t head;          /* Head of the list */
+  list_element_t curr;          /* Current item of the list */
+  list_element_t next;          /* Next item from the head */
 
-  list_element_get_next_ (element, &list->head_);
-
-  /* Notifies the current position. If it is pointing to
-   * the old head, updates it to the new head position in
-   * order to avoid inconsistencies  */
-  if ((list->curr_ != NULL)  && (list->curr_ == element))
+  rc = list_get_head_ (list, &head);
+  if (rc == EGAEOF)
     {
-      list->curr_ = list->head_;
+      list_set_tail_ (list, NULL);
     }
-  /* If the head became NULL, means that the list was
-   * emptied. Therefore, makes the tail point to nowhere
-   * also. */
-  if (list->head_ == NULL)
+  if (rc == EGAOK)
     {
-      list->tail_ = NULL;
+      rc = list_element_get_next_ (head, &next);
     }
-
-  return element;
+  if (rc == EGAOK)
+    {
+      /* Sets the head to be the next item. This effectively extracts
+       * the old head from the list. */
+      rc = list_set_head_ (list, next);
+    }
+  if (rc == EGAOK)
+    {
+      rc = list_get_curr_ (list, &curr);
+    }
+  if (rc == EGAOK)
+    {
+      if ((curr != NULL) && (curr == head))
+        {
+          /* If the current pointer is set, notifies it for the
+           * changes if it is pointing to the head. */
+          rc = list_set_curr_ (list, next);
+        }
+    }
+  return head;
 }
 
 static list_element_t 
 extract_element_from_next_ (list_t list)
 {
-  list_element_t element = NULL;
+  GAERROR rc;                    /* Error handling */
+  list_element_t element = NULL; /* Element to extract */
+  list_element_t curr;           /* Current element */
 
-  if (list->curr_ != NULL) 
+  rc = list_get_curr_ (list, &curr);
+  if (rc == EGAOK) 
     {
-      if (list_element_get_next_ (list->curr_, &element) == 0x0)
+      if (list_element_get_next_ (curr, &element) == 0x0)
         {
-          if (element == list->tail_)
+          list_element_t tail;  /* Tail of the list */
+
+          rc = list_get_tail_ (list, &tail);
+          if (rc == EGAOK)
             {
-              /* If the element to delete is the tail, updates
-               * the tail to the current, since we are
-               * deleting the next element. */
-              list->tail_ = list->curr_;
-              list_element_set_next_ (list->tail_, NULL);
-            }
-          else
-            {
-              list_element_t next;
-              /* Relinks the list, extracting out the element
-               * we selected to delete. */
-              if (list_element_get_next_ (element, &next) == 0x0)
+              if (element == tail)
                 {
-                  list_element_set_next_ (list->curr_, next);
+                  /* If the element to delete is the tail, updates
+                   * the tail to the current, since we are
+                   * deleting the next element. */
+                  list_set_tail_ (list, curr);
+                  list_element_set_next_ (curr, NULL);
+                }
+              else
+                {
+                  list_element_t next; /* Next element */
+
+                  /* Relinks the list, extracting out the element
+                   * we selected to delete. */
+                  if (list_element_get_next_ (element, &next) == EGAOK)
+                    {
+                      list_element_set_next_ (curr, next);
+                    }
                 }
             }
         }
     }
-
   return element;
 }

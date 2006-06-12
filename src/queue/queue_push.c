@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_push.c,v 1.16 2006-05-14 00:50:02 harq_al_ada Exp $
+ $Id: queue_push.c,v 1.17 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.16 2006-05-14 00:50:02 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_push.c,v 1.17 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 int
 queue_push (queue_t queue, const void *data)
@@ -40,7 +40,7 @@ queue_push (queue_t queue, const void *data)
   list_t list = NULL;
     
   assert (queue != NULL);
-  if (! queue_is_valid(queue))
+  if (! queue_is_valid_ (queue))
     {
       return EGAINVAL;
     }

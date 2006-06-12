@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_get_size.c,v 1.2 2006-05-14 00:50:27 harq_al_ada Exp $
+ $Id: queue_get_size.c,v 1.3 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_get_size.c,v 1.2 2006-05-14 00:50:27 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_get_size.c,v 1.3 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 int
 queue_get_size (queue_t queue, size_t * size)
@@ -41,7 +41,7 @@ queue_get_size (queue_t queue, size_t * size)
   list_t list = NULL;
 
   assert (queue != NULL);
-  if (! queue_is_valid(queue) || size == NULL)
+  if (! queue_is_valid_ (queue) || size == NULL)
     {
       return EGAINVAL;
     }

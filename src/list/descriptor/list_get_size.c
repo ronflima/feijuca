@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get_size.c,v 1.2 2006-05-14 18:27:08 harq_al_ada Exp $
+ $Id: list_get_size.c,v 1.3 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,13 +32,13 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get_size.c,v 1.2 2006-05-14 18:27:08 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_get_size.c,v 1.3 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 GAERROR
 list_get_size (list_t list, size_t * size)
 {
   assert (list != NULL);
-  if (list_is_valid (list))
+  if (list_is_valid_ (list))
     {
       *size = list->size_;
     }

@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_pop.c,v 1.17 2006-05-14 00:49:56 harq_al_ada Exp $
+ $Id: queue_pop.c,v 1.18 2006-06-12 10:05:29 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdio.h>
@@ -32,7 +32,7 @@
 #include "queue_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: queue_pop.c,v 1.17 2006-05-14 00:49:56 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: queue_pop.c,v 1.18 2006-06-12 10:05:29 harq_al_ada Exp $";
 
 int
 queue_pop (queue_t queue, void **data)
@@ -47,7 +47,7 @@ queue_pop (queue_t queue, void **data)
     }
   else 
     {
-      queue_get_list(queue, &list);
+      queue_get_list_ (queue, &list);
       rc = list_del (list, data, POS_HEAD);
     }
   return rc;
