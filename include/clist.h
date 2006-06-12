@@ -23,9 +23,8 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist.h,v 1.16 2006-02-04 21:23:40 harq_al_ada Exp $
+ $Id: clist.h,v 1.17 2006-06-12 09:51:15 harq_al_ada Exp $
 */
-
 #ifndef CLIST_H
 #define CLIST_H
 
@@ -38,20 +37,22 @@ GABEGINDECLS
 /*
  * Datatypes
  */
-/* Abstraction for the list descriptor */
+/*
+ * Abstraction for the list descriptor 
+ */
 typedef struct clist_t * clist_t;
 
 /*
  * Prototypes
  */
-int (clist_init) __P ((clist_t *, deallocator_t *));
-int (clist_destroy) __P ((clist_t));
-int (clist_del) __P ((clist_t, void **, position_t));
-int (clist_get) __P ((clist_t, void **, position_t));
+GAERROR (clist_init) __P ((clist_t *, deallocator_t *));
+GAERROR (clist_destroy) __P ((clist_t));
+GAERROR (clist_del) __P ((clist_t, void **, position_t));
+GAERROR (clist_get) __P ((clist_t, void **, position_t));
 int (clist_move) __P ((clist_t, position_t));
-int (clist_insert) __P ((clist_t, const void *));
+int (clist_insert) __P ((clist_t, const void *, position_t));
 int (clist_size) __P ((clist_t, size_t *));
-int (clist_getpos) __P((clist_t, position_t *));
+int (clist_get_pos) __P((clist_t, position_t *));
 
 GAENDDECLS
 #endif /* CLIST_H */
