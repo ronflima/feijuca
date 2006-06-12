@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_destroy.c,v 1.7 2006-05-21 23:15:55 harq_al_ada Exp $
+ $Id: clist_destroy.c,v 1.8 2006-06-12 09:55:00 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -33,7 +33,7 @@
 #include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.7 2006-05-21 23:15:55 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.8 2006-06-12 09:55:00 harq_al_ada Exp $";
 
 GAERROR
 clist_destroy (clist_t clist)
@@ -41,14 +41,22 @@ clist_destroy (clist_t clist)
   GAERROR rc = EGAOK;
 
   assert (clist != NULL);
-  if (!clist_is_valid(clist))
+  if (! clist_is_valid_ (clist))
     {
       rc =  EGAINVAL;
     }
   else
     {
-      rc = list_destroy (clist->list_);
-      free (clist);
+      list_t list;
+
+      if((rc = clist_get_list_ (clist, &list)) == EGAOK)
+        {
+          if ((rc = list_destroy (list)) == EGAOK)
+            {
+              memset (clist, 0x0, sizeof (struct clist_t));
+              free (clist);
+            }
+        }
     }
   return rc;
 }

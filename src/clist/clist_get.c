@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_get.c,v 1.11 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: clist_get.c,v 1.12 2006-06-12 09:55:25 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "list.h"
@@ -32,16 +32,26 @@
 #include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_get.c,v 1.11 2006-01-29 12:37:02 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_get.c,v 1.12 2006-06-12 09:55:25 harq_al_ada Exp $";
 
-int
+GAERROR
 clist_get (clist_t clist, void **data, position_t whence)
 {
+  GAERROR rc = EGAOK;           /* Error handling */
+
   assert (clist != NULL);
-  if (clist == NULL)
+  if (! clist_is_valid (clist))
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATUE (clist, GA_CLIST_SIGNATURE);
-  return list_get (clist->list_, data, whence);
+  else
+    {
+      list_t list;              /* Internal list */
+      
+      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
+        {
+          rc = list_get (list, data, whence);
+        }
+    }
+  return rc;
 }
