@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_get_size.c,v 1.1 2006-05-21 23:16:21 harq_al_ada Exp $
+ $Id: clist_get_size.c,v 1.2 2006-06-12 09:57:22 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
@@ -31,16 +31,27 @@
 #include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_get_size.c,v 1.1 2006-05-21 23:16:21 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_get_size.c,v 1.2 2006-06-12 09:57:22 harq_al_ada Exp $";
 
 GAERROR
 clist_get_size (clist_t clist, size_t * size)
 {
+  GAERROR rc = EGAOK;
+
   assert (clist != NULL);
   assert (size != NULL);
   if (!clist_is_valid_(clist) || size == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  return list_size (clist->list_, size);
+  else 
+    {
+      list_t list;              /* Internal list */
+      
+      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
+        {
+          rc = list_get_size (list, size);
+        }
+    }
+  return rc;
 }
