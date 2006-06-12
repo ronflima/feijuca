@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_del.c,v 1.14 2006-05-21 23:15:18 harq_al_ada Exp $
+ $Id: clist_del.c,v 1.15 2006-06-12 09:54:30 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,8 +32,22 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.14 2006-05-21 23:15:18 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.15 2006-06-12 09:54:30 harq_al_ada Exp $";
 
+/*
+ * Rebuilds the circular condition of the circular list. Since clist
+ * uses list routines, the deletion may lead the list to become linear
+ * again. Therefore, it is necessary to rebuild the "circularity" of
+ * the list.
+ *
+ * Parameters:
+ * - clist - Circular list descriptor
+ * - whence - Position where the deletion operation took place
+ *
+ * Returns:
+ * - EGAEOF - Reached the end of the list
+ * - EGAINVAL - invalid whence or the circular descriptor is invalid
+ */
 static GAERROR
 rebuild_circular_condition_ __P((clist_t, position_t));
 
@@ -59,18 +73,21 @@ clist_del (clist_t clist, void **data, position_t whence)
             }
           else
             {
-              if ((rc = list_del (clist->list_, data, whence)) == 0x0)
+              list_t list;      /* Inner descriptor list */
+
+              if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
                 {
-                  rc = rebuild_circular_condition_ (clist, whence);
+                  if ((rc = list_del (list, data, whence)) == EGAOK)
+                    {
+                      rc = rebuild_circular_condition_ (clist, whence);
+                    }
                 }
             }
         }
     }
   return rc;
 }
-
-/* Internal function. Evaluates the inner linked list in order to make
- * it circular again. */
+
 static GAERROR
 rebuild_circular_condition_ (clist_t clist, position_t whence)
 {
@@ -81,24 +98,43 @@ rebuild_circular_condition_ (clist_t clist, position_t whence)
     {
       if (size != 0x0)
         {
-          list_t list = clist->list_;
-          
-          if (whence == POS_HEAD)
+          list_t list;
+
+          if((rc = clist_get_list_ (clist, &list)) == EGAOK)
             {
-              if (list->tail_->next_ != list->head_)
+              list_element_t tail; /* List tail */
+              list_element_t head; /* List head */
+              list_element_t next; /* Next element (from tail) */
+
+              rc = list_get_tail_(list, &tail);
+              if (rc == EGAOK)
                 {
-                  list->tail_->next_ = list->head_;
+                  rc = list_get_head_ (list, &head);
                 }
-            }
-          else if (whence == POS_NEXT)
-            {
-              if (list->tail_->next_ == NULL)
+              if (rc == EGAOK)
                 {
-                  list->tail_->next_ = list->head_;
+                  rc = list_element_get_next_ (tail, &next);
                 }
-              else if (list->tail_->next_ != list->head_)
+              if (whence == POS_HEAD)
                 {
-                  list->head_ = list->tail_->next_;
+                  if (rc == EGAOK)
+                    {
+                      if (next != head)
+                        {
+                          rc = list_element_set_next_ (tail, head);
+                        }
+                    }
+                }
+              else if (whence == POS_NEXT)
+                {
+                  if (next == NULL)
+                    {
+                      rc = list_element_set_next_ (tail, head);
+                    }
+                  else if (next != head)
+                    {
+                      rc = list_element_set_next_ (head, next);                      
+                    }
                 }
             }
         }
