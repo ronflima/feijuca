@@ -25,9 +25,8 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_.h,v 1.2 2006-05-17 11:07:49 harq_al_ada Exp $
+ $Id: clist_.h,v 1.3 2006-06-12 09:52:23 harq_al_ada Exp $
 */
-
 #ifndef CLIST__H
 #define CLIST__H
 
@@ -42,7 +41,7 @@ GABEGINDECLS
  */
 enum
 {
-  GA_CLIST_SIGNATURE=(ga_magic_t)0xB00BD00Du
+  GA_CLIST_SIGNATURE=(ga_magic_t)0xB00BD00Du /* clist signature for validity checks */
 };
 
 /*
@@ -52,14 +51,15 @@ enum
 /* Abstraction for the list descriptor */
 struct clist_t
 {
-  ga_magic_t signature_;
-  list_t list_;
+  ga_magic_t signature_; /* Descriptor signature for validity checks */
+  list_t list_;          /* Internal list that holds all data */
 };
 
 /* 
  *  Prototypes
  */
-int (clist_is_valid_) (clist_t);
+int (clist_is_valid_) __P((clist_t));
+GAERROR (clist_get_list_) __P((clist_t, list_t *));
 
 GAENDDECLS
 #endif /* CLIST__H */
