@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_insert.c,v 1.16 2006-04-20 00:22:09 harq_al_ada Exp $
+ $Id: clist_insert.c,v 1.17 2006-06-12 10:03:51 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -32,56 +32,42 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.16 2006-04-20 00:22:09 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.17 2006-06-12 10:03:51 harq_al_ada Exp $";
 
-int
-clist_insert (clist_t clist, const void *data)
+GAERROR
+clist_insert (clist_t clist, const void *data, position_t whence)
 {
-  list_element_t element;
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
 
   assert (clist != NULL);
-  if (clist == NULL)
+  if (! clist_is_valid_ (clist))
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  CHECK_SIGNATURE (clist, GA_CLIST_SIGNATURE);
-
-  /* Allocates memory for the new element */
-  if ((rc = list_element_init_ (&element, data)) == 0x0)
+  else
     {
-      /* Check the size of the list */
-      if (clist->list_->size_ == 0x0)
+      list_t list;          /* Inner linked list */
+
+      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
         {
-          /* This is the head of the list */
-          clist->list_->head_ = element;
-          clist->list_->tail_ = element;
-        }
-      else
-        {
-          /* Insert at the end */
-          if ((rc = list_element_set_next_ (clist->list_->tail_, element)) == 0x0)
+          if ((rc = list_insert (list, data, whence)) == EGAOK)
             {
-              clist->list_->tail_ = element;
-            }
-        }
-      /* Makes the circular link in the list */
-      if (rc == 0x0)
-        {
-          if ((rc = list_element_set_next_ (clist->list_->tail_, clist->list_->head_)) == 0x0)
-            {
-              clist->list_->curr_ = element;
-              ++(clist->list_->size_);
+              list_element_t tail;
+          
+              if ((rc = list_get_tail_ (list, &tail)) == EGAOK)
+                {
+                  list_element_t next; /* Next element from tail */
+              
+                  if ((rc = list_element_get_next_ (tail, &next)) == EGAEOF)
+                    {
+                      if ((rc = list_get_head_ (list, &next)) == EGAOK)
+                        {
+                          rc = list_element_set_next_ (tail, next);
+                        }
+                    }
+                }
             }
         }
     }
-  if (rc != 0x0)
-    {
-      if ((rc = list_element_set_data_ (element, NULL)) == 0x0)
-        {
-          rc = list_element_destroy_ (element, NULL);
-        }
-    }
-
   return rc;
 }
