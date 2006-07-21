@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: gacommon.h,v 1.29 2006-05-14 18:27:07 harq_al_ada Exp $
+ $Id: gacommon.h,v 1.30 2006-07-21 13:35:58 harq_al_ada Exp $
 */
 
 #ifndef GACOMMON_H
@@ -61,8 +61,8 @@ GABEGINDECLS
    routines. */
 typedef enum 
 {
-  EGAOK    = 0x0,               /* No error so far. */
-  EGAEOF   = -0x1,              /* End of file */
+  EGAOK    = 0x0,       /* No error so far. */
+  EGAEOF   = -0x1,      /* End of file */
   EGAINVAL = 2500,		/* Invalid argument */
   EGANOMEM = 2501,		/* No memory */
   EGABADC  = 2502		/* Bad current position */
@@ -74,13 +74,13 @@ typedef enum
 /* List iteration types */
 typedef enum
 {
-  POS_NONE = 0x0,		/* No position - dummy value */
+  POS_NONE = 0x0,   /* No position - dummy value */
   POS_HEAD,			/* Head */
   POS_TAIL,			/* Tail */
   POS_NEXT,			/* Next element  */
   POS_CURR,			/* Current element */
   POS_PREV,			/* Previous element */
-  POS_MID                       /* Somewhere between the head or tail */
+  POS_MID           /* Somewhere between the head or tail */
 }
 position_t;
 
@@ -90,7 +90,6 @@ typedef void (deallocator_t) (void *);
 typedef int (compare_t) (const void *, const void *);
 /* Magic number data type */
 typedef unsigned int ga_magic_t;
-
 
 GAENDDECLS
 #endif /* GACOMMON_H */
