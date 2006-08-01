@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_get.c,v 1.23 2006-05-14 18:27:07 harq_al_ada Exp $
+ $Id: list_get.c,v 1.24 2006-08-01 01:03:17 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,12 +33,12 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_get.c,v 1.23 2006-05-14 18:27:07 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_get.c,v 1.24 2006-08-01 01:03:17 harq_al_ada Exp $"; 
 
 GAERROR
 list_get (list_t list, void **data, position_t whence)
 {
-  GAERROR rc = EGAOK;
+  GAERROR rc = EGAINVAL;
 
   assert (list != NULL);
   assert (data != NULL);
@@ -48,32 +48,33 @@ list_get (list_t list, void **data, position_t whence)
     }
   else
     {
+      list_element_t element = NULL;
+
       if (whence == POS_HEAD)
         {
-          rc = list_element_get_data_ (list->head_, data);
+          rc = list_get_head_ (list, &element);
         }
       else if (whence == POS_TAIL)
         {
-          rc = list_element_get_data_ (list->tail_, data);
+          rc = list_get_tail_ (list, &element);
         }
       else if (whence == POS_NEXT)
         {
-          if (list->curr_ != NULL)
+          list_element_t curr;
+
+          rc = list_get_curr_ (list, &curr);
+          if (rc == EGAOK)
             {
-              list_element_t next;
-              if ((rc = list_element_get_next_ (list->curr_, &next)) == 0x0)
-                {
-                  rc = list_element_get_data_ (next, data);
-                }
+              rc = list_element_get_next_ (curr, &element);
             }
         }
       else if (whence == POS_CURR)
         {
-          rc = list_element_get_data_ (list->curr_, data);
+          rc = list_get_curr_ (list, &element);
         }
-      else
+      if ((rc == EGAOK) && (element != NULL))
         {
-          rc = EGAINVAL;
+          rc = list_element_get_data_ (element, data);
         }
     }
   return rc;
