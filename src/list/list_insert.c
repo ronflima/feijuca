@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.28 2006-05-15 23:19:25 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.29 2006-08-01 01:04:22 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.28 2006-05-15 23:19:25 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.29 2006-08-01 01:04:22 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -144,8 +144,11 @@ list_insert_element_on_both_ends_ (list_t list, list_element_t element)
   GAERROR rc = EGAOK;
   if (element != NULL)
     {
-      list->head_ = element;
-      list->tail_ = element;
+      rc = list_set_head_ (list, element);
+      if (rc == EGAOK)
+        {
+          rc = list_set_tail_ (list, element);
+        }
     }
   else
     {
@@ -158,10 +161,15 @@ static GAERROR
 list_insert_element_on_head_ (list_t list, list_element_t element)
 {
   GAERROR rc = EGAOK;
-
-  if ((rc = list_element_set_next_ (element, list->head_)) == 0x0)
+  list_element_t head;
+  
+  rc = list_get_head_ (list, &head);
+  if (rc == EGAOK)
     {
-      list->head_ = element;
+      if ((rc = list_element_set_next_ (element, head)) == 0x0)
+        {
+          rc = list_set_head_ (list, element);
+        }
     }
   return rc;
 }
@@ -170,14 +178,17 @@ static GAERROR
 list_insert_element_on_next_ (list_t list, list_element_t element)
 {
   GAERROR rc = EGAOK;
-  if (list->curr_ != NULL)
+  list_element_t curr;
+
+  rc = list_get_curr_ (list, &curr);
+  if (rc == EGAOK)
     {
       list_element_t next;
-      if ((rc = list_element_get_next_ (list->curr_, &next)) == 0x0)
+      if ((rc = list_element_get_next_ (curr, &next)) == 0x0)
         {
           if ((rc == list_element_set_next_ (element, next)) == 0x0)
             {
-              rc = list_element_set_next_ (list->curr_, element);
+              rc = list_element_set_next_ (curr, element);
             }
         }
     }
@@ -194,9 +205,15 @@ list_insert_element_on_tail_ (list_t list, list_element_t element)
   GAERROR rc = EGAOK;
   if (element != NULL)
     {
-      if ((rc = list_element_set_next_ (list->tail_, element)) == 0x0)
+      list_element_t tail;
+
+      rc = list_get_tail_ (list, &tail);
+      if(rc == EGAOK)
         {
-          list->tail_ = element;
+          if ((rc = list_element_set_next_ (tail, element)) == 0x0)
+            {
+              list->tail_ = element;
+            }
         }
     }
   else
