@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.15 2006-08-11 12:28:28 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.15 2006-08-11 12:28:28 harq_al_ada Exp $";
 
 GAERROR
 list_reverse (list_t list)
@@ -47,65 +47,74 @@ list_reverse (list_t list)
     }
   else
     {
-      /* Check if the list is empty or have enough information to reverse */
-      if (list->size_ < 0x2u)               
-        {
-          rc = EGAEOF;
-        }
-      else
-        {           
-          list_element_t first;	 /* First item of the window */
-          list_element_t middle; /* Middle item of the window */
-          list_element_t head;   /* List head */
-          list_element_t tail;   /* List tail */
+      size_t size;
 
-          rc = list_get_head_ (list, &head);
-          if (rc == EGAOK)
+      rc = list_get_size (list, &size);
+
+      if (rc == EGAOK)
+        {
+          /* Check if the list is empty or have enough information to reverse */
+          if (size < 0x2u)               
             {
-              rc = list_get_tail_ (list, &tail);
+              rc = EGAEOF;
             }
-          if (rc = EGAOK)
-            {
-              first = head;
-              rc = list_set_tail_ (list, head);
-            }
-          if (rc == EGAOK)
-            {
-              rc = list_set_head_ (list, tail);
-              if ((rc = list_element_get_next_ (head, &middle)) == EGAOK)
+          else
+            {           
+              list_element_t first;  /* First item of the window */
+              list_element_t middle; /* Middle item of the window */
+              list_element_t head;   /* List head */
+              list_element_t tail;   /* List tail */
+
+              rc = list_get_head_ (list, &head);
+              if (rc == EGAOK)
                 {
-                  do
+                  rc = list_get_tail_ (list, &tail);
+                }
+              if (rc == EGAOK)
+                {
+                  first = head;
+                  rc = list_set_tail_ (list, head);
+                }
+              if (rc == EGAOK)
+                {
+                  if ((rc = list_set_head_ (list, tail)) == EGAOK)
                     {
-                      list_element_t last;	/* Last item of the window */
-                      
-                      /* Sets the last item of the window */
-                      if ((rc = list_element_get_next_ (middle, &last)) != EGAOK)
+                      if ((rc = list_element_get_next_ (head, &middle)) == EGAOK)
                         {
-                          break;
-                        }
-                      /* Relinks the item, reversing its position */
-                      if ((rc = list_element_set_next_ (middle, first)) != EGAOK)
-                        {
-                          break;
-                        }
-                      /* Moves the window */
-                      first = middle;
-                      middle = last;
-                    }
-                  while (middle != NULL);
-                  
-                  /* Adjusts the tail of the list */
-                  if (rc == EGAOK)
-                    {
-                      rc = list_get_tail_ (list, &tail);
-                    }
-                  if (rc == EGAOK)
-                    {
-                      rc = list_element_set_next_ (tail, NULL);
+                          do
+                            {
+                              list_element_t last;	/* Last item of the window */
+                              
+                              /* Sets the last item of the window */
+                              if ((rc = list_element_get_next_ (middle, &last)) != EGAOK)
+                                {
+                                  break;
+                                }
+                              /* Relinks the item, reversing its position */
+                              if ((rc = list_element_set_next_ (middle, first)) != EGAOK)
+                                {
+                                  break;
+                                }
+                              /* Moves the window */
+                              first = middle;
+                              middle = last;
+                            }
+                          while (middle != NULL);
+                          
+                          /* Adjusts the tail of the list */
+                          if (rc == EGAOK)
+                            {
+                              rc = list_get_tail_ (list, &tail);
+                            }
+                          if (rc == EGAOK)
+                            {
+                              rc = list_element_set_next_ (tail, NULL);
+                            }
+                        } 
                     }
                 }
-            }
-        }
-    }
+            } /* else */
+        } /* if */
+    } /* else */
   return rc;
 }

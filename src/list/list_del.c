@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.32 2006-06-12 10:05:29 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.33 2006-08-11 12:26:24 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -58,7 +58,7 @@ extract_element_from_head_ __P((list_t));
  * - NULL if the element could not be extracted
  */
 static list_element_t 
-extract_element_from_next_ (list_t);
+extract_element_from_next_ __P((list_t));
 
 /* Exported function definitions */
 
@@ -76,64 +76,66 @@ list_del (list_t list, void **data, position_t whence)
     {
       size_t size;
 
-      list_get_size (list, &size);
-      if (data != NULL)
+      if ((rc = list_get_size (list, &size)) == EGAOK)
         {
-          *data = (void *) NULL;
-        }
-      if ((size == 0x0) || ((size == 0x1) && (whence == POS_NEXT)))
-        {
-          rc = EGAEOF;
-        }
-      else if (whence == POS_TAIL)
-        {
-          rc = EGAINVAL;
-        }
-      else 
-        {
-          list_element_t element = NULL; /* Element to be deleted */
-          void * got_data;               /* Data got from the element of the list */
+          if (data != NULL)
+            {
+              *data = (void *) NULL;
+            }
+          if ((size == 0x0) || ((size == 0x1) && (whence == POS_NEXT)))
+            {
+              rc = EGAEOF;
+            }
+          else if (whence == POS_TAIL)
+            {
+              rc = EGAINVAL;
+            }
+          else 
+            {
+              list_element_t element = NULL; /* Element to be deleted */
+              void * got_data;               /* Data got from the element of the list */
 
-          /* Extracts the element from the list and delete it. There
-           * are two valid positions: the head and the next after the
-           * current. Any other position cannot be operated since the
-           * list have not enough information to do so. */
-          if (whence == POS_HEAD)
-            {
-              element = extract_element_from_head_ (list);
-            }
-          else if (whence == POS_NEXT)
-            {
-              element = extract_element_from_next_ (list);
-            }
-          if ((rc = list_element_get_data_ (element, &got_data)) == EGAOK)
-            {
-              if (data != NULL)
+              /* Extracts the element from the list and delete it. There
+               * are two valid positions: the head and the next after the
+               * current. Any other position cannot be operated since the
+               * list have not enough information to do so. */
+              if (whence == POS_HEAD)
                 {
-                  *data = got_data;
-
-                  /* At this point, it is necessary to set the element
-                   * data to NULL or else the list_element_destroy_
-                   * function will wipe the data we want to restore
-                   * from memory. */
-                  if ((rc = list_element_set_data_ (element, NULL)) == EGAOK)
-                    {
-                      rc = list_element_destroy_ (element, NULL);
-                    }
+                  element = extract_element_from_head_ (list);
                 }
-              else
+              else if (whence == POS_NEXT)
                 {
-                  deallocator_t *dealloc;
-
-                  if((rc = list_get_deallocator_ (list, &dealloc)) == EGAOK)
-                    {
-                      rc = list_element_destroy_ (element, dealloc);
-                    }
+                  element = extract_element_from_next_ (list);
                 }
-              rc = list_increment_size_(list, -0x1);
+              if ((rc = list_element_get_data_ (element, &got_data)) == EGAOK)
+                {
+                  if (data != NULL)
+                    {
+                      *data = got_data;
+
+                      /* At this point, it is necessary to set the element
+                       * data to NULL or else the list_element_destroy_
+                       * function will wipe the data we want to restore
+                       * from memory. */
+                      if ((rc = list_element_set_data_ (element, NULL)) == EGAOK)
+                        {
+                          rc = list_element_destroy_ (element, NULL);
+                        }
+                    }
+                  else
+                    {
+                      deallocator_t *dealloc;
+
+                      if((rc = list_get_deallocator_ (list, &dealloc)) == EGAOK)
+                        {
+                          rc = list_element_destroy_ (element, dealloc);
+                        }
+                    }
+                  rc = list_increment_size_(list, -0x1);
+                }
             }
         }
-    }
+    } /* else */
   return rc;
 }
 

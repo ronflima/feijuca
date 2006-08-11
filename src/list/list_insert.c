@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_insert.c,v 1.29 2006-08-01 01:04:22 harq_al_ada Exp $
+ $Id: list_insert.c,v 1.30 2006-08-11 12:27:40 harq_al_ada Exp $
 */
 #include <stdlib.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.29 2006-08-01 01:04:22 harq_al_ada Exp $"; 
+static char const rcsid [] = "@(#) $Id: list_insert.c,v 1.30 2006-08-11 12:27:40 harq_al_ada Exp $"; 
 
 /* Local prototypes */
 
@@ -90,32 +90,37 @@ list_insert (list_t list, const void *data, position_t whence)
     {
       rc = EGAINVAL;
     }
-  else if ((rc = list_element_init_ (&element, data)) == 0x0)
+  else if ((rc = list_element_init_ (&element, data)) == EGAOK)
     {
-      if (list->size_ == 0x0u)
+      size_t size;
+
+      if ((rc = list_get_size (list, &size)) == EGAOK)
         {
-          rc = list_insert_element_on_both_ends_ (list, element);
+          if (size == 0x0u)
+            {
+              rc = list_insert_element_on_both_ends_ (list, element);
+            }
+          else
+            {
+              if (whence == POS_HEAD)
+                {
+                  rc = list_insert_element_on_head_ (list, element);
+                }
+              else if (whence == POS_NEXT)
+                {
+                  rc = list_insert_element_on_next_ (list, element);
+                }
+              else if (whence == POS_TAIL)
+                {
+                  rc = list_insert_element_on_tail_ (list, element);
+                }
+              else 
+                {
+                  rc = EGAINVAL;
+                }
+            }
         }
-      else
-        {
-          if (whence == POS_HEAD)
-            {
-              rc = list_insert_element_on_head_ (list, element);
-            }
-          else if (whence == POS_NEXT)
-            {
-              rc = list_insert_element_on_next_ (list, element);
-            }
-          else if (whence == POS_TAIL)
-            {
-              rc = list_insert_element_on_tail_ (list, element);
-            }
-          else 
-            {
-              rc = EGAINVAL;
-            }
-        }
-      if (rc == 0x0)
+      if (rc == EGAOK)
         {
           rc = list_increment_size_ (list, 0x1);
         }
@@ -166,7 +171,7 @@ list_insert_element_on_head_ (list_t list, list_element_t element)
   rc = list_get_head_ (list, &head);
   if (rc == EGAOK)
     {
-      if ((rc = list_element_set_next_ (element, head)) == 0x0)
+      if ((rc = list_element_set_next_ (element, head)) == EGAOK)
         {
           rc = list_set_head_ (list, element);
         }
@@ -184,9 +189,9 @@ list_insert_element_on_next_ (list_t list, list_element_t element)
   if (rc == EGAOK)
     {
       list_element_t next;
-      if ((rc = list_element_get_next_ (curr, &next)) == 0x0)
+      if ((rc = list_element_get_next_ (curr, &next)) == EGAOK)
         {
-          if ((rc == list_element_set_next_ (element, next)) == 0x0)
+          if ((rc == list_element_set_next_ (element, next)) == EGAOK)
             {
               rc = list_element_set_next_ (curr, element);
             }
@@ -210,9 +215,9 @@ list_insert_element_on_tail_ (list_t list, list_element_t element)
       rc = list_get_tail_ (list, &tail);
       if(rc == EGAOK)
         {
-          if ((rc = list_element_set_next_ (tail, element)) == 0x0)
+          if ((rc = list_element_set_next_ (tail, element)) == EGAOK)
             {
-              list->tail_ = element;
+              rc = list_set_tail_ (list, element);
             }
         }
     }
