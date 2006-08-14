@@ -24,14 +24,14 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_init.c,v 1.9 2006-05-15 10:54:55 harq_al_ada Exp $
+ $Id: list_init.c,v 1.10 2006-08-14 00:14:36 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_init.c,v 1.9 2006-05-15 10:54:55 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_init.c,v 1.10 2006-08-14 00:14:36 harq_al_ada Exp $";
 
 GAERROR
 list_init (list_t * list, deallocator_t * dealloc)
@@ -48,7 +48,7 @@ list_init (list_t * list, deallocator_t * dealloc)
     {
       return EGANOMEM;
     }
-  memset(list, 0x0, sizeof(struct list_t));
+  memset(*list, 0x0, sizeof(struct list_t));
   list_set_head_(*list, NULL);
   list_set_tail_(*list, NULL);
   list_set_curr_(*list, NULL);
