@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_reverse.c,v 1.15 2006-08-11 12:28:28 harq_al_ada Exp $
+ $Id: list_reverse.c,v 1.16 2006-08-14 00:15:55 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -33,7 +33,7 @@
 
 /* Version info */
 static char const rcsid[] =
-  "@(#) $Id: list_reverse.c,v 1.15 2006-08-11 12:28:28 harq_al_ada Exp $";
+  "@(#) $Id: list_reverse.c,v 1.16 2006-08-14 00:15:55 harq_al_ada Exp $";
 
 GAERROR
 list_reverse (list_t list)
@@ -100,6 +100,14 @@ list_reverse (list_t list)
                               middle = last;
                             }
                           while (middle != NULL);
+
+                          /* Adjusts the return code. EOF here is not
+                           * an error but the stop condition of the
+                           * loop */
+                          if (rc == EGAEOF)
+                            {
+                              rc = EGAOK;
+                            }
                           
                           /* Adjusts the tail of the list */
                           if (rc == EGAOK)
