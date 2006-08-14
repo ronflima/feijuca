@@ -22,8 +22,8 @@
  Description: Header file with definitions needed by the test suite
 
  CVS Information
- $Author: ron_lima $
- $Id: gatests.h,v 1.16 2005-12-13 10:18:53 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: gatests.h,v 1.17 2006-08-14 00:16:24 harq_al_ada Exp $
 */
 
 #ifndef GATESTS_H
@@ -58,8 +58,8 @@ GABEGINDECLS
  * Datatypes
  */
 /* Test procedures data types */
-typedef int (test_proc_t) (size_t);	/* Test procedure */
-typedef int (test_scenario_t) (size_t);	/* Test scenario  */
+typedef GAERROR (test_proc_t) (size_t);	    /* Test procedure */
+typedef GAERROR (test_scenario_t) (size_t); /* Test scenario  */
 
 typedef struct
 {
@@ -92,15 +92,15 @@ cmdline_t;			/* Command line descriptor */
 /*
  * Prototypes
  */
-int (test_list) (size_t);
-int (test_dlist) (size_t);
-int (test_stack) (size_t);
-int (test_clist) (size_t);
-int (test_queue) (size_t);
-int (test_ivector) (size_t);
-int (test_deque) (size_t);
-int (test_dclist) (size_t);
-int (execute_scenarios) (const char *, size_t, scenario_t[], size_t);
+GAERROR (test_list) (size_t);
+GAERROR (test_dlist) (size_t);
+GAERROR (test_stack) (size_t);
+GAERROR (test_clist) (size_t);
+GAERROR (test_queue) (size_t);
+GAERROR (test_ivector) (size_t);
+GAERROR (test_deque) (size_t);
+GAERROR (test_dclist) (size_t);
+GAERROR (execute_scenarios) (const char *, size_t, scenario_t[], size_t);
 
 GAENDDECLS
 #endif /* GATESTS_H */

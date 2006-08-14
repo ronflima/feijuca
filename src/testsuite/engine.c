@@ -23,8 +23,8 @@
  once
 
  CVS Information
- $Author: ron_lima $
- $Id: engine.c,v 1.3 2005-12-13 10:18:53 ron_lima Exp $
+ $Author: harq_al_ada $
+ $Id: engine.c,v 1.4 2006-08-14 00:16:52 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,19 +34,19 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: engine.c,v 1.3 2005-12-13 10:18:53 ron_lima Exp $";
+static char const rcsid [] = "@(#) $Id: engine.c,v 1.4 2006-08-14 00:16:52 harq_al_ada Exp $";
 
-int
+GAERROR
 execute_scenarios (const char * test_name, size_t maxelements, 
                    scenario_t scenarios [], size_t size)
 {
-  int rc = 0x0;
+  GAERROR rc = EGAOK;
   register int i;
 
   for (i=0; i < (size/sizeof (scenario_t)); ++i) 
     {
       rc = scenarios[i].routine (maxelements);
-      if (rc != 0x0)
+      if (rc != EGAOK)
         {
           ERROR (test_name, scenarios[i].name, rc);
           break;
