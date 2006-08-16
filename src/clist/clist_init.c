@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_init.c,v 1.7 2006-06-12 09:57:49 harq_al_ada Exp $
+ $Id: clist_init.c,v 1.8 2006-08-16 10:17:18 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.7 2006-06-12 09:57:49 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_init.c,v 1.8 2006-08-16 10:17:18 harq_al_ada Exp $";
 
 GAERROR
 clist_init (clist_t * clist, deallocator_t * dealloc)
@@ -53,13 +53,20 @@ clist_init (clist_t * clist, deallocator_t * dealloc)
     {
       list_t list;
 
-      (*clist)->signature_ = GA_CLIST_SIGNATURE;
-      if ((rc = list_init (&list, dealloc)) == EGAOK)
+      if ((rc = clist_set_signature_ (*clist)) == EGAOK)
         {
-          rc = clist_set_list_ (clist, list);
+          if ((rc = list_init (&list, dealloc)) == EGAOK)
+            {
+              rc = clist_set_list_ (*clist, list);
+            }
         }
-      else
+      if (rc != EGAOK)
         {
+          if ((rc = clist_get_list_ (*clist, &list)) == EGAOK)
+            {
+              rc = list_destroy (list);
+            }
+          memset (*clist, 0x0, sizeof(struct clist_t));
           free (*clist);
         }
     }
