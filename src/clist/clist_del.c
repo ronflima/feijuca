@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_del.c,v 1.15 2006-06-12 09:54:30 harq_al_ada Exp $
+ $Id: clist_del.c,v 1.16 2006-08-16 10:15:53 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.15 2006-06-12 09:54:30 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.16 2006-08-16 10:15:53 harq_al_ada Exp $";
 
 /*
  * Rebuilds the circular condition of the circular list. Since clist
@@ -94,7 +94,7 @@ rebuild_circular_condition_ (clist_t clist, position_t whence)
   size_t size;
   GAERROR rc = EGAOK;
 
-  if ((rc = clist_get_size (clist, &size)) == 0x0)
+  if ((rc = clist_get_size (clist, &size)) == EGAOK)
     {
       if (size != 0x0)
         {
