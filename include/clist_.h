@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_.h,v 1.3 2006-06-12 09:52:23 harq_al_ada Exp $
+ $Id: clist_.h,v 1.4 2006-08-16 10:14:35 harq_al_ada Exp $
 */
 #ifndef CLIST__H
 #define CLIST__H
@@ -60,6 +60,7 @@ struct clist_t
  */
 int (clist_is_valid_) __P((clist_t));
 GAERROR (clist_get_list_) __P((clist_t, list_t *));
+GAERROR (clist_set_signature_) __P((clist_t));
 
 GAENDDECLS
 #endif /* CLIST__H */
