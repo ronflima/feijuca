@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.33 2006-08-11 12:26:24 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.34 2006-08-17 11:14:02 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -107,7 +107,16 @@ list_del (list_t list, void **data, position_t whence)
                 {
                   element = extract_element_from_next_ (list);
                 }
-              if ((rc = list_element_get_data_ (element, &got_data)) == EGAOK)
+              if (element == NULL) 
+                {
+                  /* If could not get a valid element, then return EOF
+                   * to the caller. This situation happens when the
+                   * list has only one member or when curr_ points to
+                   * the tail and the user requests the deletion at
+                   * POS_NEXT */
+                  rc = EGAEOF;
+                }
+              else if ((rc = list_element_get_data_ (element, &got_data)) == EGAOK)
                 {
                   if (data != NULL)
                     {
