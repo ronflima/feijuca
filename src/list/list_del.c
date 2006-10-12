@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.34 2006-08-17 11:14:02 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.35 2006-10-12 16:41:16 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -196,15 +196,13 @@ extract_element_from_next_ (list_t list)
   list_element_t element = NULL; /* Element to extract */
   list_element_t curr;           /* Current element */
 
-  rc = list_get_curr_ (list, &curr);
-  if (rc == EGAOK) 
+  if ((rc = list_get_curr_ (list, &curr)) == EGAOK)
     {
-      if (list_element_get_next_ (curr, &element) == 0x0)
+      if ((rc = list_element_get_next_ (curr, &element)) == EGAOK)
         {
           list_element_t tail;  /* Tail of the list */
 
-          rc = list_get_tail_ (list, &tail);
-          if (rc == EGAOK)
+          if ((rc = list_get_tail_ (list, &tail)) == EGAOK)
             {
               if (element == tail)
                 {
