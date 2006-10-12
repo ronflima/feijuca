@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_insert.c,v 1.17 2006-06-12 10:03:51 harq_al_ada Exp $
+ $Id: clist_insert.c,v 1.18 2006-10-12 16:40:16 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
@@ -32,7 +32,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.17 2006-06-12 10:03:51 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.18 2006-10-12 16:40:16 harq_al_ada Exp $";
 
 GAERROR
 clist_insert (clist_t clist, const void *data, position_t whence)
@@ -56,14 +56,13 @@ clist_insert (clist_t clist, const void *data, position_t whence)
           
               if ((rc = list_get_tail_ (list, &tail)) == EGAOK)
                 {
-                  list_element_t next; /* Next element from tail */
+                  list_element_t head; /* Next element from tail */
               
-                  if ((rc = list_element_get_next_ (tail, &next)) == EGAEOF)
+                  /* Enforces the linking to the head, even if the
+                   * head has not changed. */
+                  if ((rc = list_get_head_ (list, &head)) == EGAOK)
                     {
-                      if ((rc = list_get_head_ (list, &next)) == EGAOK)
-                        {
-                          rc = list_element_set_next_ (tail, next);
-                        }
+                      rc = list_element_set_next_ (tail, head);
                     }
                 }
             }
