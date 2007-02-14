@@ -24,35 +24,40 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: list_init.c,v 1.11 2006-10-12 16:42:13 harq_al_ada Exp $
+ $Id: list_init.c,v 1.12 2007-02-14 22:47:20 harq_al_ada Exp $
 */
 #include <assert.h>
 #include "list.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_init.c,v 1.11 2006-10-12 16:42:13 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_init.c,v 1.12 2007-02-14 22:47:20 harq_al_ada Exp $";
 
 GAERROR
 list_init (list_t * list, deallocator_t * dealloc)
 {
+  GAERROR rc; /* Error handling */
+
   assert (list != NULL);
   assert (dealloc != NULL);
 
-  /* The deallocator must be always provided */
+  rc=EGAOK;
   if (list == NULL || dealloc == NULL)
     {
-      return EGAINVAL;
+      rc = EGAINVAL;
     }
-  if ((*list = (list_t) malloc (sizeof (struct list_t))) == NULL)
+  else if ((*list = (list_t) malloc (sizeof (struct list_t))) == NULL)
     {
-      return EGANOMEM;
+      rc = EGANOMEM;
     }
-  memset(*list, 0x0, sizeof(struct list_t));
-  list_set_signature_(*list);
-  list_set_head_(*list, NULL);
-  list_set_tail_(*list, NULL);
-  list_set_curr_(*list, NULL);
-  list_set_deallocator_(*list, dealloc);
-  return EGAOK;
+  else 
+    {
+      memset(*list, 0x0, sizeof(struct list_t));
+      list_set_signature_(*list);
+      list_set_head_(*list, NULL);
+      list_set_tail_(*list, NULL);
+      list_set_curr_(*list, NULL);
+      list_set_deallocator_(*list, dealloc);
+    }
+  return rc;
 }
