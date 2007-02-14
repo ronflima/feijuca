@@ -34,7 +34,7 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: list_del.c,v 1.35 2006-10-12 16:41:16 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: list_del.c,v 1.36 2007-02-14 22:46:01 harq_al_ada Exp $";
 
 /* Local prototypes */
 
@@ -52,7 +52,8 @@ extract_element_from_head_ __P((list_t));
 /*
  * This function extracts the next element from the list. It
  * guarantees that the list will be correctly linked after the
- * operation completes.
+ * operation completes. It is expected that the current element
+ * is valid.
  * Return values:
  * - A pointer to the element extracted from the list
  * - NULL if the element could not be extracted
@@ -88,6 +89,8 @@ list_del (list_t list, void **data, position_t whence)
             }
           else if (whence == POS_TAIL)
             {
+              /* Attempts to delete the tail are invalid, since there
+               * is no way to relink the list later. */
               rc = EGAINVAL;
             }
           else 
@@ -112,12 +115,13 @@ list_del (list_t list, void **data, position_t whence)
                   /* If could not get a valid element, then return EOF
                    * to the caller. This situation happens when the
                    * list has only one member or when curr_ points to
-                   * the tail and the user requests the deletion at
-                   * POS_NEXT */
+                   * the tail or user requests the deletion at
+                   * POS_NEXT or curr_ points to nowhere */
                   rc = EGAEOF;
                 }
               else if ((rc = list_element_get_data_ (element, &got_data)) == EGAOK)
                 {
+                  deallocator_t *dealloc=NULL;
                   if (data != NULL)
                     {
                       *data = got_data;
@@ -126,21 +130,19 @@ list_del (list_t list, void **data, position_t whence)
                        * data to NULL or else the list_element_destroy_
                        * function will wipe the data we want to restore
                        * from memory. */
-                      if ((rc = list_element_set_data_ (element, NULL)) == EGAOK)
-                        {
-                          rc = list_element_destroy_ (element, NULL);
-                        }
+                      rc = list_element_set_data_ (element, NULL);
                     }
                   else
                     {
-                      deallocator_t *dealloc;
-
-                      if((rc = list_get_deallocator_ (list, &dealloc)) == EGAOK)
+                      rc = list_get_deallocator_ (list, &dealloc);
+                    }
+                  if (rc == EGAOK)
+                    {
+                      if ((rc = list_element_destroy_ (element, dealloc)) == EGAOK)
                         {
-                          rc = list_element_destroy_ (element, dealloc);
+                          rc = list_increment_size_ (list, -0x1);
                         }
                     }
-                  rc = list_increment_size_(list, -0x1);
                 }
             }
         }
@@ -155,35 +157,49 @@ extract_element_from_head_ (list_t list)
 {
   GAERROR rc;                   /* Error handling */
   list_element_t head;          /* Head of the list */
-  list_element_t curr;          /* Current item of the list */
   list_element_t next;          /* Next item from the head */
 
+  next = NULL;
   rc = list_get_head_ (list, &head);
-  if (rc == EGAEOF)
-    {
-      list_set_tail_ (list, NULL);
-    }
   if (rc == EGAOK)
     {
-      rc = list_element_get_next_ (head, &next);
-    }
-  if (rc == EGAOK)
-    {
-      /* Sets the head to be the next item. This effectively extracts
-       * the old head from the list. */
-      rc = list_set_head_ (list, next);
-    }
-  if (rc == EGAOK)
-    {
-      rc = list_get_curr_ (list, &curr);
-    }
-  if (rc == EGAOK)
-    {
-      if ((curr != NULL) && (curr == head))
+      if(list_element_get_next_ (head, &next) == EGAOK) 
         {
-          /* If the current pointer is set, notifies it for the
-           * changes if it is pointing to the head. */
-          rc = list_set_curr_ (list, next);
+          /* Sets the head to be the next item. This effectively extracts
+           * the old head from the list. */
+          rc = list_set_head_ (list, next);
+        }
+      else 
+        {
+          /* List has only a single element. Set the head to nothing. */
+          rc = list_set_head_(list, NULL);
+        }
+    }
+  /* Notifies the tail of the list if head is the same of the
+   * tail. */
+  if (rc == EGAOK) 
+    {
+      list_element_t tail;      /* Tail of the list */
+
+      rc = list_get_tail_ (list, &tail);
+      if ((rc == EGAOK) && (tail == head))
+        {
+          rc = list_set_tail_ (list, NULL);
+        }
+    }
+  /* Notifies the current item of the list for changes. */
+  if (rc == EGAOK)
+    {
+      list_element_t curr;          /* Current item of the list */
+
+      if (list_get_curr_ (list, &curr) == EGAOK)
+        {
+          if (curr == head)
+            {
+              /* If the current pointer is set, notifies it for the
+               * changes if it is pointing to the head. */
+              rc = list_set_curr_ (list, next);
+            }
         }
     }
   return head;
@@ -192,17 +208,16 @@ extract_element_from_head_ (list_t list)
 static list_element_t 
 extract_element_from_next_ (list_t list)
 {
-  GAERROR rc;                    /* Error handling */
   list_element_t element = NULL; /* Element to extract */
   list_element_t curr;           /* Current element */
 
-  if ((rc = list_get_curr_ (list, &curr)) == EGAOK)
+  if (list_get_curr_ (list, &curr) == EGAOK)
     {
-      if ((rc = list_element_get_next_ (curr, &element)) == EGAOK)
+      if (list_element_get_next_ (curr, &element) == EGAOK)
         {
           list_element_t tail;  /* Tail of the list */
 
-          if ((rc = list_get_tail_ (list, &tail)) == EGAOK)
+          if (list_get_tail_ (list, &tail) == EGAOK)
             {
               if (element == tail)
                 {
