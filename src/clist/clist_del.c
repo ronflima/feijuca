@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist_del.c,v 1.16 2006-08-16 10:15:53 harq_al_ada Exp $
+ $Id: clist_del.c,v 1.17 2007-02-25 12:59:30 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,12 +32,14 @@
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.16 2006-08-16 10:15:53 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.17 2007-02-25 12:59:30 harq_al_ada Exp $";
 
 /*
  * Rebuilds the circular condition of the circular list. Since clist
  * uses list routines, the deletion may lead the list to become linear
- * again. Therefore, it is necessary to rebuild the "circularity" of
+ * again. Also, the list may become invalid, when the curr is pointing
+ * to the tail and it is requested to delete the next
+ * element. Therefore, it is necessary to rebuild the "circularity" of
  * the list.
  *
  * Parameters:
@@ -106,6 +108,7 @@ rebuild_circular_condition_ (clist_t clist, position_t whence)
               list_element_t head; /* List head */
               list_element_t next; /* Next element (from tail) */
 
+              head=tail=next=NULL;
               rc = list_get_tail_(list, &tail);
               if (rc == EGAOK)
                 {
@@ -121,6 +124,8 @@ rebuild_circular_condition_ (clist_t clist, position_t whence)
                     {
                       if (next != head)
                         {
+                          /* Updates the tail->next pointer, making
+                           * the list circular again. */
                           rc = list_element_set_next_ (tail, head);
                         }
                     }
@@ -129,11 +134,15 @@ rebuild_circular_condition_ (clist_t clist, position_t whence)
                 {
                   if (next == NULL)
                     {
+                      /* List became linear. Make it circular
+                       * again. */
                       rc = list_element_set_next_ (tail, head);
                     }
                   else if (next != head)
                     {
-                      rc = list_element_set_next_ (head, next);                      
+                      /* Head became invalid. We need to set it to a
+                       valid value. */
+                      rc = list_set_head_(list, next);
                     }
                 }
             }
