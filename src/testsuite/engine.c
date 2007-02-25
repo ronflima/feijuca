@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: engine.c,v 1.4 2006-08-14 00:16:52 harq_al_ada Exp $
+ $Id: engine.c,v 1.5 2007-02-25 13:01:33 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,9 +34,12 @@
 #include "list.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: engine.c,v 1.4 2006-08-14 00:16:52 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: engine.c,v 1.5 2007-02-25 13:01:33 harq_al_ada Exp $";
 
-GAERROR
+/*
+ * Executer for each one of the test scenarios
+ */
+int
 execute_scenarios (const char * test_name, size_t maxelements, 
                    scenario_t scenarios [], size_t size)
 {
@@ -53,4 +56,38 @@ execute_scenarios (const char * test_name, size_t maxelements,
         }
     }
   return rc;
+}
+
+
+/*
+ * Prints information about error according to GA standards.
+ */
+int 
+print_error (GAERROR error_code)
+{
+  const char * msg = "";
+
+  switch (error_code)
+    {
+        case  EGAOK:
+          msg = "No error";
+          break;
+        case EGAEOF:
+          msg = "End of data";
+          break;
+          case EGAINVAL:
+            msg = "Invalid argument";
+            break;
+        case EGANOMEM:
+          msg = "No memory available";
+          break;
+        case EGABADC:
+          msg = "Bad current position";
+          break;
+        default:
+          msg = "Unespecified error";
+          break;
+    }
+  printf ("\tError message: %s\n", msg); 
+  return 0;
 }
