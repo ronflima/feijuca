@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: gatests.h,v 1.18 2006-08-19 13:23:20 harq_al_ada Exp $
+ $Id: gatests.h,v 1.19 2007-02-25 13:02:18 harq_al_ada Exp $
 */
 
 #ifndef GATESTS_H
@@ -101,6 +101,7 @@ int (test_ivector) (size_t);
 int (test_deque) (size_t);
 int (test_dclist) (size_t);
 int (execute_scenarios) (const char *, size_t, scenario_t[], size_t);
+int (print_error) (GAERROR);
 
 GAENDDECLS
 #endif /* GATESTS_H */
