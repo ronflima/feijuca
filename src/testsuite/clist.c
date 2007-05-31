@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: clist.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $
+ $Id: clist.c,v 1.15 2007-05-31 04:05:51 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.14 2006-06-12 10:05:29 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id: clist.c,v 1.15 2007-05-31 04:05:51 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -243,7 +243,7 @@ check_deletion (size_t elements)
                   while ((rc = clist_move (clist, POS_NEXT)) == 0x0)
                     {
                       ++i;
-                      if (i == clist_length - 1)
+                      if (i >= clist_length - 1)
                         {
                           break;
                         }
