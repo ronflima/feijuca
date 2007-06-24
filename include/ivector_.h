@@ -23,7 +23,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_.h,v 1.1 2006-01-30 10:18:08 harq_al_ada Exp $
+ $Id: ivector_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
 #ifndef IVECTOR__H
@@ -31,7 +31,6 @@
 
 #include <stddef.h>
 #include "gacommon.h"
-#include "gainternal_.h"
 
 GABEGINDECLS
 /*

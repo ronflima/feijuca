@@ -26,14 +26,13 @@
  
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_.h,v 1.2 2006-01-29 19:24:13 harq_al_ada Exp $
+ $Id: dclist_.h,v 1.3 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
 #ifndef DCLIST__H
 #define DCLIST__H
 
 #include "gacommon.h"
-#include "gainternal_.h"
 #include "dlist.h"
 #include "dclist.h"
 

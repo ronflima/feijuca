@@ -25,7 +25,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: queue_.h,v 1.3 2006-05-14 00:47:38 harq_al_ada Exp $
+ $Id: queue_.h,v 1.4 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
 #ifndef QUEUE__H
@@ -33,7 +33,6 @@
 
 #include <stddef.h>
 #include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
 
 GABEGINDECLS

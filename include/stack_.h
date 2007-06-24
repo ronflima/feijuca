@@ -24,7 +24,7 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack_.h,v 1.1 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: stack_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
 #ifndef STACK__H
@@ -32,7 +32,6 @@
 
 #include <stddef.h>
 #include "gacommon.h"
-#include "gainternal_.h"
 #include "list.h"
 
 GABEGINDECLS
