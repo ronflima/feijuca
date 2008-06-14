@@ -1,6 +1,6 @@
 # -*-makefile -*-
 #
-# G.A. Library - A generic algorithms and data structures library
+# Feijuca - A generic algorithms and data structures library
 # Copyright (C) 2005 - Ronaldo Faria Lima
 #
 # This library is free software; you can redistribute it and/or modify

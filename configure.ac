@@ -1,5 +1,5 @@
 #                                               -*- Autoconf -*-
-# G.A. Library - A generic algorithms and data structures library
+# Feijuca - A generic algorithms and data structures library
 # Copyright (C) 2005 - Ronaldo Faria Lima
 #
 # This library is free software; you can redistribute it and/or modify
@@ -21,7 +21,7 @@
 # $Id: configure.ac,v 1.21 2006-02-04 16:06:42 harq_al_ada Exp $
 
 AC_PREREQ(2.57)
-AC_INIT([ga-lib], [1.0.0], [harq_al_ada@terra.com.br])
+AC_INIT([feijuca], [1.0.0], [ronaldo@ronaldolima.eti.br])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([include/list.h])
 
