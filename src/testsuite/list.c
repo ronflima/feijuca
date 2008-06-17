@@ -1,30 +1,26 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
- Copyright (C) 2005 - Ronaldo Faria Lima
 
- This library is free software; you can redistribute it and/or modify
- it under the terms of the GNU Lesser General Public License as
- published by the Free Software Foundation; either version 2.1 of the
- License, or (at your option) any later version.
+ Feijuca Library - A generic algorithms and data structures library Copyright
+ (C) 2005 - Ronaldo Faria Lima
 
- This library is distributed in the hope that it will be useful, but
- WITHOUT ANY WARRANTY; without even the implied warranty of
- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- Lesser General Public License for more details.
+ This library is free software; you can redistribute it and/or modify it under
+ the terms of the GNU Lesser General Public License as published by the Free
+ Software Foundation; either version 2.1 of the License, or (at your option) any
+ later version.
 
- You should have received a copy of the GNU Lesser General Public
- License along with this library; if not, write to the Free Software
- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
- USA
+ This library is distributed in the hope that it will be useful, but WITHOUT ANY
+ WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more
+ details.
 
- System: G.A. Lib
+ You should have received a copy of the GNU Lesser General Public License along
+ with this library; if not, write to the Free Software Foundation, Inc., 51
+ Franklin St, Fifth Floor, Boston, MA 02110-1301 USA
 
- Description: Test suite routines for lists. This test suite is also an
-              example on how to use the lists routines
+ System: Feijuca Library
 
- CVS Information
- $Author: harq_al_ada $
- $Id: list.c,v 1.28 2007-02-25 13:03:48 harq_al_ada Exp $
+ Description: Test suite routines for lists. This test suite is also an example
+              on how to use the lists routines
 */
 
 #include <stdio.h>
@@ -126,7 +122,7 @@ check_contents (size_t elements)
   test_status = 0x0;
   i = 0x0;
 
-  if ((rc = list_init (&list, free)) != EGAOK)
+  if ((list = list_init (free)) == NULL)
     {
       ERROR (TEST, "list_init", rc);
       return rc;
@@ -145,7 +141,7 @@ check_contents (size_t elements)
     {
       int *item;			/* Item to grab from the list */
 
-      if ((rc = list_get (list, (void **) &item, POS_CURR)) != EGAOK)
+      if ((item = (int *) list_get (list, POS_CURR)) == NULL)
         {
           ERROR (TEST, "list_get", rc);
           test_status = EFAILED;
@@ -174,11 +170,7 @@ check_contents (size_t elements)
       ERROR (TEST, "Data number mismatch in data retrieval", ECKFAIL);
       test_status = EFAILED;
     }
-  if ((rc = list_destroy (list)) != EGAOK)
-    {
-      ERROR (TEST, "list_destroy", ECKFAIL);
-      test_status = EFAILED;
-    }
+  list_destroy (list);
   return test_status;
 }
 
@@ -196,7 +188,7 @@ check_deletion (size_t elements)
   int nelem = 0x0;              /* Number of elements */
   int ndeleted = 0x0;           /* Number of deleted elements */
 
-  if ((rc = list_init (&list, free)) != EGAOK)
+  if ((list = list_init (free)) == NULL)
     {
       ERROR (TEST, "list_init", rc);
       test_status = EFAILED;
@@ -210,12 +202,8 @@ check_deletion (size_t elements)
     {
       size_t size;              /* Size of the list after deletions */
 
-      if ((rc = list_get_size (list, &nelem)) != EGAOK)
-        {
-          ERROR (TEST, "list_get_size", rc);
-          test_status = EFAILED;
-        }
-      else if ((rc = list_move (list, POS_HEAD)) != EGAOK)
+      nelem = list_get_size (list);
+      if ((rc = list_move (list, POS_HEAD)) != EGAOK)
         {
           ERROR (TEST, "list_move", rc);
           test_status = EFAILED;
@@ -240,22 +228,14 @@ check_deletion (size_t elements)
           ERROR (TEST, "check_deletion_in_tail", ECKFAIL);
           test_status = EFAILED;
         }
-      else if ((rc = list_get_size (list, &size)) != EGAOK)
-        {
-          ERROR (TEST, "list_get_size", rc);
-          test_status = EFAILED;
-        }
-      else if ((nelem - ndeleted) != size)
+      size = list_get_size (list);
+      if ((rc == EGAOK) && (nelem - ndeleted) != size)
         {
           ERROR (TEST, "List number of items mismatch", ECKFAIL);
           test_status = EFAILED;
         }
     }
-  if ((rc = list_destroy (list)) != EGAOK)
-    {
-      ERROR (TEST, "list_destroy", ECKFAIL);
-      test_status = EFAILED;
-    }
+  list_destroy (list);
   return test_status;
 }
 /*
@@ -265,20 +245,17 @@ check_deletion (size_t elements)
 static GAERROR check_deletion_in_middle(list_t list, int * deleted)
 {
   GAERROR rc;                   /* Error handling */
-  size_t size;                  /* Size of the list */
 
   if ((rc = list_move (list, POS_HEAD)) != EGAOK)
     {
       ERROR (TEST, "list_move", rc);
     }
-  else if ((rc = list_get_size (list, &size)) != EGAOK)
-    {
-      ERROR (TEST, "list_get_size", rc);
-    }
   else
     {
       register int i;
+      size_t size;		/* Size of the list */
 
+      size = list_get_size (list);
       /* Move the curr to the middle of the list */
       for (i=0x0; i<size/2; ++i) 
         {
@@ -332,49 +309,43 @@ static GAERROR check_deletion_near_tail (list_t list, int * ndeleted)
   GAERROR rc;                   /* Error handling */
   size_t size;                  /* Size of the list */
 
-  if ((rc = list_get_size (list, &size)) != EGAOK)
+  size = list_get_size (list);
+  if (size > 1)
     {
-      ERROR (TEST, "list_get_size", rc);
-    }
-  else 
-    {
-      if (size > 1)
-        {
-          if ((rc = list_move (list, POS_HEAD)) != EGAOK)
-            {
-              ERROR (TEST, "list_move", rc);
-            }
-          else
-            {
-              register int i = size;     /* Counter to navigate the list */
+      if ((rc = list_move (list, POS_HEAD)) != EGAOK)
+	{
+	  ERROR (TEST, "list_move", rc);
+	}
+      else
+	{
+	  register int i = size;     /* Counter to navigate the list */
 
-              /* This test makes sense only if the list has size greater
-               * than 1 */
-              while (i - 2 > 0)
-                {
-                  if ((rc = list_move (list, POS_NEXT)) != EGAOK)
-                    {
-                      break;
-                    }
-                  --i;
-                }
-              if (rc == EGAOK)
-                {
-                  if ((rc = list_del (list, NULL, POS_NEXT)) != EGAOK)
-                    {
-                      ERROR (TEST, "list_del", rc);
-                    }
-                  else
-                    {
-                      ++(*ndeleted);
-                    }
-                }
-              else if (rc != EGAEOF)
-                {
-                  ERROR (TEST, "list_move", rc);
-                }
-            }
-        }
+	  /* This test makes sense only if the list has size greater
+	   * than 1 */
+	  while (i - 2 > 0)
+	    {
+	      if ((rc = list_move (list, POS_NEXT)) != EGAOK)
+		{
+		  break;
+		}
+	      --i;
+	    }
+	  if (rc == EGAOK)
+	    {
+	      if ((rc = list_del (list, NULL, POS_NEXT)) != EGAOK)
+		{
+		  ERROR (TEST, "list_del", rc);
+		}
+	      else
+		{
+		  ++(*ndeleted);
+		}
+	    }
+	  else if (rc != EGAEOF)
+	    {
+	      ERROR (TEST, "list_move", rc);
+	    }
+	}
     }
   return rc;
 }
@@ -410,7 +381,7 @@ check_reversal (size_t elements)
   list_t list;                 
   int test_status = 0x0;
 
-  if ((rc = list_init (&list, free)) != EGAOK)
+  if ((list = list_init (free)) == NULL)
     {
       ERROR (TEST, "list_init", rc);
       return rc;
@@ -436,7 +407,7 @@ check_reversal (size_t elements)
   while (test_status == 0x0)
     {
       int * data;
-      if ((rc = list_get (list, (void **) &data, POS_NEXT)) == EGAEOF)
+      if ((data = list_get (list, POS_NEXT)) == NULL)
         {
           break;
         }
@@ -460,12 +431,8 @@ check_reversal (size_t elements)
           ERROR (TEST, "list_get", rc);
           test_status = EFAILED;
         }
-    }
-  if ((rc = list_destroy (list)) != EGAOK)
-    {
-      ERROR (TEST, "list_destroy", ECKFAIL);
-      test_status = EFAILED;
-    }
+    } 
+  list_destroy (list);
   return test_status;
 }
 

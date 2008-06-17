@@ -29,6 +29,7 @@
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "list.h"
 #include "queue.h"
 #include "queue_.h"
@@ -50,7 +51,7 @@ queue_destroy (queue_t queue)
   else 
     {
       queue_get_list_(queue, &list);
-      rc = list_destroy (list);
+      list_destroy (list);
       memset (queue, 0x0, sizeof (struct queue_t));
       free (queue);
     }

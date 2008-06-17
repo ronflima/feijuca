@@ -49,7 +49,7 @@ clist_get_pos (clist_t clist, position_t * whence)
 
       if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
         {
-          rc = list_get_pos (list, whence);
+          *whence = list_get_pos (list);
         }
     }
   return rc;

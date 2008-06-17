@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,13 +17,9 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Library
 
  Description: Interfaces and datatypes for single linked lists
-
- CVS Information
- $Author: harq_al_ada $
- $Id: list.h,v 1.26 2006-05-14 18:27:07 harq_al_ada Exp $
 */
 
 #ifndef LIST_H
@@ -39,19 +35,18 @@ GABEGINDECLS
  */
 typedef struct list_t * list_t;
 
-
 /*
  * Prototypes
  */
-GAERROR (list_init) __P ((list_t *, deallocator_t *));
-GAERROR (list_destroy) __P ((list_t));
-GAERROR (list_get) __P ((list_t, void **, position_t));
+list_t (list_init) __P ((deallocator_t *));
+void (list_destroy) __P ((list_t));
+const void * (list_get) __P ((list_t, position_t));
 GAERROR (list_insert) __P ((list_t, const void *, position_t));
 GAERROR (list_move) __P ((list_t, position_t));
 GAERROR (list_del) __P ((list_t, void **, position_t));
 GAERROR (list_reverse) __P((list_t));
-GAERROR (list_get_size) __P((list_t, size_t *));
-GAERROR (list_get_pos) __P((list_t, position_t *));
+size_t (list_get_size) __P((list_t));
+position_t (list_get_pos) __P((list_t));
 
 GAENDDECLS
 #endif /* LIST_H */

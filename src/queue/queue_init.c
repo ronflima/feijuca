@@ -54,7 +54,7 @@ queue_init (queue_t * queue, deallocator_t * dealloc)
     {
       list_t list = NULL;
       (*queue)->signature_ = GA_QUEUE_SIGNATURE;
-      if ((rc = list_init (&list, dealloc)) != 0x0)
+      if ((list = list_init (dealloc)) == NULL)
         {
           free (*queue);
         }

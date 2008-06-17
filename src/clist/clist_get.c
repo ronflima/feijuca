@@ -50,7 +50,7 @@ clist_get (clist_t clist, void **data, position_t whence)
       
       if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
         {
-          rc = list_get (list, data, whence);
+          *data = (void *) list_get (list, whence);
         }
     }
   return rc;

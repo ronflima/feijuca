@@ -46,5 +46,6 @@ queue_get_size (queue_t queue, size_t * size)
       return EGAINVAL;
     }
   queue_get_list_(queue, &list);
-  return list_get_size (list, size);
+  *size = list_get_size (list);
+  return EGAOK;
 }

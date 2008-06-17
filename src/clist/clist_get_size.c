@@ -50,7 +50,7 @@ clist_get_size (clist_t clist, size_t * size)
       
       if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
         {
-          rc = list_get_size (list, size);
+          *size = list_get_size (list);
         }
     }
   return rc;

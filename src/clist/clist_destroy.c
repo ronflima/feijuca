@@ -27,7 +27,7 @@
  $Id: clist_destroy.c,v 1.8 2006-06-12 09:55:00 harq_al_ada Exp $
 */
 #include <assert.h>
-#include <stdlib.h>
+#include <string.h>
 #include "list.h"
 #include "clist.h"
 #include "clist_.h"
@@ -51,11 +51,9 @@ clist_destroy (clist_t clist)
 
       if((rc = clist_get_list_ (clist, &list)) == EGAOK)
         {
-          if ((rc = list_destroy (list)) == EGAOK)
-            {
-              memset (clist, 0x0, sizeof (struct clist_t));
-              free (clist);
-            }
+          list_destroy (list);
+	  memset (clist, 0x0, sizeof (struct clist_t));
+	  free (clist);
         }
     }
   return rc;

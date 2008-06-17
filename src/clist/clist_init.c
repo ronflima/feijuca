@@ -27,6 +27,7 @@
 */
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "list.h"
 #include "clist.h"
 #include "clist_.h"
@@ -55,7 +56,7 @@ clist_init (clist_t * clist, deallocator_t * dealloc)
 
       if ((rc = clist_set_signature_ (*clist)) == EGAOK)
         {
-          if ((rc = list_init (&list, dealloc)) == EGAOK)
+          if ((list = list_init (dealloc)) != NULL)
             {
               rc = clist_set_list_ (*clist, list);
             }
@@ -64,7 +65,7 @@ clist_init (clist_t * clist, deallocator_t * dealloc)
         {
           if ((rc = clist_get_list_ (*clist, &list)) == EGAOK)
             {
-              rc = list_destroy (list);
+              list_destroy (list);
             }
           memset (*clist, 0x0, sizeof(struct clist_t));
           free (*clist);

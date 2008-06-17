@@ -48,7 +48,7 @@ stack_destroy (stack_t stack)
   else
     {
       CHECK_SIGNATURE (stack, GA_STACK_SIGNATURE);
-      rc = list_destroy (stack->list_);
+      list_destroy (stack->list_);
       free (stack);
     }
   return rc;

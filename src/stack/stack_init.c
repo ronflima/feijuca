@@ -52,7 +52,7 @@ stack_init (stack_t * stack, deallocator_t * dealloc)
   else 
     {
       (*stack)->signature_ = GA_STACK_SIGNATURE;
-      if ((rc = list_init (&(*stack)->list_, dealloc)) != 0x0)
+      if (((*stack)->list_ = list_init (dealloc)) == NULL)
         {
           free (*stack);
         }

@@ -1,6 +1,6 @@
 # -*-makefile-*-
 #
-# G.A. Library - A generic algorithms and data structures library
+# Feijuca Libraryrary - A generic algorithms and data structures library
 # Copyright (C) 2005 - Ronaldo Faria Lima
 #
 # This library is free software; you can redistribute it and/or modify
@@ -20,36 +20,21 @@
 #
 # Intermediary makefile template to build the list subset of the
 # library
-# Project: G.A. Library
+# Project: Feijuca Libraryrary
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
 # $Id: Makefile.am,v 1.14 2006-05-15 23:17:58 harq_al_ada Exp $
 noinst_LTLIBRARIES = liblist.la
-liblist_la_SOURCES = list_init.c						\
-					 elements/list_element_get_data_.c	\
-			         list_get_pos.c						\
-                     descriptor/list_get_curr_.c		\
-                     descriptor/list_get_deallocator_.c	\
-                     descriptor/list_get_head_.c		\
-                     descriptor/list_get_size.c			\
-                     descriptor/list_get_tail_.c		\
-                     descriptor/list_increment_size_.c  \
-                     descriptor/list_is_valid_.c		\
-                     descriptor/list_set_curr_.c		\
-                     descriptor/list_set_deallocator_.c	\
-                     descriptor/list_set_head_.c		\
-                     descriptor/list_set_signature_.c   \
-                     descriptor/list_set_tail_.c		\
-                     elements/list_element_destroy_.c	\
-                     elements/list_element_get_next_.c	\
-                     elements/list_element_init_.c		\
-                     elements/list_element_set_data_.c	\
-                     elements/list_element_set_next_.c	\
-                     list_del.c							\
-                     list_destroy.c						\
-                     list_get.c							\
-                     list_insert.c						\
-                     list_move.c						\
-                     list_reverse.c						\
-                     ../../include/list.h
+
+liblist_la_SOURCES = list_init.c	\
+list_get_pos.c				\
+list_del.c				\
+list_destroy.c				\
+list_get.c				\
+list_insert.c				\
+list_move.c				\
+list_reverse.c				\
+list_get_size.c				\
+../../include/list.h
+
 INCLUDES=-I../../include/
 
