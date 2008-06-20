@@ -20,10 +20,6 @@
  System: G.A. Lib
 
  Description: Determines the size of a double linked list
-
- CVS Information
- $Author: harq_al_ada $
- $Id: dlist_size.c,v 1.3 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
@@ -31,19 +27,12 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_size.c,v 1.3 2006-01-29 19:24:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id$";
 
-int
-dlist_size (dlist_t dlist, size_t * size)
+size_t
+dlist_size (dlist_t dlist)
 {
   assert (dlist != NULL);
-  assert (size != NULL);
-  
-  if (dlist == NULL || size == NULL)
-    {
-      return EGAINVAL;
-    }
-  CHECK_SIGNATURE (dlist, GA_DLIST_SIGNATURE);
-  *size = dlist->size_;
-  return 0x0;
+
+  return dlist->size_;
 }

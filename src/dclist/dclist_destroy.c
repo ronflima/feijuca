@@ -60,7 +60,7 @@ dclist_destroy (dclist_t dclist)
         {
           dclist->list_->tail_->next_ = NULL;
         }
-      rc = dlist_destroy (dclist->list_);
+      dlist_destroy (dclist->list_);
       free (dclist);
     }
   return rc;

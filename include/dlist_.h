@@ -22,10 +22,6 @@
  Description: Interfaces and datatypes for double-linked lists. Even
  being a specialization of single lists, the double-linked lists are
  being implemented as a brand new different kind of list.
-
- CVS Information
- $Author: harq_al_ada $
- $Id: dlist_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
 #ifndef DLIST__H
@@ -36,34 +32,25 @@
 
 GABEGINDECLS
 /*
- * Constants
- */
-enum 
-{
-  GA_DLIST_SIGNATURE = (ga_magic_t)0xFADEBAD2u
-};
-
-/*
  * Datatypes
  */
 /* Abstraction for a single list element */
-typedef struct dlist_element_t
+  struct dlist_element_t
 {
   void *data_;
   struct dlist_element_t *next_;
   struct dlist_element_t *prev_;
-}
-dlist_element_t;
+};
+typedef struct dlist_element_t * dlist_element_t;
 
 /* Abstraction for the list descriptor */
 struct dlist_t
 {
-  size_t size_;                 /* List size */
-  dlist_element_t *curr_;       /* Current navigation point */
-  dlist_element_t *head_;       /* List head */
-  dlist_element_t *tail_;       /* List tail */
-  deallocator_t *deallocator_;  /* Deallocator routine for elements */
-  ga_magic_t signature_;        /* Descriptor signature */
+  size_t size_;			/* List size */
+  dlist_element_t curr_;	/* Current navigation point */
+  dlist_element_t head_;	/* List head */
+  dlist_element_t tail_;	/* List tail */
+  deallocator_t *deallocator_;	/* Deallocator routine for elements */
 };
 
 GAENDDECLS

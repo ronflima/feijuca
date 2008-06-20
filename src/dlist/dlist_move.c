@@ -21,10 +21,6 @@
 
  Description: Moves the curr_ pointer depending on the parameter of
  the list
-
- CVS Information
- $Author: harq_al_ada $
- $Id: dlist_move.c,v 1.19 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,51 +28,46 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_move.c,v 1.19 2006-01-29 19:24:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id$";
 
-int
+GAERROR
 dlist_move (dlist_t list, position_t whence)
 {
   assert (list != NULL);
-  if (list == NULL)
-    {
-      return EGAINVAL;
-    }
-  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);  
-  
+
   /* Decides how to navigate in the list */
   switch (whence)
     {
-    case POS_HEAD:			/* Moves to the head of the list */
+    case POS_HEAD:		/* Moves to the head of the list */
       list->curr_ = list->head_;
       break;
-    case POS_TAIL:			/* Moves to the tail of the list */
+    case POS_TAIL:		/* Moves to the tail of the list */
       list->curr_ = list->tail_;
       break;
-    case POS_NEXT:			/* Moves to the next element */
+    case POS_NEXT:		/* Moves to the next element */
       if (list->curr_)
         {
           list->curr_ = list->curr_->next_;
         }
       else
         {
-          return EOF;
+          return EGAEOF;
         }
       break;
-    case POS_PREV:			/* Moves to the previous element */
+    case POS_PREV:		/* Moves to the previous element */
       if (list->curr_)
         {
           list->curr_ = list->curr_->prev_;
         }
       else
         {
-          return EOF;
+          return EGAEOF;
         }
       break;
-    case POS_NONE:              /* Does nothing: ignored */
+    case POS_NONE:		/* Does nothing: ignored */
       break;
     default:			/* Invalid parameter provided */
       return EGAINVAL;
     }
-  return 0x0;
+  return EGAOK;
 }

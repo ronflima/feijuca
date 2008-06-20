@@ -57,7 +57,7 @@ dclist_init (dclist_t * dclist, deallocator_t * dealloc)
         }
       else
         {
-          if ((rc = dlist_init (&(*dclist)->list_, dealloc)) != 0x0)
+          if (((*dclist)->list_ = dlist_init (dealloc)) == NULL)
             {
               free (*dclist);
             }

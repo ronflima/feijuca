@@ -20,10 +20,6 @@
  System: G.A. Lib
 
  Description: Deletes the next element pointed by element
-
- CVS Information
- $Author: harq_al_ada $
- $Id: dlist_del.c,v 1.28 2006-02-12 23:08:29 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -32,7 +28,7 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.28 2006-02-12 23:08:29 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id$";
 
 /*
  * Local prototypes
@@ -42,103 +38,138 @@ static char const rcsid [] = "@(#) $Id: dlist_del.c,v 1.28 2006-02-12 23:08:29 h
  * This function relinks the list extracting the element pointed by
  * the parameter element from the list. This function guarantees that
  * the list will be linked correctly after the operation.
- * Return values:
- * - 0 upon success
- * - EOF if the element provided is NULL
  */
-static int 
-relink_list_ __P((dlist_t, dlist_element_t *));
+static void
+relink_list_ __P ((dlist_t, dlist_element_t));
+
+/*
+ * This function relinks the list head when it was required to delete it.
+ */
+static void
+relink_list_head_ __P ((dlist_t));
+
+/*
+ * This function relinks the list tail when it was required to delete it.
+ */
+static void
+relink_list_tail_ __P ((dlist_t));
 
+
 /*
  * Exported functions
  */
-int
+GAERROR
 dlist_del (dlist_t list, void **data, position_t whence)
 {
-  dlist_element_t *element;	/* Current element being processed */
-  int rc = 0x0;
-  
+  dlist_element_t element = NULL;	/* Current element being processed */
+
   assert (list != NULL);
-  if (list == NULL)
-    {
-      return EGAINVAL;
-    }
-  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
-  element = (dlist_element_t *) NULL;
+  assert (data != NULL);
+
   if (data != NULL)
     {
       *data = (void *) NULL;
     }
+
   if (list->size_ == 0x0u)
     {
-      rc = EOF;
-    }
-  else if ((data == NULL) && (list->deallocator_ == NULL))
-    {
-      rc = EGAINVAL;
+      return EGAEOF;
     }
   else
     {
       if (whence == POS_HEAD)
         {
           element = list->head_;
+          relink_list_head_ (list);
         }
       else if (whence == POS_TAIL)
         {
           element = list->tail_;
-        }
-      else if ((whence == POS_CURR) || (whence == POS_NONE))
-        {
-          element = list->curr_;
-          list->curr_ = NULL;
-        }
-      else if (whence == POS_NEXT)
-        {
-          if (list->curr_ != NULL)
-            {
-              element = list->curr_->next_;
-            }
-        }
-      else if (whence == POS_PREV)
-        {
-          if (list->curr_ != NULL)
-            { 
-              element = list->curr_->prev_;
-            }
+          relink_list_tail_ (list);
         }
       else
         {
-          rc = EGAINVAL;
-        }
-    }
-  if (rc == 0x0)
-    {
-      if ((rc = relink_list_ (list, element)) == 0x0)
-        {
-          if (data != NULL)
+          if ((whence == POS_CURR) || (whence == POS_NONE))
             {
-              *data = element->data_;
+              element = list->curr_;
+              list->curr_ = NULL;
+            }
+          else if (whence == POS_NEXT)
+            {
+              if (list->curr_ != NULL)
+                {
+                  element = list->curr_->next_;
+                }
+            }
+          else if (whence == POS_PREV)
+            {
+              if (list->curr_ != NULL)
+                {
+                  element = list->curr_->prev_;
+                }
             }
           else
             {
-              list->deallocator_ (element->data_);
+              return EGAINVAL;
             }
-          free (element);
-          --(list->size_);
+
+          /* Redo list pointers */
+          relink_list_ (list, element);
         }
     }
-  return rc;
+
+  if (element)
+    {
+      if (data != NULL)
+        {
+          *data = element->data_;
+        }
+      else
+        {
+          list->deallocator_ (element->data_);
+        }
+      free (element);
+      --(list->size_);
+    }
+  return EGAOK;
 }
 
+
+/*
+ * This function relinks the list head when it was required to delete it.
+ */
+static void
+relink_list_head_ (dlist_t list)
+{
+  list->head_ = list->head_->next_;
+  if (list->head_)
+    {
+      list->head_->prev_ = NULL;
+    }
+}
+
+/*
+ * This function relinks the list tail when it was required to delete it.
+ */
+static void
+relink_list_tail_ (dlist_t list)
+{
+  list->tail_ = list->tail_->prev_;
+  if (list->tail_)
+    {
+      list->tail_->next_ = NULL;
+    }
+}
+
 /*
  * Internal functions definitions
  */
-static int
-relink_list_ (dlist_t list, dlist_element_t * element)
+static void
+relink_list_ (dlist_t list, dlist_element_t element)
 {
   if (element == NULL)
     {
-      return EOF;
+      return;
     }
   if (element->prev_ != NULL)
     {
@@ -148,23 +179,15 @@ relink_list_ (dlist_t list, dlist_element_t * element)
     {
       element->next_->prev_ = element->prev_;
     }
+
   /* Checks if element is the head of the tail. This is needed for
    * operations on curr_ where it points to the head or tail */
   if (element == list->head_)
     {
-      list->head_ = element->next_;
-      if (list->head_ != NULL)
-        {
-          list->head_->prev_ = NULL;
-        }
+      relink_list_head_ (list);
     }
   if (element == list->tail_)
     {
-      list->tail_ = element->prev_;
-      if (list->tail_ != NULL)
-        {
-          list->tail_->next_ = NULL;
-        }
+      relink_list_tail_ (list);
     }
-  return 0x0;
 }

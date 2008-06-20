@@ -46,5 +46,6 @@ dclist_get (dclist_t dclist, void **data, position_t whence)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
-  return dlist_get (dclist->list_, data, whence);
+  *data = (void *)dlist_get (dclist->list_,whence);
+  return EGAOK;
 }

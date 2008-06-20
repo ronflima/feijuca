@@ -55,7 +55,7 @@ deque_init (deque_t * deque, deallocator_t * dealloc)
       else
         {
           (*deque)->signature_ = GA_DEQUE_SIGNATURE;
-          if ((rc = dlist_init (&(*deque)->list_, dealloc)) != 0x0)
+          if (((*deque)->list_ = dlist_init (dealloc)) == NULL)
             {
               (*deque)->signature_ = 0x0;
               free (*deque);

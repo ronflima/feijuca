@@ -34,7 +34,8 @@
 #include "dlist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist.c,v 1.21 2006-02-04 14:36:34 harq_al_ada Exp $";
+static char const rcsid[] =
+  "@(#) $Id: dlist.c,v 1.21 2006-02-04 14:36:34 harq_al_ada Exp $";
 
 /*
  * Local macros
@@ -44,7 +45,7 @@ static char const rcsid [] = "@(#) $Id: dlist.c,v 1.21 2006-02-04 14:36:34 harq_
 /*  
  * Local constants
  */
-enum 
+enum
 {
   PATTERN = 0xDEADBEEFu
 };
@@ -61,15 +62,15 @@ static int scenario_check_back_nav (size_t);
  * Exported functions
  */
 
-int 
+int
 test_dlist (size_t maxelem)
 {
   int rc = 0x0;
   register int i;
-  scenario_t scenarios [] = {
-    {"Forward navigation check" , scenario_check_forward_nav },
-    {"Deletions check"          , scenario_check_deletions   },
-    {"Backward navigation check", scenario_check_back_nav    }
+  scenario_t scenarios[] = {
+    {"Forward navigation check", scenario_check_forward_nav},
+    {"Deletions check", scenario_check_deletions},
+    {"Backward navigation check", scenario_check_back_nav}
   };
 
   return execute_scenarios (TEST, maxelem, scenarios, sizeof (scenarios));
@@ -87,7 +88,7 @@ load_dlist (dlist_t dlist, size_t maxelem, unsigned char use_pattern)
   for (i = 0x0; (i < maxelem) && (status == 0x0); ++i)
     {
       int rc;
-      int * elem;
+      int *elem;
 
       elem = (int *) malloc (sizeof (int));
       if (elem == NULL)
@@ -95,15 +96,15 @@ load_dlist (dlist_t dlist, size_t maxelem, unsigned char use_pattern)
           ERROR (TEST, "malloc", ENOMEM);
           status = EFAILED;
         }
-      else 
+      else
         {
           if (use_pattern)
             {
-              * elem = PATTERN;
+              *elem = PATTERN;
             }
-          else 
+          else
             {
-              * elem = i + 1;
+              *elem = i + 1;
             }
           if ((rc = dlist_insert (dlist, elem, POS_HEAD)) != 0x0)
             {
@@ -130,7 +131,7 @@ scenario_check_forward_nav (size_t maxelem)
 
   status = 0x0;
 
-  if ((rc = dlist_init (&dlist, free)) != 0x0)
+  if ((dlist = dlist_init (free)) == NULL)
     {
       ERROR (TEST, "dlist_init", rc);
       status = EFAILED;
@@ -145,7 +146,7 @@ scenario_check_forward_nav (size_t maxelem)
       ERROR (TEST, "dlist_move", rc);
       status = EFAILED;
     }
-  else 
+  else
     {
       register int i;
       size_t size;
@@ -165,22 +166,15 @@ scenario_check_forward_nav (size_t maxelem)
             }
         }
       while (rc == 0x0);
-      if ((rc = dlist_size (dlist, &size)) != 0x0)
-        {
-          ERROR (TEST, "dlist_size", ECKFAIL);
-          status = EFAILED;
-        }
+
+      size = dlist_size (dlist);
       if (i != size)
         {
           ERROR (TEST, "# of elements mismatch", ECKFAIL);
           status = EFAILED;
         }
     }
-  if ((rc = dlist_destroy (dlist)) != 0x0)
-    {
-      ERROR (TEST, "dlist_destroy", rc);
-      status = EFAILED;
-    }
+  dlist_destroy (dlist);
 
   return status;
 }
@@ -194,7 +188,7 @@ scenario_check_deletions (size_t maxelem)
   dlist_t dlist;
 
   status = 0x0;
-  if ((rc = dlist_init (&dlist, free)) != 0x0)
+  if ((dlist = dlist_init (free)) == NULL)
     {
       ERROR (TEST, "dlist_init", rc);
       status = EFAILED;
@@ -209,7 +203,7 @@ scenario_check_deletions (size_t maxelem)
       ERROR (TEST, "dlist_del", rc);
       status = EFAILED;
     }
-  else  if ((rc = dlist_del (dlist, NULL, POS_TAIL)) != 0x0)
+  else if ((rc = dlist_del (dlist, NULL, POS_TAIL)) != 0x0)
     {
       ERROR (TEST, "dlist_del", rc);
       status = EFAILED;
@@ -221,7 +215,7 @@ scenario_check_deletions (size_t maxelem)
           ERROR (TEST, "dlist_move", rc);
           status = EFAILED;
         }
-      else 
+      else
         {
           register int i;
           size_t size;
@@ -231,11 +225,8 @@ scenario_check_deletions (size_t maxelem)
             {
               ++i;
             }
-          if ((rc = dlist_size (dlist, &size)) != 0x0)
-            {
-              ERROR (TEST, "dlist_size", ECKFAIL);
-              status = EFAILED;
-            }
+
+          size = dlist_size (dlist);
           if (i != size)
             {
               ERROR (TEST, "Number of items mismatch", ECKFAIL);
@@ -243,11 +234,7 @@ scenario_check_deletions (size_t maxelem)
             }
         }
     }
-  if ((rc = dlist_destroy (dlist)) != 0x0)
-    {
-      ERROR (TEST, "dlist_destroy", rc);
-      status = EFAILED;
-    }
+  dlist_destroy (dlist);
   return status;
 }
 
@@ -260,7 +247,7 @@ scenario_check_back_nav (size_t maxelem)
   dlist_t dlist;
 
   status = 0x0;
-  if ((rc = dlist_init (&dlist, free)) != 0x0)
+  if ((dlist = dlist_init (free)) == NULL)
     {
       ERROR (TEST, "dlist_init", rc);
       status = EFAILED;
@@ -275,7 +262,7 @@ scenario_check_back_nav (size_t maxelem)
       ERROR (TEST, "dlist_move", rc);
       status = EFAILED;
     }
-  else 
+  else
     {
       register int i;
       size_t size;
@@ -285,11 +272,8 @@ scenario_check_back_nav (size_t maxelem)
         {
           ++i;
         }
-      if ((rc = dlist_size (dlist, &size)) != 0x0)
-        {
-          ERROR (TEST, "dlist_size", ECKFAIL);
-          status = EFAILED;
-        }
+
+      size = dlist_size (dlist);
       if (i != size)
         {
           ERROR (TEST, "Number of items mismatch", ECKFAIL);
@@ -301,10 +285,6 @@ scenario_check_back_nav (size_t maxelem)
           status = EFAILED;
         }
     }
-  if ((rc = dlist_destroy (dlist)) != 0x0)
-    {
-      ERROR (TEST, "dlist_destroy", rc);
-      status = EFAILED;
-    }
+  dlist_destroy (dlist);
   return status;
 }

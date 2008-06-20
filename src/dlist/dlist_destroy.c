@@ -21,10 +21,6 @@
 
  Description: Finishes a list. This routine will delete the whole list
  from memory
-
- CVS Information
- $Author: harq_al_ada $
- $Id: dlist_destroy.c,v 1.7 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdio.h>
@@ -33,31 +29,16 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_destroy.c,v 1.7 2006-01-29 19:24:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id$";
 
-int
+void
 dlist_destroy (dlist_t list)
 {
-  int rc = 0x0;
   assert (list != NULL);
-  if (list == NULL)
-    {
-      rc = EGAINVAL;
-    }
-  else 
-    {
-      CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
-  
-      /* Proceeds with the deletion - Deletes the list from the head, always */
-      while ((rc = dlist_del (list, NULL, POS_HEAD)) == 0x0)
-        ;
-      /* EOF is not an error. Resets rc if it is EOF */
-      if (rc == EOF)
-        {
-          rc = 0x0;
-        }
-      free (list);
-    }
-  
-  return rc;
+
+  /* Proceeds with the deletion - Deletes the list from the head, always */
+  while (dlist_del (list, NULL, POS_HEAD) == EGAOK)
+    ;
+
+  free (list);
 }

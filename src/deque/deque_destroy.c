@@ -50,7 +50,7 @@ deque_destroy (deque_t deque)
   else
     {
       CHECK_SIGNATURE (deque, GA_DEQUE_SIGNATURE);
-      rc = dlist_destroy (deque->list_);
+      dlist_destroy (deque->list_);
       free (deque);
     }
   return rc;

@@ -47,5 +47,6 @@ dclist_size (dclist_t dclist, size_t * size)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (dclist, GA_DCLIST_SIGNATURE);
-  return dlist_size (dclist->list_, size);
+  *size = dlist_size (dclist->list_);
+  return EGAOK;
 }

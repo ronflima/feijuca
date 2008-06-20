@@ -46,5 +46,6 @@ deque_size (deque_t deque, size_t * size)
       return EGAINVAL;
     }
   CHECK_SIGNATURE (deque, GA_DEQUE_SIGNATURE);
-  return dlist_size (deque->list_, size);
+  *size = dlist_size (deque->list_);
+  return EGAOK; 
 }

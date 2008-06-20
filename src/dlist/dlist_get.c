@@ -21,10 +21,6 @@
 
  Description: Gets the current element of the list and iterates to the
  next one
-
- CVS Information
- $Author: harq_al_ada $
- $Id: dlist_get.c,v 1.18 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 #include <stdio.h>
 #include <assert.h>
@@ -32,38 +28,31 @@
 #include "dlist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: dlist_get.c,v 1.18 2006-01-29 19:24:13 harq_al_ada Exp $";
+static char const rcsid[] = "@(#) $Id$";
 
-int
-dlist_get (dlist_t list, void **data, position_t whence)
+const void *
+dlist_get (dlist_t list, position_t whence)
 {
+  void *data = NULL;
+
   assert (list != NULL);
-  assert (data != NULL);
-  if (list == NULL || data == NULL)
-    {
-      return EGAINVAL;
-    }
-  CHECK_SIGNATURE (list, GA_DLIST_SIGNATURE);
-  
+
   /* Checks if the current pointer points to somewhere */
   if (list->curr_ == NULL)
     {
-      return EOF;
+      return data;
     }
   /* Gets the data from the current pointer */
-  *data = list->curr_->data_;
+  data = list->curr_->data_;
+
   /* Decides how to navigate the list */
   switch (whence)
     {
-    case POS_NONE:              /* Used only for parameter checking */
-    case POS_CURR:              
-      break;
-    case POS_NEXT:			/* Moves to the next element */
-    case POS_PREV:			/* Moves to the previous element */
-      return dlist_move (list, whence);
-      break;
+    case POS_NEXT:		/* Moves to the next element */
+    case POS_PREV:		/* Moves to the previous element */
+      dlist_move (list, whence);
     default:			/* Invalid parameter provided */
-      return EGAINVAL;
+      break;
     }
-  return 0x0;
+  return data;
 }
