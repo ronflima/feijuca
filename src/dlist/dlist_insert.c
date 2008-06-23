@@ -93,51 +93,7 @@ dlist_insert (dlist_t list, const void *data, position_t whence)
 static GAERROR
 relink_list_ (dlist_t list, dlist_element_t element, position_t whence)
 {
-  if (whence == POS_CURR || whence == POS_NONE || whence == POS_PREV)
-    {
-      /* It was conventioned that all of these positions have the same
-       * behavior */
-      if (list->curr_ != NULL)
-        {
-          element->next_ = list->curr_;
-          element->prev_ = list->curr_->prev_;
-          if (element->prev_ != NULL)
-            {
-              element->prev_->next_ = element;
-            }
-          if (list->curr_ == list->head_)
-            {
-              list->head_ = element;
-            }
-          list->curr_->prev_ = element;
-        }
-      else
-        {
-          return EGABADC;
-        }
-    }
-  else if (whence == POS_NEXT)
-    {
-      if (list->curr_ != NULL)
-        {
-          element->next_ = list->curr_->next_;
-          element->prev_ = list->curr_;
-          if (element->next_ != NULL)
-            {
-              element->next_->prev_ = element;
-            }
-          if (list->curr_ == list->tail_)
-            {
-              list->tail_ = element;
-            }
-          list->curr_->next_ = element;
-        }
-      else
-        {
-          return EGABADC;
-        }
-    }
-  else if (whence == POS_HEAD)
+  if (whence == POS_HEAD)
     {
       element->next_ = list->head_;
       element->prev_ = NULL;
@@ -153,7 +109,45 @@ relink_list_ (dlist_t list, dlist_element_t element, position_t whence)
     }
   else
     {
-      return EGAINVAL;
+      if (list->curr_ == NULL)
+        {
+          return EGABADC;
+        }
+      else
+        {
+          if (whence == POS_PREV)
+            {
+              element->next_ = list->curr_;
+              element->prev_ = list->curr_->prev_;
+              if (element->prev_ != NULL)
+        	{
+        	  element->prev_->next_ = element;
+        	}
+              list->curr_->prev_ = element;
+              if (list->curr_ == list->head_)
+        	{
+        	  list->head_ = element;
+        	}
+            }
+          else if (whence == POS_NEXT)
+            {
+              element->next_ = list->curr_->next_;
+              element->prev_ = list->curr_;
+              if (element->next_ != NULL)
+        	{
+        	  element->next_->prev_ = element;
+        	}
+              list->curr_->next_ = element;
+              if (list->curr_ == list->tail_)
+        	{
+        	  list->tail_ = element;
+        	}
+            }
+          else
+            {
+              return EGAINVAL;
+            }
+        }
     }
   return EGAOK;
 }

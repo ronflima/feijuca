@@ -33,26 +33,40 @@ static char const rcsid[] = "@(#) $Id$";
 const void *
 dlist_get (dlist_t list, position_t whence)
 {
-  void *data = NULL;
+  dlist_element_t element = NULL;
 
   assert (list != NULL);
 
-  /* Checks if the current pointer points to somewhere */
-  if (list->curr_ == NULL)
-    {
-      return data;
-    }
-  /* Gets the data from the current pointer */
-  data = list->curr_->data_;
-
-  /* Decides how to navigate the list */
   switch (whence)
     {
+    case POS_HEAD:
+      element = list->head_;
+      break;
+    case POS_TAIL:
+      element = list->tail_;
+      break;
+    case POS_CURR:
+      element = list->curr_;
+      break;
     case POS_NEXT:		/* Moves to the next element */
+      if (list->curr_ != NULL)
+        {
+          element = list->curr_->next_;
+        }
+      break;
     case POS_PREV:		/* Moves to the previous element */
-      dlist_move (list, whence);
+      if (list->curr_ != NULL)
+        {
+          element = list->curr_->prev_;
+        }
+      break;
     default:			/* Invalid parameter provided */
       break;
     }
-  return data;
+
+  if (element == NULL)
+    {
+      return NULL;
+    }
+  return element->data_;
 }

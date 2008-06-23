@@ -39,20 +39,17 @@ static char const rcsid[] = "@(#) $Id$";
  * the parameter element from the list. This function guarantees that
  * the list will be linked correctly after the operation.
  */
-static void
-relink_list_ __P ((dlist_t, dlist_element_t));
+static void relink_list_ __P ((dlist_t, dlist_element_t));
 
 /*
  * This function relinks the list head when it was required to delete it.
  */
-static void
-relink_list_head_ __P ((dlist_t));
+static void relink_list_head_ __P ((dlist_t));
 
 /*
  * This function relinks the list tail when it was required to delete it.
  */
-static void
-relink_list_tail_ __P ((dlist_t));
+static void relink_list_tail_ __P ((dlist_t));
 
 
 /*
@@ -89,32 +86,33 @@ dlist_del (dlist_t list, void **data, position_t whence)
         }
       else
         {
-          if ((whence == POS_CURR) || (whence == POS_NONE))
+          if (list->curr_ == NULL)
             {
-              element = list->curr_;
-              list->curr_ = NULL;
-            }
-          else if (whence == POS_NEXT)
-            {
-              if (list->curr_ != NULL)
-                {
-                  element = list->curr_->next_;
-                }
-            }
-          else if (whence == POS_PREV)
-            {
-              if (list->curr_ != NULL)
-                {
-                  element = list->curr_->prev_;
-                }
+              return EGABADC;
             }
           else
             {
-              return EGAINVAL;
-            }
+              if (whence == POS_CURR)
+        	{
+        	  element = list->curr_;
+        	  list->curr_ = NULL;
+        	}
+              else if (whence == POS_NEXT)
+        	{
+        	  element = list->curr_->next_;
+        	}
+              else if (whence == POS_PREV)
+        	{
+        	  element = list->curr_->prev_;
+        	}
+              else
+        	{
+        	  return EGAINVAL;
+        	}
 
-          /* Redo list pointers */
-          relink_list_ (list, element);
+              /* Redo list pointers */
+              relink_list_ (list, element);
+            }
         }
     }
 
