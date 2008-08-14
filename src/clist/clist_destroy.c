@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,44 +17,23 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
- Description: Finishes a list. This routine will delete the whole list
- from memory
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist_destroy.c,v 1.8 2006-06-12 09:55:00 harq_al_ada Exp $
+ Description: Finishes a list. This routine will wipe the whole list from memory
 */
 #include <assert.h>
 #include <string.h>
 #include "list.h"
 #include "clist.h"
-#include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_destroy.c,v 1.8 2006-06-12 09:55:00 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
-GAERROR
+void
 clist_destroy (clist_t clist)
 {
-  GAERROR rc = EGAOK;
-
   assert (clist != NULL);
-  if (! clist_is_valid_ (clist))
-    {
-      rc =  EGAINVAL;
-    }
-  else
-    {
-      list_t list;
-
-      if((rc = clist_get_list_ (clist, &list)) == EGAOK)
-        {
-          list_destroy (list);
-	  memset (clist, 0x0, sizeof (struct clist_t));
-	  free (clist);
-        }
-    }
-  return rc;
+  while (clist_del (clist, NULL, POS_HEAD) == EGAOK)
+    ;
+  free (clist);
 }

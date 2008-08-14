@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,40 +17,21 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
- Description: Gets the current element of the list and iterates to the
- next one
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist_get_pos.c,v 1.1 2006-06-12 09:55:57 harq_al_ada Exp $
+ Description: This function is a wrapper to list_get_pos since that list function is
+ suitable for this functionality and can be used without any problem.
 */
 #include <assert.h>
 #include "list.h"
 #include "clist.h"
-#include "clist_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_get_pos.c,v 1.1 2006-06-12 09:55:57 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
-GAERROR 
-clist_get_pos (clist_t clist, position_t * whence)
+position_t 
+clist_get_pos (clist_t clist)
 {
-  GAERROR rc = EGAOK;
   assert (clist != NULL);
-  if (! clist_is_valid_ (clist))
-    {
-      rc =  EGAINVAL;
-    }
-  else
-    {
-      list_t list;              /* Internal list */
-
-      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
-        {
-          *whence = list_get_pos (list);
-        }
-    }
-  return rc;
+  return list_get_pos ((list_t) clist);
 }

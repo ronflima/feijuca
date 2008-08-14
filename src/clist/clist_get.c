@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,41 +17,56 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
- Description: Gets the current element of the list and iterates to the
- next one
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist_get.c,v 1.12 2006-06-12 09:55:25 harq_al_ada Exp $
+ Description: Gets a given element from the list. Which element to get is
+ provided as a function parameter.
 */
 #include <assert.h>
-#include "list.h"
 #include "clist.h"
-#include "clist_.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_get.c,v 1.12 2006-06-12 09:55:25 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
 GAERROR
 clist_get (clist_t clist, void **data, position_t whence)
 {
-  GAERROR rc = EGAOK;           /* Error handling */
+  list_element_t element = NULL;
 
   assert (clist != NULL);
-  if (! clist_is_valid (clist))
+  switch (whence)
     {
-      rc = EGAINVAL;
+    case POS_HEAD:
+      if (clist->head_ != NULL)
+	{
+	  element = clist->head_;
+	}
+      break;
+    case POS_TAIL:
+      if (clist->tail_ != NULL)
+	{
+	  element = clist->tail_;
+	}
+      break;
+    case POS_CURR:
+      if (clist->curr_ != NULL)
+	{
+	  element = clist->curr_;
+	}
+      break;
+    case POS_NEXT:
+      if (clist->curr_ != NULL)
+	{
+	  element = clist->curr_->next_;
+	}
+    default:
+      return EGAINVAL;
     }
-  else
+  if (element == NULL)
     {
-      list_t list;              /* Internal list */
-      
-      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
-        {
-          *data = (void *) list_get (list, whence);
-        }
+      return EGAEOF;
     }
-  return rc;
+  *data = (void *)element->data_;
+  return EGAOK;
 }

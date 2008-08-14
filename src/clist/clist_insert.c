@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,56 +17,67 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
  Description: Inserts a new element in the list
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist_insert.c,v 1.18 2006-10-12 16:40:16 harq_al_ada Exp $
 */
 #include <assert.h>
 #include <stdlib.h>
+#include <string.h>
 #include "clist.h"
-#include "clist_.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_insert.c,v 1.18 2006-10-12 16:40:16 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
 GAERROR
 clist_insert (clist_t clist, const void *data, position_t whence)
 {
-  GAERROR rc = EGAOK;
+  list_element_t element;
 
   assert (clist != NULL);
-  if (! clist_is_valid_ (clist))
+  assert (data != NULL);
+  if ((element = (list_element_t) malloc (sizeof (struct list_element_t))) == NULL)
     {
-      rc = EGAINVAL;
+      return EGANOMEM;
+    }
+  memset (element, 0x0, sizeof (struct list_element_t));
+  element->data_ = data;
+  if (clist->size_ == 0x0)
+    {
+      clist->head_ = clist->tail_ = element;
     }
   else
     {
-      list_t list;          /* Inner linked list */
-
-      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
-        {
-          if ((rc = list_insert (list, data, whence)) == EGAOK)
-            {
-              list_element_t tail;
-          
-              if ((rc = list_get_tail_ (list, &tail)) == EGAOK)
-                {
-                  list_element_t head; /* Next element from tail */
-              
-                  /* Enforces the linking to the head, even if the
-                   * head has not changed. */
-                  if ((rc = list_get_head_ (list, &head)) == EGAOK)
-                    {
-                      rc = list_element_set_next_ (tail, head);
-                    }
-                }
-            }
-        }
+      switch (whence)
+	{
+	case POS_HEAD:
+	  element->next_ = clist->head_;
+	  clist->head_ = element;
+	  break;
+	case POS_TAIL:
+	  clist->tail_->next_ = element;
+	  clist->tail_ = element;
+	  break;
+	case POS_NEXT:
+	  if (clist->curr_ == NULL)
+	    {
+	      free (element);
+	      return EGABADC;
+	    }
+	  element->next_ = clist->curr_->next_;
+	  clist->curr_->next_ = element;
+	  if (clist->curr_ == clist->tail_)
+	    {
+	      clist->head_ = element;
+	    }
+	  break;
+	default:
+	  free (element);
+	  return EGAINVAL;
+	}
     }
-  return rc;
+  clist->tail_->next_ = clist->head_;
+  ++ (clist->size_);
+  return EGAOK;
 }

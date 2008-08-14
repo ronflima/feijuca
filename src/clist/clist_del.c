@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,136 +17,132 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
- Description: Deletes the next element pointed by element
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist_del.c,v 1.17 2007-02-25 12:59:30 harq_al_ada Exp $
+ Description: Deletes and element from the list. This element can be the head or
+ the next element from the current pointer. It is possible to delete other
+ positions but the computational cost is too high.
 */
 #include <stdio.h>
 #include <assert.h>
 #include "clist.h"
-#include "clist_.h"
 #include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_del.c,v 1.17 2007-02-25 12:59:30 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
-/*
- * Rebuilds the circular condition of the circular list. Since clist
- * uses list routines, the deletion may lead the list to become linear
- * again. Also, the list may become invalid, when the curr is pointing
- * to the tail and it is requested to delete the next
- * element. Therefore, it is necessary to rebuild the "circularity" of
- * the list.
- *
- * Parameters:
- * - clist - Circular list descriptor
- * - whence - Position where the deletion operation took place
- *
- * Returns:
- * - EGAEOF - Reached the end of the list
- * - EGAINVAL - invalid whence or the circular descriptor is invalid
- */
-static GAERROR
-rebuild_circular_condition_ __P((clist_t, position_t));
-
+/* Local prototypes */
+static list_element_t extract_head_ (clist_t);
+static list_element_t extract_next_ (clist_t);
+
 GAERROR
 clist_del (clist_t clist, void **data, position_t whence)
 {
-  GAERROR rc = EGAOK;
+  list_element_t element;	/* Element to be deleted */
 
   assert (clist != NULL);
-  if (! clist_is_valid_(clist))
+  if (clist->size_ == 0x0)
     {
-      rc = EGAINVAL;
+      return EGAEOF;
     }
-  else 
+  switch (whence)
     {
-      size_t size;                  /* Size of the list */
-
-      if ((rc = clist_get_size (clist, &size)) == EGAOK)
-        {
-          if (size == 0x0)
-            {
-              rc = EGAEOF;
-            }
-          else
-            {
-              list_t list;      /* Inner descriptor list */
-
-              if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
-                {
-                  if ((rc = list_del (list, data, whence)) == EGAOK)
-                    {
-                      rc = rebuild_circular_condition_ (clist, whence);
-                    }
-                }
-            }
-        }
+    case POS_HEAD:
+      element = extract_head_ (clist);
+      break;
+    case POS_NEXT:
+      if (clist->curr_ == NULL) 
+	{
+	  return EGABADC;
+	}
+      element = extract_next_ (clist);
+      break;
+    default:
+      return EGAINVAL;
     }
-  return rc;
+  if (element == NULL)
+    {
+      return EGAEOF;
+    }
+  if (data != NULL)
+    {
+      *data = (void *)element->data_;
+    }
+  else
+    {
+      clist->deallocator_ (data);
+    }
+  free (element);
+  -- (clist->size_);
+  return EGAOK;
 }
 
-static GAERROR
-rebuild_circular_condition_ (clist_t clist, position_t whence)
+/* 
+ * This function extracts the head element of the list, updating all necessary
+ * pointers in order to maintain the list structural integrity.
+ */
+static list_element_t
+extract_head_ (clist_t clist)
 {
-  size_t size;
-  GAERROR rc = EGAOK;
+  list_element_t element;
 
-  if ((rc = clist_get_size (clist, &size)) == EGAOK)
+  assert (clist != NULL);
+  element = clist->head_;
+  if (clist->head_ == clist->tail_)
     {
-      if (size != 0x0)
-        {
-          list_t list;
-
-          if((rc = clist_get_list_ (clist, &list)) == EGAOK)
-            {
-              list_element_t tail; /* List tail */
-              list_element_t head; /* List head */
-              list_element_t next; /* Next element (from tail) */
-
-              head=tail=next=NULL;
-              rc = list_get_tail_(list, &tail);
-              if (rc == EGAOK)
-                {
-                  rc = list_get_head_ (list, &head);
-                }
-              if (rc == EGAOK)
-                {
-                  rc = list_element_get_next_ (tail, &next);
-                }
-              if (whence == POS_HEAD)
-                {
-                  if (rc == EGAOK)
-                    {
-                      if (next != head)
-                        {
-                          /* Updates the tail->next pointer, making
-                           * the list circular again. */
-                          rc = list_element_set_next_ (tail, head);
-                        }
-                    }
-                }
-              else if (whence == POS_NEXT)
-                {
-                  if (next == NULL)
-                    {
-                      /* List became linear. Make it circular
-                       * again. */
-                      rc = list_element_set_next_ (tail, head);
-                    }
-                  else if (next != head)
-                    {
-                      /* Head became invalid. We need to set it to a
-                       valid value. */
-                      rc = list_set_head_(list, next);
-                    }
-                }
-            }
-        }
+      clist->head_ = NULL;
+      clist->tail_ = NULL;
     }
-  return rc;
+  else
+    {
+      clist->head_ = clist->head_->next_;
+    }
+  if (clist->tail_ != NULL)
+    {
+      clist->tail_->next_ = clist->head_;
+    }
+  return element;
+}
+
+/* 
+ * This function extracts the next element from the current position, updating
+ * all necessary pointers in order to maintain the list structural integrity. 
+ */
+static list_element_t
+extract_next_ (clist_t clist)
+{
+  list_element_t element;
+
+  assert (clist != NULL);
+  assert (clist->curr_ != NULL);
+  element = clist->curr_->next_;
+  if (clist->curr_->next_ != NULL)
+    {
+      if (clist->curr_->next_ == clist->curr_)
+	{
+	  /* 
+	   * A single element in the list points to itself. Therefore, the next
+	   * element from the current is the current itself. Also, it is the
+	   * head and tail of the list. 
+	   */
+	  clist->head_ = NULL;
+	  clist->tail_ = NULL;
+	  clist->curr_ = NULL;
+	}
+      else
+	{
+	  if (clist->curr_->next_ == clist->head_) 
+	    {
+	      /* We are about to delete the head. Update it. */
+	      clist->head_ = clist->head_->next_;
+	    }
+	  if (clist->curr_->next_ == clist->tail_)
+	    {
+	      /* We are about to update the tail. Update it. */
+	      clist->tail_ = clist->curr_;
+	    }
+	  clist->curr_->next_ = clist->curr_->next_->next_;
+	}
+    }
+  return element;
 }

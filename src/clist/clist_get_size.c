@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,41 +17,21 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
  Description: Determines the size of the circular list
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist_get_size.c,v 1.2 2006-06-12 09:57:22 harq_al_ada Exp $
 */
 #include <stddef.h>
 #include <assert.h>
 #include "clist.h"
-#include "clist_.h"
+#include "list_.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist_get_size.c,v 1.2 2006-06-12 09:57:22 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
-GAERROR
-clist_get_size (clist_t clist, size_t * size)
+size_t
+clist_get_size (clist_t clist)
 {
-  GAERROR rc = EGAOK;
-
   assert (clist != NULL);
-  assert (size != NULL);
-  if (!clist_is_valid_(clist) || size == NULL)
-    {
-      rc = EGAINVAL;
-    }
-  else 
-    {
-      list_t list;              /* Internal list */
-      
-      if ((rc = clist_get_list_ (clist, &list)) == EGAOK)
-        {
-          *size = list_get_size (list);
-        }
-    }
-  return rc;
+  return clist->size_;
 }

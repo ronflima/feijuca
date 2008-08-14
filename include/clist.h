@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,13 +17,9 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
  Description: Interfaces and datatypes for single linked circular lists
-
- CVS Information
- $Author: harq_al_ada $
- $Id: clist.h,v 1.17 2006-06-12 09:51:15 harq_al_ada Exp $
 */
 #ifndef CLIST_H
 #define CLIST_H
@@ -40,19 +36,19 @@ GABEGINDECLS
 /*
  * Abstraction for the list descriptor 
  */
-typedef struct clist_t * clist_t;
+typedef list_t clist_t;
 
 /*
  * Prototypes
  */
-GAERROR (clist_init) __P ((clist_t *, deallocator_t *));
-GAERROR (clist_destroy) __P ((clist_t));
+clist_t (clist_init) __P ((deallocator_t *));
+void (clist_destroy) __P ((clist_t));
 GAERROR (clist_del) __P ((clist_t, void **, position_t));
 GAERROR (clist_get) __P ((clist_t, void **, position_t));
-int (clist_move) __P ((clist_t, position_t));
-int (clist_insert) __P ((clist_t, const void *, position_t));
-int (clist_size) __P ((clist_t, size_t *));
-int (clist_get_pos) __P((clist_t, position_t *));
+GAERROR (clist_move) __P ((clist_t, position_t));
+GAERROR (clist_insert) __P ((clist_t, const void *, position_t));
+size_t (clist_get_size) __P ((clist_t));
+position_t (clist_get_pos) __P((clist_t));
 
 GAENDDECLS
 #endif /* CLIST_H */

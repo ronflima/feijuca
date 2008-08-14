@@ -1,5 +1,5 @@
 /* -*-c-*-
- G.A. Library - A generic algorithms and data structures library
+ Feijuca Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
  This library is free software; you can redistribute it and/or modify
@@ -17,14 +17,11 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: G.A. Lib
+ System: Feijuca Lib
 
  Description: Test suite routines for circular lists. This test suite is also
               an example on how to use the lists routines
 
- CVS Information
- $Author: harq_al_ada $
- $Id: clist.c,v 1.15 2007-05-31 04:05:51 harq_al_ada Exp $
 */
 
 #include <stdio.h>
@@ -34,7 +31,7 @@
 #include "clist.h"
 
 /* Version info */
-static char const rcsid [] = "@(#) $Id: clist.c,v 1.15 2007-05-31 04:05:51 harq_al_ada Exp $";
+static char const rcsid [] = "@(#) $Id$";
 
 /*
  * Local macros
@@ -132,7 +129,7 @@ check_navigation (size_t maxelem)
 
   test_result = 0x0;
 
-  if ((rc = clist_init (&clist, free)) != 0x0)
+  if ((clist = clist_init (free)) == NULL)
     {
       ERROR (TEST, "clist_init", rc);
       test_result = EFAILED;
@@ -153,12 +150,8 @@ check_navigation (size_t maxelem)
       do 
         {
           position_t whence;
-          if ((rc = clist_get_pos (clist, &whence)) != 0x0)
-            {
-              ERROR (TEST, "clist_getpos", rc);
-              test_result = EFAILED;
-              break;
-            }
+	  
+	  whence = clist_get_pos (clist);
           if (whence == POS_TAIL)
             {
               break;
@@ -171,18 +164,14 @@ check_navigation (size_t maxelem)
           ERROR (TEST, "CList navigation failed", rc);
           test_result = EFAILED;
         }
-      clist_get_size (clist, &size);
+      size = clist_get_size (clist);
       if (i != size)
         {
           ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
           test_result = EFAILED;
         }
     }
-  if ((rc = clist_destroy (clist)) != 0x0)
-    {
-      ERROR (TEST, "clist_destroy", rc);
-      test_result = EFAILED;
-    }
+  clist_destroy (clist);
   return test_result;
 }
 
@@ -196,7 +185,7 @@ check_deletion (size_t elements)
 
   test_result = 0x0;
 
-  if ((rc = clist_init (&clist, free)) != 0x0)
+  if ((clist = clist_init (free)) == NULL)
     {
       ERROR (TEST, "clist_init", rc);
       test_result = EFAILED;
@@ -229,57 +218,47 @@ check_deletion (size_t elements)
             }
           else
             {
-              size_t clist_length;
-              /* Test 3: check the deletion of the tail of the list */
-              if ((rc = clist_get_size (clist, &clist_length)) != 0x0)
-                {
-                  ERROR (TEST, "clist_get_size", rc);
-                  test_result = EFAILED;
-                }
-              else
-                {
-                  register int i = 0x1;
-                  /* Move to the element prior to the tail */
-                  while ((rc = clist_move (clist, POS_NEXT)) == 0x0)
-                    {
-                      ++i;
-                      if (i >= clist_length - 1)
-                        {
-                          break;
-                        }
-                    }
-                  if (rc > 0x0)
-                    {
-                      ERROR (TEST, "clist_move", rc);
-                      test_result = EFAILED;
-                    }
-                  else if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
-                    {
-                      ERROR (TEST, "clist_del", rc);
-                      test_result = EFAILED;
-                    }
-                  else if ((rc = clist_move (clist, POS_TAIL)) != 0x0)
-                    {
-                      ERROR (TEST, "clist_move", rc);
-                      test_result = EFAILED;
-                    }
-                  else
-                    {
-                      /* Test 4: Delete the head through the tail */
-                      if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
-                        {
-                          ERROR (TEST, "clist_del", rc);
-                          test_result = EFAILED;
-                        }
-                    }
-                }
-            }
-        }
+              size_t clist_length;            
+	      register int i = 0x1;
+
+	      /* Test 3: check the deletion of the tail of the list */
+	      clist_length = clist_get_size (clist);
+	      /* Move to the element prior to the tail */
+	      while ((rc = clist_move (clist, POS_NEXT)) == 0x0)
+		{
+		  ++i;
+		  if (i >= clist_length - 1)
+		    {
+		      break;
+		    }
+		}
+	      if (rc > 0x0)
+		{
+		  ERROR (TEST, "clist_move", rc);
+		  test_result = EFAILED;
+		}
+	      else if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
+		{
+		  ERROR (TEST, "clist_del", rc);
+		  test_result = EFAILED;
+		}
+	      else if ((rc = clist_move (clist, POS_TAIL)) != 0x0)
+		{
+		  ERROR (TEST, "clist_move", rc);
+		  test_result = EFAILED;
+		}
+	      else
+		{
+		  /* Test 4: Delete the head through the tail */
+		  if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
+		    {
+		      ERROR (TEST, "clist_del", rc);
+		      test_result = EFAILED;
+		    }
+		}
+	    }
+	}
     }
-  if ((rc = clist_destroy (clist)) != 0x0)
-    {
-      ERROR (TEST, "clist_destroy", rc);
-      test_result = EFAILED;
-    }
+  clist_destroy (clist);
   return test_result;
 }

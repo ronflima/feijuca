@@ -46,7 +46,7 @@ AC_FUNC_MALLOC
 
 # Create the ability to put debugging code into the library
 AC_ARG_ENABLE(debug,
-[  --enable-debug     Turn on debugging of the library],
+[  --enable-debug          Turn on debugging of the library],
 [case "${enableval}" in
   yes) debug=true;;
   no) debug=false;;
@@ -74,7 +74,7 @@ fi
 
 # Create the ability to profile the library
 AC_ARG_ENABLE(profiling,
-[  --enable-profiling     Turn on profiling of the library],
+[  --enable-profiling      Turn on profiling of the library],
 [case "${enableval}" in
   yes) profiling=true;;
   no) profiling=false;;

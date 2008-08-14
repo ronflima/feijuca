@@ -45,8 +45,7 @@ include_HEADERS = ../include/list.h	\
 ../include/dclist.h			\
 ../include/gacommon.h
 
-noinst_HEADERS=../include/clist_.h	\
-../include/dclist_.h			\
+noinst_HEADERS=../include/dclist_.h	\
 ../include/deque_.h			\
 ../include/dlist_.h			\
 ../include/ivector_.h			\
