@@ -1,7 +1,7 @@
 # What is feijuca?
 
 Feijoada is a portuguese dish, originary from the north of Portugal. It is a
-dish made of beans and meat. In Brazil is one of the most popular dishes,
+dish made of beans and meat. In Brazil it is one of the most popular dishes,
 commonly called *feijuca*.
 
 This project only inherited this dish's name. It is a STD C library which
