@@ -30,4 +30,4 @@ libstack_la_SOURCES = stack_init.c				\
                       stack_push.c				\
 	                  stack_size.c				\
                       ../../include/stack.h
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/

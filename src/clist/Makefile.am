@@ -33,5 +33,5 @@ clist_move.c				\
 clist_get_size.c			\
 clist_get_pos.c				\
 ../../include/clist.h
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/
 

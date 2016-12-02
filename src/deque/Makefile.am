@@ -30,4 +30,4 @@ libdeque_la_SOURCES = deque_init.c		\
                       deque_pop.c		\
                       deque_size.c      \
                       ../../include/deque.h
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/

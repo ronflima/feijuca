@@ -34,4 +34,4 @@ libqueue_la_SOURCES = queue_init.c						\
                       descriptor/queue_set_list_.c      \
                       ../../include/queue.h				\
                       ../../include/queue_.h
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/

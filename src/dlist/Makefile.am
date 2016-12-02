@@ -32,4 +32,4 @@ libdlist_la_SOURCES = dlist_init.c				\
                       dlist_move.c				\
                       dlist_size.c				\
                       ../../include/dlist.h
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/

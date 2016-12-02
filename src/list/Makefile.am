@@ -36,5 +36,5 @@ list_reverse.c				\
 list_get_size.c				\
 ../../include/list.h
 
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/
 

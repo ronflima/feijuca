@@ -33,4 +33,4 @@ libdclist_la_SOURCES = dclist_init.c			\
 	                  dclist_size.c				\
                       dclist_make_circular_.c	\
 			          ../../include/dclist.h
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/

@@ -34,4 +34,4 @@ libivector_la_SOURCES = ../../include/ivector.h	\
                         ivector_qsort.c			\
 	                    ivector_size.c 			\
                         ivector_del.c
-INCLUDES=-I../../include/
+AM_CPPFLAGS=-I../../include/

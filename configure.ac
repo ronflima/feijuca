@@ -22,7 +22,7 @@
 
 AC_PREREQ(2.57)
 AC_INIT([feijuca], [1.0.0], [ronaldo@ronaldolima.eti.br])
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE([subdir-objects])
 AC_CONFIG_SRCDIR([include/list.h])
 
 # Checks for programs.
