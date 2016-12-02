@@ -22,3 +22,4 @@
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
 # $Id: Makefile.am,v 1.2 2005-12-13 10:18:48 ron_lima Exp $
 SUBDIRS=src doc
+ACLOCAL_AMFLAGS=-I m4

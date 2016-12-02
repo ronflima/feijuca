@@ -20,10 +20,12 @@
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
 # $Id: configure.ac,v 1.21 2006-02-04 16:06:42 harq_al_ada Exp $
 
-AC_PREREQ(2.57)
+AC_PREREQ(2.69)
 AC_INIT([feijuca], [1.0.0], [ronaldo@ronaldolima.eti.br])
 AM_INIT_AUTOMAKE([subdir-objects])
+LT_INIT
 AC_CONFIG_SRCDIR([include/list.h])
+AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
 AC_PROG_CC
