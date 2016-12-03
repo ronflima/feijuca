@@ -21,36 +21,33 @@
  System: G.A. Lib
 
  Description: Interfaces and datatypes for double-linked circular lists.
- 
- CVS Information
- $Author: harq_al_ada $
- $Id: dclist.h,v 1.5 2006-01-29 19:24:12 harq_al_ada Exp $
 */
 
-#ifndef DCLIST_H
-#define DCLIST_H
+#ifndef FJC_DCLIST_H
+#define FJC_DCLIST_H
 
 #include <stddef.h>
-#include "gacommon.h"
-#include "dlist.h"
+#include "fjc_common.h"
+#include "fjc_dlist.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
 
 /*
  * Data types
  */
-typedef struct dclist_t * dclist_t;
+typedef struct fjc_dclist_t * fjc_dclist_t;
 
 /*
  * Prototypes
  */
-int (dclist_init) __P ((dclist_t *, deallocator_t *));
-int (dclist_destroy) __P ((dclist_t));
-int (dclist_get) __P ((dclist_t, void **, position_t));
-int (dclist_insert) __P ((dclist_t, const void *, position_t));
-int (dclist_move) __P ((dclist_t, position_t));
-int (dclist_del) __P ((dclist_t, void **, position_t));
-int (dclist_size) __P ((dclist_t, size_t *));
+fjc_error_t (fjc_dclist_init)    __P ((fjc_dclist_t *, fjc_deallocator_t *));
+fjc_error_t (fjc_dclist_destroy) __P ((fjc_dclist_t));
+fjc_error_t (fjc_dclist_get)     __P ((fjc_dclist_t, void **, fjc_position_t));
+fjc_error_t (fjc_dclist_insert)  __P ((fjc_dclist_t, const void *, fjc_position_t));
+fjc_error_t (fjc_dclist_move)    __P ((fjc_dclist_t, fjc_position_t));
+fjc_error_t (fjc_dclist_del)     __P ((fjc_dclist_t, void **, fjc_position_t));
+fjc_error_t (fjc_dclist_size)    __P ((fjc_dclist_t, size_t *));
 
-GAENDDECLS
-#endif /* DCLIST_H */
+FJC_ENDDECLS
+
+#endif /* FJC_DCLIST_H */

@@ -24,34 +24,34 @@
  being implemented as a brand new different kind of list.
 */
 
-#ifndef DLIST__H
-#define DLIST__H
+#ifndef FJC_DLIST__H
+#define FJC_DLIST__H
 
 #include <stddef.h>
-#include "gacommon.h"
+#include "fjc_common.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
 /*
  * Datatypes
  */
 /* Abstraction for a single list element */
-  struct dlist_element_t
+  struct fjc_dlist_element_t
 {
   void *data_;
-  struct dlist_element_t *next_;
-  struct dlist_element_t *prev_;
+  struct fjc_dlist_element_t *next_;
+  struct fjc_dlist_element_t *prev_;
 };
-typedef struct dlist_element_t * dlist_element_t;
+typedef struct fjc_dlist_element_t * fjc_dlist_element_t;
 
 /* Abstraction for the list descriptor */
-struct dlist_t
+struct fjc_dlist_t
 {
   size_t size_;			/* List size */
-  dlist_element_t curr_;	/* Current navigation point */
-  dlist_element_t head_;	/* List head */
-  dlist_element_t tail_;	/* List tail */
-  deallocator_t *deallocator_;	/* Deallocator routine for elements */
+  fjc_dlist_element_t curr_;	/* Current navigation point */
+  fjc_dlist_element_t head_;	/* List head */
+  fjc_dlist_element_t tail_;	/* List tail */
+  fjc_deallocator_t *deallocator_;	/* Deallocator routine for elements */
 };
 
-GAENDDECLS
-#endif /* DLIST__H */
+FJC_ENDDECLS
+#endif /* FJC_DLIST__H */

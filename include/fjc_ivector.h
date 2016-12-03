@@ -23,41 +23,35 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
+ $Id: ivector.h,v 1.22 2006-01-29 20:03:12 harq_al_ada Exp $
 */
 
-#ifndef IVECTOR__H
-#define IVECTOR__H
+#ifndef FJC_IVECTOR_H
+#define FJC_IVECTOR_H
 
 #include <stddef.h>
-#include "gacommon.h"
+#include "fjc_common.h"
 
-GABEGINDECLS
-/*
- * Constants
- */
-enum
-{ 
-  GA_IVECTOR_SIGNATURE = (ga_magic_t) 0xFADEBAD4u, /* Signature */
-  IVECTOR_CHUNKSIZE    = (size_t) 10 /* Default chunk size = 10 elements */
-};
-
+FJC_BEGINDECLS
 /*
  * Datatypes
  */
 /* Infinite vector descriptor */
-struct ivector_t
-{
-  void *data_;			/* Vector data */
-  size_t size_;			/* Vector size */
-  size_t datalen_;		/* Size of each vector element */
-  size_t chunksize_;            /* Size of memory chunk to allocate */
-  size_t chunksused_;           /* Chunks used */
-  size_t elemused_;             /* Elements used in chunk */
-  compare_t *comp_;		/* Comparison function */
-  ga_magic_t signature_;        /* Signature of the descriptor */
-};
+typedef struct fjc_ivector_t * fjc_ivector_t;
 
-GAENDDECLS
+/*
+ * Prototypes
+ */
+fjc_error_t (fjc_ivector_init)    __P ((fjc_ivector_t *, fjc_compare_t *, size_t));
+fjc_error_t (fjc_ivector_destroy) __P ((fjc_ivector_t));
+fjc_error_t (fjc_ivector_get)     __P ((fjc_ivector_t, void **, size_t));
+fjc_error_t (fjc_ivector_put)     __P ((fjc_ivector_t, size_t, const void *));
+fjc_error_t (fjc_ivector_add)     __P ((fjc_ivector_t, const void *));
+fjc_error_t (fjc_ivector_qsort)   __P ((fjc_ivector_t));
+fjc_error_t (fjc_ivector_bsearch) __P ((fjc_ivector_t, void **, const void *));
+fjc_error_t (fjc_ivector_del)     __P ((fjc_ivector_t, size_t));
+fjc_error_t (fjc_ivector_size)    __P ((fjc_ivector_t, size_t *));
 
-#endif /* IVECTOR__H */
+FJC_ENDDECLS
+
+#endif /* FJC_IVECTOR_H */

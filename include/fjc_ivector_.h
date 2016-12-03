@@ -2,8 +2,6 @@
  G.A. Library - A generic algorithms and data structures library
  Copyright (C) 2005 - Ronaldo Faria Lima
 
- Contributed code by Daniel Costa Soares <daniel_csoares@yahoo.com.br>
-
  This library is free software; you can redistribute it and/or modify
  it under the terms of the GNU Lesser General Public License as
  published by the Free Software Foundation; either version 2.1 of the
@@ -21,34 +19,45 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for deques (Double Ended QUEue)
+ Description: Interfaces and datatypes for infinite vectors
 
  CVS Information
  $Author: harq_al_ada $
- $Id: deque.h,v 1.5 2006-01-29 19:24:13 harq_al_ada Exp $
+ $Id: fjc_ivector_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
-#ifndef DEQUE_H
-#define DEQUE_H
+#ifndef FJC_IVECTOR__H
+#define FJC_IVECTOR__H
 
 #include <stddef.h>
-#include "gacommon.h"
-#include "dlist.h"
+#include "fjc_common.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
+/*
+ * Constants
+ */
+enum
+{ 
+  FJC_IVECTOR_SIGNATURE = (fjc_magic_t) 0xFADEBAD4u, /* Signature */
+  FJC_IVECTOR_CHUNKSIZE = (size_t) 10 /* Default chunk size = 10 elements */
+};
+
 /*
  * Datatypes
  */
-typedef struct deque_t * deque_t;
+/* Infinite vector descriptor */
+struct fjc_ivector_t
+{
+  void *data_;			/* Vector data */
+  size_t size_;			/* Vector size */
+  size_t datalen_;		/* Size of each vector element */
+  size_t chunksize_;            /* Size of memory chunk to allocate */
+  size_t chunksused_;           /* Chunks used */
+  size_t elemused_;             /* Elements used in chunk */
+  fjc_compare_t *comp_;		/* Comparison function */
+  fjc_magic_t signature_;        /* Signature of the descriptor */
+};
 
-/*
- * Prototypes
- */
-int (deque_init) __P ((deque_t *, deallocator_t *));
-int (deque_destroy) __P ((deque_t));
-int (deque_pop) __P ((deque_t, void **, position_t));
-int (deque_push) __P ((deque_t, const void *, position_t));
-int (deque_size) __P ((deque_t, size_t *));
+FJC_ENDDECLS
 
-GAENDDECLS
-#endif /* DEQUE_H */
+#endif /* FJC_IVECTOR__H */

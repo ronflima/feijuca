@@ -19,39 +19,33 @@
 
  System: G.A. Lib
 
- Description: Internal definitions for stack routines. This header
- file is intended to be used only for g.a. library compilation.
+ Description: Interfaces and datatypes for fjc_queues
 
  CVS Information
- $Author: harq_al_ada $
- $Id: stack_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
+ $Author: daniel_csoares $
+ $Id: fjc_queue.h,v 1.13 2006-04-24 12:36:13 daniel_csoares Exp $
 */
 
-#ifndef STACK__H
-#define STACK__H
+#ifndef FJC_QUEUE_H
+#define FJC_QUEUE_H
 
 #include <stddef.h>
-#include "gacommon.h"
-#include "list.h"
+#include "fjc_common.h"
 
-GABEGINDECLS
-
-/*
- * Constants
- */
-enum
-{
-  GA_STACK_SIGNATURE=(ga_magic_t)0xFADEBAD5u
-};
-
+FJC_BEGINDECLS
 /*
  * Datatypes
  */
-struct stack_t
-{
-  ga_magic_t signature_;
-  list_t list_;
-};
+typedef struct fjc_queue_t * fjc_queue_t;
 
-GAENDDECLS
-#endif /* STACK__H */
+/*
+ * Prototypes
+ */
+int (fjc_queue_init)     __P ((fjc_queue_t *, fjc_deallocator_t *));
+int (fjc_queue_destroy)  __P ((fjc_queue_t));
+int (fjc_queue_pop)      __P ((fjc_queue_t, void **));
+int (fjc_queue_push)     __P ((fjc_queue_t, const void *));
+int (fjc_queue_get_size) __P ((fjc_queue_t, size_t *));
+
+FJC_ENDDECLS
+#endif /* FJC_QUEUE_H */

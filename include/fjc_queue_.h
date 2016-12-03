@@ -19,35 +19,46 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for stacks
+ Description: Internal header file for fjc_queues. This file is intended
+ to be used only for g.a. library compilation and should not be
+ installed on the final target system.
 
  CVS Information
  $Author: harq_al_ada $
- $Id: stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
+ $Id: fjc_queue_.h,v 1.4 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
-#ifndef STACK_H
-#define STACK_H
+#ifndef FJC_QUEUE__H
+#define FJC_QUEUE__H
 
 #include <stddef.h>
-#include "gacommon.h"
-#include "list.h"
+#include "fjc_common.h"
+#include "fjc_list.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
+/*
+ * Constants
+ */
+enum
+{
+  FJC_QUEUE_SIGNATURE=(fjc_magic_t)0xFADEDEADu
+};
 
 /*
  * Datatypes
  */
-typedef struct stack_t * stack_t;
+struct fjc_queue_t
+{
+  fjc_magic_t signature_;
+  fjc_list_t list_;
+};
 
 /*
- * Prototypes
+ * Methods
  */
-int (stack_init) __P ((stack_t *, deallocator_t *));
-int (stack_destroy) __P ((stack_t));
-int (stack_pop) __P ((stack_t, void **));
-int (stack_push) __P ((stack_t, const void *));
-int (stack_size) __P((stack_t, size_t *));
+int (fjc_queue_is_valid_) __P((fjc_queue_t));
+int (fjc_queue_get_list_) __P((fjc_queue_t, fjc_list_t *));
+int (fjc_queue_set_list_) __P((fjc_queue_t, fjc_list_t));
 
-GAENDDECLS
-#endif /* STACK_H */
+FJC_ENDDECLS
+#endif /* FJC_QUEUE__H */

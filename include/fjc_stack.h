@@ -19,45 +19,35 @@
 
  System: G.A. Lib
 
- Description: This is an internal header file used for dclist
- compilation solely. The declarations here are useful only for library
- compilation. This header file should not be deployed with the library
- binaries.
- 
+ Description: Interfaces and datatypes for fjc_stacks
+
  CVS Information
  $Author: harq_al_ada $
- $Id: dclist_.h,v 1.3 2007-06-24 23:57:17 harq_al_ada Exp $
+ $Id: fjc_stack.h,v 1.13 2006-01-29 12:37:02 harq_al_ada Exp $
 */
 
-#ifndef DCLIST__H
-#define DCLIST__H
+#ifndef FJC_STACK_H
+#define FJC_STACK_H
 
-#include "gacommon.h"
-#include "dlist.h"
-#include "dclist.h"
+#include <stddef.h>
+#include "fjc_common.h"
+#include "fjc_list.h"
 
-GABEGINDECLS
-/*
- * Constants
- */
-enum 
-{
-  GA_DCLIST_SIGNATURE = 0x5EEDDEAFu
-};
+FJC_BEGINDECLS
 
 /*
  * Datatypes
  */
-struct dclist_t
-{
-  ga_magic_t signature_;
-  dlist_t list_;
-};
+typedef struct fjc_stack_t * fjc_stack_t;
 
 /*
  * Prototypes
  */
-int (dclist_make_circular_) (dclist_t);
+int (fjc_stack_init)    __P ((fjc_stack_t *, fjc_deallocator_t *));
+int (fjc_stack_destroy) __P ((fjc_stack_t));
+int (fjc_stack_pop)     __P ((fjc_stack_t, void **));
+int (fjc_stack_push)    __P ((fjc_stack_t, const void *));
+int (fjc_stack_size)    __P ((fjc_stack_t, size_t *));
 
-GAENDDECLS
-#endif /* DCLIST__H */
+FJC_ENDDECLS
+#endif /* FJC_STACK_H */

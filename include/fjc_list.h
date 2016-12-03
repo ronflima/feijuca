@@ -17,38 +17,36 @@
  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
  USA
 
- System: Feijuca Lib
+ System: Feijuca Library
 
- Description: Interfaces and datatypes for single linked circular lists
+ Description: Interfaces and datatypes for single linked lists
 */
-#ifndef CLIST_H
-#define CLIST_H
+
+#ifndef FJC_LIST_H
+#define FJC_LIST_H
 
 #include <stddef.h>
-#include "list.h"
-#include "gacommon.h"
+#include "fjc_common.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
 
 /*
  * Datatypes
  */
-/*
- * Abstraction for the list descriptor 
- */
-typedef list_t clist_t;
+typedef struct fjc_list_t * fjc_list_t;
 
 /*
  * Prototypes
  */
-clist_t (clist_init) __P ((deallocator_t *));
-void (clist_destroy) __P ((clist_t));
-GAERROR (clist_del) __P ((clist_t, void **, position_t));
-GAERROR (clist_get) __P ((clist_t, void **, position_t));
-GAERROR (clist_move) __P ((clist_t, position_t));
-GAERROR (clist_insert) __P ((clist_t, const void *, position_t));
-size_t (clist_get_size) __P ((clist_t));
-position_t (clist_get_pos) __P((clist_t));
+fjc_list_t     (fjc_list_init)     __P ((fjc_deallocator_t *));
+void           (fjc_list_destroy)  __P ((fjc_list_t));
+const void *   (fjc_list_get)      __P ((fjc_list_t, fjc_position_t));
+fjc_error_t    (fjc_list_insert)   __P ((fjc_list_t, const void *, fjc_position_t));
+fjc_error_t    (fjc_list_move)     __P ((fjc_list_t, fjc_position_t));
+fjc_error_t    (fjc_list_del)      __P ((fjc_list_t, void **, fjc_position_t));
+fjc_error_t    (fjc_list_reverse)  __P ((fjc_list_t));
+size_t         (fjc_list_get_size) __P ((fjc_list_t));
+fjc_position_t (fjc_list_get_pos)  __P ((fjc_list_t));
 
-GAENDDECLS
-#endif /* CLIST_H */
+FJC_ENDDECLS
+#endif /* FJC_LIST_H */

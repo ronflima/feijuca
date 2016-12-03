@@ -24,35 +24,35 @@
  library.
 */
 
-#ifndef LIST__H
-#define LIST__H
+#ifndef FJC_LIST__H
+#define FJC_LIST__H
 
 #include <stddef.h>
-#include "gacommon.h"
-#include "list.h"
+#include "fjc_common.h"
+#include "fjc_list.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
 
 /*
  * Datatypes
  */
 /* Abstraction for a single list element */
-struct list_element_t
+struct fjc_list_element_t
 {
-  struct list_element_t *next_; /* Pointer to the next element of the list */
-  const void *data_;            /* Encapsulated data inside the list element */
+  struct fjc_list_element_t *next_; /* Pointer to the next element of the list */
+  const void *data_;                /* Encapsulated data inside the list element */
 };
-typedef struct list_element_t * list_element_t;
+typedef struct fjc_list_element_t * fjc_list_element_t;
 
 /* Abstraction for the list descriptor */
-struct list_t
+struct fjc_list_t
 {
-  size_t size_;                 /* List size */
-  list_element_t curr_;         /* Current navigation point */
-  list_element_t head_;         /* List head */
-  list_element_t tail_;         /* List tail */
-  deallocator_t  *deallocator_; /* Deallocator function */
+  size_t size_;                     /* List size */
+  fjc_list_element_t curr_;         /* Current navigation point */
+  fjc_list_element_t head_;         /* List head */
+  fjc_list_element_t tail_;         /* List tail */
+  fjc_deallocator_t  *deallocator_; /* Deallocator function */
 };
 
-GAENDDECLS
-#endif /* LIST__H */
+FJC_ENDDECLS
+#endif /* FJC_LIST_H */

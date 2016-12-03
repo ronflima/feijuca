@@ -19,33 +19,31 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for queues
-
- CVS Information
- $Author: daniel_csoares $
- $Id: queue.h,v 1.13 2006-04-24 12:36:13 daniel_csoares Exp $
+ Description: Interfaces and datatypes for double-linked lists. Even
+ being a specialization of single lists, the double-linked lists are
+ being implemented as a brand new different kind of list.
 */
 
-#ifndef QUEUE_H
-#define QUEUE_H
+#ifndef FJC_DLIST_H
+#define FJC_DLIST_H
 
 #include <stddef.h>
-#include "gacommon.h"
+#include "fjc_common.h"
 
-GABEGINDECLS
-/*
- * Datatypes
- */
-typedef struct queue_t * queue_t;
+FJC_BEGINDECLS
+/* Abstraction for the list descriptor */
+typedef struct fjc_dlist_t *fjc_dlist_t;
 
 /*
  * Prototypes
  */
-int (queue_init) __P ((queue_t *, deallocator_t *));
-int (queue_destroy) __P ((queue_t));
-int (queue_pop) __P ((queue_t, void **));
-int (queue_push) __P ((queue_t, const void *));
-int (queue_get_size) __P((queue_t, size_t *));
+fjc_dlist_t (fjc_dlist_init)    __P ((fjc_deallocator_t *));
+void        (fjc_dlist_destroy) __P ((fjc_dlist_t));
+const void *(fjc_dlist_get)     __P ((fjc_dlist_t, fjc_position_t));
+fjc_error_t (fjc_dlist_insert)  __P ((fjc_dlist_t, const void *, fjc_position_t));
+fjc_error_t (fjc_dlist_move)    __P ((fjc_dlist_t, fjc_position_t));
+fjc_error_t (fjc_dlist_del)     __P ((fjc_dlist_t, void **, fjc_position_t));
+size_t      (fjc_dlist_size)    __P ((fjc_dlist_t));
 
-GAENDDECLS
-#endif /* QUEUE_H */
+FJC_ENDDECLS
+#endif /* FJC_DLIST_H */

@@ -25,33 +25,30 @@
 
  CVS Information
  $Author: harq_al_ada $
- $Id: deque_.h,v 1.2 2007-06-24 23:57:17 harq_al_ada Exp $
+ $Id: deque.h,v 1.5 2006-01-29 19:24:13 harq_al_ada Exp $
 */
 
-#ifndef DEQUE__H
-#define DEQUE__H
+#ifndef FJC_DEQUE_H
+#define FJC_DEQUE_H
 
 #include <stddef.h>
-#include "gacommon.h"
-#include "dlist.h"
+#include "fjc_common.h"
+#include "fjc_dlist.h"
 
-GABEGINDECLS
-/*
- * Constants
- */
-enum 
-{
-  GA_DEQUE_SIGNATURE = 0xD00DBEEFu
-};
-
+FJC_BEGINDECLS
 /*
  * Datatypes
  */
-struct deque_t 
-{ 
-  ga_magic_t signature_;
-  dlist_t list_;
-};
+typedef struct fjc_deque_t * fjc_deque_t;
 
-GAENDDECLS
-#endif /* DEQUE_H */
+/*
+ * Prototypes
+ */
+int (fjc_deque_init)    __P ((fjc_deque_t *, fjc_deallocator_t *));
+int (fjc_deque_destroy) __P ((fjc_deque_t));
+int (fjc_deque_pop)     __P ((fjc_deque_t, void **, fjc_position_t));
+int (fjc_deque_push)    __P ((fjc_deque_t, const void *, fjc_position_t));
+int (fjc_deque_size)    __P ((fjc_deque_t, size_t *));
+
+FJC_ENDDECLS
+#endif /* FJC_DEQUE_H */

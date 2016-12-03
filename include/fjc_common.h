@@ -28,22 +28,22 @@
  $Id: gacommon.h,v 1.30 2006-07-21 13:35:58 harq_al_ada Exp $
 */
 
-#ifndef GACOMMON_H
-#define GACOMMON_H
+#ifndef FJC_COMMON_H
+#define FJC_COMMON_H
 
 /*
  * Macros
  */
 /* Declaration handles for C++ compilations - Simplifies the syntax */
 #if defined (__cplusplus) || defined (c_plusplus)
-#define GABEGINDECLS extern "C" {
-#define GAENDDECLS }
+#define FJC_BEGINDECLS extern "C" {
+#define FJC_ENDDECLS }
 #else
-#define GABEGINDECLS
-#define GAENDDECLS
+#define FJC_BEGINDECLS
+#define FJC_ENDDECLS
 #endif
 
-GABEGINDECLS
+FJC_BEGINDECLS
 /* Prototypation handle - It is used to let K&R compilers to compile
    and use the library */
 #ifndef __P
@@ -61,12 +61,12 @@ GABEGINDECLS
    routines. */
 typedef enum 
 {
-  EGAOK    = 0x0,       /* No error so far. */
-  EGAEOF   = -0x1,      /* End of file */
-  EGAINVAL = 2500,		/* Invalid argument */
-  EGANOMEM = 2501,		/* No memory */
-  EGABADC  = 2502		/* Bad current position */
-} GAERROR;
+  E_FJC_OK    = 0x0,        /* No error so far. */
+  E_FJC_EOF   = -0x1,       /* End of file */
+  E_FJC_INVAL = 2500,		/* Invalid argument */
+  E_FJC_NOMEM = 2501,		/* No memory */
+  E_FJC_BADC  = 2502		/* Bad current position */
+} fjc_error_t;
 
 /*
  * Datatypes
@@ -74,22 +74,22 @@ typedef enum
 /* List iteration types */
 typedef enum
 {
-  POS_NONE = 0x0,   /* No position - dummy value */
-  POS_HEAD,			/* Head */
-  POS_TAIL,			/* Tail */
-  POS_NEXT,			/* Next element  */
-  POS_CURR,			/* Current element */
-  POS_PREV,			/* Previous element */
-  POS_MID           /* Somewhere between the head or tail */
+  POS_FJC_NONE = 0x0,   /* No position - dummy value */
+  POS_FJC_HEAD,			/* Head */
+  POS_FJC_TAIL,			/* Tail */
+  POS_FJC_NEXT,			/* Next element  */
+  POS_FJC_CURR,			/* Current element */
+  POS_FJC_PREV,			/* Previous element */
+  POS_FJC_MID           /* Somewhere between the head or tail */
 }
-position_t;
+fjc_position_t;
 
 /* Deallocator function pointer type */
-typedef void (deallocator_t) (void *);
+typedef void (fjc_deallocator_t) (void *);
 /* Comparison function pointer type */
-typedef int (compare_t) (const void *, const void *);
+typedef int (fjc_compare_t) (const void *, const void *);
 /* Magic number data type */
-typedef unsigned int ga_magic_t;
+typedef unsigned int fjc_magic_t;
 
-GAENDDECLS
-#endif /* GACOMMON_H */
+FJC_ENDDECLS
+#endif /* FJC_COMMON_H */

@@ -19,39 +19,46 @@
 
  System: G.A. Lib
 
- Description: Interfaces and datatypes for infinite vectors
-
+ Description: This is an internal header file used for dclist
+ compilation solely. The declarations here are useful only for library
+ compilation. This header file should not be deployed with the library
+ binaries.
+ 
  CVS Information
  $Author: harq_al_ada $
- $Id: ivector.h,v 1.22 2006-01-29 20:03:12 harq_al_ada Exp $
+ $Id: dclist_.h,v 1.3 2007-06-24 23:57:17 harq_al_ada Exp $
 */
 
-#ifndef IVECTOR_H
-#define IVECTOR_H
+#ifndef FJC_DCLIST__H
+#define FJC_DCLIST__H
 
-#include <stddef.h>
-#include "gacommon.h"
+#include "fjc_common.h"
+#include "fjc_dlist.h"
+#include "fjc_dclist.h"
 
-GABEGINDECLS
+FJC_BEGINDECLS
+
+/*
+ * Constants
+ */
+enum 
+{
+  FJC_DCLIST_SIGNATURE = 0x5EEDDEAFu
+};
+
 /*
  * Datatypes
  */
-/* Infinite vector descriptor */
-typedef struct ivector_t * ivector_t;
+struct fjc_dclist_t
+{
+  fjc_magic_t signature_;
+  fjc_dlist_t list_;
+};
 
 /*
  * Prototypes
  */
-int (ivector_init) __P ((ivector_t *, compare_t *, size_t));
-int (ivector_destroy) __P ((ivector_t));
-int (ivector_get) __P ((ivector_t, void **, size_t));
-int (ivector_put) __P ((ivector_t, size_t, const void *));
-int (ivector_add) __P ((ivector_t, const void *));
-int (ivector_qsort) __P ((ivector_t));
-int (ivector_bsearch) __P ((ivector_t, void **, const void *));
-int (ivector_del) __P ((ivector_t, size_t));
-int (ivector_size) __P ((ivector_t, size_t *));
+fjc_error_t (fjc_dclist_make_circular_) (fjc_dclist_t);
 
-GAENDDECLS
-
-#endif /* IVECTOR_H */
+FJC_ENDDECLS
+#endif /* FJC_DCLIST__H */
