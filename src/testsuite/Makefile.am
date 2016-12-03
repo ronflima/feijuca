@@ -23,16 +23,16 @@
 # (c) 2004 - All rights reserved
 #
 noinst_PROGRAMS = fjtest
-fjtest_SOURCES = gatests.h						\
+fjtest_SOURCES = fjtests.h						\
                  list.c							\
                  dlist.c						\
                  stack.c						\
                  clist.c						\
                  queue.c						\
                  ivector.c						\
-		 deque.c						\
+		 		 deque.c						\
                  engine.c						\
-		 dclist.c						\
+		         dclist.c						\
                  testsuite.c
 AM_CPPFLAGS=-I./ -I../../include
 AM_CFLAGS=$(CFLAGS)

@@ -25,16 +25,16 @@
 # $Id: Makefile.am,v 1.14 2006-05-15 23:17:58 harq_al_ada Exp $
 noinst_LTLIBRARIES = liblist.la
 
-liblist_la_SOURCES = list_init.c	\
-list_get_pos.c				\
-list_del.c				\
-list_destroy.c				\
-list_get.c				\
-list_insert.c				\
-list_move.c				\
-list_reverse.c				\
-list_get_size.c				\
-../../include/list.h
+liblist_la_SOURCES = fjc_list_init.c	\
+fjc_list_get_pos.c						\
+fjc_list_del.c							\
+fjc_list_destroy.c						\
+fjc_list_get.c							\
+fjc_list_insert.c						\
+fjc_list_move.c							\
+fjc_list_reverse.c						\
+fjc_list_get_size.c						\
+../../include/fjc_list.h
 
 AM_CPPFLAGS=-I../../include/
 

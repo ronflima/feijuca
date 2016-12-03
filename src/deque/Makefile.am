@@ -22,12 +22,12 @@
 # library
 # Project: G.A. Library
 # Author: Daniel Costa Soares <daniel_csoares@yahoo.com.br>
-# $Id: Makefile.am,v 1.3 2006-01-11 10:19:19 harq_al_ada Exp $
+
 noinst_LTLIBRARIES = libdeque.la
-libdeque_la_SOURCES = deque_init.c		\
-                      deque_push.c		\
-                      deque_destroy.c	\
-                      deque_pop.c		\
-                      deque_size.c      \
-                      ../../include/deque.h
+libdeque_la_SOURCES = fjc_deque_init.c		\
+                      fjc_deque_push.c		\
+                      fjc_deque_destroy.c	\
+                      fjc_deque_pop.c		\
+                      fjc_deque_size.c      \
+                      ../../include/fjc_deque.h
 AM_CPPFLAGS=-I../../include/

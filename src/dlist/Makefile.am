@@ -22,14 +22,14 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.4 2006-01-11 10:20:01 harq_al_ada Exp $
+
 noinst_LTLIBRARIES = libdlist.la
-libdlist_la_SOURCES = dlist_init.c				\
-                      dlist_del.c				\
-                      dlist_destroy.c			\
-                      dlist_get.c				\
-                      dlist_insert.c			\
-                      dlist_move.c				\
-                      dlist_size.c				\
-                      ../../include/dlist.h
+libdlist_la_SOURCES = fjc_dlist_init.c				\
+                      fjc_dlist_del.c				\
+                      fjc_dlist_destroy.c			\
+                      fjc_dlist_get.c				\
+                      fjc_dlist_insert.c			\
+                      fjc_dlist_move.c				\
+                      fjc_dlist_size.c				\
+                      ../../include/fjc_dlist.h
 AM_CPPFLAGS=-I../../include/

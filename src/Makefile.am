@@ -27,31 +27,31 @@ lib_LTLIBRARIES = libfjca.la
 libfjca_la_SOURCES =
 
 libfjca_la_LIBADD=list/liblist.la	\
-dlist/libdlist.la			\
-clist/libclist.la			\
-ivector/libivector.la			\
-stack/libstack.la			\
-deque/libdeque.la			\
-dclist/libdclist.la			\
+dlist/libdlist.la					\
+clist/libclist.la					\
+ivector/libivector.la				\
+stack/libstack.la					\
+deque/libdeque.la					\
+dclist/libdclist.la					\
 queue/libqueue.la 
 
-include_HEADERS = ../include/list.h	\
-../include/dlist.h			\
-../include/clist.h			\
-../include/ivector.h			\
-../include/stack.h			\
-../include/queue.h			\
-../include/deque.h			\
-../include/dclist.h			\
-../include/gacommon.h
+include_HEADERS = ../include/fjc_list.h	\
+../include/fjc_dlist.h					\
+../include/fjc_clist.h					\
+../include/fjc_ivector.h				\
+../include/fjc_stack.h					\
+../include/fjc_queue.h					\
+../include/fjc_deque.h					\
+../include/fjc_dclist.h					\
+../include/fjc_common.h
 
 noinst_HEADERS=../include/dclist_.h	\
-../include/deque_.h			\
-../include/dlist_.h			\
-../include/ivector_.h			\
-../include/list_.h			\
-../include/queue_.h			\
-../include/stack_.h
+../include/fjc_deque_.h				\
+../include/fjc_dlist_.h				\
+../include/fjc_ivector_.h			\
+../include/fjc_list_.h				\
+../include/fjc_queue_.h				\
+../include/fjc_stack_.h
 
 
 

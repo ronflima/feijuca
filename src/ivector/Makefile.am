@@ -22,16 +22,16 @@
 # library
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
-# $Id: Makefile.am,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
+
 noinst_LTLIBRARIES = libivector.la
-libivector_la_SOURCES = ../../include/ivector.h	\
-                        ivector_add.c			\
-                        ivector_init.c			\
-                        ivector_bsearch.c		\
-                        ivector_destroy.c		\
-                        ivector_get.c			\
-                        ivector_put.c			\
-                        ivector_qsort.c			\
-	                    ivector_size.c 			\
-                        ivector_del.c
+libivector_la_SOURCES = ../../include/fjc_ivector.h	\
+                        fjc_ivector_add.c			\
+                        fjc_ivector_init.c			\
+                        fjc_ivector_bsearch.c		\
+                        fjc_ivector_destroy.c		\
+                        fjc_ivector_get.c			\
+                        fjc_ivector_put.c			\
+                        fjc_ivector_qsort.c			\
+	                    fjc_ivector_size.c 			\
+                        fjc_ivector_del.c
 AM_CPPFLAGS=-I../../include/

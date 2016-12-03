@@ -27,8 +27,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
-#include "gatests.h"
-#include "clist.h"
+#include "fjtests.h"
+#include "fjc_clist.h"
 
 /* Version info */
 static char const rcsid [] = "@(#) $Id$";
@@ -50,7 +50,7 @@ enum
 /*
  * Local prototypes
  */
-static int load_clist (clist_t, size_t, unsigned char);
+static int load_clist (fjc_clist_t, size_t, unsigned char);
 static int check_navigation (size_t);
 static int check_deletion (size_t);
 
@@ -73,7 +73,7 @@ test_clist (size_t maxelements)
 
 /* Utility function: Loads data into the circular list */
 static int
-load_clist (clist_t clist, size_t elements, unsigned char use_pattern)
+load_clist (fjc_clist_t clist, size_t elements, unsigned char use_pattern)
 {
   register int i;		/* General purpose iterator */
   int test_status;		/* Test status variable  */
@@ -122,14 +122,14 @@ load_clist (clist_t clist, size_t elements, unsigned char use_pattern)
 static int
 check_navigation (size_t maxelem)
 {
-  clist_t clist;
+  fjc_clist_t clist;
   int rc;
   int test_result;
   size_t size;
 
   test_result = 0x0;
 
-  if ((clist = clist_init (free)) == NULL)
+  if ((clist = fjc_clist_init (free)) == NULL)
     {
       ERROR (TEST, "clist_init", rc);
       test_result = EFAILED;
@@ -139,7 +139,7 @@ check_navigation (size_t maxelem)
       ERROR (TEST, "load_clist", rc);
       test_result = EFAILED;
     }
-  else if ((rc = clist_move (clist, POS_HEAD)) != 0x0)
+  else if ((rc = fjc_clist_move (clist, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "clist_move", rc);
       test_result = EFAILED;
@@ -149,29 +149,29 @@ check_navigation (size_t maxelem)
       int i = 0x1;
       do 
         {
-          position_t whence;
+          fjc_position_t whence;
 	  
-	  whence = clist_get_pos (clist);
-          if (whence == POS_TAIL)
+          whence = fjc_clist_get_pos (clist);
+          if (whence == POS_FJC_TAIL)
             {
               break;
             }
           ++i;
         }
-      while ((rc = clist_move (clist, POS_NEXT)) == 0x0);
+      while ((rc = fjc_clist_move (fjc_clist, POS_NEXT)) == 0x0);
       if (rc > 0x0)
         {
           ERROR (TEST, "CList navigation failed", rc);
           test_result = EFAILED;
         }
-      size = clist_get_size (clist);
+      size = fjc_clist_get_size (clist);
       if (i != size)
         {
           ERROR (TEST, "Navigation wrong: number of items mismatch", ECKFAIL);
           test_result = EFAILED;
         }
     }
-  clist_destroy (clist);
+  fjc_clist_destroy (clist);
   return test_result;
 }
 
@@ -179,13 +179,13 @@ check_navigation (size_t maxelem)
 static int
 check_deletion (size_t elements)
 {
-  clist_t clist;
+  fjc_clist_t clist;
   int rc;
   int test_result;
 
   test_result = 0x0;
 
-  if ((clist = clist_init (free)) == NULL)
+  if ((clist = fjc_clist_init (free)) == NULL)
     {
       ERROR (TEST, "clist_init", rc);
       test_result = EFAILED;
@@ -195,7 +195,7 @@ check_deletion (size_t elements)
       ERROR (TEST, "load_clist", rc);
       test_result = EFAILED;
     }
-  else if ((rc = clist_move (clist, POS_HEAD)) != 0x0)
+  else if ((rc = fjc_clist_move (clist, POS_HEAD)) != 0x0)
     {
       ERROR (TEST, "clist_move", rc);
       test_result = EFAILED;
@@ -203,7 +203,7 @@ check_deletion (size_t elements)
   else
     {
       /* Test 1: check deletion of an arbitrary element of the list */
-      if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
+      if ((rc = fjc_clist_del (clist, NULL, POS_FJC_NEXT)) != 0x0)
         {
           ERROR (TEST, "clist_del", rc);
           test_result = EFAILED;
@@ -211,7 +211,7 @@ check_deletion (size_t elements)
       else
         {
           /* Test 2: check deletion of the head of the list */
-          if ((rc = clist_del (clist, NULL, POS_HEAD)) != 0x0)
+          if ((rc = fjc_clist_del (clist, NULL, POS_FJC_HEAD)) != 0x0)
             {
               ERROR (TEST, "clist_del", rc);
               test_result = EFAILED;
@@ -219,46 +219,46 @@ check_deletion (size_t elements)
           else
             {
               size_t clist_length;            
-	      register int i = 0x1;
+              register int i = 0x1;
 
-	      /* Test 3: check the deletion of the tail of the list */
-	      clist_length = clist_get_size (clist);
-	      /* Move to the element prior to the tail */
-	      while ((rc = clist_move (clist, POS_NEXT)) == 0x0)
-		{
-		  ++i;
-		  if (i >= clist_length - 1)
-		    {
-		      break;
-		    }
-		}
-	      if (rc > 0x0)
-		{
-		  ERROR (TEST, "clist_move", rc);
-		  test_result = EFAILED;
-		}
-	      else if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
-		{
-		  ERROR (TEST, "clist_del", rc);
-		  test_result = EFAILED;
-		}
-	      else if ((rc = clist_move (clist, POS_TAIL)) != 0x0)
-		{
-		  ERROR (TEST, "clist_move", rc);
-		  test_result = EFAILED;
-		}
-	      else
-		{
-		  /* Test 4: Delete the head through the tail */
-		  if ((rc = clist_del (clist, NULL, POS_NEXT)) != 0x0)
-		    {
-		      ERROR (TEST, "clist_del", rc);
-		      test_result = EFAILED;
-		    }
-		}
-	    }
-	}
+              /* Test 3: check the deletion of the tail of the list */
+              clist_length = fjc_clist_get_size (clist);
+              /* Move to the element prior to the tail */
+              while ((rc = fjc_clist_move (clist, POS_FJC_NEXT)) == 0x0)
+                {
+                  ++i;
+                  if (i >= clist_length - 1)
+                    {
+                      break;
+                    }
+                }
+              if (rc > 0x0)
+                {
+                  ERROR (TEST, "clist_move", rc);
+                  test_result = EFAILED;
+                }
+              else if ((rc = fjc_clist_del (clist, NULL, POS_FJC_NEXT)) != 0x0)
+                {
+                  ERROR (TEST, "clist_del", rc);
+                  test_result = EFAILED;
+                }
+              else if ((rc = fjc_clist_move (clist, POS_FJC_TAIL)) != 0x0)
+                {
+                  ERROR (TEST, "clist_move", rc);
+                  test_result = EFAILED;
+                }
+              else
+                {
+                  /* Test 4: Delete the head through the tail */
+                  if ((rc = fjc_clist_del (clist, NULL, POS_FJC_NEXT)) != 0x0)
+                    {
+                      ERROR (TEST, "clist_del", rc);
+                      test_result = EFAILED;
+                    }
+                }
+            }
+        }
     }
-  clist_destroy (clist);
+  fjc_clist_destroy (clist);
   return test_result;
 }

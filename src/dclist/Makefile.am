@@ -24,13 +24,13 @@
 # Author: Daniel Costa Soares <daniel_csoares@yahoo.com.br>
 # $Id: Makefile.am,v 1.4 2006-01-18 23:52:27 harq_al_ada Exp $
 noinst_LTLIBRARIES = libdclist.la
-libdclist_la_SOURCES = dclist_init.c			\
-                      dclist_del.c				\
-                      dclist_destroy.c			\
-                      dclist_get.c				\
-                      dclist_insert.c			\
-                      dclist_move.c				\
-	                  dclist_size.c				\
-                      dclist_make_circular_.c	\
-			          ../../include/dclist.h
+libdclist_la_SOURCES = fjc_dclist_init.c			\
+                      fjc_dclist_del.c				\
+                      fjc_dclist_destroy.c			\
+                      fjc_dclist_get.c				\
+                      fjc_dclist_insert.c			\
+                      fjc_dclist_move.c				\
+	                  fjc_dclist_size.c				\
+                      fjc_dclist_make_circular_.c	\
+			          ../../include/fjc_dclist.h
 AM_CPPFLAGS=-I../../include/
