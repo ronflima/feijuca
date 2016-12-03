@@ -24,7 +24,7 @@ AC_PREREQ(2.69)
 AC_INIT([feijuca], [1.0.0], [ronaldo@ronaldolima.eti.br])
 AM_INIT_AUTOMAKE([subdir-objects])
 LT_INIT
-AC_CONFIG_SRCDIR([include/list.h])
+AC_CONFIG_SRCDIR([include/fjc_common.h])
 AC_CONFIG_MACRO_DIRS([m4])
 
 # Checks for programs.
