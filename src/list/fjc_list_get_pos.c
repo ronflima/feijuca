@@ -30,22 +30,30 @@
 #include "fjc_list.h"
 #include "fjc_list_.h"
 
-fjc_position_t
-fjc_list_get_pos (fjc_list_t list)
+fjc_error_t
+fjc_list_get_pos (fjc_list_t list, fjc_position_t *pos)
 {
   assert (list != NULL);
-
+  assert (pos != NULL);
+  if (list == NULL || pos == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   if ((list->curr_ == NULL) || (list->size_ == 0x0))
     {
-      return POS_FJC_NONE;
+      *pos = POS_FJC_NONE;
     }
-  if (list->curr_ == list->head_) 
+  else if (list->curr_ == list->head_) 
     {
-      return POS_FJC_HEAD;
+      *pos = POS_FJC_HEAD;
     }
-  if (list->curr_ == list->tail_)
+  else if (list->curr_ == list->tail_)
     {
-      return POS_FJC_TAIL;
+      *pos = POS_FJC_TAIL;
     }
-  return POS_FJC_MID;
+  else
+    {
+      *pos = POS_FJC_MID;
+    }
+  return E_FJC_OK;
 }

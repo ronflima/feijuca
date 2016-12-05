@@ -38,15 +38,15 @@ typedef struct fjc_list_t * fjc_list_t;
 /*
  * Prototypes
  */
-fjc_list_t     (fjc_list_init)     __P ((fjc_deallocator_t *));
-void           (fjc_list_destroy)  __P ((fjc_list_t));
-const void *   (fjc_list_get)      __P ((fjc_list_t, fjc_position_t));
+fjc_error_t    (fjc_list_init)     __P ((fjc_list_t *, fjc_deallocator_t *));
+fjc_error_t    (fjc_list_destroy)  __P ((fjc_list_t));
+fjc_error_t    (fjc_list_get)      __P ((fjc_list_t, const void **, fjc_position_t));
 fjc_error_t    (fjc_list_insert)   __P ((fjc_list_t, const void *, fjc_position_t));
 fjc_error_t    (fjc_list_move)     __P ((fjc_list_t, fjc_position_t));
 fjc_error_t    (fjc_list_del)      __P ((fjc_list_t, void **, fjc_position_t));
 fjc_error_t    (fjc_list_reverse)  __P ((fjc_list_t));
-size_t         (fjc_list_get_size) __P ((fjc_list_t));
-fjc_position_t (fjc_list_get_pos)  __P ((fjc_list_t));
+fjc_error_t    (fjc_list_get_size) __P ((fjc_list_t, size_t *));
+fjc_error_t    (fjc_list_get_pos)  __P ((fjc_list_t, fjc_position_t *));
 
 FJC_ENDDECLS
 #endif /* FJC_LIST_H */

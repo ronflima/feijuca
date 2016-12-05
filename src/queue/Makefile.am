@@ -23,8 +23,8 @@
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
 # $Id: Makefile.am,v 1.7 2006-05-14 00:48:06 harq_al_ada Exp $
-noinst_LTLIBRARIES = libfjc_queue.la
-libfjc_queue_la_SOURCES = fjc_queue_init.c						\
+noinst_LTLIBRARIES = libqueue.la
+libqueue_la_SOURCES = fjc_queue_init.c						\
                       fjc_queue_push.c						\
                       fjc_queue_destroy.c					\
                       fjc_queue_pop.c						\

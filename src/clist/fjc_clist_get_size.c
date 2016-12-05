@@ -26,9 +26,15 @@
 #include "fjc_clist.h"
 #include "fjc_list_.h"
 
-size_t
-fjc_clist_get_size (fjc_clist_t clist)
+fjc_error_t
+fjc_clist_get_size (fjc_clist_t clist, size_t *size)
 {
   assert (clist != NULL);
-  return clist->size_;
+  assert (size != NULL);
+  if (clist == NULL || size == NULL)
+    {
+      return E_FJC_INVAL;
+    }
+  *size = clist->size_;
+  return E_FJC_OK;
 }

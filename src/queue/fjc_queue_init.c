@@ -49,7 +49,7 @@ fjc_queue_init (fjc_queue_t * queue, fjc_deallocator_t * dealloc)
     {
       fjc_list_t list = NULL;
       (*queue)->signature_ = FJC_QUEUE_SIGNATURE;
-      if ((list = fjc_list_init (dealloc)) == NULL)
+      if ((rc = fjc_list_init (&list, dealloc)) != E_FJC_OK)
         {
           free (*queue);
         }

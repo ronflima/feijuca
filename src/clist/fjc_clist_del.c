@@ -34,7 +34,7 @@ static fjc_list_element_t extract_head_ (fjc_clist_t);
 static fjc_list_element_t extract_next_ (fjc_clist_t);
 
 fjc_error_t
-fjc_clist_del (fjc_clist_t clist, void **data, fjc_position_t whence)
+fjc_clist_del (fjc_clist_t clist, const void **data, fjc_position_t whence)
 {
   fjc_list_element_t element = NULL;	/* Element to be deleted */
 
@@ -64,7 +64,7 @@ fjc_clist_del (fjc_clist_t clist, void **data, fjc_position_t whence)
     }
   if (data != NULL)
     {
-      *data = (void *)element->data_;
+      *data = element->data_;
     }
   else
     {

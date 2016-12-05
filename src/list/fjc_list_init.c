@@ -27,16 +27,17 @@
 #include "fjc_list.h"
 #include "fjc_list_.h"
 
-fjc_list_t
-fjc_list_init (fjc_deallocator_t * dealloc)
+fjc_error_t
+fjc_list_init (fjc_list_t *list, fjc_deallocator_t * dealloc)
 {
-  fjc_list_t list;			/* List to allocate */
-
+  assert (list != NULL);
   assert (dealloc != NULL);
-  if ((list = (fjc_list_t) malloc (sizeof (struct fjc_list_t))) != NULL)
+  *list = (fjc_list_t) malloc (sizeof (struct fjc_list_t));
+  if (*list == NULL)
     {
-      memset (list, 0x0, sizeof(struct fjc_list_t));
-      list->deallocator_ = dealloc;
+      return E_FJC_NOMEM;
     }
-  return list;
+  memset (*list, 0x0, sizeof(struct fjc_list_t));
+  (*list)->deallocator_ = dealloc;
+  return E_FJC_OK;
 }

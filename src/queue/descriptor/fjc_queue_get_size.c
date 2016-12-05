@@ -39,6 +39,5 @@ fjc_queue_get_size (fjc_queue_t queue, size_t * size)
       return E_FJC_INVAL;
     }
   fjc_queue_get_list_(queue, &list);
-  *size = fjc_list_get_size (list);
-  return E_FJC_OK;
+  return fjc_list_get_size (list, size);
 }

@@ -45,12 +45,12 @@ include_HEADERS = ../include/fjc_list.h	\
 ../include/fjc_dclist.h					\
 ../include/fjc_common.h
 
-noinst_HEADERS=../include/dclist_.h	\
-../include/fjc_deque_.h				\
-../include/fjc_dlist_.h				\
-../include/fjc_ivector_.h			\
-../include/fjc_list_.h				\
-../include/fjc_queue_.h				\
+noinst_HEADERS=../include/fjc_dclist_.h	\
+../include/fjc_deque_.h					\
+../include/fjc_dlist_.h					\
+../include/fjc_ivector_.h				\
+../include/fjc_list_.h					\
+../include/fjc_queue_.h					\
 ../include/fjc_stack_.h
 
 

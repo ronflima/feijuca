@@ -45,7 +45,7 @@ fjc_stack_init (fjc_stack_t * stack, fjc_deallocator_t * dealloc)
   else 
     {
       (*stack)->signature_ = FJC_STACK_SIGNATURE;
-      if (((*stack)->list_ = fjc_list_init (dealloc)) == NULL)
+      if ((rc = fjc_list_init (&(*stack)->list_, dealloc)) != E_FJC_OK)
         {
           free (*stack);
         }

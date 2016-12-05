@@ -27,11 +27,16 @@
 #include "fjc_list.h"
 #include "fjc_clist.h"
 
-void
+fjc_error_t
 fjc_clist_destroy (fjc_clist_t clist)
 {
   assert (clist != NULL);
+  if (clist == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   while (fjc_clist_del (clist, NULL, POS_FJC_HEAD) == E_FJC_OK)
     ;
   free (clist);
+  return E_FJC_OK;
 }

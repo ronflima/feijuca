@@ -26,9 +26,15 @@
 #include "fjc_list.h"
 #include "fjc_clist.h"
 
-fjc_position_t 
-fjc_clist_get_pos (fjc_clist_t clist)
+
+fjc_error_t
+fjc_clist_get_pos (fjc_clist_t clist, fjc_position_t *pos)
 {
   assert (clist != NULL);
-  return list_get_pos ((fjc_list_t) clist);
+  assert (pos != NULL);
+  if (clist == NULL || pos == NULL)
+    {
+      return E_FJC_INVAL;
+    }
+  return fjc_list_get_pos ((fjc_list_t) clist, pos);
 }

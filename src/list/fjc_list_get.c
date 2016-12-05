@@ -28,12 +28,17 @@
 #include "fjc_list.h"
 #include "fjc_list_.h"
 
-const void *
-fjc_list_get (fjc_list_t list, fjc_position_t whence)
+fjc_error_t
+fjc_list_get (fjc_list_t list, const void ** data, fjc_position_t whence)
 {
   fjc_list_element_t element = NULL;
 
   assert (list != NULL);
+  assert (data != NULL);
+  if (list == NULL || data == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   switch (whence)
     {
     case POS_FJC_HEAD:
@@ -52,11 +57,12 @@ fjc_list_get (fjc_list_t list, fjc_position_t whence)
       element = list->curr_;
       break;
     default:
-      return NULL;
+      return E_FJC_INVAL;
     }
   if (element == NULL)
     {
-      return NULL;
+      return E_FJC_EOF;
     }
-  return element->data_;
+  *data = element->data_;
+  return E_FJC_OK;
 }

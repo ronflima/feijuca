@@ -23,11 +23,11 @@
 # Project: G.A. Library
 # Author: Ronaldo Faria Lima <ronaldo@ronaldolima.eti.br>
 # $Id: Makefile.am,v 1.5 2006-01-11 10:21:39 harq_al_ada Exp $
-noinst_LTLIBRARIES = libfjc_stack.la
-libfjc_stack_la_SOURCES = fjc_stack_init.c			\
-                      fjc_stack_pop.c				\
-                      fjc_stack_destroy.c			\
-                      fjc_stack_push.c				\
-	                  fjc_stack_size.c				\
+noinst_LTLIBRARIES = libstack.la
+libstack_la_SOURCES = fjc_stack_init.c			\
+                      fjc_stack_pop.c			\
+                      fjc_stack_destroy.c		\
+                      fjc_stack_push.c			\
+	                  fjc_stack_size.c			\
                       ../../include/fjc_stack.h
 AM_CPPFLAGS=-I../../include/

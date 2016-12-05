@@ -44,11 +44,11 @@ typedef struct fjc_deque_t * fjc_deque_t;
 /*
  * Prototypes
  */
-int (fjc_deque_init)    __P ((fjc_deque_t *, fjc_deallocator_t *));
-int (fjc_deque_destroy) __P ((fjc_deque_t));
-int (fjc_deque_pop)     __P ((fjc_deque_t, void **, fjc_position_t));
-int (fjc_deque_push)    __P ((fjc_deque_t, const void *, fjc_position_t));
-int (fjc_deque_size)    __P ((fjc_deque_t, size_t *));
+fjc_error_t (fjc_deque_init)    __P ((fjc_deque_t *, fjc_deallocator_t *));
+fjc_error_t (fjc_deque_destroy) __P ((fjc_deque_t));
+fjc_error_t (fjc_deque_pop)     __P ((fjc_deque_t, void **, fjc_position_t));
+fjc_error_t (fjc_deque_push)    __P ((fjc_deque_t, const void *, fjc_position_t));
+fjc_error_t (fjc_deque_size)    __P ((fjc_deque_t, size_t *));
 
 FJC_ENDDECLS
 #endif /* FJC_DEQUE_H */

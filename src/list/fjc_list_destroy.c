@@ -31,12 +31,17 @@
 /* Version info */
 static char const rcsid [] = "@(#) $Id$";
 
-void
+fjc_error_t
 fjc_list_destroy (fjc_list_t list)
 {
-  assert (list != NULL);  
+  assert (list != NULL);
+  if (list == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   while (fjc_list_del (list, NULL, POS_FJC_HEAD) == 0x0)
     ;
   memset(list, 0x0, sizeof(struct fjc_list_t));
   free (list);
+  return E_FJC_OK;
 }

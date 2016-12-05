@@ -39,7 +39,7 @@ fjc_ivector_get (fjc_ivector_t vector, void **data, size_t idx)
       return E_FJC_INVAL;
     }
   CHECK_SIGNATURE (vector, FJC_IVECTOR_SIGNATURE);  
-  if ((idx < 0x0u) || (idx >= vector->size_))
+  if (idx >= vector->size_)
     {
       *data = NULL;
       return E_FJC_INVAL;

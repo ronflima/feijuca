@@ -26,9 +26,14 @@
 #include "fjc_list.h"
 #include "fjc_clist.h"
 
-fjc_clist_t
-fjc_clist_init (fjc_deallocator_t * dealloc)
+fjc_error_t
+fjc_clist_init (fjc_clist_t *clist, fjc_deallocator_t * dealloc)
 {
   assert (dealloc != NULL);
-  return (fjc_clist_t) fjc_list_init (dealloc);
+  assert (clist != NULL);
+  if (dealloc == NULL || clist == NULL)
+    {
+      return E_FJC_INVAL;
+    }
+  return fjc_list_init ((fjc_list_t *)clist, dealloc);
 }

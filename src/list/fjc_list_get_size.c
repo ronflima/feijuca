@@ -27,9 +27,15 @@
 #include "fjc_list.h"
 #include "fjc_list_.h"
 
-size_t
-fjc_list_get_size (fjc_list_t list)
+fjc_error_t
+fjc_list_get_size (fjc_list_t list, size_t *size)
 {
   assert (list != NULL);
-  return list->size_;
+  assert (size != NULL);
+  if (list == NULL || size == NULL)
+    {
+      return E_FJC_INVAL;
+    }
+  *size =  list->size_;
+  return E_FJC_OK;
 }
