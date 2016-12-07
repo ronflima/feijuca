@@ -39,7 +39,10 @@ fjc_dclist_size (fjc_dclist_t dclist, size_t * size)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (dclist, FJC_DCLIST_SIGNATURE);
+  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   *size = fjc_dlist_size (dclist->list_);
   return E_FJC_OK;
 }

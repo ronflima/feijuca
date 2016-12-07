@@ -38,7 +38,10 @@ fjc_deque_size (fjc_deque_t deque, size_t * size)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (deque, FJC_DEQUE_SIGNATURE);
+  if (deque->signature_ != FJC_DEQUE_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   *size = fjc_dlist_size (deque->list_);
   return E_FJC_OK; 
 }

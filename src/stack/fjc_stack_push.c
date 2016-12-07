@@ -33,6 +33,9 @@ fjc_stack_push (fjc_stack_t stack, const void *data)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (stack, FJC_STACK_SIGNATURE);
+  if (stack->signature_ != FJC_STACK_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   return fjc_list_insert (stack->list_, data, POS_FJC_HEAD);
 }

@@ -39,7 +39,10 @@ fjc_ivector_put (fjc_ivector_t vector, size_t idx, const void *data)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (vector, FJC_IVECTOR_SIGNATURE);  
+  if (vector->signature_ != FJC_IVECTOR_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if ((idx >= vector->size_) || (data == NULL))
     {
       return E_FJC_INVAL;

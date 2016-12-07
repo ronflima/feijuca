@@ -39,7 +39,10 @@ fjc_deque_push (fjc_deque_t deque, const void *data, fjc_position_t whence)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (deque, FJC_DEQUE_SIGNATURE);
+  if (deque->signature_ != FJC_DEQUE_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if ((whence != POS_FJC_HEAD) && (whence != POS_FJC_TAIL))
     {
       return E_FJC_INVAL;

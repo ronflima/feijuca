@@ -33,24 +33,18 @@
 fjc_error_t
 fjc_dclist_make_circular_ (fjc_dclist_t dclist)
 {
-  fjc_error_t rc = E_FJC_OK;
   assert (dclist != NULL);
-
   if (dclist == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else 
+  if ((dclist->list_->head_ != NULL) && (dclist->list_->head_->prev_ == NULL))
     {
-      if ((dclist->list_->head_ != NULL) && (dclist->list_->head_->prev_ == NULL))
-        {
-          dclist->list_->head_->prev_ = dclist->list_->tail_;
-        }
-      if ((dclist->list_->tail_ != NULL) && (dclist->list_->tail_->next_ == NULL))
-        {
-          dclist->list_->tail_->next_ = dclist->list_->head_;
-        }
+      dclist->list_->head_->prev_ = dclist->list_->tail_;
     }
-
-  return rc;
+  if ((dclist->list_->tail_ != NULL) && (dclist->list_->tail_->next_ == NULL))
+    {
+      dclist->list_->tail_->next_ = dclist->list_->head_;
+    }
+  return E_FJC_OK;
 }

@@ -38,7 +38,10 @@ fjc_dclist_del (fjc_dclist_t dclist, void **data, fjc_position_t whence)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (dclist, FJC_DCLIST_SIGNATURE);
+  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if (dclist->list_->size_ > 0x0)
     {
       dclist->list_->head_->prev_ = NULL;

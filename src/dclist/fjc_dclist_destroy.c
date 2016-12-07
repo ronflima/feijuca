@@ -34,28 +34,25 @@
 fjc_error_t
 fjc_dclist_destroy (fjc_dclist_t dclist)
 {
-  fjc_error_t rc = E_FJC_OK;
-
   assert (dclist != NULL);
   if (dclist == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else
+  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
     {
-      CHECK_SIGNATURE (dclist, FJC_DCLIST_SIGNATURE);
-  
-      /* Makes the list linear in order to use fjc_dlist_destroy safely */
-      if (dclist->list_->head_ != NULL)
-        {
-          dclist->list_->head_->prev_ = NULL;
-        }
-      if (dclist->list_->tail_ != NULL)
-        {
-          dclist->list_->tail_->next_ = NULL;
-        }
-      fjc_dlist_destroy (dclist->list_);
-      free (dclist);
+      return E_FJC_INVAL;
     }
-  return rc;
+  /* Makes the list linear in order to use fjc_dlist_destroy safely */
+  if (dclist->list_->head_ != NULL)
+    {
+      dclist->list_->head_->prev_ = NULL;
+    }
+  if (dclist->list_->tail_ != NULL)
+    {
+      dclist->list_->tail_->next_ = NULL;
+    }
+  fjc_dlist_destroy (dclist->list_);
+  free (dclist);
+  return E_FJC_OK;
 }

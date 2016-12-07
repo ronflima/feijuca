@@ -32,17 +32,14 @@
 fjc_error_t
 fjc_stack_pop (fjc_stack_t stack, void **data)
 {
-  fjc_error_t rc = E_FJC_OK;
-
   assert (stack != NULL);
   if (stack == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else 
+  if (stack->signature_ != FJC_STACK_SIGNATURE) 
     {
-      CHECK_SIGNATURE (stack, FJC_STACK_SIGNATURE);
-      rc = fjc_list_del (stack->list_, data, POS_FJC_HEAD);
+      return E_FJC_INVAL;
     }
-  return rc;
+  return fjc_list_del (stack->list_, data, POS_FJC_HEAD);
 }

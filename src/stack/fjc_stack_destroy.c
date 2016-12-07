@@ -31,18 +31,16 @@
 fjc_error_t
 fjc_stack_destroy (fjc_stack_t stack)
 {
-  fjc_error_t rc = E_FJC_OK;
-
   assert (stack != NULL);
   if (stack == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else
+  if (stack->signature_ != FJC_STACK_SIGNATURE)
     {
-      CHECK_SIGNATURE (stack, FJC_STACK_SIGNATURE);
-      fjc_list_destroy (stack->list_);
-      free (stack);
+      return E_FJC_INVAL;
     }
-  return rc;
+  fjc_list_destroy (stack->list_);
+  free (stack);
+  return E_FJC_OK;
 }

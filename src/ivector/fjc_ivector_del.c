@@ -43,7 +43,10 @@ fjc_ivector_del (fjc_ivector_t vector, size_t idx)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (vector, FJC_IVECTOR_SIGNATURE);
+  if (vector->signature_ != FJC_IVECTOR_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if (vector->size_ == 0x0)
     {
       return E_FJC_EOF;

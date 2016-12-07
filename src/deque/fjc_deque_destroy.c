@@ -34,17 +34,16 @@
 fjc_error_t
 fjc_deque_destroy (fjc_deque_t deque)
 {
-  fjc_error_t rc = E_FJC_OK;
   assert (deque != NULL);
   if (deque == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else
+  if (deque->signature_ != FJC_DEQUE_SIGNATURE)
     {
-      CHECK_SIGNATURE (deque, FJC_DEQUE_SIGNATURE);
-      fjc_dlist_destroy (deque->list_);
-      free (deque);
+      return E_FJC_INVAL;
     }
-  return rc;
+  fjc_dlist_destroy (deque->list_);
+  free (deque);
+  return E_FJC_OK;
 }

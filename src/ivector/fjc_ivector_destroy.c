@@ -38,7 +38,10 @@ fjc_ivector_destroy (fjc_ivector_t vector)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (vector, FJC_IVECTOR_SIGNATURE);
+  if (vector->signature_ != FJC_IVECTOR_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   free (vector->data_);
   vector->signature_ = (fjc_magic_t) 0x0;
   free (vector);

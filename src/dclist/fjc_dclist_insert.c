@@ -38,9 +38,10 @@ fjc_dclist_insert (fjc_dclist_t dclist, const void *data, fjc_position_t whence)
     {
       return E_FJC_INVAL;
     }
-
-  CHECK_SIGNATURE (dclist, FJC_DCLIST_SIGNATURE);
-
+  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if ((rc = fjc_dlist_insert (dclist->list_, data, whence)) == E_FJC_OK)
     {
       /* Makes list circular again, since dlist_insert will ignore

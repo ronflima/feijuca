@@ -38,7 +38,10 @@ fjc_ivector_add (fjc_ivector_t vector, const void *data)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (vector, FJC_IVECTOR_SIGNATURE);
+  if (vector->signature_ != FJC_IVECTOR_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if ((vector->elemused_ == vector->chunksize_) || (vector->size_ == 0x0))
     {
       /* If this chunk is fully used, allocates a new one */

@@ -34,6 +34,9 @@ fjc_stack_size (fjc_stack_t stack, size_t * size)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (stack, FJC_STACK_SIGNATURE);
+  if (stack->signature_ != FJC_STACK_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   return fjc_list_get_size (stack->list_, size);
 }

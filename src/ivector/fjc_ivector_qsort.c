@@ -36,7 +36,10 @@ fjc_ivector_qsort (fjc_ivector_t vector)
     {
       return E_FJC_INVAL;
     }
-  CHECK_SIGNATURE (vector, FJC_IVECTOR_SIGNATURE);
+  if (vector->signature_ != FJC_IVECTOR_SIGNATURE)
+    {
+      return E_FJC_INVAL;
+    }
   if (vector->comp_ == NULL)
     {
       return E_FJC_INVAL;
