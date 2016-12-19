@@ -21,8 +21,9 @@
 # $Id: configure.ac,v 1.21 2006-02-04 16:06:42 harq_al_ada Exp $
 
 AC_PREREQ(2.69)
-AC_INIT([feijuca], [1.0.0], [ronaldo@ronaldolima.eti.br])
+AC_INIT([feijuca], [1.0.0], [contato@nineteenapps.com])
 AM_INIT_AUTOMAKE([subdir-objects])
+AM_SILENT_RULES([yes])
 LT_INIT
 AC_CONFIG_SRCDIR([include/fjc_common.h])
 AC_CONFIG_MACRO_DIRS([m4])
@@ -99,9 +100,4 @@ AC_CONFIG_FILES([Makefile
                  src/dclist/Makefile
                  doc/Makefile])
 
-# Checks if the test suite exists in the source tree. If yes, create
-# its makefile. Otherwise, just let it go.
-if test -r src/testsuite/Makefile.am; then
-   AC_CONFIG_FILES([src/testsuite/Makefile])
-fi
 AC_OUTPUT

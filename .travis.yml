@@ -1,0 +1,26 @@
+language: c
+sudo: false
+matrix:
+  include:
+  - os: linux
+    compiler: gcc
+  - os: linux
+    compiler: clang
+  - os: osx
+    compiler: gcc
+  - os: osx
+    compiler: clang
+branches:
+  only:
+    - master
+install:
+  - ./autogen.sh
+  - ./configure ${STATIC+--disable-shared} ${DEBUG+--enable-debug}
+  - make 
+script:
+  - make check
+after_failure:
+  - for f in tests/*.log; do echo; echo "${f}:"; cat $f; done;
+  - cat test-suite.log
+notifications:
+  email: false
