@@ -29,7 +29,7 @@
 #include "fjc_list_.h"
 
 fjc_error_t
-list_move (fjc_list_t list, fjc_position_t whence)
+fjc_list_move (fjc_list_t list, fjc_position_t whence)
 {
   assert (list != NULL);
   switch (whence)

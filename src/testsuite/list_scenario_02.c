@@ -27,6 +27,7 @@
 */
 
 #include <stdio.h>
+#include <assert.h>
 #include "fjc_list.h"
 #include "fjc_tests.h"
 
@@ -38,12 +39,23 @@ main(void)
 {
   fjc_list_t list;
   fjc_error_t rc;
+  unsigned qty = 0x0;
   
   rc = fjc_list_init(&list, free);
-  ASSERT_RC(rc, E_FJC_OK);
+  assert(rc == E_FJC_OK);
   load_list(list);
+  rc = fjc_list_move(list, POS_FJC_HEAD);
+  assert(rc == E_FJC_OK);
+  do {
+    int *n;
+    fjc_list_get(list, (const void **)&n, POS_FJC_CURR);
+    assert (*n < 0 || *n > 1000);
+    rc = fjc_list_move(list, POS_FJC_NEXT);
+    ++qty;
+  } while (rc == E_FJC_OK);
+  assert (qty == 1000);
   rc = fjc_list_destroy(list);
-  ASSERT_RC(rc, E_FJC_OK);
+  assert(rc == E_FJC_OK);
   
   return 0x0;
 }
@@ -56,9 +68,9 @@ load_list(fjc_list_t list)
     {
       fjc_error_t rc;
       int *j = (int *)malloc(sizeof(int));
-      ASSERT_NULL(j);
+      assert(j != NULL);
       *j = i;
       rc = fjc_list_insert(list, (void *)j, POS_FJC_HEAD);
-      ASSERT_RC(rc, E_FJC_OK);
+      assert(rc ==  E_FJC_OK);
     }
 }
