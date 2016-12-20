@@ -39,7 +39,7 @@ static fjc_error_t relink_list_ __P ((fjc_dlist_t, fjc_dlist_element_t, fjc_posi
  * Exported functions
  */
 fjc_error_t
-dlist_insert (fjc_dlist_t list, const void *data, fjc_position_t whence)
+fjc_dlist_insert (fjc_dlist_t list, const void *data, fjc_position_t whence)
 {
   fjc_error_t rc = E_FJC_OK;
   fjc_dlist_element_t element = NULL;

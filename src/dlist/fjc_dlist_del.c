@@ -53,7 +53,7 @@ static void relink_list_tail_ __P ((fjc_dlist_t));
  * Exported functions
  */
 fjc_error_t
-dlist_del (fjc_dlist_t list, void **data, fjc_position_t whence)
+fjc_dlist_del (fjc_dlist_t list, void **data, fjc_position_t whence)
 {
   fjc_dlist_element_t element = NULL;	/* Current element being processed */
 
