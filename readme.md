@@ -1,4 +1,7 @@
-# What is feijuca?
+# Feijuca Library
+[![Build Status][travis-badge]][travis-url]
+
+## What is feijuca?
 
 Feijoada is a portuguese dish, originary from the north of Portugal. It is a
 dish made of beans and meat. In Brazil it is one of the most popular dishes,
@@ -28,3 +31,5 @@ pretty stable.
 This library is released under
 [Gnu Lesser General Public License](http://www.gnu.org/licenses/lgpl.html).
 
+[travis-badge]: https://travis-ci.org/ronflima/feijuca.svg?branch=master
+[travis-url]: https://travis-ci.org/ronflima/feijuca
