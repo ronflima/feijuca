@@ -26,10 +26,15 @@
    This file purpose: Check list loading with integers.
 */
 
+/* Forces the assertions to be in code */
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include "fjc_list.h"
-#include "fjc_tests.h"
 
 static void
 load_list(fjc_list_t list);
@@ -49,7 +54,7 @@ main(void)
   do {
     int *n;
     fjc_list_get(list, (const void **)&n, POS_FJC_CURR);
-    assert (*n < 0 || *n > 1000);
+    assert (*n >= 0 && *n < 1000);
     rc = fjc_list_move(list, POS_FJC_NEXT);
     ++qty;
   } while (rc == E_FJC_OK);

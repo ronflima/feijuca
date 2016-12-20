@@ -27,9 +27,14 @@
    single-linked lists.
 */
 
+/* Forces the assertions to be in code */
+#ifdef NDEBUG
+#undef NDEBUG
+#endif
+
 #include <stdio.h>
+#include <assert.h>
 #include "fjc_list.h"
-#include "fjc_tests.h"
 
 int
 main(void)
@@ -38,9 +43,9 @@ main(void)
   fjc_error_t rc;
   
   rc = fjc_list_init(&list, NULL);
-  ASSERT_RC(rc, E_FJC_OK);
+  assert (rc == E_FJC_OK);
   rc = fjc_list_destroy(list);
-  ASSERT_RC(rc, E_FJC_OK);
+  assert (rc == E_FJC_OK);
   
   return 0x0;
 }

@@ -63,6 +63,7 @@ testsuite/list_scenario_02
 
 TESTS = $(check_PROGRAMS)
 LDADD=libfjca.la
+
 AM_CPPFLAGS=-I../include
 
 
