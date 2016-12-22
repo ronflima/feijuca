@@ -59,7 +59,8 @@ noinst_HEADERS=../include/fjc_dclist_.h	\
 
 check_PROGRAMS=             \
 testsuite/list_scenario_01  \
-testsuite/list_scenario_02
+testsuite/list_scenario_02  \
+testsuite/list_scenario_03
 
 TESTS = $(check_PROGRAMS)
 LDADD=libfjca.la
