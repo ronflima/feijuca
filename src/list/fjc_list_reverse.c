@@ -28,7 +28,7 @@
 #include "fjc_list_.h"
 
 fjc_error_t
-list_reverse (fjc_list_t list)
+fjc_list_reverse (fjc_list_t list)
 {
   fjc_list_element_t first;  /* First item of the window */
   fjc_list_element_t middle; /* Middle item of the window */

@@ -45,6 +45,7 @@ main(void)
   fjc_list_t list;
   fjc_error_t rc;
   unsigned qty = 0x0;
+  size_t size;
   
   rc = fjc_list_init(&list, free);
   assert(rc == E_FJC_OK);
@@ -59,6 +60,9 @@ main(void)
     ++qty;
   } while (rc == E_FJC_OK);
   assert (qty == 1000);
+  rc = fjc_list_get_size(list, &size);
+  assert(rc == E_FJC_OK);
+  assert(size == qty);
   rc = fjc_list_destroy(list);
   assert(rc == E_FJC_OK);
   
