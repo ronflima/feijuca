@@ -29,7 +29,7 @@ pretty stable.
 # Licenses
 
 This library is released under
-[Gnu Lesser General Public License](http://www.gnu.org/licenses/lgpl.html).
+[MIT License](LICENSE).
 
 [travis-badge]: https://travis-ci.org/ronflima/feijuca.svg?branch=master
 [travis-url]: https://travis-ci.org/ronflima/feijuca
