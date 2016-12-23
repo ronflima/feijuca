@@ -13,21 +13,26 @@ implements common algorithms using an object-oriented approach. Since it is
 written in full compliance with C standards, it can be compiled in virually any
 system that have a C compiler and support the STDC library.
 
-# GNU Compliance
+## GNU Compliance
 
-This library was designed to be fully compliant with GNU Building System. So, it
-uses Automake, Autoconf as its building environment. In addition, the full
-documentation is written using Texinfo and can be extracted in a myriad of
-formats. Primarily, it is available as Info Pages for easy access from any
-system where it can be installed.
+This library was designed to be fully compliant with GNU Building System. It
+uses autotools to get built in your environment.
 
-# History
+## History
 
 This library was designed and implemented originaly by Ronaldo Faria Lima and
 Daniel Costa Soares back in 2004. This code is more than 10 years old and is
 pretty stable.
 
-# Licenses
+Feijuca was created to fill a gap. Back in 2004 there was no well-designed
+algorithms library that would encapsulate data and that was easy to use.
+
+## What makes Feijuca unique
+
+Feijuca library is designed in an object-oriented fashion. It uses opaque data
+structures so you can focus on your data, not on the algorithms.
+
+## License
 
 This library is released under
 [MIT License](LICENSE).
