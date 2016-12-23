@@ -1,5 +1,6 @@
 # Feijuca Library
 [![Build Status][travis-badge]][travis-url]
+[![Mit License][mit-badge]][mit-url]
 
 ## What is feijuca?
 
@@ -33,3 +34,5 @@ This library is released under
 
 [travis-badge]: https://travis-ci.org/ronflima/feijuca.svg?branch=master
 [travis-url]: https://travis-ci.org/ronflima/feijuca
+[mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
+[mit-url]: https://tldrlegal.com/license/mit-license
