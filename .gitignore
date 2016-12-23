@@ -32,5 +32,19 @@ Makefile.in
 
 /texinfo.tex
 
+*.o
+.libs
+*.in
+*.lo
 *.log
+*.la
+*.trs
+.deps
+INSTALL
+m4
+libtool
+*.status
+.dirstamp
+*.tex
+*.info
 Makefile
