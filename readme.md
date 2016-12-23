@@ -1,5 +1,6 @@
 # Feijuca Library
-<center>[![Feijuca Logo][feijuca-logo]]</center>
+[![Feijuca Logo][feijuca-logo]]()
+
 [![Build Status][travis-badge]][travis-url]
 [![Mit License][mit-badge]][mit-url]
 
