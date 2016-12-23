@@ -1,6 +1,5 @@
+<span style="text-align: center;">[![Feijuca Logo][feijuca-logo]]()</span>
 # Feijuca Library
-[![Feijuca Logo][feijuca-logo]]()
-
 [![Build Status][travis-badge]][travis-url]
 [![Mit License][mit-badge]][mit-url]
 
