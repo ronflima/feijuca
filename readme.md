@@ -1,4 +1,5 @@
 # Feijuca Library
+<center>[![Feijuca Logo][feijuca-logo]]</center>
 [![Build Status][travis-badge]][travis-url]
 [![Mit License][mit-badge]][mit-url]
 
@@ -42,3 +43,4 @@ This library is released under
 [mit-badge]: https://img.shields.io/badge/License-MIT-blue.svg?style=flat
 [mit-url]: https://tldrlegal.com/license/mit-license
 [feijuca-link]: https://en.wikipedia.org/wiki/Feijoada
+[feijuca-logo]: img/feijuca-logo.png
