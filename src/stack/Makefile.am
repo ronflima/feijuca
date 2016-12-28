@@ -25,6 +25,6 @@ libstack_la_SOURCES = fjc_stack_init.c			\
                       fjc_stack_pop.c			\
                       fjc_stack_destroy.c		\
                       fjc_stack_push.c			\
-	                  fjc_stack_size.c			\
+	                  fjc_stack_get_size.c		\
                       ../../include/fjc_stack.h
 AM_CPPFLAGS=-I../../include/
