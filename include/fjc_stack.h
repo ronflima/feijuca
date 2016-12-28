@@ -37,11 +37,11 @@ typedef struct fjc_stack_t * fjc_stack_t;
 /*
  * Prototypes
  */
-int (fjc_stack_init)    __P ((fjc_stack_t *, fjc_deallocator_t *));
-int (fjc_stack_destroy) __P ((fjc_stack_t));
-int (fjc_stack_pop)     __P ((fjc_stack_t, void **));
-int (fjc_stack_push)    __P ((fjc_stack_t, const void *));
-int (fjc_stack_size)    __P ((fjc_stack_t, size_t *));
+int (fjc_stack_init)     __P ((fjc_stack_t *, fjc_deallocator_t *));
+int (fjc_stack_destroy)  __P ((fjc_stack_t));
+int (fjc_stack_pop)      __P ((fjc_stack_t, void **));
+int (fjc_stack_push)     __P ((fjc_stack_t, const void *));
+int (fjc_stack_get_size) __P ((fjc_stack_t, size_t *));
 
 FJC_ENDDECLS
 #endif /* FJC_STACK_H */
