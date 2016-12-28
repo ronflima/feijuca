@@ -28,7 +28,7 @@
 #include "fjc_dlist_.h"
 
 fjc_error_t
-fjc_dlist_size (fjc_dlist_t dlist, size_t *size)
+fjc_dlist_get_size (fjc_dlist_t dlist, size_t *size)
 {
   assert (dlist != NULL);
   if (dlist == NULL || size == NULL)

@@ -27,6 +27,6 @@ libdlist_la_SOURCES = fjc_dlist_init.c				\
                       fjc_dlist_get.c				\
                       fjc_dlist_insert.c			\
                       fjc_dlist_move.c				\
-                      fjc_dlist_size.c				\
+                      fjc_dlist_get_size.c			\
                       ../../include/fjc_dlist.h
 AM_CPPFLAGS=-I../../include/
