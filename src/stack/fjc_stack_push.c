@@ -38,5 +38,5 @@ fjc_stack_push (fjc_stack_t stack, const void *data)
     {
       return E_FJC_INVAL;
     }
-  return fjc_list_insert (stack->list_, data, POS_FJC_HEAD);
+  return fjc_list_insert (stack->list_, POS_FJC_HEAD, data);
 }

@@ -28,7 +28,7 @@
 #include "fjc_deque_.h"
 
 fjc_error_t
-fjc_deque_pop (fjc_deque_t deque, void **data, fjc_position_t whence)
+fjc_deque_pop (fjc_deque_t deque, fjc_position_t whence, void **data)
 {
   assert (deque != NULL);
   if (deque == NULL)
@@ -43,5 +43,5 @@ fjc_deque_pop (fjc_deque_t deque, void **data, fjc_position_t whence)
     {
       return E_FJC_INVAL;
     }
-  return fjc_dlist_del (deque->list_, data, whence);
+  return fjc_dlist_del (deque->list_, whence, data);
 }

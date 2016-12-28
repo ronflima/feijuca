@@ -42,14 +42,11 @@ fjc_dlist_move (fjc_dlist_t list, fjc_position_t whence)
       list->curr_ = list->tail_;
       break;
     case POS_FJC_NEXT:		/* Moves to the next element */
-      if (list->curr_)
-        {
-          list->curr_ = list->curr_->next_;
-        }
-      else
+      if (list->curr_ == NULL || list->curr_->next_ == NULL)
         {
           return E_FJC_EOF;
         }
+      list->curr_ = list->curr_->next_;
       break;
     case POS_FJC_PREV:		/* Moves to the previous element */
       if (list->curr_)

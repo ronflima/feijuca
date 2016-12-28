@@ -36,95 +36,86 @@
  * the parameter element from the list. This function guarantees that
  * the list will be linked correctly after the operation.
  */
-static void relink_list_ __P ((fjc_dlist_t, fjc_dlist_element_t));
+static void
+relink_list_ __P ((fjc_dlist_t, fjc_dlist_element_t));
 
 /*
  * This function relinks the list head when it was required to delete it.
  */
-static void relink_list_head_ __P ((fjc_dlist_t));
+static void
+relink_list_head_ __P ((fjc_dlist_t));
 
 /*
  * This function relinks the list tail when it was required to delete it.
  */
-static void relink_list_tail_ __P ((fjc_dlist_t));
+static void
+relink_list_tail_ __P ((fjc_dlist_t));
 
 
 /*
  * Exported functions
  */
 fjc_error_t
-fjc_dlist_del (fjc_dlist_t list, void **data, fjc_position_t whence)
+fjc_dlist_del (fjc_dlist_t list, fjc_position_t whence, void **data)
 {
   fjc_dlist_element_t element = NULL;	/* Current element being processed */
 
   assert (list != NULL);
-  assert (data != NULL);
-
-  if (data != NULL)
-    {
-      *data = (void *) NULL;
-    }
-
   if (list->size_ == 0x0u)
     {
       return E_FJC_EOF;
     }
+  if (whence == POS_FJC_HEAD)
+    {
+      element = list->head_;
+      relink_list_head_ (list);
+    }
+  else if (whence == POS_FJC_TAIL)
+    {
+      element = list->tail_;
+      relink_list_tail_ (list);
+    }
   else
     {
-      if (whence == POS_FJC_HEAD)
+      if (list->curr_ == NULL)
         {
-          element = list->head_;
-          relink_list_head_ (list);
+          return E_FJC_BADC;
         }
-      else if (whence == POS_FJC_TAIL)
+      if (whence == POS_FJC_CURR)
         {
-          element = list->tail_;
-          relink_list_tail_ (list);
+          element = list->curr_;
+          list->curr_ = NULL;
+        }
+      else if (whence == POS_FJC_NEXT)
+        {
+          element = list->curr_->next_;
+        }
+      else if (whence == POS_FJC_PREV)
+        {
+          element = list->curr_->prev_;
         }
       else
         {
-          if (list->curr_ == NULL)
-            {
-              return E_FJC_BADC;
-            }
-          else
-            {
-              if (whence == POS_FJC_CURR)
-                {
-                  element = list->curr_;
-                  list->curr_ = NULL;
-                }
-              else if (whence == POS_FJC_NEXT)
-                {
-                  element = list->curr_->next_;
-                }
-              else if (whence == POS_FJC_PREV)
-                {
-                  element = list->curr_->prev_;
-                }
-              else
-                {
-                  return E_FJC_INVAL;
-                }
-              /* Redo list pointers */
-              relink_list_ (list, element);
-            }
+          return E_FJC_INVAL;
         }
     }
-  if (element)
+  if (element == NULL)
     {
-      if (data != NULL)
-        {
-          *data = element->data_;
-        }
-      else
-        {
-          list->deallocator_ (element->data_);
-        }
-      free (element);
-      --(list->size_);
+      /* No data for current settings */
+      return E_FJC_EOF;
     }
-  return E_FJC_OK;
+  if (data != NULL)
+    {
+      *data = (void *)element->data_;
+    }
+  else 
+    {
+      list->deallocator_ (element->data_);
+    }
+  relink_list_ (list, element);
+  free (element);
+  --(list->size_);
+   return E_FJC_OK;
 }
 
 

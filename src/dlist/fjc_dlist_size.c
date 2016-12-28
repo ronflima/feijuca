@@ -27,12 +27,14 @@
 #include "fjc_dlist.h"
 #include "fjc_dlist_.h"
 
-/* Version info */
-static char const rcsid[] = "@(#) $Id$";
-
-size_t
-fjc_dlist_size (fjc_dlist_t dlist)
+fjc_error_t
+fjc_dlist_size (fjc_dlist_t dlist, size_t *size)
 {
   assert (dlist != NULL);
-  return dlist->size_;
+  if (dlist == NULL || size == NULL)
+    {
+      return E_FJC_INVAL;
+    }
+  *size = dlist->size_;
+  return E_FJC_OK;
 }

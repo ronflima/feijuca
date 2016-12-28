@@ -29,12 +29,17 @@
 #include "fjc_dlist.h"
 #include "fjc_dlist_.h"
 
-void
+fjc_error_t
 fjc_dlist_destroy (fjc_dlist_t list)
 {
   assert (list != NULL);
+  if (list == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   /* Proceeds with the deletion - Deletes the list from the head, always */
-  while (fjc_dlist_del (list, NULL, POS_FJC_HEAD) == E_FJC_OK)
+  while (fjc_dlist_del (list, POS_FJC_HEAD, NULL) == E_FJC_OK)
     ;
   free (list);
+  return E_FJC_OK;
 }

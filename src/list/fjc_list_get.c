@@ -29,7 +29,7 @@
 #include "fjc_list_.h"
 
 fjc_error_t
-fjc_list_get (fjc_list_t list, const void ** data, fjc_position_t whence)
+fjc_list_get (fjc_list_t list, fjc_position_t whence, void ** data)
 {
   fjc_list_element_t element = NULL;
 
@@ -63,6 +63,6 @@ fjc_list_get (fjc_list_t list, const void ** data, fjc_position_t whence)
     {
       return E_FJC_EOF;
     }
-  *data = element->data_;
+  *data = (void *)element->data_;
   return E_FJC_OK;
 }

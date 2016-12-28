@@ -38,5 +38,5 @@ fjc_queue_push (fjc_queue_t queue, const void *data)
       return E_FJC_INVAL;
     }
   fjc_queue_get_list_(queue, &list);
-  return fjc_list_insert (list, data, POS_FJC_TAIL);
+  return fjc_list_insert (list, POS_FJC_TAIL, data);
 }

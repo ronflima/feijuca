@@ -59,7 +59,8 @@ check_PROGRAMS=             \
 testsuite/list_scenario_01  \
 testsuite/list_scenario_02  \
 testsuite/list_scenario_03  \
-testsuite/clist_scenario_01
+testsuite/clist_scenario_01 \
+testsuite/dlist_scenario_01
 
 TESTS = $(check_PROGRAMS)
 LDADD=libfjca.la

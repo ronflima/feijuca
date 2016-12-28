@@ -29,7 +29,7 @@
 #include "fjc_deque_.h"
 
 fjc_error_t
-fjc_deque_push (fjc_deque_t deque, const void *data, fjc_position_t whence)
+fjc_deque_push (fjc_deque_t deque, fjc_position_t whence, const void *data)
 {
   assert (deque != NULL);
   if (deque == NULL)
@@ -45,5 +45,5 @@ fjc_deque_push (fjc_deque_t deque, const void *data, fjc_position_t whence)
       return E_FJC_INVAL;
     }
   /* Calls the dlist insert function */
-  return fjc_dlist_insert (deque->list_, data, whence);
+  return fjc_dlist_insert (deque->list_, whence, data);
 }

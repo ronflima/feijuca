@@ -41,6 +41,5 @@ fjc_dclist_size (fjc_dclist_t dclist, size_t * size)
     {
       return E_FJC_INVAL;
     }
-  *size = fjc_dlist_size (dclist->list_);
-  return E_FJC_OK;
+  return fjc_dlist_get_size (dclist->list_, size);
 }

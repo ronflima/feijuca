@@ -53,14 +53,14 @@ main (void)
   load_list(clist);
   rc = fjc_clist_move(clist, POS_FJC_HEAD);
   assert (rc == E_FJC_OK);
-  rc = fjc_clist_get(clist, (const void **)&head, POS_FJC_HEAD); 
+  rc = fjc_clist_get(clist, POS_FJC_HEAD, (void **)&head); 
   assert(rc == E_FJC_OK);
   for (i=0; i<1000; ++i)
     {
       rc = fjc_clist_move(clist, POS_FJC_NEXT);
       assert(rc == E_FJC_OK);
     }
-  rc = fjc_clist_get(clist, (const void **)&data, POS_FJC_CURR); 
+  rc = fjc_clist_get(clist,  POS_FJC_CURR, (void **)&data); 
   assert(rc == E_FJC_OK);
   assert(data == head);
   rc = fjc_clist_destroy(clist);
@@ -80,7 +80,7 @@ load_list(fjc_clist_t clist)
       fjc_error_t rc;
       int *j = (int *)malloc(sizeof(int));
       assert(j != NULL);
-      rc = fjc_clist_insert(clist, (const void *)j, POS_FJC_HEAD);
+      rc = fjc_clist_insert(clist, POS_FJC_HEAD, (void *)j);
       assert(rc == E_FJC_OK);
     }
 }

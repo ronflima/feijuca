@@ -56,7 +56,7 @@ main (void)
   do
     {
       int *n;
-      rc = fjc_list_get(list, (const void **)&n, POS_FJC_CURR);
+      rc = fjc_list_get(list, POS_FJC_CURR, (void **)&n);
       assert (rc == E_FJC_OK);
       assert (*n < last);
       last = *n;
@@ -78,7 +78,7 @@ load_list(fjc_list_t list)
       int *j = (int *)malloc(sizeof(int));
       assert(j != NULL);
       *j = i + 1;
-      rc = fjc_list_insert(list, (void *)j, POS_FJC_TAIL);
+      rc = fjc_list_insert(list, POS_FJC_TAIL, (void *)j);
       assert (rc == E_FJC_OK);
     }
 }

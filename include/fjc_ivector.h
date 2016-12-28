@@ -38,7 +38,7 @@ typedef struct fjc_ivector_t * fjc_ivector_t;
  */
 fjc_error_t (fjc_ivector_init)    __P ((fjc_ivector_t *, fjc_compare_t *, size_t));
 fjc_error_t (fjc_ivector_destroy) __P ((fjc_ivector_t));
-fjc_error_t (fjc_ivector_get)     __P ((fjc_ivector_t, void **, size_t));
+fjc_error_t (fjc_ivector_get)     __P ((fjc_ivector_t, size_t, void **));
 fjc_error_t (fjc_ivector_put)     __P ((fjc_ivector_t, size_t, const void *));
 fjc_error_t (fjc_ivector_add)     __P ((fjc_ivector_t, const void *));
 fjc_error_t (fjc_ivector_qsort)   __P ((fjc_ivector_t));

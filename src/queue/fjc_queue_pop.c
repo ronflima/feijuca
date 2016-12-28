@@ -42,7 +42,7 @@ fjc_queue_pop (fjc_queue_t queue, void **data)
   else 
     {
       fjc_queue_get_list_ (queue, &list);
-      rc = fjc_list_del (list, data, POS_FJC_HEAD);
+      rc = fjc_list_del (list, POS_FJC_HEAD, data);
     }
   return rc;
 }

@@ -56,7 +56,7 @@ extract_element_from_next_ __P((fjc_list_t));
 /* Exported function definitions */
 
 fjc_error_t
-fjc_list_del (fjc_list_t list, void **data, fjc_position_t whence)
+fjc_list_del (fjc_list_t list, fjc_position_t whence, void **data)
 {
   fjc_list_element_t element = NULL; /* Element to be deleted */
 

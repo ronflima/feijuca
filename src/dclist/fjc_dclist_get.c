@@ -28,7 +28,7 @@
 #include "fjc_dclist_.h"
 
 fjc_error_t
-fjc_dclist_get (fjc_dclist_t dclist, void **data, fjc_position_t whence)
+fjc_dclist_get (fjc_dclist_t dclist, fjc_position_t whence, void **data)
 {
   assert (dclist != NULL);
   assert (data != NULL);
@@ -40,6 +40,5 @@ fjc_dclist_get (fjc_dclist_t dclist, void **data, fjc_position_t whence)
     {
       return E_FJC_INVAL;
     }
-  *data = (void *)fjc_dlist_get (dclist->list_, whence);
-  return E_FJC_OK;
+  return fjc_dlist_get (dclist->list_, whence, data);
 }

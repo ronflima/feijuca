@@ -28,7 +28,7 @@
 #include "fjc_ivector_.h"
 
 fjc_error_t
-fjc_ivector_get (fjc_ivector_t vector, void **data, size_t idx)
+fjc_ivector_get (fjc_ivector_t vector, size_t idx, void **data)
 {
   assert (vector != NULL);
   if (vector == NULL || data == NULL)

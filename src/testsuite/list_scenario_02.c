@@ -54,7 +54,7 @@ main(void)
   assert(rc == E_FJC_OK);
   do {
     int *n;
-    fjc_list_get(list, (const void **)&n, POS_FJC_CURR);
+    fjc_list_get(list, POS_FJC_CURR, (void **)&n);
     assert (*n >= 0 && *n < 1000);
     rc = fjc_list_move(list, POS_FJC_NEXT);
     ++qty;
@@ -79,7 +79,7 @@ load_list(fjc_list_t list)
       int *j = (int *)malloc(sizeof(int));
       assert(j != NULL);
       *j = i;
-      rc = fjc_list_insert(list, (void *)j, POS_FJC_HEAD);
+      rc = fjc_list_insert(list, POS_FJC_HEAD, (void *)j);
       assert(rc ==  E_FJC_OK);
     }
 }

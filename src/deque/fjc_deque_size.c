@@ -40,6 +40,5 @@ fjc_deque_size (fjc_deque_t deque, size_t * size)
     {
       return E_FJC_INVAL;
     }
-  *size = fjc_dlist_size (deque->list_);
-  return E_FJC_OK; 
+  return fjc_dlist_get_size (deque->list_, size);
 }

@@ -23,27 +23,25 @@
 */
 
 #include <assert.h>
+#include <string.h>
 #include <stdlib.h>
 #include "fjc_dlist.h"
 #include "fjc_dlist_.h"
 
-fjc_dlist_t
-fjc_dlist_init (fjc_deallocator_t * dealloc)
+fjc_error_t
+fjc_dlist_init (fjc_dlist_t *dlist, fjc_deallocator_t * dealloc)
 {
-  fjc_dlist_t list = NULL;
+  assert (dlist != NULL);
   assert (dealloc != NULL);
-  if ((list = (fjc_dlist_t) malloc (sizeof (struct fjc_dlist_t))) == NULL)
+  if (dealloc == NULL || dlist == NULL)
     {
-      list = NULL;
+      return E_FJC_INVAL;
     }
-  else
+  if ((*dlist = (fjc_dlist_t) malloc (sizeof (struct fjc_dlist_t))) == NULL)
     {
-      /* Initializes each data member of the list descriptor */
-      list->size_ = 0x0;
-      list->head_ = (fjc_dlist_element_t) NULL;
-      list->tail_ = (fjc_dlist_element_t) NULL;
-      list->curr_ = (fjc_dlist_element_t) NULL;
-      list->deallocator_ = dealloc;
+      return E_FJC_NOMEM;
     }
-  return list;
+  memset (*dlist, 0x0, sizeof(struct fjc_dlist_t));
+  (*dlist)->deallocator_ = dealloc;
+  return E_FJC_OK;
 }

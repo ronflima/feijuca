@@ -29,7 +29,7 @@
 #include "fjc_list_.h"
 
 fjc_error_t
-fjc_list_insert (fjc_list_t list, const void *data, fjc_position_t whence)
+fjc_list_insert (fjc_list_t list, fjc_position_t whence, const void *data)
 {
   fjc_list_element_t element;
 

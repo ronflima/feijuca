@@ -29,28 +29,22 @@
 fjc_error_t
 fjc_deque_init (fjc_deque_t * deque, fjc_deallocator_t * dealloc)
 {
-  fjc_error_t rc = E_FJC_OK;
   assert (deque != NULL);
   assert (dealloc != NULL);
   if (deque == NULL || dealloc == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else
+  if ((*deque = (fjc_deque_t) malloc (sizeof (struct fjc_deque_t))) == NULL)
     {
-      if ((*deque = (fjc_deque_t) malloc (sizeof (struct fjc_deque_t))) == NULL)
-        {
-          rc = E_FJC_NOMEM;
-        }
-      else
-        {
-          (*deque)->signature_ = FJC_DEQUE_SIGNATURE;
-          if (((*deque)->list_ = fjc_dlist_init (dealloc)) == NULL)
-            {
-              (*deque)->signature_ = 0x0;
-              free (*deque);
-            }
-        }
+      return E_FJC_NOMEM;
     }
-  return rc;
+  (*deque)->signature_ = FJC_DEQUE_SIGNATURE;
+  if (fjc_dlist_init(&(*deque)->list_, dealloc) != E_FJC_OK)
+    {
+      (*deque)->signature_ = 0x0;
+      free (*deque);
+      return E_FJC_NOMEM;
+    }
+  return E_FJC_OK;
 }

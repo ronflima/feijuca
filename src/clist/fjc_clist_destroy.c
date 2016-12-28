@@ -37,7 +37,7 @@ fjc_clist_destroy (fjc_clist_t clist)
     {
       return E_FJC_INVAL;
     }
-  while (fjc_clist_del (clist, NULL, POS_FJC_HEAD) == E_FJC_OK)
+  while (fjc_clist_del (clist, POS_FJC_HEAD, NULL) == E_FJC_OK)
     ;
   free (clist);
   return E_FJC_OK;

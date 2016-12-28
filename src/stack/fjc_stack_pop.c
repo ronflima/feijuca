@@ -38,5 +38,5 @@ fjc_stack_pop (fjc_stack_t stack, void **data)
     {
       return E_FJC_INVAL;
     }
-  return fjc_list_del (stack->list_, data, POS_FJC_HEAD);
+  return fjc_list_del (stack->list_,  POS_FJC_HEAD, data);
 }

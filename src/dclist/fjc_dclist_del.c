@@ -28,7 +28,7 @@
 #include "fjc_dlist_.h"
 
 fjc_error_t
-fjc_dclist_del (fjc_dclist_t dclist, void **data, fjc_position_t whence)
+fjc_dclist_del (fjc_dclist_t dclist, fjc_position_t whence, void **data)
 {
   fjc_error_t rc = E_FJC_OK;
   assert (dclist != NULL);
@@ -45,7 +45,7 @@ fjc_dclist_del (fjc_dclist_t dclist, void **data, fjc_position_t whence)
       dclist->list_->head_->prev_ = NULL;
       dclist->list_->tail_->next_ = NULL;
     }
-  if ((rc = fjc_dlist_del (dclist->list_, data, whence)) == E_FJC_OK)
+  if ((rc = fjc_dlist_del (dclist->list_, whence, data)) == E_FJC_OK)
     {
       fjc_dclist_make_circular_ (dclist);
     }

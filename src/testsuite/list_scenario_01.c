@@ -33,6 +33,7 @@
 #endif
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include "fjc_list.h"
 
@@ -42,7 +43,7 @@ main(void)
   fjc_list_t list;
   fjc_error_t rc;
   
-  rc = fjc_list_init(&list, NULL);
+  rc = fjc_list_init(&list, free);
   assert (rc == E_FJC_OK);
   rc = fjc_list_destroy(list);
   assert (rc == E_FJC_OK);

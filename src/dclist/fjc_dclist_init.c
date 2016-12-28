@@ -32,31 +32,21 @@
 fjc_error_t
 fjc_dclist_init (fjc_dclist_t * dclist, fjc_deallocator_t * dealloc)
 {
-  fjc_error_t rc = E_FJC_OK;
-
   assert (dclist != NULL);
   assert (dealloc != NULL);
   if (dclist == NULL || dealloc == NULL)
     {
-      rc = E_FJC_INVAL;
+      return E_FJC_INVAL;
     }
-  else
+  if ((*dclist = (fjc_dclist_t) malloc (sizeof (struct fjc_dclist_t))) == NULL)
     {
-      if ((*dclist = (fjc_dclist_t) malloc (sizeof (struct fjc_dclist_t))) == NULL)
-        {
-          rc = E_FJC_NOMEM;
-        }
-      else
-        {
-          if (((*dclist)->list_ = fjc_dlist_init (dealloc)) == NULL)
-            {
-              free (*dclist);
-            }
-          else
-            {
-              (*dclist)->signature_ = FJC_DCLIST_SIGNATURE;
-            }
-        }
+      return E_FJC_NOMEM;
     }
-  return rc;
+  if (fjc_dlist_init (&(*dclist)->list_, dealloc) != E_FJC_OK)
+    {
+      free (*dclist);
+      return E_FJC_NOMEM;
+    }
+  (*dclist)->signature_ = FJC_DCLIST_SIGNATURE;
+  return E_FJC_OK;
 }

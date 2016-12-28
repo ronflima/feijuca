@@ -33,13 +33,13 @@ typedef struct fjc_dlist_t *fjc_dlist_t;
 /*
  * Prototypes
  */
-fjc_dlist_t (fjc_dlist_init)    __P ((fjc_deallocator_t *));
-void        (fjc_dlist_destroy) __P ((fjc_dlist_t));
-const void *(fjc_dlist_get)     __P ((fjc_dlist_t, fjc_position_t));
-fjc_error_t (fjc_dlist_insert)  __P ((fjc_dlist_t, const void *, fjc_position_t));
-fjc_error_t (fjc_dlist_move)    __P ((fjc_dlist_t, fjc_position_t));
-fjc_error_t (fjc_dlist_del)     __P ((fjc_dlist_t, void **, fjc_position_t));
-size_t      (fjc_dlist_size)    __P ((fjc_dlist_t));
+fjc_error_t (fjc_dlist_init)      __P ((fjc_dlist_t *, fjc_deallocator_t *));
+fjc_error_t (fjc_dlist_destroy)   __P ((fjc_dlist_t));
+fjc_error_t (fjc_dlist_get)       __P ((fjc_dlist_t, fjc_position_t, void **));
+fjc_error_t (fjc_dlist_insert)    __P ((fjc_dlist_t, fjc_position_t, const void *));
+fjc_error_t (fjc_dlist_move)      __P ((fjc_dlist_t, fjc_position_t));
+fjc_error_t (fjc_dlist_del)       __P ((fjc_dlist_t, fjc_position_t, void **));
+fjc_error_t (fjc_dlist_get_size)  __P ((fjc_dlist_t, size_t *));
 
 FJC_ENDDECLS
 #endif /* FJC_DLIST_H */

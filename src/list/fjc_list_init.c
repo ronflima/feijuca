@@ -33,6 +33,10 @@ fjc_list_init (fjc_list_t *list, fjc_deallocator_t * dealloc)
 {
   assert (list != NULL);
   assert (dealloc != NULL);
+  if (dealloc == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   *list = (fjc_list_t) malloc (sizeof (struct fjc_list_t));
   if (*list == NULL)
     {

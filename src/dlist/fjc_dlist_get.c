@@ -28,11 +28,16 @@
 #include "fjc_dlist.h"
 #include "fjc_dlist_.h"
 
-const void *
-fjc_dlist_get (fjc_dlist_t list, fjc_position_t whence)
+fjc_error_t
+fjc_dlist_get (fjc_dlist_t list, fjc_position_t whence, void **data)
 {
   fjc_dlist_element_t element = NULL;
   assert (list != NULL);
+  assert (data != NULL);
+  if (data == NULL)
+    {
+      return E_FJC_INVAL;
+    }
   switch (whence)
     {
     case POS_FJC_HEAD:
@@ -57,11 +62,12 @@ fjc_dlist_get (fjc_dlist_t list, fjc_position_t whence)
         }
       break;
     default:			/* Invalid parameter provided */
-      break;
+      return E_FJC_INVAL;
     }
   if (element == NULL)
     {
-      return NULL;
+      return E_FJC_EOF;
     }
-  return element->data_;
+  *data = (void *) element->data_;
+  return E_FJC_OK;
 }
