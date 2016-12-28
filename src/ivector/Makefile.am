@@ -29,6 +29,6 @@ libivector_la_SOURCES = ../../include/fjc_ivector.h	\
                         fjc_ivector_get.c			\
                         fjc_ivector_put.c			\
                         fjc_ivector_qsort.c			\
-	                    fjc_ivector_size.c 			\
+	                    fjc_ivector_get_size.c		\
                         fjc_ivector_del.c
 AM_CPPFLAGS=-I../../include/

@@ -27,7 +27,7 @@ libdclist_la_SOURCES = fjc_dclist_init.c			\
                       fjc_dclist_get.c				\
                       fjc_dclist_insert.c			\
                       fjc_dclist_move.c				\
-	                  fjc_dclist_size.c				\
+	                  fjc_dclist_get_size.c			\
                       fjc_dclist_make_circular_.c	\
 			          ../../include/fjc_dclist.h
 AM_CPPFLAGS=-I../../include/

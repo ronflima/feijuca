@@ -25,6 +25,6 @@ libdeque_la_SOURCES = fjc_deque_init.c		\
                       fjc_deque_push.c		\
                       fjc_deque_destroy.c	\
                       fjc_deque_pop.c		\
-                      fjc_deque_size.c      \
+                      fjc_deque_get_size.c  \
                       ../../include/fjc_deque.h
 AM_CPPFLAGS=-I../../include/

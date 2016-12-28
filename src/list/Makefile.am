@@ -23,7 +23,6 @@
 noinst_LTLIBRARIES = liblist.la
 
 liblist_la_SOURCES = fjc_list_init.c	\
-fjc_list_get_pos.c						\
 fjc_list_del.c							\
 fjc_list_destroy.c						\
 fjc_list_get.c							\

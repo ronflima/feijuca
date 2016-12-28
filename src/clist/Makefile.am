@@ -28,7 +28,6 @@ fjc_clist_destroy.c							\
 fjc_clist_get.c								\
 fjc_clist_move.c							\
 fjc_clist_get_size.c						\
-fjc_clist_get_pos.c							\
 ../../include/fjc_clist.h
 AM_CPPFLAGS=-I../../include/
 

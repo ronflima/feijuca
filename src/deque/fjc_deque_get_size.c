@@ -28,7 +28,7 @@
 #include "fjc_deque_.h"
 
 fjc_error_t
-fjc_deque_size (fjc_deque_t deque, size_t * size)
+fjc_deque_get_size (fjc_deque_t deque, size_t * size)
 {
   assert (deque != NULL);
   assert (size != NULL);

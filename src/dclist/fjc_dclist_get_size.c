@@ -29,7 +29,7 @@
 #include "fjc_dclist_.h"
 
 fjc_error_t
-fjc_dclist_size (fjc_dclist_t dclist, size_t * size)
+fjc_dclist_get_size (fjc_dclist_t dclist, size_t * size)
 {
   assert (dclist != NULL);
   assert (size != NULL);
