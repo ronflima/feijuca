@@ -133,3 +133,17 @@ End-of-file. It means that you may have reached the end of a list, stack, or
 whatever data structure.
   
   
+
+### Other data types
+
+- fjc\_deallocator\_t
+
+This data type is used to deallocate automatically data inserted into data
+structures. You must provide a callback function to deallocate
+elements. Otherwise, data structure cannot know how to deallocate elements when
+you are destroying it.
+
+- fjc\_compare\_t
+
+This is a data type of a callback function used by some algorithms for
+ordenation and searching.
