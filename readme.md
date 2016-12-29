@@ -34,6 +34,10 @@ algorithms library that would encapsulate data and that was easy to use.
 Feijuca library is designed in an object-oriented fashion. It uses opaque data
 structures so you can focus on your data, not on the algorithms.
 
+## Documentation
+
+This library's documentation is an on-going project. You can read it [here](doc/general.md).
+
 ## License
 
 This library is released under
