@@ -1,8 +1,7 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: galib.texi,v 1.7 2005-10-07 19:06:51 daniel_csoares Exp $
 @c %**start of header
-@setfilename galib.info
-@settitle    Generic Algorithms Library
+@setfilename feijuca.info
+@settitle    Feijuca Algorithms Library
 @c %**end of header
 
 @c ** Inserts the version information into the current document
@@ -15,7 +14,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title GALib
+@title Feijuca
 @subtitle A Generic Algorithms Library
 @author Ronaldo Faria Lima
 
@@ -30,12 +29,12 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @c ** The top node
 @ifnottex
 @node Top
-@top GALib
+@top Feijuca
 @end ifnottex
 
 @c ** Main Menu
 @menu
-* Introduction       :: An introduction to the GA Lib
+* Introduction       :: An introduction to the Feijuca Lib
 * Principles         :: Principles of the library
 * Common             :: Common declarations in the library
 * List :(list).      :: Single-linked lists
@@ -50,17 +49,17 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @end menu
 
 @node Introduction, Principles, Top, Top
-@chapter Introduction to G.A. Lib
+@chapter Introduction to Feijuca Library
 
 The idea of writing a library with generic algorithms is not new. In
-fact, several projects in Sourceforge are libraries that intend to
-implement all general public domain algorithms like lists, queues and
-so on. Also, there is a GNU implementation of such algorithms
-(Glib). In fact, G.A. Lib is a project that was born from my studies
-in algorithms. As a programmer, I was always looking for such a
-library. However I wanted to know the algorithms, not only play with
-someone else's library. Then I decided to write a small library with
-all the ideas that I got from my studies.
+fact, several projects in Sourceforge and Github are libraries that
+intend to implement all general public domain algorithms like lists,
+queues and so on. Also, there is a GNU implementation of such
+algorithms (Glib). In fact, Feijuca Library is a project that was born
+from my studies in algorithms. As a programmer, I was always looking
+for such a library. However I wanted to know the algorithms, not only
+play with someone else's library. Then I decided to write a small
+library with all the ideas that I got from my studies.
 
 This library intends to be as general as possible. As a programmer, I
 was always developing some sort of algorithm that is implemented in
@@ -75,7 +74,7 @@ self-contained and do not need any other library in order to be
 compiled or used.
 
 @node Principles, Common, Introduction, Top
-@chapter Principles used in G.A. Library
+@chapter Principles used in Feijuca Library
 
 For every algorithm there is a descriptor that encapsulates all the
 needed data to implement it. Even if you read and understand the
@@ -96,19 +95,19 @@ object-oriented manner, has been made straightforward C. The main
 principle of the library is to follow the KISS principle: Keep It
 Simple and Small.
 
-The error reporting in G.A. Library follows the POSIX standards. Every
-function returns 0 when successfull or the error code if something
-went wrong. The error number describes exactly what failed during the
-operation.
+The error reporting in Feijuca Library follows the POSIX
+standards. Every function returns 0 when successfull or the error code
+if something went wrong. The error number describes exactly what
+failed during the operation.
 
 @subsection Internal headers
 
-G.A. library makes use of the central internal header gacommon.h. This
-header is automatically included by the others since it has several
-declarations that are common throughout the library. You are advised
-to not include this header file directly. Since it is an internal
-header file it can change without notice. If you include it directly,
-you are doing it by your own risk.
+Feijuca library makes use of the central internal header
+fjc_common.h. This header is automatically included by the others
+since it has several declarations that are common throughout the
+library. You are advised to not include this header file
+directly. Since it is an internal header file it can change without
+notice. If you include it directly, you are doing it by your own risk.
 
 @node Common, Licenses, Principles, Top
 @section Common declarations
@@ -123,78 +122,70 @@ Some constants are declared as macros and other as enumerations. Here
 are the full set of common constants used through the library.
 
 @itemize @bullet
-@item position_t
+@item fjc_position_t
 
-The position_t enumeration describes a position where you may operate
-within the algorithms of the G.A. Library. Depending on the operation,
-some of these constants may not be supported.
+The fjc_position_t enumeration describes a position where you may
+operate within the algorithms of the Feijuca Library. Depending on the
+operation, some of these constants may not be supported.
 
 @itemize @bullet
-@item POS_NONE
+@item POS_FJC_NONE
 Dummy operation. Depending on the algorithm, this constant informs to
 the operation to not update the current pointer.
-@item POS_HEAD
+@item POS_FJC_HEAD
 Operates on the head. Depending on the algorithm, the ``head'' is the
 beginning of the data list in memory.
-@item POS_TAIL
+@item POS_FJC_TAIL
 Operates on the tail. Depending on the algorithm, the ``tail'' is the
 end of the data list in memory.
-@item POS_NEXT
+@item POS_FJC_NEXT
 Operates on the next item. 
-@item POS_CURR
+@item POS_FJC_CURR
 Operates on the current selected item.
-@item POS_PREV
+@item POS_FJC_PREV
 Operates in the previous item.
 @end itemize
 
 @item Error constants
 Several error constants were introduced in order to inform error
-situations that may happen inside the G.A. Library operations. These
-error constants follow the same naming conventions adopted by the
-errno.h header file. G.A. Library is not using the constants already
-declared in errno.h header file because several of them may not be
-available on different systems. So, G.A. Library declares the
-following constants in order to avoid some sort of system dependency.
+situations that may happen inside the Feijuca Library
+operations. These error constants follow similar naming conventions
+adopted by the errno.h header file. Feijuca Library is not using the
+constants already declared in errno.h header file because several of
+them may not be available on different systems. So, Feijuca Library
+declares the following constants in order to avoid some sort of system
+dependency.
 @itemize @bullet
-@item EGAINVAL
+@item E_FJC_OK
+Operation was carried without error, successfully.
+@item E_FJC_INVAL
 Invalid argument. Some of the arguments provided for the operation is
 not valid for the operation context.
-@item EGANOMEM
+@item E_FJC_NOMEM
 No more memory. The operation tried to allocate more memory to hold
 the caller's request but the operating system said no.
-@item EGABADC
+@item E_FJC_BADC
 Bad current pointer. The operation needed a valid current
 position. However the current position was not valid at all.
 @end itemize
-@end itemize
-
-@subsection Macros
-
-Some common macros provides access to the internal parts of the
-descriptors used in the algorithms.
-
-@itemize @bullet
-@item descriptor_size(descriptor)
-Returns the current size of the descriptor provided. The size is given
-in items stored inside the descriptor, not in bytes.
 @end itemize
 
 @subsection Data types
 
 The other data types are used within the library.
 @itemize @bullet
-@item deallocator_t
+@item fjc_deallocator_t
 Pointer to a void function that receives a void pointer as
 argument. This is used to inform the library what is the deallocator
 you want to use to clean each single object inserted into the library
 containers.
 
-Prototype: void (deallocator_t) (void *);
-@item compare_t
+Prototype: void (fjc_deallocator_t) (void *);
+@item fjc_compare_t
 Comparison function that is called by some algorithms that sorts the
 elements.  
 
-Prototype: int (compare_t) (const void *, const void *);
+Prototype: int (fjc_compare_t) (const void *, const void *);
 @end itemize
 
 @c ** Includes the licenses 

@@ -1,7 +1,6 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: list.texi,v 1.8 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
-@setfilename list.info
+@setfilename fjc_list.info
 @settitle    Lists
 @c %**end of header
 
@@ -13,7 +12,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title G.A. Library
+@title Feijuca Library
 @subtitle Single linked lists interface
 @author Ronaldo Faria Lima
 
@@ -33,17 +32,17 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ** Main Menu
 @menu
-* algorithm :: Algorithm implemented by G.A. Library
+* algorithm :: Algorithm implemented by Feijuca Library
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
 @end menu
 
 @node algorithm, data types, Top, Top
-@chapter Single linked lists in G.A. Library
-G.A. Library implements single linked lists through the header file
-<list.h>. The list descriptor contains always the first and the last
-elements for fast access in the list. Navigation in the list is
+@chapter Single linked lists in Feijuca Library
+Feijuca Library implements single linked lists through the header file
+``fjc_list.h''. The list descriptor contains always the first and the
+last elements for fast access in the list. Navigation in the list is
 possible only in one way: from the beginning through the end. This is
 an effect on how single linked lists are built.
 
@@ -52,16 +51,16 @@ must be traversed from the beginning through the end and you don't
 know the amount of data that will be loaded in memory.
 
 Until this release, no thread safety was analyzed or even implemented
-in this algorithm. So, thread safety is not guaranteed.
+in this algorithm. So, thread safety is not guaranteed at all.
 
 @node data types, functions, algorithm, Top
 @chapter Data types
 The following data types are defined for list implementation.
 @itemize @bullet
-@item list_element_t:
+@item fjc_list_element_t:
 Data structure that describes a list element. There is no need to use
 this data type since this is used internally by the list descriptor.
-@item list_t:
+@item fjc_list_t:
 Data structure that decribes the list descriptor. This is used to hold
 all needed data to implement the list. There is no need to access
 directly any element of this structure since they are manipulated by
@@ -73,18 +72,18 @@ the functions of the library.
 Here all possible operations regarding lists are described.
 
 @menu
-* list_init    :: List initialization function
-* list_destroy :: List destruction function
-* list_get     :: Element getter
-* list_insert  :: Inserts a new element
-* list_move    :: Iterates the list
-* list_del     :: Deletes a single element of the list
-* list_reverse :: Reverses the list
+* fjc_list_init    :: List initialization function
+* fjc_list_destroy :: List destruction function
+* fjc_list_get     :: Element getter
+* fjc_list_insert  :: Inserts a new element
+* fjc_list_move    :: Iterates the list
+* fjc_list_del     :: Deletes a single element of the list
+* fjc_list_reverse :: Reverses the list
 @end menu
 
 @c ***** list_init
-@node list_init, list_destroy, functions, functions
-@section int list_init (list_t *list, deallocator_t dealloc)
+@node fjc_list_init, fjc_list_destroy, functions, functions
+@section fjc_error_t fjc_list_init (fjc_list_t *list, fjc_deallocator_t dealloc)
 Purpose: Initializes the list descriptor.
 
 Parameters:
@@ -93,14 +92,14 @@ Parameters:
 List descriptor to initialize
 @item dealloc:
 Deallocator pointer function for the user-defined deallocation
-function (required)
+function (required).
 @end itemize
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation was successful.
-@item EGAINVAL
+@item E_FJC_INVAL
 The deallocator provided is not valid. The validation here is done
 checking if the deallocator is a null pointer or not.
 @end itemize
@@ -118,12 +117,12 @@ function must have the following prototype:
 void deallocator (void *data);
 @end example
 You will note that this prototype is exactly the same definition of
-the @samp{deallocator_t} data type.
+the @samp{fjc_deallocator_t} data type.
 @end itemize
 
-@c ***** list_destroy
-@node list_destroy, list_get, list_init, functions
-@section int list_destroy (list_t * list)
+@c ***** fjc_list_destroy
+@node fjc_list_destroy, fjc_list_get, fjc_list_init, functions
+@section fjc_error_t fjc_list_destroy (fjc_list_t * list)
 Purpose: Destroys each element and releases the entire list from
 memory and makes the descriptor invalid.
 
@@ -135,15 +134,15 @@ The list descriptor to destroy
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation was successful
-@item EGAINVAL
+@item E_FJC_INVAL
 The descriptor provided was not initialized or is invalid.
 @end itemize
 
-@c ***** list_get
-@node list_get, list_insert, list_destroy, functions
-@section int list_get (list_t * list, void **data, int whence)
+@c ***** fjc_list_get
+@node fjc_list_get, fjc_list_insert, fjc_list_destroy, functions
+@section fjc_error_t fjc_list_get (fjc_list_t * list, void **data, fjc_pos_t whence)
 Purpose: Gets an element data from the list and make it possible to
 navigate the list after getting the data. 
 
@@ -158,11 +157,11 @@ data for some reason.
 This parameter indicates how to navigate the list after the data is
 retrieved.
 @itemize @bullet
-@item POS_CURR: 
+@item POS_FJC_CURR: 
 Gets the current element data and do not update the current pointer.
-@item POS_NONE:
-Same effect of @emph{POS_CURR}.
-@item POS_NEXT:
+@item POS_FJC_NONE:
+Same effect of @emph{POS_FJC_CURR}.
+@item POS_FJC_NEXT:
 Gets the current element data and makes the current pointer point to the
 next element (moves the list)
 @end itemize
@@ -172,10 +171,10 @@ Return values:
 @itemize @bullet
 @item 0
 The operation was successful
-@item EGAINVAL
+@item E_FJC_INVAL
 The value provided to @emph{whence} parameter is invalid or the list
 descriptor was not properly initialized.
-@item EOF
+@item E_FJC_EOF
 End of the list reached.
 @end itemize
 
@@ -183,8 +182,8 @@ End of the list reached.
 @itemize
 @item
 To get the first element, use list_move function (see
-@xref{list_move}.) and then use the function with whence=POS_CURR or
-POS_NONE.
+@xref{fjc_list_move}.) and then use the function with
+whence=POS_FJC_CURR or POS_FJC_NONE.
 @item
 This function was designed, basically, to retrieve data from the list
 by iterating it from the current position to the next. The data is
@@ -195,9 +194,9 @@ of the list. The @samp{whence} parameter says how the list will be
 navigated after the current element is returned.
 @end itemize
 
-@c ***** list_insert
-@node list_insert, list_move, list_get, functions
-@section int list_insert (list_t * list, const void *data, position_t whence)
+@c ***** fjc_list_insert
+@node fjc_list_insert, fjc_list_move, fjc_list_get, functions
+@section fjc_error_t list_insert (fjc_list_t * list, const void *data, fjc_position_t whence)
 Purpose: Inserts a new element in the list
 
 Parameters:
@@ -220,15 +219,15 @@ Inserts data at the tail of the list
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation was successful
-@item EGAINVAL
+@item E_FJC_INVAL
 An invalid value was provided to the whence parameter or the list
 descriptor is invalid.
-@item EGANOMEM
+@item E_FJC_NOMEM
 No memory available to complete the operation.
-@item EGABADC
-The operation was called with whence=POS_CURR but the current pointer
+@item E_FJC_BADC
+The operation was called with whence=POS_FJC_CURR but the current pointer
 is not valid.
 @end itemize
 
@@ -236,19 +235,19 @@ is not valid.
 @itemize
 @item
 If you need to insert data after the current pointer, call the
-list_move (@xref{list_move}.) to move the current pointer to the right
-position. If the list was not yet navigated, call list_move with
-whence=POS_HEAD and then navigate it to the point where you want to
-insert data after.
+list_move (@xref{fjc_list_move}.) to move the current pointer to the
+right position. If the list was not yet navigated, call list_move with
+whence=POS_FJC_HEAD and then navigate it to the point where you want
+to insert data after.
 @item 
 This function does not update the current pointer. To do so, use the
-list_move (@xref{list_move}.) function to update the current pointer after
-inserting into the list.
+list_move (@xref{fjc_list_move}.) function to update the current
+pointer after inserting into the list.
 @end itemize
 
-@c ***** list_move
-@node list_move, list_del, list_insert, functions
-@section int list_move (list_t * list, int whence)
+@c ***** fjc_list_move
+@node fjc_list_move, fjc_list_del, fjc_list_insert, functions
+@section fjc_error_t fjc_list_move (fjc_list_t * list, fjc_position_t whence)
 Purpose: Moves the current pointer to a specific location within the
 list
 
@@ -259,30 +258,26 @@ The list descriptor
 @item whence:
 How to move the pointer:
 @itemize @bullet
-@item POS_HEAD:
+@item POS_FJC_HEAD:
 Moves the pointer to the beginning of the list
-@item POS_TAIL:
+@item POS_FJC_TAIL:
 Moves the pointer to the end of the list
-@item POS_NEXT:
+@item POS_FJC_NEXT:
 Moves the pointer to the next item of the list
-@item POS_NONE:
+@item POS_FJC_NONE:
 Does absolutely nothing.
 @end itemize
 @end itemize
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation succeeded
-@item EGAINVAL
+@item E_FJC_INVAL
 Invalid value provided to @emph{whence} parameter
-@item EOF
+@item E_FJC_EOF
 End of list reached
-@end itemize
-
-Error values in errno:
-@itemize @bullet
-@item EINVAL:
+@item E_FJC_INVAL:
 The whence parameter has values not recognized by the function or the
 list descriptor is not valid.
 @end itemize
@@ -292,16 +287,16 @@ list descriptor is not valid.
 @item
 If the list was never moved, the current pointer points to
 nowhere. Any try to move the pointer to anywhere that is not the
-beginning or the end of the list will return EOF.
+beginning or the end of the list will return E_FJC_EOF.
 @item 
 Moving the current pointer to the tail of the list to navigate it
 backwards is not possible. This is a limitation of the single linked
 lists algorithm.
 @end itemize
 
-@c ***** list_del
-@node list_del, list_reverse, list_move, functions
-@section int list_del (list_t * list, void **data)
+@c ***** fjc_list_del
+@node fjc_list_del, fjc_list_reverse, fjc_list_move, functions
+@section fjc_error_t fjc_list_del (fjc_list_t * list, void **data)
 Purpose: Deletes a single element from the list
 
 Parameters:
@@ -314,13 +309,13 @@ Data storage arena to store the data extracted from the list.
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation succeded
-@item EGAINVAL
+@item E_FJC_INVAL
 The @emph{data} parameter is empty and there is no deallocator
 available to clean the data from the list or the list descriptor is
 not valid.
-@item EOF
+@item E_FJC_EOF
 The list is empty. No more items to delete from it.
 @end itemize
 
@@ -334,9 +329,9 @@ If you provide NULL for the data storage, the function will call the
 deallocator provided to free the data memory.
 @end itemize
 
-@c ***** list_reverse
-@node list_reverse, ,list_del, functions
-@section int list_reverse (list_t * list)
+@c ***** fjc_list_reverse
+@node fjc_list_reverse, ,fjc_list_del, functions
+@section fjc_error_t list_reverse (fjc_list_t * list)
 Purpose: Reverses the order of the items in the list
 
 Parameters:
@@ -347,12 +342,12 @@ The list descriptor
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation succeded
-@item EOF
+@item E_FJC_EOF
 The list is empty or there is not enough information to reverse the
 list.
-@item EGAINVAL
+@item E_FJC_INVAL
 The list descriptor is invalid.
 @end itemize
 

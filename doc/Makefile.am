@@ -20,5 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-SUBDIRS=src doc
-ACLOCAL_AMFLAGS=-I m4
+info_TEXINFOS = clist.texi		\
+				dclist.texi		\
+				deque.texi		\
+				dlist.texi		\
+				feijuca.texi	\
+				ivector.texi	\
+				list.texi		\
+	 			queue.texi		\
+				stack.texi
+

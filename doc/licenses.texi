@@ -1,14 +1,13 @@
 @c ** Licences information
 @c ** This file includes the GPL or LGPL based on some variables
 @c ** Author: Ronaldo Faria Lima
-@c ** $Id: licenses.texi,v 1.2 2005-03-20 23:56:42 ron_lima Exp $
 
 @menu
 * Feedback                :: How to contact the author
 * Copyright and trademarks:: Copyrights involved
 * Acknowledgements        :: Acknowledgments about his work
 * Documents               :: Other sources of information
-* GPL                     :: Gnu license disclaimer        
+* MIT                     :: MIT license disclaimer        
 @end menu
 
 @node Feedback, Copyright and trademarks, Licenses, Licenses
@@ -20,7 +19,7 @@ ronaldo@@ronaldolima.eti.br.
 @node Copyright and trademarks, Acknowledgements, Feedback, Licenses
 @unnumberedsec Copyright and trademarks
 
-G.A. Library is a trademark of Ronaldo Faria Lima. All rights upon
+Feijuca Library is a trademark of Ronaldo Faria Lima. All rights upon
 this library are reserved to the author. The author can discontinue or
 change whatever is in the library without further notice (off course
 that I'll not do such a thing, since it could break someone's
@@ -36,14 +35,12 @@ I'd like to thank my wife Ana because her support on all of my crazy
 ideas. Here, also, there is some room to thank Daniel Soares, that is
 a computing enthusiast just like me.
 
-@node Documents, GPL, Acknowledgements, Licenses
+@node Documents, MIT, Acknowledgements, Licenses
 @unnumberedsec Documents
 
-The info pages are now the only source of information for
-G.A. Library. Some pieces of information are available on Source Forge
-web site and at the author's personal page
-(http://www.ronaldolima.eti.br).
+The info pages are now the only source of information for Feijuca
+Library. Some pieces of information are available on Github web site
+and at the author's personal page (http://www.ronaldolima.eti.br).
 
-@node GPL, , Documents, Licenses
-@include lgpl.en.texi
-
+@node MIT, , Documents, Licenses
+@include mit.en.texi

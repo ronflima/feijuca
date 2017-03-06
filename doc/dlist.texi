@@ -8,10 +8,6 @@
 @copying
 @c ** Copyrght
 Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
-
-Last update: @value{UPDATED}
-
-Revision: @value{VERSION}
 @end copying
 
 @titlepage

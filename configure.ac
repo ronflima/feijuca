@@ -97,6 +97,7 @@ AC_CONFIG_FILES([Makefile
                  src/stack/Makefile
                  src/queue/Makefile
                  src/deque/Makefile
-                 src/dclist/Makefile])
+                 src/dclist/Makefile
+                 doc/Makefile])
 
 AC_OUTPUT
