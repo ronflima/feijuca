@@ -13,7 +13,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title G.A. Library
+@title Feijuca Library
 @subtitle Queue interfaces
 @author Ronaldo Faria Lima
 
@@ -33,7 +33,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ** Main Menu
 @menu
-* algorithm :: Algorithm implemented by G.A. Library
+* algorithm :: Algorithm implemented by Feijuca Library
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
@@ -41,16 +41,16 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ***** algorithm
 @node algorithm, data types, Top, Top
-@chapter Queue implementation in G.A. Library
+@chapter Queue implementation in Feijuca Library
 
 The queue algorithm is a data structure where the first item to get in
-will be the first item to get out. G.A. Library uses the single lists
+will be the first item to get out. Feijuca Library uses the single lists
 algorithm as the queue implementation basis.
 
 Like stacks, queue functions are front-ends for lists operations.
 
-To add queue algorithms to your program, simply include the queue.h
-header file. All needed declarations are there.
+To add queue algorithms to your program, simply include the
+``fjc_queue.h'' header file. All needed declarations are there.
 
 @c ***** data types
 @node data types, functions, algorithm, Top
@@ -60,7 +60,7 @@ In order to implement the queues, the following data types are
 defined:
 
 @itemize @bullet
-@item queue_t
+@item fjc_queue_t
 Queue descriptor. Describes the entire queue.
 @end itemize
 
@@ -70,15 +70,15 @@ Queue descriptor. Describes the entire queue.
 
 @c ***** functions menu
 @menu
-* queue_init    :: Initializes a queue descriptor
-* queue_destroy :: Destroys the queue descriptor
-* queue_pop     :: Gets (pops) an item from the queue
-* queue_push    :: Adds (pushes) an item into the queue
+* fjc_queue_init    :: Initializes a queue descriptor
+* fjc_queue_destroy :: Destroys the queue descriptor
+* fjc_queue_pop     :: Gets (pops) an item from the queue
+* fjc_queue_push    :: Adds (pushes) an item into the queue
 @end menu
 
-@c ***** queue_init
-@node queue_init, queue_destroy, functions, functions
-@section int queue_init (queue_t *queue, deallocator_t *dealloc)
+@c ***** fjc_queue_init
+@node fjc_queue_init, fjc_queue_destroy, functions, functions
+@section fjc_error_t fjc_queue_init (fjc_queue_t *queue, deallocator_t *dealloc)
 
 Purpose: Initializes a queue descriptor and makes it available for
 usage.
@@ -95,17 +95,17 @@ is popped.
 @emph{Hints}:
 @itemize @bullet
 @item
-The deallocator is used effectively only by the queue_free
+The deallocator is used effectively only by the fjc_queue_destroy
 routine. Even though, you have to provide it in order to avoid memory
 leaks when deleting the queue from memory.
 @end itemize
 
-@inforef{list_init, List initialization routine, list.info}, for more
+@inforef{fjc_list_init, List initialization routine, fjc_list.info}, for more
 information.
 
-@c ***** queue_destroy
-@node queue_destroy, queue_pop, queue_init, functions
-@section int queue_destroy (queue_t *queue)
+@c ***** fjc_queue_destroy
+@node fjc_queue_destroy, fjc_queue_pop, fjc_queue_init, functions
+@section fjc_error_t fjc_queue_destroy (fjc_queue_t *queue)
 
 Purpose: Deletes the entire queue from the memory
 
@@ -115,12 +115,12 @@ Parameters:
 Queue descriptor to destroy
 @end itemize
 
-@inforef{list_destroy, List destruction routine, list.info}, for more
+@inforef{fjc_list_destroy, List destruction routine, fjc_list.info}, for more
 information.
 
-@c ***** queue_pop
-@node queue_pop, queue_push, queue_destroy, functions
-@section int queue_pop (queue_t *queue, void **data)
+@c ***** fjc_queue_pop
+@node fjc_queue_pop, fjc_queue_push, fjc_queue_destroy, functions
+@section fjc_error_t fjc_queue_pop (fjc_queue_t *queue, void **data)
 
 Purpose: Gets (pops) an element from the queue
 
@@ -132,12 +132,12 @@ Queue descriptor
 Data popped from the queue
 @end itemize
 
-@inforef{list_del, List deletion routine, list.info}, for more
+@inforef{fjc_list_del, List deletion routine, fjc_list.info}, for more
 information.
 
-@c ***** queue_push
-@node queue_push,  , queue_pop, functions
-@section int queue_push (queue_t *queue, const void *data)
+@c ***** fjc_queue_push
+@node fjc_queue_push,  , fjc_queue_pop, functions
+@section fjc_error_t fjc_queue_push (fjc_queue_t *queue, const void *data)
 
 Purpose: Adds (pushes) a new element to the queue
 
@@ -149,7 +149,7 @@ Queue descriptor
 Data to push into the queue
 @end itemize
 
-@inforef{list_insert, List insertion routine, list.info}, for more
+@inforef{fjc_list_insert, List insertion routine, fjc_list.info}, for more
 information.
 
 @c ** Includes the licenses 
