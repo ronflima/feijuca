@@ -1,6 +1,6 @@
 \input texinfo @c -*-texinfo-*-
 @c %**start of header
-@setfilename clist.info
+@setfilename fjc_clist.info
 @settitle    Circular Lists
 @c %**end of header
 
@@ -79,10 +79,10 @@ information on other data types.
 @c ***** functions
 @node functions, Licenses, data types, Top
 @chapter Functions
-All the functions in the fjc_clist.h header file are implemented as true
-functions, even being wrappers to the list functions. The idea of
-using real functions is to ensure data type checking for the circular
-list data types. 
+All the functions in the ``fjc_clist.h'' header file are implemented
+as true functions, even being wrappers to the list functions. The idea
+of using real functions is to ensure data type checking for the
+circular list data types.
 
 @c ***** functions menu
 @menu
@@ -96,7 +96,7 @@ list data types.
 
 @c ***** fjc_clist_init
 @node fjc_clist_init, fjc_clist_destroy, functions, functions
-@section int fjc_clist_init (fjc_clist_t *clist, fjc_deallocator_t * dealloc)
+@section fjc_error_t fjc_clist_init (fjc_clist_t *clist, fjc_deallocator_t * dealloc)
 
 Purpose: Initializes the list descriptor
 
@@ -108,12 +108,12 @@ List descriptor for the circular list (required)
 Deallocator to deallocate each single element of the list.
 @end itemize
 
-@inforef{list_init, List initialization routine, list.info}, for more
+@inforef{fjc_list_init, List initialization routine, fjc_list.info}, for more
 information.
 
 @c ***** fjc_clist_destroy
 @node fjc_clist_destroy, fjc_clist_del, fjc_clist_init, functions
-@section int fjc_clist_destroy (fjc_clist_t *clist)
+@section fjc_error_t fjc_clist_destroy (fjc_clist_t *clist)
 
 Purpose: Deletes the circular lists, cleaning it entirely from the
 memory.
@@ -124,12 +124,12 @@ Parameters:
 List descriptor to wipe from memory.
 @end itemize
 
-@inforef{list_destroy, List destruction routine, list}, for more
+@inforef{fjc_list_destroy, List destruction routine, fjc_list.info}, for more
 information.
 
 @c ***** fjc_clist_del
 @node fjc_clist_del, fjc_clist_get, fjc_clist_destroy, functions
-@section int fjc_clist_del(fjc_clist_t *clist, void **data)
+@section fjc_error_t fjc_clist_del(fjc_clist_t *clist, void **data)
 
 Purpose: Deletes a single object from the circular list.
 
@@ -141,11 +141,11 @@ Circular list descriptor (required)
 Data extracted from the deleted item
 @end itemize
 
-@inforef{list_del, List deletion routine, list}, for more information.
+@inforef{fjc_list_del, List deletion routine, fjc_list.info}, for more information.
 
 @c ***** fjc_clist_get
 @node fjc_clist_get, fjc_clist_move, fjc_clist_del, functions
-@section int fjc_clist_get(fjc_clist_t * clist, void **data, fjc_position_t whence)
+@section fjc_error_t fjc_clist_get(fjc_clist_t * clist, void **data, fjc_position_t whence)
 
 Purpose: Get an item from the circular list
 
@@ -159,11 +159,11 @@ Data got from the list
 Where to get the data from
 @end itemize
 
-@inforef{list_get, List getter routine, list}, for more information.
+@inforef{fjc_list_get, List getter routine, fjc_list.info}, for more information.
 
 @c ***** fjc_clist_move
 @node fjc_clist_move, fjc_clist_insert, fjc_clist_get, functions
-@section int fjc_clist_move (fjc_clist_t *clist, fjc_position_t whence)
+@section fjc_error_t fjc_clist_move (fjc_clist_t *clist, fjc_position_t whence)
 
 Purpose: moves the current pointer of the list
 
@@ -175,12 +175,12 @@ List descriptor
 Where to move the current descriptor to
 @end itemize
 
-@inforef{list_move, List navigation routine, list}, for more
+@inforef{fjc_list_move, List navigation routine, fjc_list.info}, for more
 information.
 
 @c ***** fjc_clist_insert
 @node fjc_clist_insert, , fjc_clist_move, functions
-@section int fjc_clist_insert (fjc_clist_t * list, const void *data)
+@section fjc_error_t fjc_clist_insert (fjc_clist_t * list, const void *data)
 Purpose: Inserts a new element in the list
 
 Parameters:
@@ -191,7 +191,7 @@ List descriptor
 Data pointer to be inserted in the list
 @end itemize
 
-@inforef{list_insert, List insertion routine, list}, for more
+@inforef{fjc_list_insert, List insertion routine, fjc_list.info}, for more
 information.
 
 @c ** Includes the licenses 

@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: stack.texi,v 1.4 2005-07-11 08:37:32 ron_lima Exp $
+
 @c %**start of header
-@setfilename stack.info
+@setfilename fjc_stack.info
 @settitle    Stack routines
 @c %**end of header
 
@@ -13,7 +13,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title G.A. Library
+@title Feijuca Library
 @subtitle Stacks interfaces
 @author Ronaldo Faria Lima
 
@@ -33,7 +33,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ** Main Menu
 @menu
-* algorithm  :: Algorithm implemented by G.A. Library
+* algorithm  :: Algorithm implemented by Feijuca Library
 * data types :: Data types
 * functions  :: Description of all available functions
 * Licenses   :: Licenses and other information
@@ -41,21 +41,21 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ***** algorithm
 @node algorithm, data types, Top, Top
-@chapter Stacks in G.A. Library
+@chapter Stacks in Feijuca Library
 
 The stack algorithm is built upon the list algorithm. The stack is a
 data structure where the first element to be added will be the last
 element to be deleted.
 
-G.A. Library implements the stacks in the classical manner: you have a
-push operation to add data into the stack and a pop operation to
-retrive data from the stack.
+Feijuca Library implements the stacks in the classical manner: you
+have a push operation to add data into the stack and a pop operation
+to retrive data from the stack.
 
 In order to make the stacks available to your program, all you gotta
-do is to include the header file stack.h.
+do is to include the header file fjc_stack.h.
 
-The stacks routines are, in fact, front-ends to the G.A. Library lists
-routines.
+The stacks routines are, in fact, front-ends to the Feijuca Library
+lists routines.
 
 @c ***** data types
 @node data types, functions, algorithm, Top
@@ -64,7 +64,7 @@ routines.
 The following data types are defined for stacks:
 
 @itemize @bullet
-@item stack_t
+@item fjc_stack_t
 The stack descriptor. The descriptor that will have all needed data to
 implement the algorithm.
 @end itemize
@@ -75,15 +75,15 @@ implement the algorithm.
 
 @c ***** functions menu
 @menu
-* stack_init    :: Initializes a stack descriptor
-* stack_destroy :: Destroys a stack descriptor
-* stack_pop     :: Gets (pops) data from a stack
-* stack_push    :: Adds (pushes) data to a stack
+* fjc_stack_init    :: Initializes a stack descriptor
+* fjc_stack_destroy :: Destroys a stack descriptor
+* fjc_stack_pop     :: Gets (pops) data from a stack
+* fjc_stack_push    :: Adds (pushes) data to a stack
 @end menu
 
-@c ***** stack_init
-@node stack_init, stack_destroy, functions, functions
-@section int stack_init (stack_t *stack, deallocator_t *dealloc)
+@c ***** fjc_stack_init
+@node fjc_stack_init, fjc_stack_destroy, functions, functions
+@section fjc_error_t fjc_stack_init (fjc_stack_t *stack, fjc_deallocator_t *dealloc)
 
 Purpose: Initializes a stack and make it ready to be used.
 
@@ -96,12 +96,12 @@ Deallocator function pointer. This is the function that will be called
 to deallocate each item of the stack (mandatory)
 @end itemize
 
-@inforef{list_init, List initialization routine, list.info}, for more
+@inforef{fjc_list_init, List initialization routine, fjc_list.info}, for more
 information.
 
-@c ***** stack_destroy
-@node stack_destroy, stack_pop, stack_init, functions
-@section int stack_destroy (stack_t *stack)
+@c ***** fjc_stack_destroy
+@node fjc_stack_destroy, fjc_stack_pop, fjc_stack_init, functions
+@section fjc_error_t fjc_stack_destroy (fjc_stack_t *stack)
 
 Purpose: Destroys the stack
 
@@ -111,12 +111,12 @@ Parameters:
 Stack descriptor to destroy.
 @end itemize
 
-@inforef{list_destroy, List destruction routine, list.info}, for more
+@inforef{fjc_list_destroy, List destruction routine, fjc_list.info}, for more
 information.
 
-@c ***** stack_pop
-@node stack_pop, stack_push, stack_destroy, functions
-@section int stack_pop (stack_t *stack, void **data)
+@c ***** fjc_stack_pop
+@node fjc_stack_pop, fjc_stack_push, fjc_stack_destroy, functions
+@section fjc_error_t fjc_stack_pop (fjc_stack_t *stack, void **data)
 
 Purpose: Gets an element from the stack
 
@@ -128,14 +128,14 @@ Stack descriptor
 Data ``popped'' from the stack
 @end itemize
 
-@inforef{list_del, List deletion routine, list.info}, for more
+@inforef{fjc_list_del, List deletion routine, fjc_list.info}, for more
 information.
-@inforef{list_move, List navigation routine, list.info}, for more
+@inforef{fjc_list_move, List navigation routine, fjc_list.info}, for more
 information.
 
-@c ***** stack_push
-@node stack_push,  , stack_pop, functions
-@section int stack_push (stack_t *stack, const void *data)
+@c ***** fjc_stack_push
+@node fjc_stack_push,  , fjc_stack_pop, functions
+@section fjc_error_t fjc_stack_push (fjc_stack_t *stack, const void *data)
 
 Purpose: Pushes a new item into the stack
 
@@ -147,7 +147,7 @@ Stack decriptor
 Data to add into the stack
 @end itemize
 
-@inforef{list_insert, List insertion routine, list.info}, for more
+@inforef{fjc_list_insert, List insertion routine, fjc_list.info}, for more
 information.
 
 @c ** Includes the licenses 

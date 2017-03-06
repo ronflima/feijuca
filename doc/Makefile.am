@@ -20,13 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-info_TEXINFOS = clist.texi		\
-				dclist.texi		\
-				deque.texi		\
-				dlist.texi		\
-				feijuca.texi	\
-				ivector.texi	\
-				list.texi		\
-	 			queue.texi		\
-				stack.texi
+info_TEXINFOS = fjc_clist.texi		\
+				fjc_dclist.texi		\
+				fjc_deque.texi		\
+				fjc_dlist.texi		\
+				feijuca.texi		\
+				fjc_ivector.texi	\
+				fjc_list.texi		\
+	 			fjc_queue.texi		\
+				fjc_stack.texi
 

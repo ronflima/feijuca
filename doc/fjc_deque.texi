@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: deque.texi,v 1.3 2005-08-29 10:35:23 ron_lima Exp $
+
 @c %**start of header
-@setfilename deque.info
+@setfilename fjc_deque.info
 @settitle    Deque routines
 @c %**end of header
 

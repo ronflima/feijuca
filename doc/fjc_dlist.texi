@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: dlist.texi,v 1.6 2005-07-11 08:37:32 ron_lima Exp $
+
 @c %**start of header
-@setfilename dlist.info
+@setfilename fjc_dlist.info
 @settitle    Double linked lists
 @c %**end of header
 

@@ -1,7 +1,7 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: dclist.texi,v 1.1 2005-10-07 19:06:51 daniel_csoares Exp $
+
 @c %**start of header
-@setfilename dclist.info
+@setfilename fjc_dclist.info
 @settitle    Double linked circular lists
 @c %**end of header
 
