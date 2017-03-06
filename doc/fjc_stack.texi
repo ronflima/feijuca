@@ -52,7 +52,7 @@ have a push operation to add data into the stack and a pop operation
 to retrive data from the stack.
 
 In order to make the stacks available to your program, all you gotta
-do is to include the header file fjc_stack.h.
+do is to include the header file ``fjc_stack.h''.
 
 The stacks routines are, in fact, front-ends to the Feijuca Library
 lists routines.
@@ -75,10 +75,11 @@ implement the algorithm.
 
 @c ***** functions menu
 @menu
-* fjc_stack_init    :: Initializes a stack descriptor
-* fjc_stack_destroy :: Destroys a stack descriptor
-* fjc_stack_pop     :: Gets (pops) data from a stack
-* fjc_stack_push    :: Adds (pushes) data to a stack
+* fjc_stack_init     :: Initializes a stack descriptor
+* fjc_stack_destroy  :: Destroys a stack descriptor
+* fjc_stack_pop      :: Gets (pops) data from a stack
+* fjc_stack_push     :: Adds (pushes) data to a stack
+* fjc_stack_get_size :: Gets the current size of a stack
 @end menu
 
 @c ***** fjc_stack_init
@@ -134,7 +135,7 @@ information.
 information.
 
 @c ***** fjc_stack_push
-@node fjc_stack_push,  , fjc_stack_pop, functions
+@node fjc_stack_push,  fjc_stack_get_size, fjc_stack_pop, functions
 @section fjc_error_t fjc_stack_push (fjc_stack_t *stack, const void *data)
 
 Purpose: Pushes a new item into the stack
@@ -149,6 +150,20 @@ Data to add into the stack
 
 @inforef{fjc_list_insert, List insertion routine, fjc_list.info}, for more
 information.
+
+@c **** fjc_stack_get_size
+@node fjc_stack_get_size, , fjc_stack_push, functions
+@section fjc_error_t fjc_stack_get_size (fjc_stack_t stack, size_t *size)
+
+Purpose: Gets the current size of a stack
+
+Parameters:
+@itemize @bullet
+@item stack
+Stack descriptor
+@item size
+Pointer to a size_t variable which will receive the stack size.
+@end itemize
 
 @c ** Includes the licenses 
 @node Licenses, , functions, Top
