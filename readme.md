@@ -36,7 +36,10 @@ structures so you can focus on your data, not on the algorithms.
 
 ## Documentation
 
-This library's documentation is an on-going project. You can read it [here](doc/general.md).
+The library's documentation is fully written in texinfo, in order to be
+compliant with GNU distribution system and autotools. You can read the
+documentation by compiling and installing the library on your system using
+_info_ command.
 
 ## License
 
