@@ -13,7 +13,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title G.A. Library
+@title Feijuca Library
 @subtitle Infinite Vectors Interface
 @author Ronaldo Faria Lima
 
@@ -28,12 +28,12 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @c ** The top node
 @ifnottex
 @node Top
-@top Template
+@top Infinite Vectors
 @end ifnottex
 
 @c ** Main Menu
 @menu
-* algorithm :: Algorithm implemented by G.A. Library
+* algorithm :: Algorithm implemented by Feijuca Library
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
@@ -44,13 +44,14 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 The infinite vetor is a vector that let you redimension it. You can
 keep adding data to it without having to worry about the limits of
-it. The G.A. Library implementation of infinite vectors always
+it. The Feijuca Library implementation of infinite vectors always
 allocates it as a contiguous memory arena.
 
 That is the main limitation of the algorithm: it needs always
 contiguous memory to keep allocating memory. 
 
-Use this algorithm when you have a small amount of data to load.
+Use this algorithm when you have a small amount of data to load. You
+can use the ``fjc_ivector.h'' header file.
 
 @node data types, functions, algorithm, Top
 @chapter Data types
@@ -58,7 +59,7 @@ Use this algorithm when you have a small amount of data to load.
 The following data types are defined for the infinite vectors:
 
 @itemize @bullet
-@item ivector_t
+@item fjc_ivector_t
 The vector descriptor. This is the base data type of all operations
 involving this algorithm.
 @end itemize
@@ -66,19 +67,19 @@ involving this algorithm.
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* ivector_init    :: Vector allocation routine
-* ivector_destroy :: Frees an entire vector from memory
-* ivector_get     :: Gets a single element from a vector
-* ivector_put     :: Overwrites a single location in the vector
-* ivector_add     :: Adds a new entry in the vector
-* ivector_qsort   :: Sorts the vector
-* ivector_bsearch :: Searches the vector using a criterion
-* ivector_del     :: Deletes a single entry in the vector 
+* fjc_ivector_init    :: Vector allocation routine
+* fjc_ivector_destroy :: Frees an entire vector from memory
+* fjc_ivector_get     :: Gets a single element from a vector
+* fjc_ivector_put     :: Overwrites a single location in the vector
+* fjc_ivector_add     :: Adds a new entry in the vector
+* fjc_ivector_qsort   :: Sorts the vector
+* fjc_ivector_bsearch :: Searches the vector using a criterion
+* fjc_ivector_del     :: Deletes a single entry in the vector 
 @end menu
 
-@c ***** ivector_init
-@node ivector_init, ivector_destroy, functions, functions
-@section int ivector_init(ivector_t *ivector, compare_t * compare, deallocator_t * dealloc, size_t size)
+@c ***** fjc_ivector_init
+@node fjc_ivector_init, fjc_ivector_destroy, functions, functions
+@section fjc_error_t fjc_ivector_init(fjc_ivector_t *ivector, fjc_compare_t * compare, fjc_deallocator_t * dealloc, size_t size)
 
 Purpose: Initializes a new vector descriptor.
 
@@ -97,9 +98,9 @@ Size of each element of the vector
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 The operation suceeded
-@item EGAINVAL
+@item E_FJC_INVAL
 The data length provided has an invalid value. It must be always
 greater than zero.
 @end itemize
@@ -112,14 +113,14 @@ pointers. In normal operations, it is not needed and can be provided
 as a NULL pointer.
 @item
 The compare function is not mandatory. If you intend to use
-@samp{ivector_bsearch} or @samp{ivector_qsort} functions, then you
-will have to provide such function (@xref{ivector_bsearch},
-@xref{ivector_qsort}.).
+@samp{fjc_ivector_bsearch} or @samp{fjc_ivector_qsort} functions, then you
+will have to provide such function (@xref{fjc_ivector_bsearch},
+@xref{fjc_ivector_qsort}.).
 @end itemize
 
-@c ***** ivector_destroy
-@node ivector_destroy, ivector_get, ivector_init, functions
-@section int ivector_destroy (ivector_t *ivector)
+@c ***** fjc_ivector_destroy
+@node fjc_ivector_destroy, fjc_ivector_get, fjc_ivector_init, functions
+@section fjc_error_t fjc_ivector_destroy (fjc_ivector_t *ivector)
 
 Purpose: Deallocates the whole vector from memory.
 
@@ -131,15 +132,15 @@ Descriptor of the ivector to be freed.
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 when the operation succeeds
-@item EGAINVAL
+@item E_FJC_INVAL
 when you try to operate over an invalid ivector descriptor.
 @end itemize
 
-@c ***** ivector_get
-@node ivector_get, ivector_put, ivector_destroy, functions
-@section int (ivector_get) (ivector_t *ivector, void **data, size_t idx)
+@c ***** fjc_ivector_get
+@node fjc_ivector_get, fjc_ivector_put, fjc_ivector_destroy, functions
+@section fjc_error_t (fjc_ivector_get) (fjc_ivector_t *ivector, void **data, size_t idx)
 
 Purpose: Retrieves an item from the vector
 
@@ -156,9 +157,9 @@ retrieved from.
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 The operation succeeded
-@item EGAINVAL
+@item E_FJC_INVAL
 The value of the @samp{idx} parameter is not valid. It may be greater
 than the size of the vector or less than zero. Also, this function may
 return this value when the ivector descriptor is not valid.
@@ -172,9 +173,9 @@ the vector. So, if you change the contents of the retrived data you
 will be changing, actually, the data inside the vector.
 @end itemize
 
-@c ***** ivector_put
-@node ivector_put, ivector_add, ivector_get, functions
-@section int ivector_put (ivector_t *ivector, size_t idx, const void *data)
+@c ***** fjc_ivector_put
+@node fjc_ivector_put, fjc_ivector_add, fjc_ivector_get, functions
+@section fjc_error_t fjc_ivector_put (fjc_ivector_t *ivector, size_t idx, const void *data)
 
 Purpose: Overwrite a given element of the vector
 
@@ -192,17 +193,17 @@ vector position.
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation suceeded
-@item EGAINVAL
+@item E_FJC_INVAL
 The idx parameter is not valid or the data arena provided is a NULL
 pointer. This value can be returned, also, when the ivector descriptor
 is not valid.
 @end itemize
 
-@c ***** ivector_add
-@node ivector_add, ivector_qsort, ivector_put, functions
-@section int ivector_add (ivector_t *ivector, const void *data)
+@c ***** fjc_ivector_add
+@node fjc_ivector_add, fjc_ivector_qsort, fjc_ivector_put, functions
+@section fjc_error_t fjc_ivector_add (fjc_ivector_t *ivector, const void *data)
 
 Purpose: Adds a new element to the vector by enlarging the vector
 
@@ -216,17 +217,17 @@ Data to add into the vector
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation succeeded
-@item EGANOMEM
+@item E_FJC_NOMEM
 No memory available to enlarge the vector
-@item EGAINVAL
+@item E_FJC_INVAL
 When the operation is tried on an invalid ivector descriptor.
 @end itemize
 
-@c ***** ivector_qsort
-@node ivector_qsort, ivector_bsearch, ivector_add, functions
-@section int ivector_qsort (ivector_t *ivector)
+@c ***** fjc_ivector_qsort
+@node fjc_ivector_qsort, fjc_ivector_bsearch, fjc_ivector_add, functions
+@section int fjc_ivector_qsort (fjc_ivector_t *ivector)
 
 Purpose: Sorts the vector using the quick sort algorithm
 
@@ -238,16 +239,16 @@ Vector to sort
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation suceeded
-@item EGAINVAL
+@item E_FJC_INVAL
 There is no comparison function available for the sorting function or
 the ivector descriptor is not valid.
 @end itemize
 
-@c ***** ivector_bsearch
-@node ivector_bsearch, ivector_del, ivector_qsort, functions
-@section int ivector_bsearch (ivector_t *ivector, void **data, const void *key)
+@c ***** fjc_ivector_bsearch
+@node fjc_ivector_bsearch, fjc_ivector_del, fjc_ivector_qsort, functions
+@section fjc_error_t fjc_ivector_bsearch (fjc_ivector_t *ivector, void **data, const void *key)
 
 Purpose: Searches the vector for a given key
 
@@ -263,19 +264,19 @@ Key to search for
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation succeeded. The item was found.
-@item EOF
+@item E_FJC_EOF
 No item was found.
-@item EGAINVAL
+@item E_FJC_INVAL
 The @samp{data} parameter is invalid or the comparison function was
 not provided during the vector initialization. When the ivector
 descriptor is invalid the function may return this value also.
 @end itemize
 
-@c ***** ivector_del
-@node ivector_del, , ivector_bsearch, functions
-@section int ivector_del (ivector_t *ivector, size_t idx)
+@c ***** fjc_ivector_del
+@node fjc_ivector_del, , fjc_ivector_bsearch, functions
+@section fjc_error_t fjc_ivector_del (fjc_ivector_t *ivector, size_t idx)
 
 Purpose: Deletes a single entry in the vector
 
@@ -289,9 +290,9 @@ Index to the item to be deleted
 
 Return values:
 @itemize @bullet
-@item 0
+@item E_FJC_OK
 Operation succeeded
-@item EGAINVAL
+@item E_FJC_INVAL
 The @samp{idx} parameter is greater than the size of the vector. When
 the ivector descritptor is invalid the function may return this value
 also.
