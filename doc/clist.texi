@@ -1,5 +1,4 @@
 \input texinfo @c -*-texinfo-*-
-@c $Id: clist.texi,v 1.5 2005-07-11 08:37:32 ron_lima Exp $
 @c %**start of header
 @setfilename clist.info
 @settitle    Circular Lists
@@ -13,7 +12,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title G.A. Library
+@title Feijuca Library
 @subtitle Circular lists interface
 @author Ronaldo Faria Lima
 
@@ -33,7 +32,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ** Main Menu
 @menu
-* algorithm :: Algorithm implemented by G.A. Library
+* algorithm :: Algorithm implemented by Feijuca Library
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
@@ -41,8 +40,8 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ***** algorithm
 @node algorithm, data types, Top, Top
-@chapter Single circular linked lists in G.A. Library
-G.A. Library implements the circular lists as single linked lists
+@chapter Single circular linked lists in Feijuca Library
+Feijuca Library implements the circular lists as single linked lists
 where the tail of the list is linked back to the beginning. Since the
 circular list is based on single linked lists, it is possible to
 iterate through the list solely in one direction.
@@ -61,17 +60,17 @@ be thread safe in this current release.
 The following data types are defined for circular list implementation.
 
 @itemize @bullet
-@item clist_element_t:
-Data structure that describes a list element. There is no need to use
-this data type since this is used internally by the list
+@item fjc_clist_element_t:
+Data structure that describes a circular list element. There is no
+need to use this data type since this is used internally by the list
 descriptor. This is, in fact, a typedef to the list_element_t data
 type.
-@item clist_t:
-Data structure that decribes the list descriptor. This is used to hold
-all needed data to implement the list. There is no need to access
-directly any element of this structure since they are manipulated by
-the functions of the library. This is, in fact, a typedef to the
-list_t datatype.
+@item fjc_clist_t:
+Data structure that decribes the circular list descriptor. This is
+used to hold all needed data to implement the list. There is no need
+to access directly any element of this structure since they are
+manipulated by the functions of the library. This is, in fact, a
+typedef to the list_t datatype.
 @end itemize
 
 Please refer to the list documentation for a complete set of
@@ -80,24 +79,24 @@ information on other data types.
 @c ***** functions
 @node functions, Licenses, data types, Top
 @chapter Functions
-All the functions in the clist.h header file are implemented as true
+All the functions in the fjc_clist.h header file are implemented as true
 functions, even being wrappers to the list functions. The idea of
 using real functions is to ensure data type checking for the circular
-list data types. Also, 
+list data types. 
 
 @c ***** functions menu
 @menu
-* clist_init    :: Initializes the circular list descriptor
-* clist_destroy :: Destroys the entire circular list
-* clist_del     :: Deletes a single object from the list
-* clist_get     :: Get an item from the list
-* clist_move    :: Moves the current pointer of the list
-* clist_insert  :: Inserts a new item to the list
+* fjc_clist_init    :: Initializes the circular list descriptor
+* fjc_clist_destroy :: Destroys the entire circular list
+* fjc_clist_del     :: Deletes a single object from the list
+* fjc_clist_get     :: Get an item from the list
+* fjc_clist_move    :: Moves the current pointer of the list
+* fjc_clist_insert  :: Inserts a new item to the list
 @end menu
 
-@c ***** clist_init
-@node clist_init, clist_destroy, functions, functions
-@section int clist_init (clist_t *clist, deallocator_t * dealloc)
+@c ***** fjc_clist_init
+@node fjc_clist_init, fjc_clist_destroy, functions, functions
+@section int fjc_clist_init (fjc_clist_t *clist, fjc_deallocator_t * dealloc)
 
 Purpose: Initializes the list descriptor
 
@@ -112,9 +111,9 @@ Deallocator to deallocate each single element of the list.
 @inforef{list_init, List initialization routine, list.info}, for more
 information.
 
-@c ***** clist_destroy
-@node clist_destroy, clist_del, clist_init, functions
-@section int clist_destroy (clist_t *clist)
+@c ***** fjc_clist_destroy
+@node fjc_clist_destroy, fjc_clist_del, fjc_clist_init, functions
+@section int fjc_clist_destroy (fjc_clist_t *clist)
 
 Purpose: Deletes the circular lists, cleaning it entirely from the
 memory.
@@ -128,9 +127,9 @@ List descriptor to wipe from memory.
 @inforef{list_destroy, List destruction routine, list}, for more
 information.
 
-@c ***** clist_del
-@node clist_del, clist_get, clist_destroy, functions
-@section int clist_del(clist_t *clist, void **data)
+@c ***** fjc_clist_del
+@node fjc_clist_del, fjc_clist_get, fjc_clist_destroy, functions
+@section int fjc_clist_del(fjc_clist_t *clist, void **data)
 
 Purpose: Deletes a single object from the circular list.
 
@@ -144,9 +143,9 @@ Data extracted from the deleted item
 
 @inforef{list_del, List deletion routine, list}, for more information.
 
-@c ***** clist_get
-@node clist_get, clist_move, clist_del, functions
-@section int clist_get(clist_t * clist, void **data, position_t whence)
+@c ***** fjc_clist_get
+@node fjc_clist_get, fjc_clist_move, fjc_clist_del, functions
+@section int fjc_clist_get(fjc_clist_t * clist, void **data, fjc_position_t whence)
 
 Purpose: Get an item from the circular list
 
@@ -162,9 +161,9 @@ Where to get the data from
 
 @inforef{list_get, List getter routine, list}, for more information.
 
-@c ***** clist_move
-@node clist_move, clist_insert, clist_get, functions
-@section int clist_move (clist_t *clist, position_t whence)
+@c ***** fjc_clist_move
+@node fjc_clist_move, fjc_clist_insert, fjc_clist_get, functions
+@section int fjc_clist_move (fjc_clist_t *clist, fjc_position_t whence)
 
 Purpose: moves the current pointer of the list
 
@@ -179,9 +178,9 @@ Where to move the current descriptor to
 @inforef{list_move, List navigation routine, list}, for more
 information.
 
-@c ***** clist_insert
-@node clist_insert, , clist_move, functions
-@section int clist_insert (clist_t * list, const void *data)
+@c ***** fjc_clist_insert
+@node fjc_clist_insert, , fjc_clist_move, functions
+@section int fjc_clist_insert (fjc_clist_t * list, const void *data)
 Purpose: Inserts a new element in the list
 
 Parameters:
