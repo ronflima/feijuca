@@ -28,7 +28,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @c ** The top node
 @ifnottex
 @node Top
-@top DList
+@top Double-linked List
 @end ifnottex
 
 @c ** Main Menu
