@@ -13,7 +13,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 @titlepage
 @c ** Title page
 
-@title G.A. Library
+@title Feijuca Library
 @subtitle Double linked lists interface
 @author Ronaldo Faria Lima
 
@@ -33,7 +33,7 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ** Main Menu
 @menu
-* algorithm :: Algorithm implemented by G.A. Library
+* algorithm :: Algorithm implemented by Feijuca Library
 * data types:: Data types
 * functions :: Description of all available functions
 * Licenses  :: Licenses and other information
@@ -41,10 +41,10 @@ Copyright @copyright{} 2004 - Ronaldo Faria Lima - All rights reserved
 
 @c ***** algorithm
 @node algorithm, data types, Top, Top
-@chapter Double linked lists in G.A. Library
-G.A. Library implements double linked lists through the header file
-<dlist.h>. The list descriptor contains always the first and the last
-elements for fast access in the list. Navigation in the list is
+@chapter Double linked lists in Feijuca Library
+Feijuca Library implements double linked lists through the header file
+``fjc_dlist.h''. The list descriptor contains always the first and the
+last elements for fast access in the list. Navigation in the list is
 possible in both ways.
 
 Double linked lists are useful when you have a collection of data that
@@ -65,14 +65,14 @@ in the algorithms. So, thread safety is not guaranteed.
 @chapter Data types
 The following data types are defined for list implementation.
 @itemize @bullet
-@item void (* deallocator_t)(void *data):
+@item void (* fjc_deallocator_t)(void *data):
 Pointer to a user function that will be called in order to deallocate
 memory for each data element of the list. This datatype is being
 reused from list.h.
-@item dlist_element_t:
+@item fjc_dlist_element_t:
 Data structure that describes a list element. There is no need to use
 this data type since this is used internally by the list descriptor.
-@item dlist_t:
+@item fjc_dlist_t:
 Data structure that decribes the list descriptor. This is used to hold
 all needed data to implement the list. There is no need to access
 directly any element of this structure since they are manipulated by
@@ -83,17 +83,17 @@ the functions of the library.
 @node functions, Licenses, data types, Top
 @chapter Functions
 @menu
-* dlist_init    :: List initialization function
-* dlist_destroy :: List destruction function
-* dlist_get     :: Element getter
-* dlist_insert  :: Inserts a new element
-* dlist_move    :: Iterates the list
-* dlist_del     :: Deletes a single element of the list
+* fjc_dlist_init    :: List initialization function
+* fjc_dlist_destroy :: List destruction function
+* fjc_dlist_get     :: Element getter
+* fjc_dlist_insert  :: Inserts a new element
+* fjc_dlist_move    :: Iterates the list
+* fjc_dlist_del     :: Deletes a single element of the list
 @end menu
 
-@c ***** dlist_init
-@node dlist_init, dlist_destroy, functions, functions
-@section int dlist_init (list_t *list, deallocator_t dealloc)
+@c ***** fjc_dlist_init
+@node fjc_dlist_init, fjc_dlist_destroy, functions, functions
+@section fjc_error_t fjc_dlist_init (list_t *list, fjc_deallocator_t dealloc)
 Purpose: Initializes the list descriptor
 
 Parameters:
@@ -109,7 +109,7 @@ Return values:
 @itemize @bullet
 @item 0
 Operation succeeded
-@item EGAINVAL
+@item E_FJC_INVAL
 The deallocator provided is not valid. The validation of the
 deallocator, however, is done against its nullity.
 @end itemize
@@ -127,12 +127,12 @@ function must have the following prototype:
 void deallocator (void *data);
 @end example
 You will note that this prototype is exactly the same definition of
-the @samp{deallocator_t} data type.
+the @samp{fjc_deallocator_t} data type.
 @end itemize
 
-@c ***** dlist_destroy
-@node dlist_destroy, dlist_get, dlist_init, functions
-@section int dlist_destroy (list_t *list)
+@c ***** fjc_dlist_destroy
+@node fjc_dlist_destroy, fjc_dlist_get, fjc_dlist_init, functions
+@section fjc_error_t fjc_dlist_destroy (list_t *list)
 Purpose: Deallocates each element and releases the entire list from
 memory
 
@@ -146,13 +146,13 @@ Return values:
 @itemize @bullet
 @item 0
 when the operation succeeds
-@item EGAINVAL
+@item E_FJC_INVAL
 The destruction operation was tried on an invalid descriptor.
 @end itemize
 
-@c ***** dlist_get
-@node dlist_get, dlist_insert, dlist_destroy, functions
-@section int dlist_get (list_t * list, void **data, int whence)
+@c ***** fjc_dlist_get
+@node fjc_dlist_get, fjc_dlist_insert, fjc_dlist_destroy, functions
+@section fjc_error_t fjc_dlist_get (list_t * list, void **data, fjc_position_t whence)
 Purpose: Gets an element data from the list and make it possible to
 navigate the list after getting the data. 
 
@@ -167,12 +167,12 @@ data for some reason.
 This parameter indicates how to navigate the list after the data is
 retrieved.
 @itemize @bullet
-@item POS_CURR: 
+@item POS_FJC_CURR: 
 Gets the current element data and do not update the current pointer.
-@item POS_NEXT:
+@item POS_FJC_NEXT:
 Gets the current element data and makes the current pointer point to the
 next element (moves the list)
-@item POS_PREV:
+@item POS_FJC_PREV:
 Gets the current element data and makes the current pointer point to
 the previous element (moves the list).
 @end itemize
@@ -184,7 +184,7 @@ Return values:
 Operation succeeded
 @item EOF
 The end of the list was reached
-@item EGAINVAL
+@item E_FJC_INVAL
 Invalid argument provided to @emph{whence} parameter or the list
 descriptor is invalid.
 @end itemize
@@ -192,8 +192,8 @@ descriptor is invalid.
 @emph{Hints}: 
 @itemize
 @item
-To get the first element, use dlist_move function (@xref{dlist_move}.)
-with whence=POS_HEAD and then use this function with whence=POS_CURR.
+To get the first element, use fjc_dlist_move function (@xref{fjc_dlist_move}.)
+with whence=POS_FJC_HEAD and then use this function with whence=POS_FJC_CURR.
 @item
 This function was designed, basically, to retrieve data from the list
 by iterating it from the current position. The data is
@@ -204,9 +204,9 @@ of the list. The @samp{whence} parameter says how the list will be
 navigated after the current element is returned.
 @end itemize
 
-@c ***** dlist_insert
-@node dlist_insert, dlist_move, dlist_get, functions
-@section int dlist_insert (list_t * list, const void *data, int whence)
+@c ***** fjc_dlist_insert
+@node fjc_dlist_insert, fjc_dlist_move, fjc_dlist_get, functions
+@section fjc_error_t fjc_dlist_insert (list_t * list, const void *data, fjc_position_t whence)
 Purpose: Inserts a new element in the list
 
 Parameters:
@@ -218,13 +218,13 @@ Data pointer to be inserted in the list
 @item whence:
 Where to insert the new element:
 @itemize @bullet
-@item POS_NEXT: 
+@item POS_FJC_NEXT: 
 As the next element based on the current position.
-@item POS_PREV:
+@item POS_FJC_PREV:
 As the previous element, based on the current position.
-@item POS_HEAD:
+@item POS_FJC_HEAD:
 As the list head.
-@item POS_TAIL:
+@item POS_FJC_TAIL:
 As the list tail.
 @end itemize
 @end itemize
@@ -233,12 +233,12 @@ Return values:
 @itemize @bullet
 @item 0
 Operation succeeded
-@item EGANOMEM
+@item E_FJC_NOMEM
 No memory available to create the new list element
-@item EGABADC
+@item E_FJC_BADC
 Wrong insertion. The operation demanded a valid current position but
 there was none available.
-@item EGAINVAL
+@item E_FJC_INVAL
 Invalid @samp{whence} parameter provided or the list descriptor is
 invalid.
 @end itemize
@@ -248,12 +248,12 @@ invalid.
 @item 
 This function does not update the current pointer. If you want to
 update the current pointer after an insertion, you will need to call
-dlist_move to do so (@xref{dlist_move}.).
+fjc_dlist_move to do so (@xref{fjc_dlist_move}.).
 @end itemize
 
-@c ***** dlist_move
-@node dlist_move, dlist_del, dlist_insert, functions
-@section int dlist_move (list_t * list, int whence)
+@c ***** fjc_dlist_move
+@node fjc_dlist_move, fjc_dlist_del, fjc_dlist_insert, functions
+@section fjc_error_t fjc_dlist_move (list_t * list, fjc_position_t whence)
 Purpose: Moves the current pointer to a specific location within the
 list
 
@@ -264,13 +264,13 @@ The list descriptor
 @item whence
 How to move the pointer:
 @itemize @bullet
-@item POS_HEAD
+@item POS_FJC_HEAD
 Moves the pointer to the beginning of the list
-@item POS_TAIL
+@item POS_FJC_TAIL
 Moves the pointer to the end of the list
-@item POS_NEXT
+@item POS_FJC_NEXT
 Moves the pointer to the next item of the list
-@item POS_NONE
+@item POS_FJC_NONE
 No effect in the navigation point. The current pointer is not updated.
 @end itemize
 @end itemize
@@ -279,7 +279,7 @@ Return values:
 @itemize @bullet
 @item 0
 Operation succeeded
-@item EGAINVAL
+@item E_FJC_INVAL
 Wrong value provided to the @samp{whence} parameter or the list
 descriptor is invalid.
 @item EOF
@@ -294,9 +294,9 @@ nowhere. Any try to move the pointer to anywhere that is not the
 beginning or the end of the list will return EOF.
 @end itemize
 
-@c ***** dlist_del
-@node dlist_del, , dlist_move, functions
-@section int dlist_del (list_t * list, void **data, int whence)
+@c ***** fjc_dlist_del
+@node fjc_dlist_del, , fjc_dlist_move, functions
+@section fjc_error_t fjc_dlist_del (fjc_dlist_t * list, void **data, fjc_position_t whence)
 Purpose: Deletes a single element from the list
 
 Parameters:
@@ -308,15 +308,15 @@ Data storage arena to store the data extracted from the list
 @item whence
 Where to delete the item:
 @itemize @bullet
-@item POS_HEAD
+@item POS_FJC_HEAD
 Deletes the head of the list
-@item POS_CURR
+@item POS_FJC_CURR
 Deletes the current item
-@item POS_NEXT
+@item POS_FJC_NEXT
 Deletes the next item based on the current pointer
-@item POS_PREV
+@item POS_FJC_PREV
 Deletes the previous item based on the current pointer
-@item POS_TAIL
+@item POS_FJC_TAIL
 Deletes the tail of the list
 @end itemize
 @end itemize
@@ -325,7 +325,7 @@ Return values:
 @itemize @bullet
 @item 0
 Operation succeeded.
-@item EGAINVAL
+@item E_FJC_INVAL
 Invalid argument provided. This value is returned if:
 @itemize @bullet
 @item The @samp{whence} parameter has invalid value
@@ -343,13 +343,13 @@ The list is already empty
 @item
 If the list was never iterated, the current position points to
 nowhere. No deletion will take place for operations using
-whence=POS_CURR, POS_NEXT or POS_PREV.
+whence=POS_FJC_CURR, POS_FJC_NEXT or POS_FJC_PREV.
 @item 
 If you provide NULL for the data storage, the function will call the
 deallocator provided to free the data memory instead of extracting the
 data from the list and return it to you.
 @item
-If you delete the current element (whence=POS_CURR), the current
+If you delete the current element (whence=POS_FJC_CURR), the current
 pointer will be reset to NULL and if you issue again the same
 operation, it will fail by returning to the caller EOF, since the
 current pointer was reset due to the previous operation.
