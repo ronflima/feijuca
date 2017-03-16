@@ -29,7 +29,7 @@
 #include "fjc_list_.h"
 
 fjc_error_t
-fjc_list_init (fjc_list_t *list, fjc_deallocator_t * dealloc)
+fjc_list_init (fjc_list_t *list, fjc_deallocator_t *dealloc)
 {
   assert (list != NULL);
   assert (dealloc != NULL);

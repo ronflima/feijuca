@@ -37,8 +37,11 @@ fjc_list_destroy (fjc_list_t list)
     {
       return E_FJC_INVAL;
     }
-  while (fjc_list_del (list, POS_FJC_HEAD, NULL) == E_FJC_OK)
-    ;
+  if (list->size_)
+    {
+      while (fjc_list_del (list, POS_FJC_HEAD, NULL) == E_FJC_OK)
+        ;
+    }
   memset(list, 0x0, sizeof(struct fjc_list_t));
   free (list);
   return E_FJC_OK;

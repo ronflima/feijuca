@@ -127,16 +127,19 @@ extract_element_from_next_ (fjc_list_t list)
   fjc_list_element_t element = NULL;	/* Element to be deleted */
   
   assert (list != NULL);
-  if (list->curr_ != NULL)
+  if (list->curr_ == NULL)
     {
-      if ((element = list->curr_->next_) != NULL)
+      return NULL;
+    }
+  element = list->curr_->next_;
+  if (element != NULL)
+    {
+      if (element == list->tail_)
         {
-          if (list->curr_->next_ == list->tail_)
-            {
-              list->tail_ = list->curr_;
-            }
-          list->curr_->next_ = list->curr_->next_->next_;
+          list->tail_ = list->curr_;
         }
+      list->curr_->next_ = element->next_;
+      element->next_ = NULL;
     }
   return element;
 }

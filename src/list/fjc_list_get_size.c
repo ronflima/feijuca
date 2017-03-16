@@ -36,6 +36,6 @@ fjc_list_get_size (fjc_list_t list, size_t *size)
     {
       return E_FJC_INVAL;
     }
-  *size =  list->size_;
+  *size = list->size_;
   return E_FJC_OK;
 }
