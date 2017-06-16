@@ -13,8 +13,11 @@ matrix:
 branches:
   only:
     - master
+addons:
+  apt:
+    packages:
+      - texinfo
 install:
-  - apt install texinfo
   - ./autogen.sh
   - ./configure ${STATIC+--disable-shared} ${DEBUG+--enable-debug}
   - make
