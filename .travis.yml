@@ -14,9 +14,10 @@ branches:
   only:
     - master
 install:
+  - apt install texinfo
   - ./autogen.sh
   - ./configure ${STATIC+--disable-shared} ${DEBUG+--enable-debug}
-  - make 
+  - make
 script:
   - make check
 after_failure:
