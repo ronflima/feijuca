@@ -37,9 +37,5 @@ fjc_dclist_get_size (fjc_dclist_t dclist, size_t * size)
     {
       return E_FJC_INVAL;
     }
-  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
-    {
-      return E_FJC_INVAL;
-    }
-  return fjc_dlist_get_size (dclist->list_, size);
+  return fjc_dlist_get_size (dclist, size);
 }

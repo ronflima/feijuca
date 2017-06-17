@@ -32,7 +32,7 @@ FJC_BEGINDECLS
 /*
  * Data types
  */
-typedef struct fjc_dclist_t * fjc_dclist_t;
+typedef struct fjc_dlist_t * fjc_dclist_t;
 
 /*
  * Prototypes

@@ -36,20 +36,16 @@ fjc_dclist_destroy (fjc_dclist_t dclist)
     {
       return E_FJC_INVAL;
     }
-  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
-    {
-      return E_FJC_INVAL;
-    }
   /* Makes the list linear in order to use fjc_dlist_destroy safely */
-  if (dclist->list_->head_ != NULL)
+  if (dclist->head_ != NULL)
     {
-      dclist->list_->head_->prev_ = NULL;
+      dclist->head_->prev_ = NULL;
     }
-  if (dclist->list_->tail_ != NULL)
+  if (dclist->tail_ != NULL)
     {
-      dclist->list_->tail_->next_ = NULL;
+      dclist->tail_->next_ = NULL;
     }
-  fjc_dlist_destroy (dclist->list_);
+  fjc_dlist_destroy (dclist);
   free (dclist);
   return E_FJC_OK;
 }

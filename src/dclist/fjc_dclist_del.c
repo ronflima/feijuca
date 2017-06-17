@@ -36,16 +36,12 @@ fjc_dclist_del (fjc_dclist_t dclist, fjc_position_t whence, void **data)
     {
       return E_FJC_INVAL;
     }
-  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
+  if (dclist->size_ > 0x0)
     {
-      return E_FJC_INVAL;
+      dclist->head_->prev_ = NULL;
+      dclist->tail_->next_ = NULL;
     }
-  if (dclist->list_->size_ > 0x0)
-    {
-      dclist->list_->head_->prev_ = NULL;
-      dclist->list_->tail_->next_ = NULL;
-    }
-  if ((rc = fjc_dlist_del (dclist->list_, whence, data)) == E_FJC_OK)
+  if ((rc = fjc_dlist_del (dclist, whence, data)) == E_FJC_OK)
     {
       fjc_dclist_make_circular_ (dclist);
     }

@@ -38,15 +38,10 @@ fjc_dclist_init (fjc_dclist_t * dclist, fjc_deallocator_t * dealloc)
     {
       return E_FJC_INVAL;
     }
-  if ((*dclist = (fjc_dclist_t) malloc (sizeof (struct fjc_dclist_t))) == NULL)
-    {
-      return E_FJC_NOMEM;
-    }
-  if (fjc_dlist_init (&(*dclist)->list_, dealloc) != E_FJC_OK)
+  if (fjc_dlist_init (dclist, dealloc) != E_FJC_OK)
     {
       free (*dclist);
       return E_FJC_NOMEM;
     }
-  (*dclist)->signature_ = FJC_DCLIST_SIGNATURE;
   return E_FJC_OK;
 }

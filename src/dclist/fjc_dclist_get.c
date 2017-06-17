@@ -36,9 +36,5 @@ fjc_dclist_get (fjc_dclist_t dclist, fjc_position_t whence, void **data)
     {
       return E_FJC_INVAL;
     }
-  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
-    {
-      return E_FJC_INVAL;
-    }
-  return fjc_dlist_get (dclist->list_, whence, data);
+  return fjc_dlist_get (dclist, whence, data);
 }

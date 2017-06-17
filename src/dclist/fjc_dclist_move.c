@@ -35,9 +35,5 @@ fjc_dclist_move (fjc_dclist_t dclist, fjc_position_t whence)
     {
       return E_FJC_INVAL;
     }
-  if (dclist->signature_ != FJC_DCLIST_SIGNATURE)
-    {
-      return E_FJC_INVAL;
-    }
-  return fjc_dlist_move (dclist->list_, whence);
+  return fjc_dlist_move (dclist, whence);
 }

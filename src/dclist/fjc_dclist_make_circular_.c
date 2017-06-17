@@ -39,13 +39,13 @@ fjc_dclist_make_circular_ (fjc_dclist_t dclist)
     {
       return E_FJC_INVAL;
     }
-  if ((dclist->list_->head_ != NULL) && (dclist->list_->head_->prev_ == NULL))
+  if ((dclist->head_ != NULL) && (dclist->head_->prev_ == NULL))
     {
-      dclist->list_->head_->prev_ = dclist->list_->tail_;
+      dclist->head_->prev_ = dclist->tail_;
     }
-  if ((dclist->list_->tail_ != NULL) && (dclist->list_->tail_->next_ == NULL))
+  if ((dclist->tail_ != NULL) && (dclist->tail_->next_ == NULL))
     {
-      dclist->list_->tail_->next_ = dclist->list_->head_;
+      dclist->tail_->next_ = dclist->head_;
     }
   return E_FJC_OK;
 }

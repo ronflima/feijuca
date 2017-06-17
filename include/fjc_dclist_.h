@@ -30,23 +30,6 @@
 FJC_BEGINDECLS
 
 /*
- * Constants
- */
-enum 
-{
-  FJC_DCLIST_SIGNATURE = 0x5EEDDEAFu
-};
-
-/*
- * Datatypes
- */
-struct fjc_dclist_t
-{
-  fjc_magic_t signature_;
-  fjc_dlist_t list_;
-};
-
-/*
  * Prototypes
  */
 fjc_error_t (fjc_dclist_make_circular_) (fjc_dclist_t);
