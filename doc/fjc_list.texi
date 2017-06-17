@@ -93,7 +93,8 @@ Parameters:
 List descriptor to initialize
 @item dealloc:
 Deallocator pointer function for the user-defined deallocation
-function (required).
+function. If you don´t provide your deallocator, @emph{free} will be
+used instead.
 @end itemize
 
 Return values:
